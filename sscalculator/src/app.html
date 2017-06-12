@@ -21,28 +21,23 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About You<span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li class="active"><a href="#">Personal Info</a></li>
-              <li><a href="#">Retirement Info</a></li>
-
-              <li repeat.for="route of router.navigation" class="${route.isActive ? 'active' : ''}">
-                <a data-toggle="collapse" data-target="#bs-example-navbar-collapse-1.in" href.bind="route.href">${route.title}</a>
-              </li>
-
+              <li><a href="#/retirementinfo">Retirement Info</a></li>
             </ul>
           </li>
 
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Benefits<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="#">Benefits</a></li>
-              <li><a href="#">Cost of Living</a></li>
-              <li><a href="#">Other Benefits</a></li>
+              <li><a href="#/benefits">Benefits</a></li>
+              <li><a href="#/costOfLiving">Cost of Living</a></li>
+              <li><a href="#/other">Other Benefits</a></li>
             </ul>
           </li>
 
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Results<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="#">Results</a></li>
+              <li><a href="#/results">Results</a></li>
             </ul>
           </li>
         </ul>
