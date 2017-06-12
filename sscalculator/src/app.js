@@ -9,17 +9,17 @@ export class App {
     this.router = router;
     config.title = "Social Security Calculator";
     config.map([
-      { route: ['', 'personalinfo'], moduleId: 'personalinfo',
+      { route: ['', 'personalinfo'], moduleId: 'aboutyou/personalinfo',
         name: 'personalinfo', title: 'Personal Info', nav: true},
-      { route: 'retirementinfo', moduleId: 'retirementinfo',
+      { route: 'retirementinfo', moduleId: 'aboutyou/retirementinfo',
         name: 'retirementinfo', title: 'Retirement Info', nav: true},
-      { route: 'benefits', moduleId: 'benefits',
+      { route: 'benefits', moduleId: 'benefits/benefits',
         name: 'benefits', title: 'Benefits', nav: true},
-      { route: 'costofliving', moduleId: 'costofliving',
+      { route: 'costofliving', moduleId: 'benefits/costOfLiving',
         name: 'costofliving', title: 'Cost of Living', nav: true},
-      { route: 'other benefits', moduleId: 'other benefits',
+      { route: 'other benefits', moduleId: 'benefits/other',
         name: 'otherbenefits', title: 'Other Benefits', nav: true},
-      { route: 'results', moduleId: 'results',
+      { route: 'results', moduleId: 'results/results',
         name: 'results', title: 'Results', nav: true}
     ]);
   }
