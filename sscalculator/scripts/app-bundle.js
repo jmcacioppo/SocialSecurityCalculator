@@ -12,11 +12,21 @@ define('app',['exports', 'bootstrap'], function (exports) {
     }
   }
 
-  var App = exports.App = function App() {
-    _classCallCheck(this, App);
+  var App = exports.App = function () {
+    function App() {
+      _classCallCheck(this, App);
 
-    this.message = 'Social Security Calculator!';
-  };
+      this.message = 'Social Security Calculator!';
+    }
+
+    App.prototype.configureRouter = function configureRouter(config, router) {
+      this.router = router;
+      config.title = "Social Security Calculator";
+      config.map([{ route: ['', 'personalinfo'], moduleId: 'personalinfo' }]);
+    };
+
+    return App;
+  }();
 });
 define('environment',["exports"], function (exports) {
   "use strict";
@@ -77,7 +87,7 @@ define('personalinfo',["exports"], function (exports) {
     var personalinfo = exports.personalinfo = function personalinfo() {
         _classCallCheck(this, personalinfo);
 
-        this.message = "Personal Info";
+        this.message = "Personal Infoo";
     };
 });
 define('resources/index',["exports"], function (exports) {
@@ -89,6 +99,6 @@ define('resources/index',["exports"], function (exports) {
   exports.configure = configure;
   function configure(config) {}
 });
-define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\"><span class=\"sr-only\">Toggle navigation</span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span></button> <a class=\"navbar-brand\" href=\"#\">Social Security Calculator</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">About You<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li class=\"active\"><a href=\"#\">Personal Info</a></li><li><a href=\"#\">Retirement Info</a></li></ul></li><li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Benefits<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li><a href=\"#\">Benefits</a></li><li><a href=\"#\">Cost of Living</a></li><li><a href=\"#\">Other Benefits</a></li></ul></li><li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Results<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li><a href=\"#\">Results</a></li></ul></li></ul></div></div></nav></template>"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\"><span class=\"sr-only\">Toggle navigation</span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span></button> <a class=\"navbar-brand\" href=\"#\">Social Security Calculator</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">About You<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li class=\"active\"><a href=\"#\">Personal Info</a></li><li><a href=\"#\">Retirement Info</a></li></ul></li><li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Benefits<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li><a href=\"#\">Benefits</a></li><li><a href=\"#\">Cost of Living</a></li><li><a href=\"#\">Other Benefits</a></li></ul></li><li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Results<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li><a href=\"#\">Results</a></li></ul></li></ul></div></div></nav><router-view></router-view></template>"; });
 define('text!personalinfo.html', ['module'], function(module) { module.exports = "<template><h1>${message}</h1></template>"; });
 //# sourceMappingURL=app-bundle.js.map
