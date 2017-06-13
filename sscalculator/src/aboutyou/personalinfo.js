@@ -9,6 +9,6 @@ export class personalinfo {
     }
 
     print() {
-        console.log(this.userData.firstName);
+        console.log(this.userData);
     }
 }

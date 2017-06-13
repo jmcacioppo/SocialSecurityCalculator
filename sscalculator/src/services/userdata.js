@@ -1,5 +1,12 @@
 export class UserData {
     constructor() {
-        this.firstName = "Fred";
+        // Personal Info
+        this.firstName = "";
+        this.gender = "";
+        this.dateOfBirth = "";
+        this.employmentStatus = "";
+        this.salary = 0;
+        this.maritalStatus = "";
+        this.ageOfDependent = "";
     }
 }
