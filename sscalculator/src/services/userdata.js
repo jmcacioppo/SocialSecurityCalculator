@@ -1,5 +1,5 @@
 import {singleton} from 'aurelia-framework';
-import {User} from '../services/user'
+import {User} from '../services/user';
 
 @singleton()
 export class UserData {
