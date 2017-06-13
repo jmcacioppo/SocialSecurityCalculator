@@ -1,8 +1,16 @@
+#persinfointro {
+    text-align: center;
+    width: 1000px;
+    margin: 0 auto;
+}
+
 #persinfo {
     text-align: center;
-    width: 300px;
+    width: 500px;
+    margin: 0 auto;
 }
 
 #retire {
     width: 300px;
+    margin: 0 auto;
 }
