@@ -102,14 +102,13 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', '../services/use
         }
 
         personalinfo.prototype.print = function print() {
-            console.log(this.userData.firstName);
+            console.log(this.userData);
         };
 
         return personalinfo;
     }()) || _class);
 });
 define('aboutyou/retirementinfo',['exports', 'jquery', 'jquery-ui-dist'], function (exports, _jquery) {
-<<<<<<< HEAD
      'use strict';
 
      Object.defineProperty(exports, "__esModule", {
@@ -142,40 +141,6 @@ define('aboutyou/retirementinfo',['exports', 'jquery', 'jquery-ui-dist'], functi
 
           return retirementinfo;
      }();
-=======
-   'use strict';
-
-   Object.defineProperty(exports, "__esModule", {
-      value: true
-   });
-   exports.retirementinfo = undefined;
-
-   var _jquery2 = _interopRequireDefault(_jquery);
-
-   function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : {
-         default: obj
-      };
-   }
-
-   function _classCallCheck(instance, Constructor) {
-      if (!(instance instanceof Constructor)) {
-         throw new TypeError("Cannot call a class as a function");
-      }
-   }
-
-   var retirementinfo = exports.retirementinfo = function () {
-      function retirementinfo() {
-         _classCallCheck(this, retirementinfo);
-      }
-
-      retirementinfo.prototype.attached = function attached() {
-         (0, _jquery2.default)('#retire').slider({});
-      };
-
-      return retirementinfo;
-   }();
->>>>>>> fd466d65e285af0870e0392ca6366e47228ad064
 });
 define('benefits/benefits',["exports"], function (exports) {
     "use strict";
@@ -254,12 +219,6 @@ define('results/results',["exports"], function (exports) {
         _classCallCheck(this, results);
     };
 });
-<<<<<<< HEAD
-define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\"><span class=\"sr-only\">Toggle navigation</span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span></button> <a class=\"navbar-brand\" href=\"#\">Social Security Calculator</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">About You<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li class=\"active\"><a href=\"#\">Personal Info</a></li><li><a href=\"#/retirementinfo\">Retirement Info</a></li></ul></li><li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Benefits<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li><a href=\"#/benefits\">Benefits</a></li><li><a href=\"#/costOfLiving\">Cost of Living</a></li><li><a href=\"#/other\">Other Benefits</a></li></ul></li><li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Results<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li><a href=\"#/results\">Results</a></li></ul></li></ul></div></div></nav><router-view></router-view></template>"; });
-define('text!styles.css', ['module'], function(module) { module.exports = "#persinfo {\r\n    text-align: center;\r\n    width: 300px;\r\n}"; });
-define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\".././styles.css\"></require><div><h1>${message}</h1><p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p></div><form id=\"persinfo\" submit.delegate=\"print()\"><div class=\"form-group\"><label for=\"formGroupExampleInput\">First Name</label><input type=\"text\" class=\"form-control\" id=\"formGroupExampleInput\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"exampleSelect1\">Gender</label><select class=\"form-control\" id=\"exampleSelect1\"><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"formGroupExampleInput\">Date of Birth</label><input type=\"text\" class=\"form-control\" id=\"formGroupExampleInput\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"exampleSelect1\">Employment Status</label><select class=\"form-control\" id=\"exampleSelect1\"><option>Retired</option><option>Employed</option><option>Business Owner</option><option>Homemaker</option><option>Not Currently Employed</option></select></div><div class=\"form-group\"><label for=\"formGroupExampleInput\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><div class=\"form-group\"><label for=\"exampleSelect1\">Marital Status</label><select class=\"form-control\" id=\"exampleSelect1\"><option>Single</option><option>Married</option><option>Divorced</option><option>Separated</option><option>Widowed</option><option>Domestic Partner</option></select></div><div class=\"form-group\"><label for=\"formGroupExampleInput\">Age of Dependent</label><input type=\"text\" value.bind=\"firstName\" class=\"form-control\" id=\"formGroupExampleInput\" placeholder=\"10\" syub><h1>${firstName}</h1></div><button type=\"submit\">Submit</button></form></template>"; });
-define('text!aboutyou/retirementinfo.html', ['module'], function(module) { module.exports = "<template><require from=\"jquery-ui-dist/jquery-ui.css\"></require><h1>Retirement Info</h1><div class=\"form-group\"><label for=\"formGroupExampleInput\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><label for=\"formGroupExampleInput\">Retirement Income:</label><br><b>50</b> <input id=\"retire\" class=\"span2\" value=\"\" data-slider-min=\"50\" data-slider-max=\"100\" data-slider-step=\"1\" data-slider-value=\"[50,100]\"> <b>100</b><div id=\"retire\"></div><button id=\"retire1\">RETIRE</button></template>"; });
-=======
 define('services/userdata',["exports"], function (exports) {
     "use strict";
 
@@ -276,14 +235,19 @@ define('services/userdata',["exports"], function (exports) {
     var UserData = exports.UserData = function UserData() {
         _classCallCheck(this, UserData);
 
-        this.firstName = "Fred";
+        this.firstName = "";
+        this.gender = "";
+        this.dateOfBirth = "";
+        this.employmentStatus = "";
+        this.salary = 0;
+        this.maritalStatus = "";
+        this.ageOfDependent = "";
     };
 });
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\"><span class=\"sr-only\">Toggle navigation</span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span></button> <a class=\"navbar-brand\" href=\"#\">Social Security Calculator</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">About You<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li class=\"active\"><a href=\"#\">Personal Info</a></li><li><a href=\"#/retirementinfo\">Retirement Info</a></li></ul></li><li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Benefits<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li><a href=\"#/benefits\">Benefits</a></li><li><a href=\"#/costOfLiving\">Cost of Living</a></li><li><a href=\"#/other\">Other Benefits</a></li></ul></li><li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Results<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li><a href=\"#/results\">Results</a></li></ul></li></ul></div></div></nav><router-view></router-view></template>"; });
 define('text!styles.css', ['module'], function(module) { module.exports = "#persinfo {\r\n    text-align: center;\r\n    width: 300px;\r\n}"; });
-define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\".././styles.css\"></require><div><h1>${message}</h1><p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p></div><form id=\"persinfo\" submit.delegate=\"print()\"><div class=\"form-group\"><label for=\"formGroupExampleInput\">First Name</label><input type=\"text\" class=\"form-control\" id=\"formGroupExampleInput\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"exampleSelect1\">Gender</label><select class=\"form-control\" id=\"exampleSelect1\"><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"formGroupExampleInput\">Date of Birth</label><input type=\"text\" class=\"form-control\" id=\"formGroupExampleInput\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"exampleSelect1\">Employment Status</label><select class=\"form-control\" id=\"exampleSelect1\"><option>Retired</option><option>Employed</option><option>Business Owner</option><option>Homemaker</option><option>Not Currently Employed</option></select></div><div class=\"form-group\"><label for=\"formGroupExampleInput\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><div class=\"form-group\"><label for=\"exampleSelect1\">Marital Status</label><select class=\"form-control\" id=\"exampleSelect1\"><option>Single</option><option>Married</option><option>Divorced</option><option>Separated</option><option>Widowed</option><option>Domestic Partner</option></select></div><div class=\"form-group\"><label for=\"formGroupExampleInput\">Age of Dependent</label><input type=\"text\" value.bind=\"userData.firstName\" class=\"form-control\" id=\"formGroupExampleInput\" placeholder=\"10\" syub><h1>${userData.firstName}</h1></div><button type=\"submit\">Submit</button></form></template>"; });
-define('text!aboutyou/retirementinfo.html', ['module'], function(module) { module.exports = "<template><require from=\"jquery-ui-dist/jquery-ui.css\"></require><h1>Retirement Info</h1><div class=\"form-group\"><label for=\"formGroupExampleInput\">Age of Dependent</label><input type=\"text\" class=\"form-control\" id=\"formGroupExampleInput\" placeholder=\"10\"></div>Retirement Age: <b>50</b> <input id=\"retire\" type=\"text\" class=\"span2\" value=\"\" data-slider-min=\"50\" data-slider-max=\"100\" data-slider-step=\"1\" data-slider-value=\"[250,450]\"> <b>100</b></template>"; });
->>>>>>> fd466d65e285af0870e0392ca6366e47228ad064
+define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\".././styles.css\"></require><div><h1>${message}</h1><p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p></div><form id=\"persinfo\" submit.delegate=\"print()\"><div class=\"form-group\"><label for=\"formGroupExampleInput\">First Name</label><input type=\"text\" value.bind=\"userData.firstName\" class=\"form-control\" id=\"formGroupExampleInput\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"exampleSelect1\">Gender</label><select class=\"form-control\" id=\"exampleSelect1\" value.bind=\"userData.gender\"><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"formGroupExampleInput\">Date of Birth</label><input type=\"text\" value.bind=\"userData.dateOfBirth\" class=\"form-control\" id=\"formGroupExampleInput\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"exampleSelect1\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.dateOfBirth\" id=\"exampleSelect1\"><option>Retired</option><option>Employed</option><option>Business Owner</option><option>Homemaker</option><option>Not Currently Employed</option></select></div><div class=\"form-group\"><label for=\"formGroupExampleInput\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><div class=\"form-group\"><label for=\"exampleSelect1\">Marital Status</label><select class=\"form-control\" value.bind=\"userData.maritalStatus\" id=\"exampleSelect1\"><option>Single</option><option>Married</option><option>Divorced</option><option>Separated</option><option>Widowed</option><option>Domestic Partner</option></select></div><div class=\"form-group\"><label for=\"formGroupExampleInput\">Age of Dependent</label><input type=\"text\" value.bind=\"userData.ageOfDependent\" class=\"form-control\" id=\"formGroupExampleInput\" placeholder=\"10\" syub><h1>${userData.firstName}</h1></div><button type=\"submit\">Submit</button></form></template>"; });
+define('text!aboutyou/retirementinfo.html', ['module'], function(module) { module.exports = "<template><require from=\"jquery-ui-dist/jquery-ui.css\"></require><h1>Retirement Info</h1><div class=\"form-group\"><label for=\"formGroupExampleInput\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><label for=\"formGroupExampleInput\">Retirement Income:</label><br><b>50</b> <input id=\"retire\" class=\"span2\" value=\"\" data-slider-min=\"50\" data-slider-max=\"100\" data-slider-step=\"1\" data-slider-value=\"[50,100]\"> <b>100</b><div id=\"retire\"></div><button id=\"retire1\">RETIRE</button></template>"; });
 define('text!benefits/benefits.html', ['module'], function(module) { module.exports = "<template><h1>Benefits</h1></template>"; });
 define('text!benefits/costOfLiving.html', ['module'], function(module) { module.exports = "<template><h1>Cost of Living</h1></template>"; });
 define('text!benefits/other.html', ['module'], function(module) { module.exports = "<template><h1>Other Benefits</h1></template>"; });
