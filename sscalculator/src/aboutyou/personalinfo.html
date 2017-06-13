@@ -1,7 +1,8 @@
 <template>
     <require from=".././styles.css"></require>
+    <require from="jquery-ui-dist/jquery-ui.css"></require>
 
-    <div>
+    <div id="persinfointro">
         <h1>${message}</h1>
         <p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p>
     </div>
@@ -53,32 +54,29 @@
         <div class="form-group">
             <label for="formGroupExampleInput">Age of Dependent</label>
             <input type="text" value.bind="userData.ageOfDependent" class="form-control" id="formGroupExampleInput" placeholder="10" syub>
-            <h1>${userData.firstName}</h1>
         </div>
 
         <button type="submit">Submit</button>
-
     </form>
 
-    <div class="form-group">
-        <label for="formGroupExampleInput">Retirement Income</label>
-        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-        <div class="input-group-addon">$</div>
-            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0">
+    <br>
+    <br>
+
+    <div id="persinfo">
+        <div class="form-group">
+            <label for="formGroupExampleInput">Retirement Income</label>
+            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+            <div class="input-group-addon">$</div>
+                <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0">
+            </div>
         </div>
+
+        <p>
+            <label for="amount">${userData.firstName} </label>
+            <input type="text" id="amount" readonly style="border:0; font-weight:bold;">
+        </p>
+        
+        <div id="retire"></div>
     </div>
-
-    <!--<label for="formGroupExampleInput">Retirement Income: </label> <br>
-        <b>50</b> 
-            <div id="retire" class="span2" value="" data-slider-min="50" data-slider-max="100" data-slider-step="1" data-slider-value="[65,91]"></div> 
-        <b>100</b>-->
-
-    <p>
-        <label for="amount">${userData.firstName}</label>
-        <button click.delegate="printstuff()">Object</button>
-        <input type="text" id="amount" readonly style="border:0; color: blue; font-weight:bold;">
-    </p>
-    
-    <div id="retire"></div>
 
 </template>
