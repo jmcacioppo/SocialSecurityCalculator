@@ -145,6 +145,21 @@
             "resources": [
               "css/bootstrap.css"
             ]
+          },
+          {
+            "name":"jquery",
+            "path":"../node_modules/jquery/dist",
+            "main":"jquery.min",
+            "export": "$"
+          },
+          {
+            "name": "jquery-ui-dist",
+            "path": "../node_modules/jquery-ui-dist",
+            "main": "jquery-ui",
+            "deps": ["jquery"],
+            "resources": [
+              "jquery-ui.css"
+            ]
           }
         ]
       }
