@@ -108,39 +108,86 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', '../services/use
         return personalinfo;
     }()) || _class);
 });
-define('aboutyou/retirementinfo',['exports', 'jquery', 'jquery-ui-dist'], function (exports, _jquery) {
-     'use strict';
+define('aboutyou/retirementinfo',['exports', 'jquery', 'aurelia-framework', '../services/userdata', 'aurelia-router', 'jquery-ui-dist'], function (exports, _jquery, _aureliaFramework, _userdata, _aureliaRouter) {
+    'use strict';
 
-     Object.defineProperty(exports, "__esModule", {
-          value: true
-     });
-     exports.retirementinfo = undefined;
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.retirementinfo = undefined;
 
-     var _jquery2 = _interopRequireDefault(_jquery);
+    var _jquery2 = _interopRequireDefault(_jquery);
 
-     function _interopRequireDefault(obj) {
-          return obj && obj.__esModule ? obj : {
-               default: obj
-          };
-     }
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
 
-     function _classCallCheck(instance, Constructor) {
-          if (!(instance instanceof Constructor)) {
-               throw new TypeError("Cannot call a class as a function");
-          }
-     }
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
 
-     var retirementinfo = exports.retirementinfo = function () {
-          function retirementinfo() {
-               _classCallCheck(this, retirementinfo);
-          }
+    var _dec, _class;
 
-          retirementinfo.prototype.attached = function attached() {
-               (0, _jquery2.default)('#retire').slider({});
-          };
+    var retirementinfo = exports.retirementinfo = (_dec = (0, _aureliaFramework.inject)(_userdata.UserData, _aureliaRouter.Router), _dec(_class = function () {
+        function retirementinfo() {
+            _classCallCheck(this, retirementinfo);
+        }
 
-          return retirementinfo;
-     }();
+        retirementinfo.prototype.constuctor = function constuctor(userData, router) {
+            this.userData = userData;
+            this.router = router;
+        };
+
+        retirementinfo.prototype.printstuff = function printstuff() {
+            console.log(userData);
+        };
+
+        retirementinfo.prototype.attached = function attached() {
+            (0, _jquery2.default)('#retire').slider({
+                range: true,
+                min: 50,
+                max: 100,
+                values: [65, 91],
+                slide: function slide(event, ui) {
+                    (0, _jquery2.default)("#amount").val("Retire at " + ui.values[0] + " - Live to " + ui.values[1]);
+                }
+            });
+
+            (0, _jquery2.default)("#amount").val("Retire at " + (0, _jquery2.default)("#retire").slider("values", 0) + " - Live to  " + (0, _jquery2.default)("#retire").slider("values", 1));
+        };
+
+        return retirementinfo;
+    }()) || _class);
+});
+define('resources/index',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+  function configure(config) {}
+});
+define('results/results',["exports"], function (exports) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var results = exports.results = function results() {
+        _classCallCheck(this, results);
+    };
 });
 define('benefits/benefits',["exports"], function (exports) {
     "use strict";
@@ -193,21 +240,13 @@ define('benefits/other',["exports"], function (exports) {
         _classCallCheck(this, other);
     };
 });
-define('resources/index',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.configure = configure;
-  function configure(config) {}
-});
-define('results/results',["exports"], function (exports) {
+define('services/userdata',["exports", "aurelia-framework"], function (exports, _aureliaFramework) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
+    exports.UserData = undefined;
 
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
@@ -215,24 +254,9 @@ define('results/results',["exports"], function (exports) {
         }
     }
 
-    var results = exports.results = function results() {
-        _classCallCheck(this, results);
-    };
-});
-define('services/userdata',["exports"], function (exports) {
-    "use strict";
+    var _dec, _class;
 
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var UserData = exports.UserData = function UserData() {
+    var UserData = exports.UserData = (_dec = (0, _aureliaFramework.singleton)(), _dec(_class = function UserData() {
         _classCallCheck(this, UserData);
 
         this.firstName = "";
@@ -242,12 +266,12 @@ define('services/userdata',["exports"], function (exports) {
         this.salary = 0;
         this.maritalStatus = "";
         this.ageOfDependent = "";
-    };
+    }) || _class);
 });
+define('text!styles.css', ['module'], function(module) { module.exports = "#persinfo {\r\n    text-align: center;\r\n    width: 300px;\r\n}\r\n\r\n#retire {\r\n    width: 300px;\r\n}"; });
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\"><span class=\"sr-only\">Toggle navigation</span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span></button> <a class=\"navbar-brand\" href=\"#\">Social Security Calculator</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">About You<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li class=\"active\"><a href=\"#\">Personal Info</a></li><li><a href=\"#/retirementinfo\">Retirement Info</a></li></ul></li><li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Benefits<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li><a href=\"#/benefits\">Benefits</a></li><li><a href=\"#/costOfLiving\">Cost of Living</a></li><li><a href=\"#/other\">Other Benefits</a></li></ul></li><li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Results<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li><a href=\"#/results\">Results</a></li></ul></li></ul></div></div></nav><router-view></router-view></template>"; });
-define('text!styles.css', ['module'], function(module) { module.exports = "#persinfo {\r\n    text-align: center;\r\n    width: 300px;\r\n}"; });
 define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\".././styles.css\"></require><div><h1>${message}</h1><p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p></div><form id=\"persinfo\" submit.delegate=\"print()\"><div class=\"form-group\"><label for=\"formGroupExampleInput\">First Name</label><input type=\"text\" value.bind=\"userData.firstName\" class=\"form-control\" id=\"formGroupExampleInput\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"exampleSelect1\">Gender</label><select class=\"form-control\" id=\"exampleSelect1\" value.bind=\"userData.gender\"><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"formGroupExampleInput\">Date of Birth</label><input type=\"text\" value.bind=\"userData.dateOfBirth\" class=\"form-control\" id=\"formGroupExampleInput\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"exampleSelect1\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.dateOfBirth\" id=\"exampleSelect1\"><option>Retired</option><option>Employed</option><option>Business Owner</option><option>Homemaker</option><option>Not Currently Employed</option></select></div><div class=\"form-group\"><label for=\"formGroupExampleInput\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><div class=\"form-group\"><label for=\"exampleSelect1\">Marital Status</label><select class=\"form-control\" value.bind=\"userData.maritalStatus\" id=\"exampleSelect1\"><option>Single</option><option>Married</option><option>Divorced</option><option>Separated</option><option>Widowed</option><option>Domestic Partner</option></select></div><div class=\"form-group\"><label for=\"formGroupExampleInput\">Age of Dependent</label><input type=\"text\" value.bind=\"userData.ageOfDependent\" class=\"form-control\" id=\"formGroupExampleInput\" placeholder=\"10\" syub><h1>${userData.firstName}</h1></div><button type=\"submit\">Submit</button></form></template>"; });
-define('text!aboutyou/retirementinfo.html', ['module'], function(module) { module.exports = "<template><require from=\"jquery-ui-dist/jquery-ui.css\"></require><h1>Retirement Info</h1><div class=\"form-group\"><label for=\"formGroupExampleInput\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><label for=\"formGroupExampleInput\">Retirement Income:</label><br><b>50</b> <input id=\"retire\" class=\"span2\" value=\"\" data-slider-min=\"50\" data-slider-max=\"100\" data-slider-step=\"1\" data-slider-value=\"[50,100]\"> <b>100</b><div id=\"retire\"></div><button id=\"retire1\">RETIRE</button></template>"; });
+define('text!aboutyou/retirementinfo.html', ['module'], function(module) { module.exports = "<template><require from=\"jquery-ui-dist/jquery-ui.css\"></require><h1>Retirement Info</h1><div class=\"form-group\"><label for=\"formGroupExampleInput\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><p><label for=\"amount\">${userData.firstName}</label><button click.delegate=\"printstuff()\">Object</button> <input type=\"text\" id=\"amount\" readonly=\"readonly\" style=\"border:0;color:#00f;font-weight:700\"></p><div id=\"retire\"></div></template>"; });
 define('text!benefits/benefits.html', ['module'], function(module) { module.exports = "<template><h1>Benefits</h1></template>"; });
 define('text!benefits/costOfLiving.html', ['module'], function(module) { module.exports = "<template><h1>Cost of Living</h1></template>"; });
 define('text!benefits/other.html', ['module'], function(module) { module.exports = "<template><h1>Other Benefits</h1></template>"; });
