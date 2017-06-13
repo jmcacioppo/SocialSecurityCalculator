@@ -3,7 +3,8 @@ import 'jquery-ui-dist';
 
 export class retirementinfo {
    attached () {
-        $(`#retire`).slider({});
+        //var slider = new Slider('#retire', {});
+        $('#retire').slider({});
    }
 }
 

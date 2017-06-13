@@ -3,12 +3,18 @@
 
     <h1>Retirement Info</h1>
     <div class="form-group">
-        <label for="formGroupExampleInput">Age of Dependent</label>
-        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="10">
+        <label for="formGroupExampleInput">Retirement Income</label>
+        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+        <div class="input-group-addon">$</div>
+            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0">
+        </div>
     </div>
 
-    Retirement Age: <b>50</b> 
-    <input id="retire" type="text" class="span2" value="" data-slider-min="50" data-slider-max="100" data-slider-step="1" data-slider-value="[250,450]"/> 
+    <label for="formGroupExampleInput">Retirement Income: </label> <br>
+    <b>50</b> 
+        <input id="retire" class="span2" value="" data-slider-min="50" data-slider-max="100" data-slider-step="1" data-slider-value="[50,100]"/> 
     <b>100</b>
+        <div id = "retire"></div>
+        <button id = "retire1">RETIRE</button>
 
 </template>
