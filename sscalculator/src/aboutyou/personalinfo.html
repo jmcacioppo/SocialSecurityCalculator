@@ -60,4 +60,25 @@
 
     </form>
 
+    <div class="form-group">
+        <label for="formGroupExampleInput">Retirement Income</label>
+        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+        <div class="input-group-addon">$</div>
+            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0">
+        </div>
+    </div>
+
+    <!--<label for="formGroupExampleInput">Retirement Income: </label> <br>
+        <b>50</b> 
+            <div id="retire" class="span2" value="" data-slider-min="50" data-slider-max="100" data-slider-step="1" data-slider-value="[65,91]"></div> 
+        <b>100</b>-->
+
+    <p>
+        <label for="amount">${userData.firstName}</label>
+        <button click.delegate="printstuff()">Object</button>
+        <input type="text" id="amount" readonly style="border:0; color: blue; font-weight:bold;">
+    </p>
+    
+    <div id="retire"></div>
+
 </template>
