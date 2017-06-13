@@ -6,7 +6,7 @@
         <p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p>
     </div>
 
-    <form id="persinfo">
+    <form id="persinfo" submit.delegate="print()">
         <div class="form-group">
             <label for="formGroupExampleInput">First Name</label>
             <input type="text" class="form-control" id="formGroupExampleInput" placeholder="John">
@@ -52,8 +52,11 @@
         </div>
         <div class="form-group">
             <label for="formGroupExampleInput">Age of Dependent</label>
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="10">
+            <input type="text" value.bind="firstName" class="form-control" id="formGroupExampleInput" placeholder="10" syub>
+            <h1>${firstName}</h1>
         </div>
+
+        <button type="submit">Submit</button>
 
     </form>
 
