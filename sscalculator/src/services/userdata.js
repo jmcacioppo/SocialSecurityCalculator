@@ -1,3 +1,6 @@
+import {singleton} from 'aurelia-framework';
+
+@singleton()
 export class UserData {
     constructor() {
         // Personal Info
