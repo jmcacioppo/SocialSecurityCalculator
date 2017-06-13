@@ -11,8 +11,6 @@ export class App {
     config.map([
       { route: ['', 'personalinfo'], moduleId: 'aboutyou/personalinfo',
         name: 'personalinfo', title: 'Personal Info', nav: true},
-      { route: 'retirementinfo', moduleId: 'aboutyou/retirementinfo',
-        name: 'retirementinfo', title: 'Retirement Info', nav: true},
 
       { route: 'benefits', moduleId: 'benefits/benefits',
         name: 'benefits', title: 'Benefits', nav: true},
