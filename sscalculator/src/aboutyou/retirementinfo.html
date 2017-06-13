@@ -10,11 +10,16 @@
         </div>
     </div>
 
-    <label for="formGroupExampleInput">Retirement Income: </label> <br>
-    <b>50</b> 
-        <input id="retire" class="span2" value="" data-slider-min="50" data-slider-max="100" data-slider-step="1" data-slider-value="[50,100]"/> 
-    <b>100</b>
-        <div id = "retire"></div>
-        <button id = "retire1">RETIRE</button>
+    <!--<label for="formGroupExampleInput">Retirement Income: </label> <br>
+        <b>50</b> 
+            <div id="retire" class="span2" value="" data-slider-min="50" data-slider-max="100" data-slider-step="1" data-slider-value="[65,91]"></div> 
+        <b>100</b>-->
+
+    <p>
+        <label for="amount">${userData.firstName}</label>
+        <input type="text" id="amount" readonly style="border:0; color: blue; font-weight:bold;">
+    </p>
+    
+    <div id="retire"></div>
 
 </template>
