@@ -16,6 +16,21 @@ export class personalinfo {
     }
 
     attached () {
+        $("#empStatus").change(function() {
+            var val = $(this).val();
+            if(val == "Employed" || val == "Business Owner") $('#salary').show();
+            else $('#salary').hide();
+        });
+
+        $('#ageOfDependent').hide();
+        $("#numOfDependents").change(function() {
+            var val = $(this).val();
+            if(val > 0) $('#ageOfDependent').show();
+            else $('#ageOfDependent').hide();
+        });
+        
+        console.log(this.userData.client.employmentStatus);
+
         $('#retire').slider({
             range: true, 
             min: 50, 

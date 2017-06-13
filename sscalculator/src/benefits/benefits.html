@@ -1,3 +1,31 @@
 <template>
-    <h1>Benefits</h1>
+    <require from="jquery-ui-dist/jquery-ui.css"></require>
+
+    <form id="benefits">
+        <h1>Benefits</h1>
+        <div class="form-group">
+            <label for="exampleSelect1">Are you eligible for Social Security benefits?</label>
+            <select class="form-control" id="exampleSelect1" value.bind="userData.client.eligibleSS">
+                <option>Yes</option>
+                <option>No</option>
+            </select>
+        </div>
+
+        <label for="cola">Cost of Living Adjustment</label>
+        <div id="benefitslider">
+            <div id="custom-handle" class="ui-slider-handle"></div>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+            <label for="formGroupExampleInput">Annual amount of widower income (if applicable):</label>
+            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+            <div class="input-group-addon">$</div>
+                <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0" value.bind="userData.client.widowerIncome">
+            </div>
+        </div>
+
+    </form>
+
 </template>

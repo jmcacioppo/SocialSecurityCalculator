@@ -4,13 +4,22 @@
     margin: 0 auto;
 }
 
-#persinfo {
+#persinfo, #benefits, #results {
     text-align: center;
     width: 500px;
     margin: 0 auto;
 }
 
-#retire {
+#retire, #benefitslider {
     width: 300px;
     margin: 0 auto;
 }
+
+#custom-handle {
+    width: 3em;
+    height: 1.6em;
+    top: 50%;
+    margin-top: -.8em;
+    text-align: center;
+    line-height: 1.6em;
+  }
