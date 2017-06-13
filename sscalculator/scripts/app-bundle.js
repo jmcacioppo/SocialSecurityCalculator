@@ -197,55 +197,6 @@ define('resources/index',["exports"], function (exports) {
   exports.configure = configure;
   function configure(config) {}
 });
-define('results/results',['exports', 'node_modules/chart.js/dist/Chart.js'], function (exports, _Chart) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.results = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var results = exports.results = function () {
-        function results() {
-            _classCallCheck(this, results);
-        }
-
-        results.prototype.whatever = function whatever() {
-            var context = document.getElementById("myChart");
-
-            var myChart = new _Chart.Chart(context, {
-                type: 'bar',
-                data: {
-                    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                    datasets: [{
-                        label: '# of Votes',
-                        data: [12, 19, 3, 5, 2, 3],
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
-                        borderColor: ['rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    }
-                }
-            });
-        };
-
-        return results;
-    }();
-});
 define('services/user',["exports"], function (exports) {
         "use strict";
 
@@ -299,6 +250,64 @@ define('services/userdata',['exports', 'aurelia-framework', '../services/user'],
         this.client = new _user.User();
         this.spouse = new _user.User();
     }) || _class);
+});
+define('results/results',['exports', 'node_modules/chart.js/dist/Chart.js'], function (exports, _Chart) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.results = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var results = exports.results = function () {
+        function results() {
+            _classCallCheck(this, results);
+        }
+
+        results.prototype.attached = function attached() {
+            var context = document.getElementById("myChart").getContext('2d');
+            console.log(context);
+
+            var myChart = new _Chart.Chart(context, {
+                type: 'bar',
+                data: {
+                    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+                        borderColor: ['rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+            console.log(myChart);
+            $("#myChart").hide();
+            console.log($("#myChart"));
+        };
+
+        results.prototype.what = function what() {
+            $("#myChart").show();
+            console.log($('#myChart'));
+        };
+
+        return results;
+    }();
 });
 /*!
  * Chart.js
@@ -13061,5 +13070,5 @@ define('text!app.html', ['module'], function(module) { module.exports = "<templa
 define('text!styles.css', ['module'], function(module) { module.exports = "#persinfointro {\r\n    text-align: center;\r\n    width: 1000px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#persinfo, #benefits, #results {\r\n    text-align: center;\r\n    width: 500px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#retire, #benefitslider {\r\n    width: 300px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#custom-handle {\r\n    width: 3em;\r\n    height: 1.6em;\r\n    top: 50%;\r\n    margin-top: -.8em;\r\n    text-align: center;\r\n    line-height: 1.6em;\r\n  }"; });
 define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\".././styles.css\"></require><require from=\"jquery-ui-dist/jquery-ui.css\"></require><div id=\"persinfointro\"><h1>${message}</h1><p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p></div><form id=\"persinfo\" submit.delegate=\"print()\"><div class=\"form-group\"><label for=\"formGroupExampleInput\">First Name</label><input type=\"text\" value.bind=\"userData.client.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"exampleSelect1\">Gender</label><select class=\"form-control\" id=\"gender\" value.bind=\"userData.client.gender\"><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"formGroupExampleInput\">Date of Birth</label><input type=\"text\" value.bind=\"userData.client.dateOfBirth\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"exampleSelect1\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.client.employmentStatus\" id=\"empStatus\"><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div class=\"form-group\" id=\"salary\"><label for=\"formGroupExampleInput\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><div class=\"form-group\"><label for=\"exampleSelect1\">Marital Status</label><select class=\"form-control\" value.bind=\"userData.client.maritalStatus\" id=\"maritalStatus\"><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select></div><div class=\"form-group\"><label for=\"formGroupExampleInput\">Number of Dependents:</label><select class=\"form-control\" value.bind=\"userData.client.numOfDependents\" id=\"numOfDependents\"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option></select></div><div class=\"form-group\" id=\"ageOfDependent\"><label for=\"formGroupExampleInput\">Age of Dependent:</label><input type=\"text\" value.bind=\"userData.client.ageOfDependent\" class=\"form-control\" id=\"ageOfDependent\" placeholder=\"10\"></div><br><h1>Retirement Information</h1><div class=\"form-group\"><label for=\"formGroupExampleInput\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><p><label for=\"amount\">${userData.client.firstName}</label><input type=\"text\" id=\"amount\" readonly=\"readonly\" style=\"border:0;font-weight:700\"></p><div id=\"retire\"></div><br><br><button type=\"submit\">Submit</button></form></template>"; });
 define('text!benefits/benefits.html', ['module'], function(module) { module.exports = "<template><require from=\"jquery-ui-dist/jquery-ui.css\"></require><form id=\"benefits\"><h1>Benefits</h1><div class=\"form-group\"><label for=\"exampleSelect1\">Are you eligible for Social Security benefits?</label><select class=\"form-control\" id=\"exampleSelect1\" value.bind=\"userData.client.eligibleSS\"><option>Yes</option><option>No</option></select></div><label for=\"cola\">Cost of Living Adjustment</label><div id=\"benefitslider\"><div id=\"custom-handle\" class=\"ui-slider-handle\"></div></div><br><div class=\"form-group\"><label for=\"formGroupExampleInput\">Annual amount of widower income (if applicable):</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\" value.bind=\"userData.client.widowerIncome\"></div></div></form></template>"; });
-define('text!results/results.html', ['module'], function(module) { module.exports = "<template><div id=\"results\"><h1>Results</h1></div><canvas id=\"myChart\" width=\"400\" height=\"400\"></canvas><script></script><button click.delegate=\"whatever()\">button</button></template>"; });
+define('text!results/results.html', ['module'], function(module) { module.exports = "<template><div id=\"results\"><h1>Results</h1></div><canvas id=\"myChart\" width=\"400\" height=\"400\"></canvas><button click.delegate=\"what()\">Show Chart</button></template>"; });
 //# sourceMappingURL=app-bundle.js.map
