@@ -74,7 +74,7 @@ define('main',['exports', './environment'], function (exports, _environment) {
     });
   }
 });
-define('aboutyou/personalinfo',['exports', 'jquery', 'aurelia-framework', '../services/userdata', 'jquery-ui-dist'], function (exports, _jquery, _aureliaFramework, _userdata) {
+define('aboutyou/personalinfo',['exports', 'jquery', 'bootstrap-toggle', 'aurelia-framework', '../services/userdata', 'jquery-ui-dist'], function (exports, _jquery, _bootstrapToggle, _aureliaFramework, _userdata) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -83,6 +83,25 @@ define('aboutyou/personalinfo',['exports', 'jquery', 'aurelia-framework', '../se
     exports.personalinfo = undefined;
 
     var _jquery2 = _interopRequireDefault(_jquery);
+
+    var bootstrapToggle = _interopRequireWildcard(_bootstrapToggle);
+
+    function _interopRequireWildcard(obj) {
+        if (obj && obj.__esModule) {
+            return obj;
+        } else {
+            var newObj = {};
+
+            if (obj != null) {
+                for (var key in obj) {
+                    if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+                }
+            }
+
+            newObj.default = obj;
+            return newObj;
+        }
+    }
 
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
@@ -107,11 +126,46 @@ define('aboutyou/personalinfo',['exports', 'jquery', 'aurelia-framework', '../se
         }
 
         personalinfo.prototype.calculate = function calculate() {
-            console.log(this.userData);
-            var hello = parseInt(this.userData.client.salary) + parseInt(this.userData.client.numOfDependents);
-            console.log(hello);
-            _jquery2.default.getJSON("src/services/wagePerc.json", function (result) {
-                console.log(result[0]);
+            var sal = this.userData.client.salary;
+            var pia;
+            var wage = [];
+            var projectedSal = [];
+            var inflationAdjusted = [];
+            var topThirtyFive = [];
+            var ssBase;
+
+            _jquery2.default.getJSON("src/services/constants.json", function (result) {
+                if (sal > 0) {
+                    projectedSal[result.wagePerc.length - 1] = sal;
+                    for (var i = result.wagePerc.length - 2; i >= 0; i--) {
+                        projectedSal[i] = projectedSal[i + 1] - projectedSal[i + 1] * result.wagePerc[i + 1];
+                        if (projectedSal[i] > result.allowedSalary[i]) {
+                            inflationAdjusted[i] = result.allowedSalary[i] * result.inflationIndex[i];
+                        } else {
+                            inflationAdjusted[i] = projectedSal[i] * result.inflationIndex[i];
+                        }
+                    }
+
+                    inflationAdjusted = inflationAdjusted.sort(function (a, b) {
+                        return a - b;
+                    });
+                    topThirtyFive = inflationAdjusted.slice(inflationAdjusted.length - 35, inflationAdjusted.length);
+                    pia = topThirtyFive.reduce(function (a, b) {
+                        return a + b;
+                    }, 0) / 420;
+                    var sum = parseInt(result.tier1) + parseInt(result.tier2);
+                    var tier1 = result.tier1 * result.tier1perc;
+                    var tier2;
+                    if (pia < result.tier1 + result.tier2) {
+                        tier2 = result.tier2 * result.tier2perc;
+                    } else {
+                        tier2 = (pia - sum) * result.tier2perc;
+                    }
+                    var tier3 = (pia - sum) * result.tier3perc;
+
+                    var sumOfTiers = tier1 + tier2 + tier3;
+                    ssBase = sumOfTiers * 12;
+                }
             });
         };
 
@@ -207,6 +261,62 @@ define('resources/index',["exports"], function (exports) {
   exports.configure = configure;
   function configure(config) {}
 });
+define('services/user',["exports"], function (exports) {
+        "use strict";
+
+        Object.defineProperty(exports, "__esModule", {
+                value: true
+        });
+
+        function _classCallCheck(instance, Constructor) {
+                if (!(instance instanceof Constructor)) {
+                        throw new TypeError("Cannot call a class as a function");
+                }
+        }
+
+        var User = exports.User = function User() {
+                _classCallCheck(this, User);
+
+                this.baseSS = 0;
+
+                this.name = "";
+                this.gender = "";
+                this.dateOfBirth = "";
+                this.employmentStatus = "";
+                this.salary = 0;
+                this.maritalStatus = "";
+                this.numOfDependents = 0;
+                this.ageOfDependent = "";
+                this.retirementIncome = 0;
+
+                this.eligibleSS = false;
+                this.cola = 2.5;
+                this.widowerIncome = 0;
+        };
+});
+define('services/userdata',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.UserData = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var UserData = exports.UserData = (_dec = (0, _aureliaFramework.singleton)(), _dec(_class = function UserData() {
+        _classCallCheck(this, UserData);
+
+        this.client = new _user.User();
+        this.spouse = new _user.User();
+    }) || _class);
+});
 define('results/results',['exports', 'node_modules/chart.js/dist/Chart.js'], function (exports, _Chart) {
     'use strict';
 
@@ -264,60 +374,6 @@ define('results/results',['exports', 'node_modules/chart.js/dist/Chart.js'], fun
 
         return results;
     }();
-});
-define('services/user',["exports"], function (exports) {
-        "use strict";
-
-        Object.defineProperty(exports, "__esModule", {
-                value: true
-        });
-
-        function _classCallCheck(instance, Constructor) {
-                if (!(instance instanceof Constructor)) {
-                        throw new TypeError("Cannot call a class as a function");
-                }
-        }
-
-        var User = exports.User = function User() {
-                _classCallCheck(this, User);
-
-                this.name = "";
-                this.gender = "";
-                this.dateOfBirth = "";
-                this.employmentStatus = "";
-                this.salary = 0;
-                this.maritalStatus = "";
-                this.numOfDependents = 0;
-                this.ageOfDependent = "";
-                this.retirementIncome;
-
-                this.eligibleSS = false;
-                this.cola = 2.5;
-                this.widowerIncome = 0;
-        };
-});
-define('services/userdata',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.UserData = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var UserData = exports.UserData = (_dec = (0, _aureliaFramework.singleton)(), _dec(_class = function UserData() {
-        _classCallCheck(this, UserData);
-
-        this.client = new _user.User();
-        this.spouse = new _user.User();
-    }) || _class);
 });
 /*!
  * Chart.js
@@ -13076,9 +13132,9 @@ module.exports = function(Chart) {
 
 },{"1":1}]},{},[7])(7)
 });
-define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\"><span class=\"sr-only\">Toggle navigation</span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span></button> <a class=\"navbar-brand\" href=\"#\">Social Security Calculator</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : ''}\"><a href.bind=\"row.href\">${row.title}</a></li></ul></div></div></nav><router-view></router-view></template>"; });
 define('text!styles.css', ['module'], function(module) { module.exports = "#persinfointro {\r\n    text-align: center;\r\n    width: 1000px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#persinfo, #benefits, #results {\r\n    text-align: center;\r\n    width: 400px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#retire, #benefitslider {\r\n    width: 300px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#custom-handle {\r\n    width: 3em;\r\n    height: 1.6em;\r\n    top: 50%;\r\n    margin-top: -.8em;\r\n    text-align: center;\r\n    line-height: 1.6em;\r\n  }\r\n\r\n "; });
-define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\".././styles.css\"></require><require from=\"jquery-ui-dist/jquery-ui.css\"></require><div id=\"persinfointro\"><h1>${message}</h1><p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p></div><form id=\"persinfo\" submit.delegate=\"calculate()\"><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.client.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.client.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><input type=\"text\" value.bind=\"userData.client.dateOfBirth\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.client.employmentStatus\" id=\"empStatus\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div class=\"form-group\" id=\"salary\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><div class=\"form-group\"><label for=\"maritalStatus\">Marital Status</label><select class=\"form-control\" value.bind=\"userData.client.maritalStatus\" id=\"maritalStatus\"><option data-hidden=\"true\">Please Select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select></div><label for=\"divorceCheck\">Have you been divorced for more than 10 years?</label><br><div class=\"form-group\"><label for=\"numOfDependents\">Number of Dependents:</label><select class=\"form-control\" value.bind=\"userData.client.numOfDependents\" id=\"numOfDependents\"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div><div class=\"form-group\" id=\"ageOfDependent\"><label for=\"ageOfDependent\">Age of Dependent:</label><input type=\"text\" value.bind=\"userData.client.ageOfDependent\" class=\"form-control\" id=\"ageOfDependent\" placeholder=\"10\"></div><br><hr><h1>Retirement Information</h1><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><input type=\"text\" id=\"amount\" readonly=\"readonly\" style=\"border:0;font-weight:700\"><br><div id=\"retire\"></div><br><br><button type=\"submit\" id=\"next\">Next</button></form></template>"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\"><span class=\"sr-only\">Toggle navigation</span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span></button> <a class=\"navbar-brand\" href=\"#\">Social Security Calculator</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : ''}\"><a href.bind=\"row.href\">${row.title}</a></li></ul></div></div></nav><router-view></router-view></template>"; });
+define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\".././styles.css\"></require><require from=\"jquery-ui-dist/jquery-ui.css\"></require><require from=\"bootstrap-toggle/css/bootstrap-toggle.css\"></require><div id=\"persinfointro\"><h1>${message}</h1><p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p></div><form id=\"persinfo\" submit.delegate=\"calculate()\"><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.client.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.client.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><input type=\"text\" value.bind=\"userData.client.dateOfBirth\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.client.employmentStatus\" id=\"empStatus\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div class=\"form-group\" id=\"salary\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><div class=\"form-group\"><label for=\"maritalStatus\">Marital Status</label><select class=\"form-control\" value.bind=\"userData.client.maritalStatus\" id=\"maritalStatus\"><option data-hidden=\"true\">Please Select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select></div><label for=\"divorceCheck\">Have you been divorced for more than 10 years?</label><br><input type=\"checkbox\" checked=\"checked\" data-toggle=\"toggle\" id=\"check\"><div class=\"form-group\"><label for=\"numOfDependents\">Number of Dependents:</label><select class=\"form-control\" value.bind=\"userData.client.numOfDependents\" id=\"numOfDependents\"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div><div class=\"form-group\" id=\"ageOfDependent\"><label for=\"ageOfDependent\">Age of Dependent:</label><input type=\"text\" value.bind=\"userData.client.ageOfDependent\" class=\"form-control\" id=\"ageOfDependent\" placeholder=\"10\"></div><br><hr><h1>Retirement Information</h1><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><input type=\"text\" id=\"amount\" readonly=\"readonly\" style=\"border:0;font-weight:700\"><br><div id=\"retire\"></div><br><br><button type=\"submit\" id=\"next\">Next</button></form></template>"; });
 define('text!benefits/benefits.html', ['module'], function(module) { module.exports = "<template><require from=\"jquery-ui-dist/jquery-ui.css\"></require><form id=\"benefits\"><h1>Benefits</h1><div class=\"form-group\"><label for=\"exampleSelect1\">Are you eligible for Social Security benefits?</label><select class=\"form-control\" id=\"exampleSelect1\" value.bind=\"userData.client.eligibleSS\"><option>Yes</option><option>No</option></select></div><label for=\"cola\">Cost of Living Adjustment</label><div id=\"benefitslider\"><div id=\"custom-handle\" class=\"ui-slider-handle\"></div></div><br><div class=\"form-group\"><label for=\"formGroupExampleInput\">Annual amount of widower income (if applicable):</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\" value.bind=\"userData.client.widowerIncome\"></div></div></form></template>"; });
 define('text!results/results.html', ['module'], function(module) { module.exports = "<template><div id=\"results\"><h1>Results</h1></div><canvas id=\"myChart\" width=\"400\" height=\"400\"></canvas><button click.delegate=\"what()\">Show Chart</button></template>"; });
 //# sourceMappingURL=app-bundle.js.map

@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import 'jquery-ui-dist';
-//import 'bootstrap-toggle';
+import * as bootstrapToggle from 'bootstrap-toggle';
 
 import {inject} from 'aurelia-framework';
 import {UserData} from '../services/userdata'
@@ -13,13 +13,51 @@ export class personalinfo {
     }
 
     calculate() {
-        console.log(this.userData);
-        var hello = parseInt(this.userData.client.salary) + parseInt(this.userData.client.numOfDependents);
-        console.log(hello);
-        $.getJSON("src/services/wagePerc.json", function(result){
-            console.log(result[0]);
-        });
+        var sal = this.userData.client.salary;
+        var pia;
+        var wage = [];
+        var projectedSal = [];
+        var inflationAdjusted = [];
+        var topThirtyFive = [];
+        var ssBase;
 
+        $.getJSON("src/services/constants.json", function(result){ //first year = 1956
+            if(sal > 0) { //Check if there is an inputted salary
+                projectedSal[result.wagePerc.length-1] = sal; //Current salary
+                for(var i = result.wagePerc.length - 2; i >= 0; i--) { //Loop through each wage percentage backwards so we go from current salary
+                    projectedSal[i] = projectedSal[i+1] - (projectedSal[i+1] * result.wagePerc[i+1]); //Calculate projected salary
+                    if(projectedSal[i] > result.allowedSalary[i]) { //Check allowed salary and calculate adjusted inflation accordingly
+                        inflationAdjusted[i] = result.allowedSalary[i] * result.inflationIndex[i];
+                    }
+                    else {
+                        inflationAdjusted[i] = projectedSal[i] * result.inflationIndex[i];
+                    }
+                }
+
+                inflationAdjusted = inflationAdjusted.sort((a, b) => a - b); //Sort adjusted inflation to get top 35
+                topThirtyFive = inflationAdjusted.slice(inflationAdjusted.length - 35, inflationAdjusted.length); 
+                pia = topThirtyFive.reduce((a, b) => a + b, 0) / 420; //Primary Insurance Amount
+
+                //Benefit Formula
+                var sum = parseInt(result.tier1) + parseInt(result.tier2); //Get sum of tier1 and tier2 constants
+                var tier1 = result.tier1 * result.tier1perc; //Tier1 for benefit formula
+                var tier2;
+                if(pia < (result.tier1 + result.tier2)) { //Tier2 for benefit formula
+                    tier2 = result.tier2 * result.tier2perc
+                } 
+                else {
+                    tier2 = (pia - sum) * result.tier2perc;
+                } 
+                var tier3 = (pia - sum) * result.tier3perc; //Tier3 for benefit formula
+
+                var sumOfTiers = tier1 + tier2 + tier3; //Add the tiers together
+                ssBase = sumOfTiers * 12; //This is the monthly base SS value
+                // this.userData.client.ssBase = ssBase;
+                // console.log(this.userData.client.ssBase);
+               
+            }
+        });
+        
     }
 
     attached() {        
