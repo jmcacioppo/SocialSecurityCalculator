@@ -24,4 +24,8 @@
     line-height: 1.6em;
   }
 
- 
+ .toggle input[type="checkbox"] {
+     display: none;
+     margin: 4px 0 0;
+     line-height: normal;
+ }

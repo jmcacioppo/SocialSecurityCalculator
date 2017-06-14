@@ -119,7 +119,6 @@
           "aurelia-task-queue",
           "aurelia-templating",
           "aurelia-templating-binding",
-          "bootstrap-toggle",
           "text",
           {
             "name": "aurelia-templating-resources",
@@ -149,12 +148,6 @@
             ]
           },
           {
-            "name":"jquery",
-            "path":"../node_modules/jquery/dist",
-            "main":"jquery.min",
-            "export": "$"
-          },
-          {
             "name": "jquery-ui-dist",
             "path": "../node_modules/jquery-ui-dist",
             "main": "jquery-ui",
@@ -162,7 +155,8 @@
             "resources": [
               "jquery-ui.css"
             ]
-          }
+          },
+          "bootstrap-toggle"
         ]
       }
     ]
