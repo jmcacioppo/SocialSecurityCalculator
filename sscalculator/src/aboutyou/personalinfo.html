@@ -1,34 +1,38 @@
 <template>
     <require from=".././styles.css"></require>
     <require from="jquery-ui-dist/jquery-ui.css"></require>
+    <require from="bootstrap-toggle/css/bootstrap-toggle.css"></require>
 
     <div id="persinfointro">
         <h1>${message}</h1>
-        <p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p>
+        <p>Please enter the specified personal information, so we can make 
+            the best estimates of your lifetime Social Security benefits.</p>
     </div>
 
-    <form id="persinfo" submit.delegate="print()">
+    <form id="persinfo" submit.delegate="calculate()">
         <div class="form-group">
-            <label for="formGroupExampleInput">First Name</label>
+            <label for="firstName">First Name</label>
             <input type="text" value.bind="userData.client.name" class="form-control" id="name" placeholder="John">
         </div>
 
         <div class="form-group">
-            <label for="exampleSelect1">Gender</label>
-            <select class="form-control" id="gender" value.bind="userData.client.gender">
+            <label for="gender">Gender</label>
+            <select class="form-control" value.bind="userData.client.gender" id="gender">
+                <option data-hidden="true">Please Select</option>
                 <option>Male</option>
                 <option>Female</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="formGroupExampleInput">Date of Birth</label>
+            <label for="dob">Date of Birth</label>
             <input type="text" value.bind="userData.client.dateOfBirth" class="form-control" id="dob" placeholder="01/01/1970">
         </div>
 
         <div class="form-group">
-            <label for="exampleSelect1">Employment Status</label>
+            <label for="empStatus">Employment Status</label>
             <select class="form-control" value.bind="userData.client.employmentStatus" id="empStatus">
+                <option data-hidden="true">Please Select</option>
                 <option>Employed</option>
                 <option>Business Owner</option>
                 <option>Retired</option>
@@ -37,7 +41,7 @@
         </div>
 
         <div class="form-group" id="salary">
-            <label for="formGroupExampleInput">Salary</label>
+            <label for="salary">Salary</label>
             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                 <div class="input-group-addon">$</div>
                 <input type="text" value.bind="userData.client.salary" class="form-control" id="inlineFormInputGroup" placeholder="0">
@@ -45,8 +49,9 @@
         </div>
 
         <div class="form-group">
-            <label for="exampleSelect1">Marital Status</label>
+            <label for="maritalStatus">Marital Status</label>
             <select class="form-control" value.bind="userData.client.maritalStatus" id="maritalStatus">
+                <option data-hidden="true">Please Select</option>                
                 <option>Single</option>
                 <option>Married</option>
                 <option>Divorced</option>
@@ -54,44 +59,49 @@
             </select>
         </div>
 
+        <label for="divorceCheck">Have you been divorced for more than 10 years?</label>
+        <br>
+        <input type="checkbox" checked data-toggle="toggle" id="check">
+        <!--<input type="checkbox" name="my-checkbox" checked>-->
+
         <div class="form-group">
-            <label for="formGroupExampleInput">Number of Dependents:</label>
+            <label for="numOfDependents">Number of Dependents:</label>
             <select class="form-control" value.bind="userData.client.numOfDependents" id="numOfDependents">
                 <option>0</option>
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
                 <option>4</option>
-                <option>5+</option>
+                <option>5</option>
             </select>
         </div>
         
         <div class="form-group" id="ageOfDependent">
-            <label for="formGroupExampleInput">Age of Dependent:</label>
+            <label for="ageOfDependent">Age of Dependent:</label>
             <input type="text" value.bind="userData.client.ageOfDependent" class="form-control" id="ageOfDependent" placeholder="10">
         </div>
 
         <br> 
-
+        <hr />
+        
         <h1>Retirement Information</h1>
         <div class="form-group">
-            <label for="formGroupExampleInput">Retirement Income</label>
+            <label for="retirementIncome">Retirement Income</label>
             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
             <div class="input-group-addon">$</div>
-                <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0">
+                <input type="text" class="form-control" id="retirementIncome" placeholder="0">
             </div>
         </div>
 
-        <p>
-            <label for="amount">${userData.client.firstName} </label>
-            <input type="text" id="amount" readonly style="border:0; font-weight:bold;">
-        </p>
-        
+        <input type="text" id="amount" readonly style="border:0; font-weight:bold;">
+
+        <br>
+
         <div id="retire"></div>
 
         <br> <br>
 
-        <button type="submit">Submit</button>
+        <button type="submit" id="next">Next</button>
 
     </form>
 

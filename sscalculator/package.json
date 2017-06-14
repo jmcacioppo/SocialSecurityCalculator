@@ -10,8 +10,11 @@
   "dependencies": {
     "aurelia-animator-css": "^1.0.1",
     "aurelia-bootstrapper": "^2.1.0",
+    "aurelia-switch": "0.0.3",
     "bluebird": "^3.4.1",
     "bootstrap": "^3.3.7",
+    "bootstrap-switch": "^3.3.4",
+    "bootstrap-toggle": "^2.2.2",
     "chart.js": "^2.6.0",
     "jquery": "^3.2.1",
     "jquery-ui-dist": "^1.12.1",
