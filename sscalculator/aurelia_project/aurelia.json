@@ -98,6 +98,7 @@
         ],
         "dependencies": [
           "aurelia-binding",
+          "aurelia-switch",
           "aurelia-bootstrapper",
           "aurelia-dependency-injection",
           "aurelia-event-aggregator",
@@ -159,6 +160,14 @@
             "deps": ["jquery"],
             "resources": [
               "jquery-ui.css"
+            ]
+          },
+          {
+            "name": "bootstrap-toggle",
+            "path": "../node_modules/bootstrap-toggle",
+            "main": "js/bootstrap-toggle.min",
+            "resources" : [
+              "css/bootstrap-toggle.css"
             ]
           }
         ]

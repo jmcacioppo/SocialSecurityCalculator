@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import 'jquery-ui-dist';
+import 'bootstrap-toggle';
 
 import {inject} from 'aurelia-framework';
 import {UserData} from '../services/userdata'
@@ -11,27 +12,33 @@ export class personalinfo {
         this.userData = userData;
     }
 
-    print() {
+    calculate() {
         console.log(this.userData);
+        var hello = parseInt(this.userData.client.salary) + parseInt(this.userData.client.numOfDependents);
+        console.log(hello);
     }
 
-    attached () {
-        $("#empStatus").change(function() {
+    attached() {        
+        $("#empStatus").change(function() { //Show salary option if client is employed
             var val = $(this).val();
             if(val == "Employed" || val == "Business Owner") $('#salary').show();
             else $('#salary').hide();
         });
 
-        $('#ageOfDependent').hide();
+        $("#maritalStatus").change(function() { //Show salary option if client is employed
+            var val = $(this).val();
+            if(val == "Divorced") $('#salary').show();
+            else $('#salary').hide();
+        });
+
+        $('#ageOfDependent').hide(); //Show age of dependent option if number of dependents > 0
         $("#numOfDependents").change(function() {
             var val = $(this).val();
             if(val > 0) $('#ageOfDependent').show();
             else $('#ageOfDependent').hide();
         });
         
-        console.log(this.userData.client.employmentStatus);
-
-        $('#retire').slider({
+        $('#retire').slider({ //Slider for retirement age and life expectancy
             range: true, 
             min: 50, 
             max: 100, 
@@ -42,6 +49,10 @@ export class personalinfo {
         });
 
         $( "#amount" ).val( "Retire at " + $( "#retire" ).slider( "values", 0 ) +
-            " - Live to  " + $( "#retire" ).slider( "values", 1 ) );
-   }
+            " - Live to  " + $( "#retire" ).slider( "values", 1 ) ); //Gets amount from retirement slider
+            
+        $('#next').click(function() { //Move to next page if correct fields are complete
+            
+        });
+}
 }
