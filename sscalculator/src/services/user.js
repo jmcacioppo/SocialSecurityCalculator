@@ -1,5 +1,7 @@
 export class User {
      constructor() {
+        this.baseSS = 0;
+        
         // Personal Info
         this.name = "";
         this.gender = "";
@@ -9,7 +11,7 @@ export class User {
         this.maritalStatus = "";
         this.numOfDependents = 0;
         this.ageOfDependent = "";
-        this.retirementIncome
+        this.retirementIncome = 0;
 
         //Benefits
         this.eligibleSS = false;
