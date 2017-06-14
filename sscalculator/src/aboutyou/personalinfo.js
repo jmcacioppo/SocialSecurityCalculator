@@ -12,7 +12,7 @@ export class personalinfo {
         this.userData = userData;
     }
 
-    calculate() {
+    calculate() { 
         var sal = this.userData.client.salary;
         var pia;
         var wage = [];
@@ -20,6 +20,12 @@ export class personalinfo {
         var inflationAdjusted = [];
         var topThirtyFive = [];
         var ssBase;
+
+        console.log(this.userData);
+        function put(ssBase) {
+            this.userData.client.ssBase = ssBase;
+            console.log(this.userData.client.ssBase);
+        }
 
         $.getJSON("src/services/constants.json", function(result){ //first year = 1956
             if(sal > 0) { //Check if there is an inputted salary
@@ -52,11 +58,14 @@ export class personalinfo {
 
                 var sumOfTiers = tier1 + tier2 + tier3; //Add the tiers together
                 ssBase = sumOfTiers * 12; //This is the monthly base SS value
+                put(ssBase);
                 // this.userData.client.ssBase = ssBase;
                 // console.log(this.userData.client.ssBase);
                
             }
         });
+        // this.userData.client.ssBase = ssBase;
+        // console.log(this.userData.client.ssBase);
         
     }
 
