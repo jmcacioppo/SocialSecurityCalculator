@@ -74,7 +74,7 @@ export class personalinfo {
     }
 
     attached() {        
-        $('#check').bootstrapToggle();
+        $('#toggle').bootstrapToggle();
         
         $("#empStatus").change(function() { //Show salary option if client is employed
             var val = $(this).val();

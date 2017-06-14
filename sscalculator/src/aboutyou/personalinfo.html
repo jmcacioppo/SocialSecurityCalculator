@@ -1,7 +1,6 @@
 <template>
     <require from=".././styles.css"></require>
     <require from="jquery-ui-dist/jquery-ui.css"></require>
-    <!--<require from="bootstrap-toggle/css/bootstrap-toggle.css"></require>-->
 
     <div id="persinfointro">
         <h1>${message}</h1>
@@ -61,8 +60,26 @@
 
         <label for="divorceCheck">Have you been divorced for more than 10 years?</label>
         <br>
-        <input type="checkbox" checked data-toggle="toggle" id="check">
-        <!--<input type="checkbox" name="my-checkbox" checked>-->
+        
+        <div class="toggle-group" data-toggle="toggle">
+            <label class="btn btn-primary">Yes</label> 
+            <label class="btn btn-default">No</label>    
+            <!--<span class="toggle-handle btn btn-default"></span>-->
+        </div> 
+
+        <!--<input id="toggle" type="checkbox" data-toggle="toggle">-->
+        <!--<div id="toggle"class="toggle btn btn-primary" data-toggle="toggle" style="width:58px; height: 34px;">
+            <input id="toggle" type="checkbox" data-toggle="toggle">
+            <div class="toggle-group">
+                <label class="btn btn-primary toggle-on">Yes</label> 
+                <label class="btn btn-default active toggle-off">No</label>    
+                <span class="toggle-handle btn btn-default"></span>
+            </div> 
+        </div>-->
+
+        <br>
+        <br>
+        <br>
 
         <div class="form-group">
             <label for="numOfDependents">Number of Dependents:</label>
