@@ -10,6 +10,7 @@ export class personalinfo {
     constructor(userData) {
         this.message = "Personal Information";
         this.userData = userData;
+        this.lol = "";
     }
 
     calculate() { 
@@ -21,11 +22,11 @@ export class personalinfo {
         var topThirtyFive = [];
         var ssBase;
 
-        console.log(this.userData);
-        function put(ssBase) {
-            this.userData.client.ssBase = ssBase;
-            console.log(this.userData.client.ssBase);
-        }
+        // console.log(this.userData);
+        // function put(ssBase) {
+        //     this.userData.client.ssBase = ssBase;
+        //     console.log(this.userData.client.ssBase);
+        // }
 
         $.getJSON("src/services/constants.json", function(result){ //first year = 1956
             if(sal > 0) { //Check if there is an inputted salary
@@ -58,18 +59,23 @@ export class personalinfo {
 
                 var sumOfTiers = tier1 + tier2 + tier3; //Add the tiers together
                 ssBase = sumOfTiers * 12; //This is the monthly base SS value
-                put(ssBase);
+                this.lol = ssBase;
+                console.log(this.lol);
+                //put(ssBase);
                 // this.userData.client.ssBase = ssBase;
                 // console.log(this.userData.client.ssBase);
                
             }
         });
+
         // this.userData.client.ssBase = ssBase;
         // console.log(this.userData.client.ssBase);
         
     }
 
     attached() {        
+        $('#check').bootstrapToggle();
+        
         $("#empStatus").change(function() { //Show salary option if client is employed
             var val = $(this).val();
             if(val == "Employed" || val == "Business Owner") $('#salary').show();

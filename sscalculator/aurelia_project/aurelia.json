@@ -119,6 +119,7 @@
           "aurelia-task-queue",
           "aurelia-templating",
           "aurelia-templating-binding",
+          "bootstrap-toggle",
           "text",
           {
             "name": "aurelia-templating-resources",
@@ -160,14 +161,6 @@
             "deps": ["jquery"],
             "resources": [
               "jquery-ui.css"
-            ]
-          },
-          {
-            "name": "bootstrap-toggle",
-            "path": "../node_modules/bootstrap-toggle",
-            "main": "js/bootstrap-toggle.min",
-            "resources" : [
-              "css/bootstrap-toggle.css"
             ]
           }
         ]
