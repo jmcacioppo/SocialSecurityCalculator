@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import 'jquery-ui-dist';
-import 'bootstrap-toggle';
+//import 'bootstrap-toggle';
 
 import {inject} from 'aurelia-framework';
 import {UserData} from '../services/userdata'
@@ -16,6 +16,10 @@ export class personalinfo {
         console.log(this.userData);
         var hello = parseInt(this.userData.client.salary) + parseInt(this.userData.client.numOfDependents);
         console.log(hello);
+        $.getJSON("src/services/wagePerc.json", function(result){
+            console.log(result[0]);
+        });
+
     }
 
     attached() {        
