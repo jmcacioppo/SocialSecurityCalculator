@@ -6,12 +6,15 @@ import * as ionRangeSlider from "ion-rangeslider";
 import 'src/services/constants.js';
 import {inject} from 'aurelia-framework';
 import {UserData} from '../services/userdata';
+import {Router} from 'aurelia-router';
+import {wagePerc, allowedSalary, inflationIndex, tier1perc, tier2perc, tier3perc, tier1, consttier1, consttier2} from 'src/services/constants.js';
 
-@inject(UserData)
+@inject(UserData, Router)
 export class personalinfo {
-    constructor(userData) {
+    constructor(userData, router) {
         this.message = "Personal Information";
         this.userData = userData;
+        this.router = router;
     }
 
     calculate() { //WORKS CORRECTLY
@@ -22,7 +25,7 @@ export class personalinfo {
         var inflationAdjusted = [];
         var topThirtyFive = [];
         var ssBase;
-
+        
         //first year = 1956
         if(sal > 0) { //Check if there is an inputted salary
             projectedSal[wagePerc.length-1] = sal; //Current salary
@@ -61,7 +64,9 @@ export class personalinfo {
 
             var sumOfTiers = tier1 + tier2 + tier3; //Add the tiers together
             ssBase = sumOfTiers * 12; //This is the monthly base SS value
-            this.userData.client.ssBase = ssBase;  
+            this.userData.client.ssBase = ssBase;
+
+            this.router.navigate('#/benefits');  
         }
         else {
             alert('Salary must be greater than 0');

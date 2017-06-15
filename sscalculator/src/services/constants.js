@@ -1,4 +1,4 @@
-var wagePerc = [
+export var wagePerc = [
         0.0699, //1956
         0.031,
         0.0088,
@@ -63,7 +63,7 @@ var wagePerc = [
         0.045955 //2017
     ];
 
-var inflationIndex = [
+export var inflationIndex = [
         13.6165708, //1956
         13.2076684,
         13.0923376,
@@ -128,7 +128,7 @@ var inflationIndex = [
         1 //2017
     ];
 
- var allowedSalary = [
+ export var allowedSalary = [
         4200, //1956
         4200,
         4200,
@@ -193,9 +193,9 @@ var inflationIndex = [
         127200 //2017
     ];
 
-    var consttier1 = 885;
-    var tier1perc = 0.90;
-    var consttier2 = 5336;
-    var tier2perc = 0.32;
-    var tier3perc = 0.15;
+    export var consttier1 = 885;
+    export var tier1perc = 0.90;
+    export var consttier2 = 5336;
+    export var tier2perc = 0.32;
+    export var tier3perc = 0.15;
 
