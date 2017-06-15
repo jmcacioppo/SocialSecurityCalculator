@@ -1,10 +1,11 @@
 import $ from 'jquery';
 import 'jquery-ui-dist';
 import * as bootstrapToggle from 'bootstrap-toggle';
+import * as ionRangeSlider from "ion-rangeslider";
 
-import 'src/services/constants.js'
+import 'src/services/constants.js';
 import {inject} from 'aurelia-framework';
-import {UserData} from '../services/userdata'
+import {UserData} from '../services/userdata';
 
 @inject(UserData)
 export class personalinfo {
@@ -68,6 +69,17 @@ export class personalinfo {
     }
 
     attached() {        
+        // $("#slider").ionRangeSlider({
+        //     //grid: true,
+        //     type: "double",
+        //     min: 0,
+        //     max: 100,
+        //     from: 65,
+        //     to: 91,
+        //     step: 1,
+        // });
+        $("#slider").ionRangeSlider();
+
         $('#toggle').bootstrapToggle();
         
         $("#empStatus").change(function() { //Show salary option if client is employed

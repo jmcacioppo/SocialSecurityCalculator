@@ -156,7 +156,16 @@
               "jquery-ui.css"
             ]
           },
-          "bootstrap-toggle"
+          "bootstrap-toggle",
+          {
+              "name": "ion-rangeslider",
+              "path": "../node_modules/ion-rangeslider",
+              "main": "js/ion.rangeSlider",
+              "resources": [
+                  "css/ion.rangeSlider.css",
+                  "css/ion.rangeSlider.skinModern.css"
+              ]
+          }
         ]
       }
     ]

@@ -16,6 +16,7 @@
     "bootstrap-switch": "^3.3.4",
     "bootstrap-toggle": "^2.2.2",
     "chart.js": "^2.6.0",
+    "ion-rangeslider": "^2.1.7",
     "jquery": "^3.2.1",
     "jquery-ui-dist": "^1.12.1",
     "requirejs": "^2.3.2",
