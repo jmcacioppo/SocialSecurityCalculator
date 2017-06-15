@@ -74,7 +74,55 @@ define('main',['exports', './environment'], function (exports, _environment) {
     });
   }
 });
-define('aboutyou/personalinfo',['exports', 'jquery', 'bootstrap-toggle', 'aurelia-framework', '../services/userdata', 'jquery-ui-dist', 'src/services/constants.js'], function (exports, _jquery, _bootstrapToggle, _aureliaFramework, _userdata) {
+define('benefits/benefits',['exports', 'jquery', 'jquery-ui-dist'], function (exports, _jquery) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.benefits = undefined;
+
+    var _jquery2 = _interopRequireDefault(_jquery);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var benefits = exports.benefits = function () {
+        function benefits() {
+            _classCallCheck(this, benefits);
+        }
+
+        benefits.prototype.attached = function attached() {
+            var handle = (0, _jquery2.default)("#custom-handle");
+            (0, _jquery2.default)('#benefitslider').slider({
+                min: 0,
+                max: 10,
+                value: 2.5,
+                step: 0.1,
+                create: function create() {
+                    handle.text((0, _jquery2.default)(this).slider("value"));
+                },
+                slide: function slide(event, ui) {
+                    handle.text(ui.value);
+                }
+            });
+
+            (0, _jquery2.default)("#cola").val((0, _jquery2.default)("#benefitslider").slider("values", 0) + "%");
+        };
+
+        return benefits;
+    }();
+});
+define('aboutyou/personalinfo',['exports', 'jquery', 'bootstrap-toggle', 'ion-rangeslider', 'aurelia-framework', '../services/userdata', 'jquery-ui-dist', 'src/services/constants.js'], function (exports, _jquery, _bootstrapToggle, _ionRangeslider, _aureliaFramework, _userdata) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -85,6 +133,8 @@ define('aboutyou/personalinfo',['exports', 'jquery', 'bootstrap-toggle', 'aureli
     var _jquery2 = _interopRequireDefault(_jquery);
 
     var bootstrapToggle = _interopRequireWildcard(_bootstrapToggle);
+
+    var ionRangeSlider = _interopRequireWildcard(_ionRangeslider);
 
     function _interopRequireWildcard(obj) {
         if (obj && obj.__esModule) {
@@ -175,6 +225,8 @@ define('aboutyou/personalinfo',['exports', 'jquery', 'bootstrap-toggle', 'aureli
         };
 
         personalinfo.prototype.attached = function attached() {
+            (0, _jquery2.default)("#slider").ionRangeSlider();
+
             (0, _jquery2.default)('#toggle').bootstrapToggle();
 
             (0, _jquery2.default)("#empStatus").change(function () {
@@ -210,63 +262,6 @@ define('aboutyou/personalinfo',['exports', 'jquery', 'bootstrap-toggle', 'aureli
 
         return personalinfo;
     }()) || _class);
-});
-define('benefits/benefits',['exports', 'jquery', 'jquery-ui-dist'], function (exports, _jquery) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.benefits = undefined;
-
-    var _jquery2 = _interopRequireDefault(_jquery);
-
-    function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : {
-            default: obj
-        };
-    }
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var benefits = exports.benefits = function () {
-        function benefits() {
-            _classCallCheck(this, benefits);
-        }
-
-        benefits.prototype.attached = function attached() {
-            var handle = (0, _jquery2.default)("#custom-handle");
-            (0, _jquery2.default)('#benefitslider').slider({
-                min: 0,
-                max: 10,
-                value: 2.5,
-                step: 0.1,
-                create: function create() {
-                    handle.text((0, _jquery2.default)(this).slider("value"));
-                },
-                slide: function slide(event, ui) {
-                    handle.text(ui.value);
-                }
-            });
-
-            (0, _jquery2.default)("#cola").val((0, _jquery2.default)("#benefitslider").slider("values", 0) + "%");
-        };
-
-        return benefits;
-    }();
-});
-define('resources/index',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.configure = configure;
-  function configure(config) {}
 });
 define('results/results',['exports', 'node_modules/chart.js/dist/Chart.js'], function (exports, _Chart) {
     'use strict';
@@ -326,7 +321,7 @@ define('results/results',['exports', 'node_modules/chart.js/dist/Chart.js'], fun
         return results;
     }();
 });
-define('services/constants',[], function () {
+define('src/services/constants.js',[], function () {
         "use strict";
 
         var wagePerc = [0.0699, 0.031, 0.0088, 0.0495, 0.0392, 0.0199, 0.0501, 0.0245, 0.0409, 0.018, 0.06, 0.0557, 0.0687, 0.0578, 0.0496, 0.0502, 0.098, 0.0626, 0.0594, 0.0747, 0.069, 0.0599, 0.0794, 0.0875, 0.0901, 0.1007, 0.0551, 0.0487, 0.0588, 0.0426, 0.0297, 0.0638, 0.0493, 0.0396, 0.0462, 0.0373, 0.0515, 0.0086, 0.0268, 0.0401, 0.0489, 0.0584, 0.0523, 0.0557, 0.0553, 0.0239, 0.01, 0.0244, 0.0465, 0.0366, 0.046, 0.0454, 0.023, -0.0151, 0.0236, 0.0313, 0.0128, 0.0355, 0.0348, 0.0348, 0.045955, 0.045955];
@@ -396,6 +391,15 @@ define('services/userdata',['exports', 'aurelia-framework', '../services/user'],
         this.client = new _user.User();
         this.spouse = new _user.User();
     }) || _class);
+});
+define('resources/index',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+  function configure(config) {}
 });
 /*!
  * Chart.js
@@ -13154,9 +13158,9 @@ module.exports = function(Chart) {
 
 },{"1":1}]},{},[7])(7)
 });
-define('text!styles.css', ['module'], function(module) { module.exports = "#persinfointro {\r\n    text-align: center;\r\n    width: 1000px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#persinfo, #benefits, #results {\r\n    text-align: center;\r\n    width: 400px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#retire, #benefitslider {\r\n    width: 300px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#custom-handle {\r\n    width: 3em;\r\n    height: 1.6em;\r\n    top: 50%;\r\n    margin-top: -.8em;\r\n    text-align: center;\r\n    line-height: 1.6em;\r\n  }\r\n\r\n .toggle input[type=\"checkbox\"] {\r\n     display: none;\r\n     margin: 4px 0 0;\r\n     line-height: normal;\r\n }"; });
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\"><span class=\"sr-only\">Toggle navigation</span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span></button> <a class=\"navbar-brand\" href=\"#\">Social Security Calculator</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : ''}\"><a href.bind=\"row.href\">${row.title}</a></li></ul></div></div></nav><router-view></router-view></template>"; });
-define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\".././styles.css\"></require><require from=\"jquery-ui-dist/jquery-ui.css\"></require><div id=\"persinfointro\"><h1>${message}</h1><p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p></div><form id=\"persinfo\" submit.delegate=\"calculate()\"><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.client.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.client.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><input type=\"text\" value.bind=\"userData.client.dateOfBirth\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.client.employmentStatus\" id=\"empStatus\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div class=\"form-group\" id=\"salary\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><div class=\"form-group\"><label for=\"maritalStatus\">Marital Status</label><select class=\"form-control\" value.bind=\"userData.client.maritalStatus\" id=\"maritalStatus\"><option data-hidden=\"true\">Please Select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select></div><label for=\"divorceCheck\">Have you been divorced for more than 10 years?</label><br><div class=\"toggle-group\" data-toggle=\"toggle\"><label class=\"btn btn-primary\">Yes</label><label class=\"btn btn-default\">No</label></div><br><br><br><div class=\"form-group\"><label for=\"numOfDependents\">Number of Dependents:</label><select class=\"form-control\" value.bind=\"userData.client.numOfDependents\" id=\"numOfDependents\"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div><div class=\"form-group\" id=\"ageOfDependent\"><label for=\"ageOfDependent\">Age of Dependent:</label><input type=\"text\" value.bind=\"userData.client.ageOfDependent\" class=\"form-control\" id=\"ageOfDependent\" placeholder=\"10\"></div><br><hr><h1>Retirement Information</h1><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><input type=\"text\" id=\"amount\" readonly=\"readonly\" style=\"border:0;font-weight:700\"><br><div id=\"retire\"></div><br><br><button type=\"submit\" id=\"next\">Next</button></form></template>"; });
+define('text!styles.css', ['module'], function(module) { module.exports = "#persinfointro {\r\n    text-align: center;\r\n    width: 1000px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#persinfo, #benefits, #results {\r\n    text-align: center;\r\n    width: 400px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#retire, #benefitslider {\r\n    width: 300px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#custom-handle {\r\n    width: 3em;\r\n    height: 1.6em;\r\n    top: 50%;\r\n    margin-top: -.8em;\r\n    text-align: center;\r\n    line-height: 1.6em;\r\n  }\r\n\r\n .toggle input[type=\"checkbox\"] {\r\n     display: none;\r\n     margin: 4px 0 0;\r\n     line-height: normal;\r\n }\r\n\r\n"; });
+define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\".././styles.css\"></require><require from=\"jquery-ui-dist/jquery-ui.css\"></require><div id=\"persinfointro\"><h1>${message}</h1><p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p></div><form id=\"persinfo\" submit.delegate=\"calculate()\"><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.client.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.client.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><input type=\"text\" value.bind=\"userData.client.dateOfBirth\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.client.employmentStatus\" id=\"empStatus\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div class=\"form-group\" id=\"salary\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><div class=\"form-group\"><label for=\"maritalStatus\">Marital Status</label><select class=\"form-control\" value.bind=\"userData.client.maritalStatus\" id=\"maritalStatus\"><option data-hidden=\"true\">Please Select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select></div><label for=\"divorceCheck\">Have you been divorced for more than 10 years?</label><br><div class=\"toggle-group\" data-toggle=\"toggle\"><label class=\"btn btn-primary\">Yes</label><label class=\"btn btn-default\">No</label></div><br><br><br><div class=\"form-group\"><label for=\"numOfDependents\">Number of Dependents:</label><select class=\"form-control\" value.bind=\"userData.client.numOfDependents\" id=\"numOfDependents\"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div><div class=\"form-group\" id=\"ageOfDependent\"><label for=\"ageOfDependent\">Age of Dependent:</label><input type=\"text\" value.bind=\"userData.client.ageOfDependent\" class=\"form-control\" id=\"ageOfDependent\" placeholder=\"10\"></div><br><hr><h1>Retirement Information</h1><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><input type=\"text\" id=\"slider\" value=\"\"><br><br><br><button type=\"submit\" id=\"next\">Next</button></form></template>"; });
 define('text!benefits/benefits.html', ['module'], function(module) { module.exports = "<template><require from=\"jquery-ui-dist/jquery-ui.css\"></require><form id=\"benefits\"><h1>Benefits</h1><div class=\"form-group\"><label for=\"exampleSelect1\">Are you eligible for Social Security benefits?</label><select class=\"form-control\" id=\"exampleSelect1\" value.bind=\"userData.client.eligibleSS\"><option>Yes</option><option>No</option></select></div><label for=\"cola\">Cost of Living Adjustment</label><div id=\"benefitslider\"><div id=\"custom-handle\" class=\"ui-slider-handle\"></div></div><br><div class=\"form-group\"><label for=\"formGroupExampleInput\">Annual amount of widower income (if applicable):</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\" value.bind=\"userData.client.widowerIncome\"></div></div></form></template>"; });
 define('text!results/results.html', ['module'], function(module) { module.exports = "<template><div id=\"results\"><h1>Results</h1></div><canvas id=\"myChart\" width=\"400\" height=\"400\"></canvas><button click.delegate=\"what()\">Show Chart</button></template>"; });
 //# sourceMappingURL=app-bundle.js.map
