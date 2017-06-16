@@ -13,14 +13,14 @@
             <input type="checkbox" id="eligible" checked.bind="userData.client.eligibleSS" data-toggle="toggle">
         </div>
 
-        <div id="isEligible">
+        <div show.bind="userData.client.eligibleSS">
             <div class="form-group">
                 <label for="wep">Does WEP apply to you?</label>
                 <br>
                 <input type="checkbox" id="wep" checked.bind="userData.client.wep" data-toggle="toggle">
             </div>
 
-            <div class="form-group" id="yrsOfSubEarnings">
+            <div show.bind="userData.client.wep" class="form-group">
                 <label for="dob">Years of Substantial Earnings</label>
                 <input type="text" value.bind="userData.client.yrsOfSubEarnings" class="form-control" id="yrsOfSubEarningsCheck">
             </div>
@@ -39,6 +39,7 @@
             </div>
         </div>
 
+        <button click.delegate="back()" id="back">Back</button>
         <button type="submit" id="next">Next</button>
     </form>
 

@@ -174,6 +174,7 @@ export class benefits {
 
         var maritalStatus = this.userData.client.maritalStatus;
         calculateSSBase(this.userData.client);
+        
         //GET PIA COCLIENT CALCULATIONS IF NECESSARY
         if(maritalStatus == "Married") {
             calculateSSBase(this.userData.spouse);
@@ -182,21 +183,11 @@ export class benefits {
         console.log(this.userData);
     }
 
+    back() {
+        this.router.navigate('#/exceptions');
+    }
+
     attached () {        
-        $('#isEligible').hide();
-        $("#eligible").change(function() { 
-            var val = $(this).is(':checked');
-            if(val == true) $('#isEligible').show();
-            else $('#isEligible').hide();
-        });
-        
-        $('#yrsOfSubEarnings').hide();
-        $("#wep").change(function() { 
-            var val = $(this).is(':checked');
-            if(val == true) $('#yrsOfSubEarnings').show();
-            else $('#yrsOfSubEarnings').hide();
-        });
-        
         $("#benefitslider").ionRangeSlider({
             grid: true,
             type: "single",
