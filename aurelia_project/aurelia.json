@@ -1,10 +1,12 @@
 {
-  "name": "aurelia-skeleton-cli",
+  "name": "sscalculator",
   "type": "project:application",
   "platform": {
     "id": "web",
     "displayName": "Web",
-    "output": "scripts"
+    "output": "scripts",
+    "index": "index.html",
+    "baseDir": "."
   },
   "transpiler": {
     "id": "babel",
@@ -15,19 +17,19 @@
         "transform-es2015-modules-amd"
       ]
     },
-    "source": "src\\**\\*.js"
+    "source": "src/**/*.js"
   },
   "markupProcessor": {
-    "id": "none",
-    "displayName": "None",
+    "id": "minimum",
+    "displayName": "Minimal Minification",
     "fileExtension": ".html",
-    "source": "src\\**\\*.html"
+    "source": "src/**/*.html"
   },
   "cssProcessor": {
     "id": "none",
     "displayName": "None",
     "fileExtension": ".css",
-    "source": "src\\**\\*.css"
+    "source": "src/**/*.css"
   },
   "editor": {
     "id": "vscode",
@@ -36,15 +38,15 @@
   "unitTestRunner": {
     "id": "karma",
     "displayName": "Karma",
-    "source": "test\\unit\\**\\*.js"
+    "source": "test/unit/**/*.js"
   },
   "paths": {
     "root": "src",
-    "resources": "src\\resources",
-    "elements": "src\\resources\\elements",
-    "attributes": "src\\resources\\attributes",
-    "valueConverters": "src\\resources\\value-converters",
-    "bindingBehaviors": "src\\resources\\binding-behaviors"
+    "resources": "resources",
+    "elements": "resources/elements",
+    "attributes": "resources/attributes",
+    "valueConverters": "resources/value-converters",
+    "bindingBehaviors": "resources/binding-behaviors"
   },
   "testFramework": {
     "id": "jasmine",
@@ -55,7 +57,9 @@
       {
         "id": "web",
         "displayName": "Web",
-        "output": "scripts"
+        "output": "scripts",
+        "index": "index.html",
+        "baseDir": "."
       }
     ],
     "loader": {
@@ -89,10 +93,12 @@
         "name": "vendor-bundle.js",
         "prepend": [
           "node_modules/bluebird/js/browser/bluebird.core.js",
+          "node_modules/aurelia-cli/lib/resources/scripts/configure-bluebird.js",
           "node_modules/requirejs/require.js"
         ],
         "dependencies": [
           "aurelia-binding",
+          "aurelia-switch",
           "aurelia-bootstrapper",
           "aurelia-dependency-injection",
           "aurelia-event-aggregator",
@@ -115,15 +121,6 @@
           "aurelia-templating-binding",
           "text",
           {
-            "name": "ion-rangeslider",
-            "path": "../node_modules/ion-rangeslider",
-            "main": "js/ion.rangeSlider",
-            "resources": [
-            "css/ion.rangeSlider.css",
-            "css/ion.rangeSlider.skinModern.css"
-        ]
-    },
-          {
             "name": "aurelia-templating-resources",
             "path": "../node_modules/aurelia-templating-resources/dist/amd",
             "main": "aurelia-templating-resources"
@@ -134,28 +131,55 @@
             "main": "aurelia-templating-router"
           },
           {
-            "name": "chart.js",
-            "path": "../node_modules/chart.js/dist",
-            "main": "Chart.min.js"
-          },
-          {
             "name": "aurelia-testing",
             "path": "../node_modules/aurelia-testing/dist/amd",
             "main": "aurelia-testing",
             "env": "dev"
           },
-		  "aurelia-fetch-client",
-		  "jquery",
-		  {
-			"name": "bootstrap",
-			"path": "../node_modules/bootstrap/dist",
-			"main": "js/bootstrap.min",
-			"deps": ["jquery"],
-			"exports": "$",
-			"resources": [
-			  "css/bootstrap.css"
-			]
-		  }
+          "jquery",
+          {
+            "name": "bootstrap",
+            "path": "../node_modules/bootstrap/dist",
+            "main": "js/bootstrap.min",
+            "deps": ["jquery"],
+            "exports": "$",
+            "resources": [
+              "css/bootstrap.css"
+            ]
+          },
+          {
+            "name": "jquery-ui-dist",
+            "path": "../node_modules/jquery-ui-dist",
+            "main": "jquery-ui",
+            "deps": ["jquery"],
+            "resources": [
+              "jquery-ui.css"
+            ]
+          },
+          {
+            "name": "bootstrap-toggle",
+            "path": "../node_modules/bootstrap-toggle",
+            "main": "js/bootstrap-toggle",
+            "resources":[
+              "css/bootstrap-toggle.css",
+              "css/bootstrap2-toggle.css" 
+            ]
+          },
+          {
+              "name": "ion-rangeslider",
+              "path": "../node_modules/ion-rangeslider",
+              "main": "js/ion.rangeSlider",
+              "resources": [
+                  "css/ion.rangeSlider.css",
+                  "css/ion.rangeSlider.skinModern.css",
+                  "css/normalize.css"
+              ]
+          },
+          {
+            "name": "moment",
+            "path": "../node_modules/moment",
+            "main": "moment"
+          }
         ]
       }
     ]

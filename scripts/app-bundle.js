@@ -1,322 +1,10 @@
-define('advanced-1',['exports', 'aurelia-framework', './data', 'aurelia-router', 'bootstrap'], function (exports, _aureliaFramework, _data, _aureliaRouter) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.Advanced1 = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var Advanced1 = exports.Advanced1 = (_dec = (0, _aureliaFramework.inject)(_data.Data, _aureliaRouter.Router), _dec(_class = function () {
-        function Advanced1(data, router) {
-            _classCallCheck(this, Advanced1);
-
-            this.data = data;
-            this.router = router;
-        }
-
-        Advanced1.prototype.next = function next(firstName, lastName, dateOfBirth, numChildren, benefitAge) {
-            document.getElementById("advanced1").className = "active";
-            document.getElementById("advanced2").className = "active";
-            this.router.navigate('#/advanced-2');
-        };
-
-        Advanced1.prototype.submit = function submit(firstName, lastName, dateOfBirth, numChildren, benefitAge) {
-            this.data.firstName = firstName;
-            this.data.lastName = lastName;
-            this.data.dateOfBirth = dateOfBirth;
-            this.data.numChildren = numChildren;
-            this.data.benefitAge = benefitAge;
-            console.log(this.data.numChildren);
-            console.log(this.data.benefitAge);
-        };
-
-        Advanced1.prototype.yesnoCheck = function yesnoCheck(that) {
-            console.log(that);
-            if (that == "married" || that == "widowed") {
-                document.getElementById("ifYes").style.display = "block";
-            } else {
-                document.getElementById("ifYes").style.display = "none";
-            }
-            return true;
-        };
-
-        return Advanced1;
-    }()) || _class);
-});
-define('advanced-2',['exports', 'jquery', 'aurelia-framework', './data', 'aurelia-router'], function (exports, _jquery, _aureliaFramework, _data, _aureliaRouter) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.UpperValueConverter = exports.Advanced2 = undefined;
-
-    var _jquery2 = _interopRequireDefault(_jquery);
-
-    function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : {
-            default: obj
-        };
-    }
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var Advanced2 = exports.Advanced2 = (_dec = (0, _aureliaFramework.inject)(_data.Data, _aureliaRouter.Router), _dec(_class = function () {
-        function Advanced2(data, router) {
-            _classCallCheck(this, Advanced2);
-
-            this.data = data;
-            this.router = router;
-            this.incomeArray = [];
-            this.numRows = 0;
-        }
-
-        Advanced2.prototype.next = function next() {
-            document.getElementById("advanced1").className = "active";
-            document.getElementById("advanced2").className = "active";
-            document.getElementById("advanced3").className = "active";
-            this.router.navigate('#/advanced-3');
-        };
-
-        Advanced2.prototype.yesnoCheck = function yesnoCheck(that) {
-            console.log(that);
-            if (that == "yes" || that == "widowed") {
-                document.getElementById("ifYes").style.display = "block";
-            } else {
-                document.getElementById("ifYes").style.display = "none";
-            }
-            return true;
-        };
-
-        Advanced2.prototype.totalIncomes = function totalIncomes(numRows) {
-
-            this.numRows = numRows;
-
-            for (var i = 0; i < numRows; i++) {
-                var input = document.getElementById("income" + i);
-                this.incomeArray.push(input.value);
-            }
-
-            this.incomeArray = this.incomeArray.sort(function (a, b) {
-                return a - b;
-            });
-
-            var sum = this.incomeArray.reduce(function (a, b) {
-                return parseInt(a) + parseInt(b);
-            }, 0);
-            this.data.thirtyFiveYearIncomeTotal = sum;
-
-            this.data.averageIndexedMonthlyEarnings = sum / 420;
-        };
-
-        Advanced2.prototype.generate = function generate(numRows) {
-            this.numRows = numRows;
-            var container = document.getElementById('container');
-            for (var i = 0; i < numRows; i++) {
-                container.appendChild(document.createTextNode("Income " + (i + 1)));
-
-                var input = document.createElement("input");
-                input.type = "text";
-                input.id = "income" + i;
-                input.className = "form-control";
-                container.appendChild(input);
-
-                container.appendChild(document.createElement("br"));
-            }
-        };
-
-        Advanced2.prototype.attached = function attached() {
-            (0, _jquery2.default)(document).ready(function () {
-                var counter = 0;
-
-                (0, _jquery2.default)("#addrow").on("click", function () {
-                    counter = (0, _jquery2.default)('#myTable tr').length - 2;
-                    var newRow = (0, _jquery2.default)("<tr>");
-                    var cols = "";
-
-                    cols += '<td><input type="text" class="form-control" name="name' + counter + '"/></td>';
-                    cols += '<td><input type="text" class="form-control" name="mail' + counter + '"/></td>';
-
-                    cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
-                    newRow.append(cols);
-                    if (counter == 50) (0, _jquery2.default)('#addrow').attr('disabled', true).prop('value', "You've reached the limit");
-                    (0, _jquery2.default)("table.order-list").append(newRow);
-                    counter++;
-                });
-
-                (0, _jquery2.default)("table.order-list").on("change", 'input[name^="price"]', function (event) {
-                    calculateRow((0, _jquery2.default)(this).closest("tr"));
-                    calculateGrandTotal();
-                });
-
-                (0, _jquery2.default)("table.order-list").on("click", ".ibtnDel", function (event) {
-                    (0, _jquery2.default)(this).closest("tr").remove();
-                    calculateGrandTotal();
-
-                    counter -= 1;
-                    (0, _jquery2.default)('#addrow').attr('disabled', false).prop('value', "Add Row");
-                });
-            });
-        };
-
-        return Advanced2;
-    }()) || _class);
-
-    var UpperValueConverter = exports.UpperValueConverter = function () {
-        function UpperValueConverter() {
-            _classCallCheck(this, UpperValueConverter);
-        }
-
-        UpperValueConverter.prototype.toView = function toView(value) {
-            return value && value.toUpperCase();
-        };
-
-        return UpperValueConverter;
-    }();
-});
-define('advanced-3',['exports', 'aurelia-framework', './data', 'aurelia-router'], function (exports, _aureliaFramework, _data, _aureliaRouter) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.Advanced3 = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var Advanced3 = exports.Advanced3 = (_dec = (0, _aureliaFramework.inject)(_data.Data, _aureliaRouter.Router), _dec(_class = function () {
-        function Advanced3(data, router) {
-            _classCallCheck(this, Advanced3);
-
-            this.data = data;
-            this.router = router;
-        }
-
-        Advanced3.prototype.next = function next() {
-            document.getElementById("advanced1").className = "active";
-            document.getElementById("advanced2").className = "active";
-            document.getElementById("advanced3").className = "active";
-
-            document.getElementById("advancedResults").className = "active";
-            this.router.navigate('#/advanced-results');
-        };
-
-        Advanced3.prototype.calculateGPOOffset = function calculateGPOOffset(monthlyPension) {
-            this.data.governmentPensionOffset = 2 / 3 * monthlyPension;
-        };
-
-        Advanced3.prototype.calculateWEPOffset = function calculateWEPOffset(substantialIncome, yearUntilRetirement) {
-            wepOffset = 500 * 200 - 100;
-            this.data.averageIndexedMonthlyEarnings - wepOffset;
-        };
-
-        Advanced3.prototype.clickedWEP = function clickedWEP() {
-            if (document.getElementById('yes-wep')) {
-                document.getElementById('wep-input').style.display = 'block';
-                return true;
-            } else {
-                return false;
-            }
-        };
-
-        Advanced3.prototype.clickedGPO = function clickedGPO() {
-            if (document.getElementById('yes-gpo')) {
-                document.getElementById('gpo-input').style.display = 'block';
-                return true;
-            } else {
-                return false;
-            }
-        };
-
-        return Advanced3;
-    }()) || _class);
-});
-define('advanced-4',['exports', 'node_modules/chart.js/dist/Chart.js', 'aurelia-framework', './data', 'aurelia-router', 'bootstrap'], function (exports, _Chart, _aureliaFramework, _data, _aureliaRouter) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.Advanced4 = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var Advanced4 = exports.Advanced4 = (_dec = (0, _aureliaFramework.inject)(_data.Data, _aureliaRouter.Router), _dec(_class = function () {
-        function Advanced4(data, router) {
-            _classCallCheck(this, Advanced4);
-
-            this.data = data;
-            this.router = router;
-        }
-
-        Advanced4.prototype.next = function next() {
-            document.getElementById("advanced1").className = "active";
-            document.getElementById("advanced2").className = "active";
-            document.getElementById("advanced3").className = "active";
-            document.getElementById("advanced4").className = "active";
-            document.getElementById("advancedResults").className = "active";
-
-            this.router.navigate('#/advanced-results');
-        };
-
-        return Advanced4;
-    }()) || _class);
-});
-define('advanced-results',['exports', 'node_modules/chart.js/dist/Chart.js', 'aurelia-framework', './data', 'aurelia-router', 'bootstrap'], function (exports, _Chart, _aureliaFramework, _data, _aureliaRouter) {
+define('app',['exports', 'bootstrap'], function (exports) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.AdvancedResults = undefined;
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  var _dec, _class;
-
-  var AdvancedResults = exports.AdvancedResults = (_dec = (0, _aureliaFramework.inject)(_data.Data, _aureliaRouter.Router), _dec(_class = function AdvancedResults(data, router) {
-    _classCallCheck(this, AdvancedResults);
-
-    this.data = data;
-    this.router = router;
-  }) || _class);
-});
-define('app',['exports'], function (exports) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
+  exports.App = undefined;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -327,509 +15,23 @@ define('app',['exports'], function (exports) {
   var App = exports.App = function () {
     function App() {
       _classCallCheck(this, App);
+
+      this.message = 'Social Security Calculator!';
     }
 
     App.prototype.configureRouter = function configureRouter(config, router) {
-      config.title = 'Retirement Calc';
-      config.map([{ route: ['', 'basic-calc'], name: 'basic-calc', moduleId: 'basic-calc', nav: true, title: 'Retirement Calculator' }, { route: 'advanced-1', name: 'advanced-1', moduleId: 'advanced-1', nav: true, title: 'advanced-1' }, { route: 'advanced-2', name: 'advanced-2', moduleId: 'advanced-2', nav: true, title: 'advanced-2' }, { route: 'advanced-3', name: 'advanced-3', moduleId: 'advanced-3', nav: true, title: 'advanced-3' }, { route: 'advanced-4', name: 'advanced-4', moduleId: 'advanced-4', nav: true, title: 'advanced-4' }, { route: 'advanced-results', name: 'advanced-results', moduleId: 'advanced-results', nav: true, title: 'advanced-results' }]);
-
       this.router = router;
+      config.title = "Social Security Calculator";
+      config.map([{ route: ['', 'personalinfo'], moduleId: 'aboutyou/personalinfo',
+        name: 'personalinfo', title: 'Personal Info', nav: true }, { route: 'wagehistory', moduleId: 'aboutyou/wagehistory',
+        name: 'wagehistory', title: 'Wage History', nav: false }, { route: 'exceptions', moduleId: 'exceptions/exceptions',
+        name: 'exceptions', title: 'Exceptions', nav: true }, { route: 'benefits', moduleId: 'benefits/benefits',
+        name: 'benefits', title: 'Benefits', nav: true }, { route: 'results', moduleId: 'results/results',
+        name: 'results', title: 'Results', nav: true }]);
     };
 
     return App;
   }();
-});
-define('basic-calc',['exports', 'node_modules/chart.js/dist/Chart.js', 'aurelia-framework', './data', 'jquery', 'ion-rangeslider', 'src/values.js', 'bootstrap'], function (exports, _Chart, _aureliaFramework, _data, _jquery, _ionRangeslider, _values) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.BasicCalc = undefined;
-
-  var _jquery2 = _interopRequireDefault(_jquery);
-
-  var ionRangeSlider = _interopRequireWildcard(_ionRangeslider);
-
-  function _interopRequireWildcard(obj) {
-    if (obj && obj.__esModule) {
-      return obj;
-    } else {
-      var newObj = {};
-
-      if (obj != null) {
-        for (var key in obj) {
-          if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
-        }
-      }
-
-      newObj.default = obj;
-      return newObj;
-    }
-  }
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  var _dec, _class;
-
-  var BasicCalc = exports.BasicCalc = (_dec = (0, _aureliaFramework.inject)(_data.Data), _dec(_class = function () {
-    function BasicCalc(data) {
-      _classCallCheck(this, BasicCalc);
-
-      this.data = data;
-      this.barchartData = [];
-    }
-
-    BasicCalc.prototype.attached = function attached() {
-      (0, _jquery2.default)("#range").ionRangeSlider({
-        grid: true,
-        from: 65,
-        values: ["61", "62", "63", "64", "65", "66", "67", "68", "69", "70"]
-      });
-    };
-
-    BasicCalc.prototype.attach = function attach(dob, income) {
-      var date = new Date();
-      calculateInflationAdjustedIncome(income, this.data, dob);
-      var adjustedSocialSecurityBenefits = calculateSocialSecurity(this.data.basicCalcAverageIndexedMonthlyEarnings);
-      this.makeBarChart(adjustedSocialSecurityBenefits);
-      document.getElementById('retirement-chart-container').style.display = "block";
-    };
-
-    BasicCalc.prototype.makeBarChart = function makeBarChart(monthlyBenefits) {
-      var percentagePIA = [.75, .8, .83, .86, 1, 1.08, 1.16, 1.24, 1.32];
-      var adjustPIA = [];
-      for (var i = 0; i < percentagePIA.length; i++) {
-        adjustPIA[i] = monthlyBenefits * percentagePIA[i];
-        console.log(adjustPIA[i]);
-      }
-      var ctx = document.getElementById("myChart").getContext("2d");
-      var myChart = new _Chart.Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: Array.apply(0, Array(9)).map(function (_, i) {
-            return 62 + i;
-          }),
-          datasets: [{
-            label: 'Monthly Income',
-            data: adjustPIA,
-            backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)'],
-            borderColor: ['rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 1)'],
-            borderWidth: 1
-          }]
-        },
-        options: {
-          "hover": {
-            "animationDuration": 0
-          },
-          "animation": {
-            "duration": 1,
-            "onComplete": function onComplete() {
-              var chartInstance = this.chart,
-                  ctx = chartInstance.ctx;
-
-              ctx.font = _Chart.Chart.helpers.fontString(_Chart.Chart.defaults.global.defaultFontSize, _Chart.Chart.defaults.global.defaultFontStyle, _Chart.Chart.defaults.global.defaultFontFamily);
-              ctx.textAlign = 'center';
-              ctx.textBaseline = 'bottom';
-
-              this.data.datasets.forEach(function (dataset, i) {
-                var meta = chartInstance.controller.getDatasetMeta(i);
-                meta.data.forEach(function (bar, index) {
-                  var data = dataset.data[index];
-                  ctx.fillText(data, bar._model.x, bar._model.y - 5);
-                });
-              });
-            }
-          },
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
-              },
-              gridLines: {
-                display: true
-              }
-            }],
-            xAxes: [{
-              gridLines: {
-                display: false
-              }
-            }]
-          }
-        }
-      });
-    };
-
-    return BasicCalc;
-  }()) || _class);
-
-  function calculateInflationAdjustedIncome(income, data, dob) {
-    var d = new Date();
-    var year = d.getFullYear();
-    var adjustedInflationIncomes = [];
-
-    adjustedInflationIncomes[0] = income;
-    for (var i = 1; i < 35; i++) {
-      adjustedInflationIncomes.push(adjustedInflationIncomes[i - 1] / (1 + 0.025));
-    }
-
-    var adjustedCPIIncomes = [];
-
-    for (var i = 0; i < 35; i++) {
-      var cpiYearInflation = _values.cpiValues[54 - i];
-      adjustedCPIIncomes.push(adjustedInflationIncomes[i] * cpiYearInflation);
-    }
-
-    var total = 0;
-
-    for (var i = 0; i < adjustedCPIIncomes.length; i++) {
-      total += adjustedCPIIncomes[i];
-    }
-    data.basicCalcThirtyFiveYearIncomeTotal = total;
-    data.basicCalcAverageIndexedMonthlyEarnings = total / 420;
-    console.log(data.basicCalcThirtyFiveYearIncomeTotal);
-    console.log(data.basicCalcAverageIndexedMonthlyEarnings);
-  }
-
-  function calculateSocialSecurity(income) {
-    var total = 0;
-    var monthlyIncome = income / 12;
-    if (monthlyIncome < 885) {
-      total += monthlyIncome * 0.9;
-    } else {
-      total += 796;
-    }
-    if (monthlyIncome < 5336) {
-      total += 1424;
-      if (monthlyIncome > 5336) {
-        total += (monthlyIncome - 5336) * 0.15;
-      }
-    } else {
-      total += (monthlyIncome - 885) * 0.32;
-    }
-    if (total > 2639) {
-      total = 2639;
-    }
-    return total;
-  }
-});
-define('blur-image',["exports", "aurelia-framework"], function (exports, _aureliaFramework) {
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.BlurImageCustomAttribute = undefined;
-
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) {
-			throw new TypeError("Cannot call a class as a function");
-		}
-	}
-
-	var _dec, _class;
-
-	var BlurImageCustomAttribute = exports.BlurImageCustomAttribute = (_dec = (0, _aureliaFramework.inject)(Element), _dec(_class = function () {
-		function BlurImageCustomAttribute(element) {
-			_classCallCheck(this, BlurImageCustomAttribute);
-
-			this.element = element;
-		}
-
-		BlurImageCustomAttribute.prototype.valueChanged = function valueChanged(newImage) {
-			var _this = this;
-
-			if (newImage.complete) {
-				drawBlur(this.element, newImage);
-			} else {
-				newImage.onload = function () {
-					return drawBlur(_this.element, newImage);
-				};
-			}
-		};
-
-		return BlurImageCustomAttribute;
-	}()) || _class);
-
-
-	var mul_table = [512, 512, 456, 512, 328, 456, 335, 512, 405, 328, 271, 456, 388, 335, 292, 512, 454, 405, 364, 328, 298, 271, 496, 456, 420, 388, 360, 335, 312, 292, 273, 512, 482, 454, 428, 405, 383, 364, 345, 328, 312, 298, 284, 271, 259, 496, 475, 456, 437, 420, 404, 388, 374, 360, 347, 335, 323, 312, 302, 292, 282, 273, 265, 512, 497, 482, 468, 454, 441, 428, 417, 405, 394, 383, 373, 364, 354, 345, 337, 328, 320, 312, 305, 298, 291, 284, 278, 271, 265, 259, 507, 496, 485, 475, 465, 456, 446, 437, 428, 420, 412, 404, 396, 388, 381, 374, 367, 360, 354, 347, 341, 335, 329, 323, 318, 312, 307, 302, 297, 292, 287, 282, 278, 273, 269, 265, 261, 512, 505, 497, 489, 482, 475, 468, 461, 454, 447, 441, 435, 428, 422, 417, 411, 405, 399, 394, 389, 383, 378, 373, 368, 364, 359, 354, 350, 345, 341, 337, 332, 328, 324, 320, 316, 312, 309, 305, 301, 298, 294, 291, 287, 284, 281, 278, 274, 271, 268, 265, 262, 259, 257, 507, 501, 496, 491, 485, 480, 475, 470, 465, 460, 456, 451, 446, 442, 437, 433, 428, 424, 420, 416, 412, 408, 404, 400, 396, 392, 388, 385, 381, 377, 374, 370, 367, 363, 360, 357, 354, 350, 347, 344, 341, 338, 335, 332, 329, 326, 323, 320, 318, 315, 312, 310, 307, 304, 302, 299, 297, 294, 292, 289, 287, 285, 282, 280, 278, 275, 273, 271, 269, 267, 265, 263, 261, 259];
-
-	var shg_table = [9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24];
-
-	var BLUR_RADIUS = 40;
-
-	function stackBlurCanvasRGBA(canvas, top_x, top_y, width, height, radius) {
-		if (isNaN(radius) || radius < 1) return;
-		radius |= 0;
-
-		var context = canvas.getContext("2d");
-		var imageData;
-
-		try {
-			imageData = context.getImageData(top_x, top_y, width, height);
-		} catch (e) {
-			throw new Error("unable to access image data: " + e);
-		}
-
-		var pixels = imageData.data;
-
-		var x, y, i, p, yp, yi, yw, r_sum, g_sum, b_sum, a_sum, r_out_sum, g_out_sum, b_out_sum, a_out_sum, r_in_sum, g_in_sum, b_in_sum, a_in_sum, pr, pg, pb, pa, rbs;
-
-		var div = radius + radius + 1;
-		var w4 = width << 2;
-		var widthMinus1 = width - 1;
-		var heightMinus1 = height - 1;
-		var radiusPlus1 = radius + 1;
-		var sumFactor = radiusPlus1 * (radiusPlus1 + 1) / 2;
-
-		var stackStart = new BlurStack();
-		var stack = stackStart;
-		for (i = 1; i < div; i++) {
-			stack = stack.next = new BlurStack();
-			if (i == radiusPlus1) var stackEnd = stack;
-		}
-		stack.next = stackStart;
-		var stackIn = null;
-		var stackOut = null;
-
-		yw = yi = 0;
-
-		var mul_sum = mul_table[radius];
-		var shg_sum = shg_table[radius];
-
-		for (y = 0; y < height; y++) {
-			r_in_sum = g_in_sum = b_in_sum = a_in_sum = r_sum = g_sum = b_sum = a_sum = 0;
-
-			r_out_sum = radiusPlus1 * (pr = pixels[yi]);
-			g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
-			b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
-			a_out_sum = radiusPlus1 * (pa = pixels[yi + 3]);
-
-			r_sum += sumFactor * pr;
-			g_sum += sumFactor * pg;
-			b_sum += sumFactor * pb;
-			a_sum += sumFactor * pa;
-
-			stack = stackStart;
-
-			for (i = 0; i < radiusPlus1; i++) {
-				stack.r = pr;
-				stack.g = pg;
-				stack.b = pb;
-				stack.a = pa;
-				stack = stack.next;
-			}
-
-			for (i = 1; i < radiusPlus1; i++) {
-				p = yi + ((widthMinus1 < i ? widthMinus1 : i) << 2);
-				r_sum += (stack.r = pr = pixels[p]) * (rbs = radiusPlus1 - i);
-				g_sum += (stack.g = pg = pixels[p + 1]) * rbs;
-				b_sum += (stack.b = pb = pixels[p + 2]) * rbs;
-				a_sum += (stack.a = pa = pixels[p + 3]) * rbs;
-
-				r_in_sum += pr;
-				g_in_sum += pg;
-				b_in_sum += pb;
-				a_in_sum += pa;
-
-				stack = stack.next;
-			}
-
-			stackIn = stackStart;
-			stackOut = stackEnd;
-			for (x = 0; x < width; x++) {
-				pixels[yi + 3] = pa = a_sum * mul_sum >> shg_sum;
-				if (pa != 0) {
-					pa = 255 / pa;
-					pixels[yi] = (r_sum * mul_sum >> shg_sum) * pa;
-					pixels[yi + 1] = (g_sum * mul_sum >> shg_sum) * pa;
-					pixels[yi + 2] = (b_sum * mul_sum >> shg_sum) * pa;
-				} else {
-					pixels[yi] = pixels[yi + 1] = pixels[yi + 2] = 0;
-				}
-
-				r_sum -= r_out_sum;
-				g_sum -= g_out_sum;
-				b_sum -= b_out_sum;
-				a_sum -= a_out_sum;
-
-				r_out_sum -= stackIn.r;
-				g_out_sum -= stackIn.g;
-				b_out_sum -= stackIn.b;
-				a_out_sum -= stackIn.a;
-
-				p = yw + ((p = x + radius + 1) < widthMinus1 ? p : widthMinus1) << 2;
-
-				r_in_sum += stackIn.r = pixels[p];
-				g_in_sum += stackIn.g = pixels[p + 1];
-				b_in_sum += stackIn.b = pixels[p + 2];
-				a_in_sum += stackIn.a = pixels[p + 3];
-
-				r_sum += r_in_sum;
-				g_sum += g_in_sum;
-				b_sum += b_in_sum;
-				a_sum += a_in_sum;
-
-				stackIn = stackIn.next;
-
-				r_out_sum += pr = stackOut.r;
-				g_out_sum += pg = stackOut.g;
-				b_out_sum += pb = stackOut.b;
-				a_out_sum += pa = stackOut.a;
-
-				r_in_sum -= pr;
-				g_in_sum -= pg;
-				b_in_sum -= pb;
-				a_in_sum -= pa;
-
-				stackOut = stackOut.next;
-
-				yi += 4;
-			}
-			yw += width;
-		}
-
-		for (x = 0; x < width; x++) {
-			g_in_sum = b_in_sum = a_in_sum = r_in_sum = g_sum = b_sum = a_sum = r_sum = 0;
-
-			yi = x << 2;
-			r_out_sum = radiusPlus1 * (pr = pixels[yi]);
-			g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
-			b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
-			a_out_sum = radiusPlus1 * (pa = pixels[yi + 3]);
-
-			r_sum += sumFactor * pr;
-			g_sum += sumFactor * pg;
-			b_sum += sumFactor * pb;
-			a_sum += sumFactor * pa;
-
-			stack = stackStart;
-
-			for (i = 0; i < radiusPlus1; i++) {
-				stack.r = pr;
-				stack.g = pg;
-				stack.b = pb;
-				stack.a = pa;
-				stack = stack.next;
-			}
-
-			yp = width;
-
-			for (i = 1; i <= radius; i++) {
-				yi = yp + x << 2;
-
-				r_sum += (stack.r = pr = pixels[yi]) * (rbs = radiusPlus1 - i);
-				g_sum += (stack.g = pg = pixels[yi + 1]) * rbs;
-				b_sum += (stack.b = pb = pixels[yi + 2]) * rbs;
-				a_sum += (stack.a = pa = pixels[yi + 3]) * rbs;
-
-				r_in_sum += pr;
-				g_in_sum += pg;
-				b_in_sum += pb;
-				a_in_sum += pa;
-
-				stack = stack.next;
-
-				if (i < heightMinus1) {
-					yp += width;
-				}
-			}
-
-			yi = x;
-			stackIn = stackStart;
-			stackOut = stackEnd;
-			for (y = 0; y < height; y++) {
-				p = yi << 2;
-				pixels[p + 3] = pa = a_sum * mul_sum >> shg_sum;
-				if (pa > 0) {
-					pa = 255 / pa;
-					pixels[p] = (r_sum * mul_sum >> shg_sum) * pa;
-					pixels[p + 1] = (g_sum * mul_sum >> shg_sum) * pa;
-					pixels[p + 2] = (b_sum * mul_sum >> shg_sum) * pa;
-				} else {
-					pixels[p] = pixels[p + 1] = pixels[p + 2] = 0;
-				}
-
-				r_sum -= r_out_sum;
-				g_sum -= g_out_sum;
-				b_sum -= b_out_sum;
-				a_sum -= a_out_sum;
-
-				r_out_sum -= stackIn.r;
-				g_out_sum -= stackIn.g;
-				b_out_sum -= stackIn.b;
-				a_out_sum -= stackIn.a;
-
-				p = x + ((p = y + radiusPlus1) < heightMinus1 ? p : heightMinus1) * width << 2;
-
-				r_sum += r_in_sum += stackIn.r = pixels[p];
-				g_sum += g_in_sum += stackIn.g = pixels[p + 1];
-				b_sum += b_in_sum += stackIn.b = pixels[p + 2];
-				a_sum += a_in_sum += stackIn.a = pixels[p + 3];
-
-				stackIn = stackIn.next;
-
-				r_out_sum += pr = stackOut.r;
-				g_out_sum += pg = stackOut.g;
-				b_out_sum += pb = stackOut.b;
-				a_out_sum += pa = stackOut.a;
-
-				r_in_sum -= pr;
-				g_in_sum -= pg;
-				b_in_sum -= pb;
-				a_in_sum -= pa;
-
-				stackOut = stackOut.next;
-
-				yi += width;
-			}
-		}
-
-		context.putImageData(imageData, top_x, top_y);
-	}
-
-	function BlurStack() {
-		this.r = 0;
-		this.g = 0;
-		this.b = 0;
-		this.a = 0;
-		this.next = null;
-	}
-
-	function drawBlur(canvas, image) {
-		var w = canvas.width;
-		var h = canvas.height;
-		var canvasContext = canvas.getContext('2d');
-		canvasContext.drawImage(image, 0, 0, w, h);
-		stackBlurCanvasRGBA(canvas, 0, 0, w, h, BLUR_RADIUS);
-	};
-});
-define('data',["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var Data = exports.Data = function Data() {
-        _classCallCheck(this, Data);
-    };
 });
 define('environment',["exports"], function (exports) {
   "use strict";
@@ -842,117 +44,7 @@ define('environment',["exports"], function (exports) {
     testing: true
   };
 });
-define('income-history',['exports', 'jquery', 'aurelia-framework', './data', 'aurelia-router', 'bootstrap'], function (exports, _jquery, _aureliaFramework, _data, _aureliaRouter) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.IncomeHistory = undefined;
-
-    var _jquery2 = _interopRequireDefault(_jquery);
-
-    function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : {
-            default: obj
-        };
-    }
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var IncomeHistory = exports.IncomeHistory = (_dec = (0, _aureliaFramework.inject)(_data.Data, _aureliaRouter.Router), _dec(_class = function () {
-        function IncomeHistory(data, router) {
-            _classCallCheck(this, IncomeHistory);
-
-            this.data = data;
-            this.router = router;
-            this.incomeArray = [];
-            this.numRows = 0;
-        }
-
-        IncomeHistory.prototype.totalIncomes = function totalIncomes() {
-            var total = 0;
-            for (var i = 0; i < numRows; i++) {
-                var inputs = document.getElementsByName("income" + i);
-                total += input[i].value;
-            }
-            console.log(total);
-            this.incomeArray.sort();
-            console.log(this.incomeArray.length);
-            for (var i = 0; i < 35 && i < this.incomeArray.length; i++) {
-                total += this.incomeArray[this.incomeArray.length - i];
-                console.log(total);
-            }
-            this.data.thirtyFiveYearIncomeTotal = total;
-            this.data.AIME = total / 420;
-            this.router.navigate('#/advanced-2');
-            console.log(this.data.AIME);
-            console.log(this.data.thirtyFiveYearIncomeTotal);
-        };
-
-        IncomeHistory.prototype.generate = function generate(numRows) {
-            this.numRows = numRows;
-            console.log(numRows);
-            console.log(this.numRows);
-            var container = document.getElementById('container');
-            for (var i = 0; i < numRows; i++) {
-                container.appendChild(document.createTextNode("Income " + (i + 1)));
-
-                var input = document.createElement("input");
-                input.type = "text";
-                input.name = "income" + i;
-                container.appendChild(input);
-
-                container.appendChild(document.createElement("br"));
-            }
-        };
-
-        IncomeHistory.prototype.attached = function attached() {
-            (0, _jquery2.default)(document).ready(function () {
-                var counter = 0;
-
-                (0, _jquery2.default)("#addrow").on("click", function () {
-
-                    counter = (0, _jquery2.default)('#myTable tr').length - 2;
-
-                    var newRow = (0, _jquery2.default)("<tr>");
-                    var cols = "";
-
-                    cols += '<td><input type="text" class="form-control" name="name' + counter + '"/></td>';
-                    cols += '<td><input type="text" class="form-control" name="mail' + counter + '"/></td>';
-
-                    cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
-                    newRow.append(cols);
-                    if (counter == 50) (0, _jquery2.default)('#addrow').attr('disabled', true).prop('value', "You've reached the limit");
-                    (0, _jquery2.default)("table.order-list").append(newRow);
-                    counter++;
-                });
-
-                (0, _jquery2.default)("table.order-list").on("change", 'input[name^="price"]', function (event) {
-                    calculateRow((0, _jquery2.default)(this).closest("tr"));
-                    calculateGrandTotal();
-                });
-
-                (0, _jquery2.default)("table.order-list").on("click", ".ibtnDel", function (event) {
-                    (0, _jquery2.default)(this).closest("tr").remove();
-                    calculateGrandTotal();
-
-                    counter -= 1;
-                    (0, _jquery2.default)('#addrow').attr('disabled', false).prop('value', "Add Row");
-                });
-            });
-        };
-
-        return IncomeHistory;
-    }()) || _class);
-});
-define('main',['exports', './environment', 'bootstrap'], function (exports, _environment) {
+define('main',['exports', './environment'], function (exports, _environment) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -967,12 +59,6 @@ define('main',['exports', './environment', 'bootstrap'], function (exports, _env
       default: obj
     };
   }
-
-  Promise.config({
-    warnings: {
-      wForgottenReturn: false
-    }
-  });
 
   function configure(aurelia) {
     aurelia.use.standardConfiguration().feature('resources');
@@ -990,13 +76,435 @@ define('main',['exports', './environment', 'bootstrap'], function (exports, _env
     });
   }
 });
-define('nav-bar',['exports', 'jquery', 'aurelia-framework', './data', 'aurelia-router'], function (exports, _jquery, _aureliaFramework, _data, _aureliaRouter) {
+define('aboutyou/personalinfo',['exports', 'jquery', 'bootstrap-toggle', 'ion-rangeslider', 'moment', 'src/services/constants.js', 'aurelia-framework', '../services/userdata', 'aurelia-router', 'jquery-ui-dist'], function (exports, _jquery, _bootstrapToggle, _ionRangeslider, _moment, _constants, _aureliaFramework, _userdata, _aureliaRouter) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.NavBar = undefined;
+    exports.personalinfo = undefined;
+
+    var _jquery2 = _interopRequireDefault(_jquery);
+
+    var bootstrapToggle = _interopRequireWildcard(_bootstrapToggle);
+
+    var ionRangeSlider = _interopRequireWildcard(_ionRangeslider);
+
+    var _moment2 = _interopRequireDefault(_moment);
+
+    function _interopRequireWildcard(obj) {
+        if (obj && obj.__esModule) {
+            return obj;
+        } else {
+            var newObj = {};
+
+            if (obj != null) {
+                for (var key in obj) {
+                    if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+                }
+            }
+
+            newObj.default = obj;
+            return newObj;
+        }
+    }
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var personalinfo = exports.personalinfo = (_dec = (0, _aureliaFramework.inject)(_userdata.UserData, _aureliaRouter.Router), _dec(_class = function () {
+        function personalinfo(userData, router) {
+            _classCallCheck(this, personalinfo);
+
+            this.userData = userData;
+            this.router = router;
+        }
+
+        personalinfo.prototype.calculate = function calculate() {
+            var name = this.userData.client.name;
+            var gender = this.userData.client.gender;
+            var dob = this.userData.client.dateOfBirth;
+            var empStatus = this.userData.client.employmentStatus;
+            var sal = this.userData.client.salary;
+            var maritalStatus = this.userData.client.maritalStatus;
+            var numOfDependents = this.userData.client.numOfDependents;
+            var wep = this.userData.client.wep;
+            var yrsOfSubearnings = this.userData.client.yrsOfSubearnings;
+            var retirementAge = this.userData.client.retirementAge;
+
+            var pia;
+            var wage = [];
+            var projectedSal = [];
+            var inflationAdjusted = [];
+            var topThirtyFive = [];
+            var ssBase;
+            var age;
+
+            var date = (0, _moment2.default)(dob, 'M/D/YYYY');
+            var yearOfBirth = date.format('YYYY');
+            if (!(dob.indexOf(date.format('MM/DD/YYYY')) >= 0 || dob.indexOf(date.format('M/DD/YYYY')) >= 0 || dob.indexOf(date.format('MM/D/YYYY')) >= 0 || dob.indexOf(date.format('M/D/YYYY')) >= 0) || !date.isValid() || yearOfBirth > 2017) {
+                alert('Invalid Date of Birth');
+                return;
+            } else {
+                this.userData.client.age = (0, _moment2.default)().diff(dob, 'years');
+                age = (0, _moment2.default)().diff(dob, 'years');
+            }
+
+            var ageFrom18 = age - 18;
+            var yrsUntilRetire = retirementAge - age;
+
+            if (ageFrom18 >= 0) {
+                projectedSal[ageFrom18 - 1] = parseInt(sal);
+                for (var i = ageFrom18 - 2; i >= 0; i--) {
+                    projectedSal[i] = projectedSal[i + 1] - projectedSal[i + 1] * _constants.wagePerc[i + 1];
+                }
+                for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+                    projectedSal[i] = parseFloat(projectedSal[i - 1]) + parseFloat(projectedSal[i - 1]) * _constants.wagePerc[_constants.wagePerc.length - 1];
+                }
+
+                for (var i = ageFrom18 - 1; i >= 0; i--) {
+                    if (projectedSal[i] > _constants.allowedSalary[_constants.inflationIndex.length - (ageFrom18 - i) - 1]) {
+                        inflationAdjusted[i] = _constants.allowedSalary[_constants.inflationIndex.length - (ageFrom18 - i) - 1] * _constants.inflationIndex[_constants.inflationIndex.length - (ageFrom18 - i) - 1];
+                    } else {
+                        inflationAdjusted[i] = projectedSal[i] * _constants.inflationIndex[_constants.inflationIndex.length - (ageFrom18 - i) - 1];
+                    }
+                }
+                for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+                    if (projectedSal[i] > _constants.allowedSalary[i]) {
+                        var lastYearAllowed = _constants.allowedSalary[_constants.allowedSalary.length - 1];
+                        inflationAdjusted[i] = lastYearAllowed * _constants.inflationIndex[_constants.inflationIndex.length - 1];
+                        lastYearAllowed = lastYearAllowed * 1.021;
+                    } else {
+                        inflationAdjusted[i] = projectedSal[i] * _constants.inflationIndex[_constants.inflationIndex.length - 1];
+                    }
+                }
+
+                inflationAdjusted = inflationAdjusted.sort(function (a, b) {
+                    return a - b;
+                });
+                topThirtyFive = inflationAdjusted.slice(inflationAdjusted.length - 35, inflationAdjusted.length);
+
+                pia = topThirtyFive.reduce(function (a, b) {
+                    return a + b;
+                }, 0) / 420;
+
+                switch (yearOfBirth) {
+                    case 1955:
+                        switch (retirementAge) {
+                            case 62:
+                                pia = pia * _constants.EL1955[0];break;
+                            case 63:
+                                pia = pia * _constants.EL1955[1];break;
+                            case 64:
+                                pia = pia * _constants.EL1955[2];break;
+                            case 65:
+                                pia = pia * _constants.EL1955[3];break;
+                            case 66:
+                                pia = pia * _constants.EL1955[4];break;
+                            case 67:
+                                pia = pia * _constants.EL1955[5];break;
+                            case 68:
+                                pia = pia * _constants.EL1955[6];break;
+                            case 69:
+                                pia = pia * _constants.EL1955[7];break;
+                            case 70:
+                                pia = pia * _constants.EL1955[8];break;
+                        }
+                    case 1956:
+                        switch (retirementAge) {
+                            case 62:
+                                pia = pia * _constants.EL1956[0];break;
+                            case 63:
+                                pia = pia * _constants.EL1956[1];break;
+                            case 64:
+                                pia = pia * _constants.EL1956[2];break;
+                            case 65:
+                                pia = pia * _constants.EL1956[3];break;
+                            case 66:
+                                pia = pia * _constants.EL1956[4];break;
+                            case 67:
+                                pia = pia * _constants.EL1956[5];break;
+                            case 68:
+                                pia = pia * _constants.EL1956[6];break;
+                            case 69:
+                                pia = pia * _constants.EL1956[7];break;
+                            case 70:
+                                pia = pia * _constants.EL1956[8];break;
+                        }
+                    case 1957:
+                        switch (retirementAge) {
+                            case 62:
+                                pia = pia * _constants.EL1957[0];break;
+                            case 63:
+                                pia = pia * _constants.EL1957[1];break;
+                            case 64:
+                                pia = pia * _constants.EL1957[2];break;
+                            case 65:
+                                pia = pia * _constants.EL1957[3];break;
+                            case 66:
+                                pia = pia * _constants.EL1957[4];break;
+                            case 67:
+                                pia = pia * _constants.EL1957[5];break;
+                            case 68:
+                                pia = pia * _constants.EL1957[6];break;
+                            case 69:
+                                pia = pia * _constants.EL1957[7];break;
+                            case 70:
+                                pia = pia * _constants.EL1957[8];break;
+                        }
+                    case 1958:
+                        switch (retirementAge) {
+                            case 62:
+                                pia = pia * _constants.EL1958[0];break;
+                            case 63:
+                                pia = pia * _constants.EL1958[1];break;
+                            case 64:
+                                pia = pia * _constants.EL1958[2];break;
+                            case 65:
+                                pia = pia * _constants.EL1958[3];break;
+                            case 66:
+                                pia = pia * _constants.EL1958[4];break;
+                            case 67:
+                                pia = pia * _constants.EL1958[5];break;
+                            case 68:
+                                pia = pia * _constants.EL1958[6];break;
+                            case 69:
+                                pia = pia * _constants.EL1958[7];break;
+                            case 70:
+                                pia = pia * _constants.EL1958[8];break;
+                        }
+                    case 1959:
+                        switch (retirementAge) {
+                            case 62:
+                                pia = pia * _constants.EL1959[0];break;
+                            case 63:
+                                pia = pia * _constants.EL1959[1];break;
+                            case 64:
+                                pia = pia * _constants.EL1959[2];break;
+                            case 65:
+                                pia = pia * _constants.EL1959[3];break;
+                            case 66:
+                                pia = pia * _constants.EL1959[4];break;
+                            case 67:
+                                pia = pia * _constants.EL1959[5];break;
+                            case 68:
+                                pia = pia * _constants.EL1959[6];break;
+                            case 69:
+                                pia = pia * _constants.EL1959[7];break;
+                            case 70:
+                                pia = pia * _constants.EL1959[8];break;
+                        }
+                    default:
+                        if (yearOfBirth <= 1954) {
+                            switch (retirementAge) {
+                                case 62:
+                                    pia = pia * _constants.EL1943plus[0];break;
+                                case 63:
+                                    pia = pia * _constants.EL1943plus[1];break;
+                                case 64:
+                                    pia = pia * _constants.EL1943plus[2];break;
+                                case 65:
+                                    pia = pia * _constants.EL1943plus[3];break;
+                                case 66:
+                                    pia = pia * _constants.EL1943plus[4];break;
+                                case 67:
+                                    pia = pia * _constants.EL1943plus[5];break;
+                                case 68:
+                                    pia = pia * _constants.EL1943plus[6];break;
+                                case 69:
+                                    pia = pia * _constants.EL1943plus[7];break;
+                                case 70:
+                                    pia = pia * _constants.EL1943plus[8];break;
+                            }
+                        } else {
+                            switch (retirementAge) {
+                                case 62:
+                                    pia = pia * _constants.EL1960plus[0];break;
+                                case 63:
+                                    pia = pia * _constants.EL1960plus[1];break;
+                                case 64:
+                                    pia = pia * _constants.EL1960plus[2];break;
+                                case 65:
+                                    pia = pia * _constants.EL1960plus[3];break;
+                                case 66:
+                                    pia = pia * _constants.EL1960plus[4];break;
+                                case 67:
+                                    pia = pia * _constants.EL1960plus[5];break;
+                                case 68:
+                                    pia = pia * _constants.EL1960plus[6];break;
+                                case 69:
+                                    pia = pia * _constants.EL1960plus[7];break;
+                                case 70:
+                                    pia = pia * _constants.EL1960plus[8];break;
+                            }
+                        }
+                }
+
+                yrsOfSubearnings = 22;
+
+                var tier1, tier2, tier3;
+                var sum = _constants.consttier1 + _constants.consttier2;
+                if (pia > _constants.consttier1) {
+                    switch (yrsOfSubearnings) {
+                        case 29:
+                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[1];break;
+                        case 28:
+                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[2];break;
+                        case 27:
+                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[3];break;
+                        case 26:
+                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[4];break;
+                        case 25:
+                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[5];break;
+                        case 24:
+                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[6];break;
+                        case 23:
+                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[7];break;
+                        case 22:
+                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[8];break;
+                        case 21:
+                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[9];break;
+                        default:
+                            if (yrsOfSubearnings >= 30) tier1 = _constants.consttier1 * _constants.subEarningsPerc[0];else tier1 = _constants.consttier1 * _constants.subEarningsPerc[10];
+                    }
+                } else {
+                    switch (yrsOfSubearnings) {
+                        case 29:
+                            tier1 = pia * _constants.subEarningsPerc[1];break;
+                        case 28:
+                            tier1 = pia * _constants.subEarningsPerc[2];break;
+                        case 27:
+                            tier1 = pia * _constants.subEarningsPerc[3];break;
+                        case 26:
+                            tier1 = pia * _constants.subEarningsPerc[4];break;
+                        case 25:
+                            tier1 = pia * _constants.subEarningsPerc[5];break;
+                        case 24:
+                            tier1 = pia * _constants.subEarningsPerc[6];break;
+                        case 23:
+                            tier1 = pia * _constants.subEarningsPerc[7];break;
+                        case 22:
+                            tier1 = pia * _constants.subEarningsPerc[8];break;
+                        case 21:
+                            tier1 = pia * _constants.subEarningsPerc[9];break;
+                        default:
+                            if (yrsOfSubearnings >= 30) tier1 = pia * _constants.subEarningsPerc[0];else tier1 = pia * _constants.subEarningsPerc[10];
+                    }
+                }
+
+                if (pia > sum) {
+                    tier2 = _constants.consttier2 * _constants.tier2perc;
+                } else tier2 = pia * _constants.tier2perc;
+
+                if (pia > sum) {
+                    tier3 = (pia - sum) * _constants.tier3perc;
+                } else tier3 = 0;
+
+                var sumOfTiers = tier1 + tier2 + tier3;
+                ssBase = sumOfTiers * 12;
+                console.log(sumOfTiers);
+                console.log(ssBase);
+                this.userData.client.baseSS = ssBase;
+
+                console.log(this.userData);
+
+                this.router.navigate('#/benefits');
+            } else {
+                alert("You're not greater than 18.");
+            }
+        };
+
+        personalinfo.prototype.wagehistory = function wagehistory() {
+            this.router.navigate('#/wagehistory');
+        };
+
+        personalinfo.prototype.attached = function attached() {
+            var _this = this;
+
+            (0, _jquery2.default)("#slider").ionRangeSlider({
+                grid: true,
+                type: "double",
+                min: 0,
+                max: 100,
+                from: 65,
+                to: 91,
+                step: 1,
+                onFinish: function onFinish(data) {
+                    _this.userData.client.retirementAge = data.from;
+                    _this.userData.client.lifeExpectancy = data.to;
+                }
+            });
+
+            (0, _jquery2.default)("#sliderSpouse").ionRangeSlider({
+                grid: true,
+                type: "double",
+                min: 0,
+                max: 100,
+                from: 65,
+                to: 93,
+                step: 1,
+                onFinish: function onFinish(data) {
+                    _this.userData.spouse.retirementAge = data.from;
+                    _this.userData.spouse.lifeExpectancy = data.to;
+                }
+            });
+
+            (0, _jquery2.default)('#toggle').bootstrapToggle();
+
+            (0, _jquery2.default)('#salary').hide();
+            (0, _jquery2.default)("#empStatus").change(function () {
+                var val = (0, _jquery2.default)(this).val();
+                if (val == "Employed" || val == "Business Owner") (0, _jquery2.default)('#salary').show();else (0, _jquery2.default)('#salary').hide();
+            });
+
+            (0, _jquery2.default)('#salarySpouse').hide();
+            (0, _jquery2.default)("#empStatusSpouse").change(function () {
+                var val = (0, _jquery2.default)(this).val();
+                if (val == "Employed" || val == "Business Owner") (0, _jquery2.default)('#salarySpouse').show();else (0, _jquery2.default)('#salarySpouse').hide();
+            });
+
+            (0, _jquery2.default)('#divorceCheck').hide();
+            (0, _jquery2.default)('#spouse').hide();
+            (0, _jquery2.default)("#maritalStatus").change(function () {
+                var val = (0, _jquery2.default)(this).val();
+                if (val == "Divorced") (0, _jquery2.default)('#divorceCheck').show();else (0, _jquery2.default)('#divorceCheck').hide();
+
+                if (val == "Married") (0, _jquery2.default)('#spouse').show();else (0, _jquery2.default)('#spouse').hide();
+            });
+
+            (0, _jquery2.default)('#ageOfDependent').hide();
+            (0, _jquery2.default)("#numOfDependents").change(function () {
+                var val = (0, _jquery2.default)(this).val();
+                if (val > 0) {
+                    (0, _jquery2.default)('#ageOfDependent').show();
+                    for (var i = 1; i < val; i++) {
+                        (0, _jquery2.default)('#ageOfDependent').append('<input type="text" value.bind="userData.client.ageOfDependent[' + i + ']" class="form-control" placeholder="10">');
+                    }
+                } else (0, _jquery2.default)('#ageOfDependent').hide();
+            });
+        };
+
+        return personalinfo;
+    }()) || _class);
+});
+define('aboutyou/wagehistory',['exports', 'jquery', 'src/services/constants.js', 'aurelia-framework', '../services/userdata', 'aurelia-router'], function (exports, _jquery, _constants, _aureliaFramework, _userdata, _aureliaRouter) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.wagehistory = undefined;
 
     var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -1014,100 +522,106 @@ define('nav-bar',['exports', 'jquery', 'aurelia-framework', './data', 'aurelia-r
 
     var _dec, _class;
 
-    var NavBar = exports.NavBar = (_dec = (0, _aureliaFramework.inject)(_data.Data, _aureliaRouter.Router), _dec(_class = function () {
-        function NavBar(data, router) {
-            _classCallCheck(this, NavBar);
+    var wagehistory = exports.wagehistory = (_dec = (0, _aureliaFramework.inject)(_userdata.UserData, _aureliaRouter.Router), _dec(_class = function () {
+        function wagehistory(userData, router) {
+            _classCallCheck(this, wagehistory);
 
-            this.data = data;
+            this.userData = userData;
             this.router = router;
         }
 
-        NavBar.prototype.addClass = function addClass(advanced) {
-            if (advanced == "advanced1") {
-                this.router.navigate('#/advanced-1');
-                document.getElementById("advanced1").className = "active";
-            }
-            if (advanced == "advanced2") {
-                this.router.navigate('#/advanced-2');
-                document.getElementById("advanced1").className = "active";
-                document.getElementById("advanced2").className = "active";
-            }
-            if (advanced == "advanced3") {
-                this.router.navigate('#/advanced-3');
-                document.getElementById("advanced1").className = "active";
-                document.getElementById("advanced2").className = "active";
-                document.getElementById("advanced3").className = "active";
-            }
-            if (advanced == "advanced4") {
-                this.router.navigate('#/advanced-4');
-                document.getElementById("advanced1").className = "active";
-                document.getElementById("advanced2").className = "active";
-                document.getElementById("advanced3").className = "active";
-                document.getElementById("advanced4").className = "active";
-            }
-            if (advanced == "advancedResults") {
-                this.router.navigate('#/advanced-results');
-                document.getElementById("advanced1").className = "active";
-                document.getElementById("advanced2").className = "active";
-                document.getElementById("advanced3").className = "active";
-                document.getElementById("advanced4").className = "active";
-                document.getElementById("advancedResults").className = "active";
-            }
-        };
+        wagehistory.prototype.completeWages = function completeWages() {};
 
-        return NavBar;
+        return wagehistory;
     }()) || _class);
 });
-define('users',['exports', 'aurelia-framework', 'aurelia-fetch-client'], function (exports, _aureliaFramework, _aureliaFetchClient) {
-  'use strict';
+define('benefits/benefits',['exports', 'jquery', 'ion-rangeslider', 'aurelia-framework', '../services/userdata', 'aurelia-router', 'jquery-ui-dist'], function (exports, _jquery, _ionRangeslider, _aureliaFramework, _userdata, _aureliaRouter) {
+    'use strict';
 
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.Users = undefined;
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.benefits = undefined;
 
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
+    var _jquery2 = _interopRequireDefault(_jquery);
+
+    var ionRangeSlider = _interopRequireWildcard(_ionRangeslider);
+
+    function _interopRequireWildcard(obj) {
+        if (obj && obj.__esModule) {
+            return obj;
+        } else {
+            var newObj = {};
+
+            if (obj != null) {
+                for (var key in obj) {
+                    if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+                }
+            }
+
+            newObj.default = obj;
+            return newObj;
+        }
     }
-  }
 
-  var _dec, _class;
-
-  var Users = exports.Users = (_dec = (0, _aureliaFramework.inject)(_aureliaFetchClient.HttpClient), _dec(_class = function () {
-    function Users(http) {
-      _classCallCheck(this, Users);
-
-      this.heading = 'Github Users';
-      this.users = [];
-
-      http.configure(function (config) {
-        config.useStandardConfiguration().withBaseUrl('https://api.github.com/');
-      });
-
-      this.http = http;
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
     }
 
-    Users.prototype.activate = function activate() {
-      var _this = this;
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
 
-      return this.http.fetch('users').then(function (response) {
-        return response.json();
-      }).then(function (users) {
-        return _this.users = users;
-      });
-    };
+    var _dec, _class;
 
-    return Users;
-  }()) || _class);
+    var benefits = exports.benefits = (_dec = (0, _aureliaFramework.inject)(_userdata.UserData, _aureliaRouter.Router), _dec(_class = function () {
+        function benefits(userData, router) {
+            _classCallCheck(this, benefits);
+
+            this.userData = userData;
+            this.router = router;
+        }
+
+        benefits.prototype.attached = function attached() {
+            var _this = this;
+
+            (0, _jquery2.default)("#benefitslider").ionRangeSlider({
+                grid: true,
+                type: "single",
+                min: 0,
+                max: 10,
+                from: 2.5,
+                step: 0.1,
+                onFinish: function onFinish(data) {
+                    _this.userData.client.cola = data.from;
+                    console.log(_this.userData.client.cola);
+                }
+            });
+        };
+
+        return benefits;
+    }()) || _class);
 });
-define('src/values.js',["exports"], function (exports) {
+define('exceptions/exceptions',["exports"], function (exports) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    var cpiValues = exports.cpiValues = [10.9398609, 10.5103293, 10.3244303, 9.7397982, 9.2258912, 8.6325739, 8.1609414, 7.7750993, 7.4031149, 6.7423575, 6.3453318, 5.9892999, 5.5728277, 5.2131073, 4.918342, 4.5565075, 4.1899732, 3.8437514, 3.4922153, 3.3099927, 3.1562355, 2.9809992, 2.8591827, 2.7767654, 2.6102952, 2.4877692, 2.3930202, 2.2873633, 2.2051858, 2.0971332, 2.0792511, 2.0249045, 1.9468668, 1.8560938, 1.7537603, 1.666536, 1.5785652, 1.4958451, 1.460991, 1.4464844, 1.4119683, 1.3492451, 1.3016185, 1.2444211, 1.1903987, 1.1636305, 1.1814475, 1.1541687, 1.1191035, 1.085217, 1.0715215, 1.0347904, 1, 1, 1];
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var exceptions = exports.exceptions = function exceptions() {
+        _classCallCheck(this, exceptions);
+    };
 });
 define('resources/index',["exports"], function (exports) {
   "use strict";
@@ -1118,3215 +632,161 @@ define('resources/index',["exports"], function (exports) {
   exports.configure = configure;
   function configure(config) {}
 });
-define('assets/js/jquery.min',["module"], function (module) {
-  "use strict";
+define('results/results',['exports', 'node_modules/chart.js/dist/Chart.js'], function (exports, _Chart) {
+    'use strict';
 
-  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-  };
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.results = undefined;
 
-  !function (a, b) {
-    "object" == (typeof module === "undefined" ? "undefined" : _typeof(module)) && "object" == _typeof(module.exports) ? module.exports = a.document ? b(a, !0) : function (a) {
-      if (!a.document) throw new Error("jQuery requires a window with a document");return b(a);
-    } : b(a);
-  }("undefined" != typeof window ? window : undefined, function (a, b) {
-    var c = [],
-        d = c.slice,
-        e = c.concat,
-        f = c.push,
-        g = c.indexOf,
-        h = {},
-        i = h.toString,
-        j = h.hasOwnProperty,
-        k = {},
-        l = "1.11.3",
-        m = function m(a, b) {
-      return new m.fn.init(a, b);
-    },
-        n = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,
-        o = /^-ms-/,
-        p = /-([\da-z])/gi,
-        q = function q(a, b) {
-      return b.toUpperCase();
-    };m.fn = m.prototype = { jquery: l, constructor: m, selector: "", length: 0, toArray: function toArray() {
-        return d.call(this);
-      }, get: function get(a) {
-        return null != a ? 0 > a ? this[a + this.length] : this[a] : d.call(this);
-      }, pushStack: function pushStack(a) {
-        var b = m.merge(this.constructor(), a);return b.prevObject = this, b.context = this.context, b;
-      }, each: function each(a, b) {
-        return m.each(this, a, b);
-      }, map: function map(a) {
-        return this.pushStack(m.map(this, function (b, c) {
-          return a.call(b, c, b);
-        }));
-      }, slice: function slice() {
-        return this.pushStack(d.apply(this, arguments));
-      }, first: function first() {
-        return this.eq(0);
-      }, last: function last() {
-        return this.eq(-1);
-      }, eq: function eq(a) {
-        var b = this.length,
-            c = +a + (0 > a ? b : 0);return this.pushStack(c >= 0 && b > c ? [this[c]] : []);
-      }, end: function end() {
-        return this.prevObject || this.constructor(null);
-      }, push: f, sort: c.sort, splice: c.splice }, m.extend = m.fn.extend = function () {
-      var a,
-          b,
-          c,
-          d,
-          e,
-          f,
-          g = arguments[0] || {},
-          h = 1,
-          i = arguments.length,
-          j = !1;for ("boolean" == typeof g && (j = g, g = arguments[h] || {}, h++), "object" == (typeof g === "undefined" ? "undefined" : _typeof(g)) || m.isFunction(g) || (g = {}), h === i && (g = this, h--); i > h; h++) {
-        if (null != (e = arguments[h])) for (d in e) {
-          a = g[d], c = e[d], g !== c && (j && c && (m.isPlainObject(c) || (b = m.isArray(c))) ? (b ? (b = !1, f = a && m.isArray(a) ? a : []) : f = a && m.isPlainObject(a) ? a : {}, g[d] = m.extend(j, f, c)) : void 0 !== c && (g[d] = c));
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
         }
-      }return g;
-    }, m.extend({ expando: "jQuery" + (l + Math.random()).replace(/\D/g, ""), isReady: !0, error: function error(a) {
-        throw new Error(a);
-      }, noop: function noop() {}, isFunction: function isFunction(a) {
-        return "function" === m.type(a);
-      }, isArray: Array.isArray || function (a) {
-        return "array" === m.type(a);
-      }, isWindow: function isWindow(a) {
-        return null != a && a == a.window;
-      }, isNumeric: function isNumeric(a) {
-        return !m.isArray(a) && a - parseFloat(a) + 1 >= 0;
-      }, isEmptyObject: function isEmptyObject(a) {
-        var b;for (b in a) {
-          return !1;
-        }return !0;
-      }, isPlainObject: function isPlainObject(a) {
-        var b;if (!a || "object" !== m.type(a) || a.nodeType || m.isWindow(a)) return !1;try {
-          if (a.constructor && !j.call(a, "constructor") && !j.call(a.constructor.prototype, "isPrototypeOf")) return !1;
-        } catch (c) {
-          return !1;
-        }if (k.ownLast) for (b in a) {
-          return j.call(a, b);
-        }for (b in a) {}return void 0 === b || j.call(a, b);
-      }, type: function type(a) {
-        return null == a ? a + "" : "object" == (typeof a === "undefined" ? "undefined" : _typeof(a)) || "function" == typeof a ? h[i.call(a)] || "object" : typeof a === "undefined" ? "undefined" : _typeof(a);
-      }, globalEval: function globalEval(b) {
-        b && m.trim(b) && (a.execScript || function (b) {
-          a.eval.call(a, b);
-        })(b);
-      }, camelCase: function camelCase(a) {
-        return a.replace(o, "ms-").replace(p, q);
-      }, nodeName: function nodeName(a, b) {
-        return a.nodeName && a.nodeName.toLowerCase() === b.toLowerCase();
-      }, each: function each(a, b, c) {
-        var d,
-            e = 0,
-            f = a.length,
-            g = r(a);if (c) {
-          if (g) {
-            for (; f > e; e++) {
-              if (d = b.apply(a[e], c), d === !1) break;
-            }
-          } else for (e in a) {
-            if (d = b.apply(a[e], c), d === !1) break;
-          }
-        } else if (g) {
-          for (; f > e; e++) {
-            if (d = b.call(a[e], e, a[e]), d === !1) break;
-          }
-        } else for (e in a) {
-          if (d = b.call(a[e], e, a[e]), d === !1) break;
-        }return a;
-      }, trim: function trim(a) {
-        return null == a ? "" : (a + "").replace(n, "");
-      }, makeArray: function makeArray(a, b) {
-        var c = b || [];return null != a && (r(Object(a)) ? m.merge(c, "string" == typeof a ? [a] : a) : f.call(c, a)), c;
-      }, inArray: function inArray(a, b, c) {
-        var d;if (b) {
-          if (g) return g.call(b, a, c);for (d = b.length, c = c ? 0 > c ? Math.max(0, d + c) : c : 0; d > c; c++) {
-            if (c in b && b[c] === a) return c;
-          }
-        }return -1;
-      }, merge: function merge(a, b) {
-        var c = +b.length,
-            d = 0,
-            e = a.length;while (c > d) {
-          a[e++] = b[d++];
-        }if (c !== c) while (void 0 !== b[d]) {
-          a[e++] = b[d++];
-        }return a.length = e, a;
-      }, grep: function grep(a, b, c) {
-        for (var d, e = [], f = 0, g = a.length, h = !c; g > f; f++) {
-          d = !b(a[f], f), d !== h && e.push(a[f]);
-        }return e;
-      }, map: function map(a, b, c) {
-        var d,
-            f = 0,
-            g = a.length,
-            h = r(a),
-            i = [];if (h) for (; g > f; f++) {
-          d = b(a[f], f, c), null != d && i.push(d);
-        } else for (f in a) {
-          d = b(a[f], f, c), null != d && i.push(d);
-        }return e.apply([], i);
-      }, guid: 1, proxy: function proxy(a, b) {
-        var c, e, f;return "string" == typeof b && (f = a[b], b = a, a = f), m.isFunction(a) ? (c = d.call(arguments, 2), e = function e() {
-          return a.apply(b || this, c.concat(d.call(arguments)));
-        }, e.guid = a.guid = a.guid || m.guid++, e) : void 0;
-      }, now: function now() {
-        return +new Date();
-      }, support: k }), m.each("Boolean Number String Function Array Date RegExp Object Error".split(" "), function (a, b) {
-      h["[object " + b + "]"] = b.toLowerCase();
-    });function r(a) {
-      var b = "length" in a && a.length,
-          c = m.type(a);return "function" === c || m.isWindow(a) ? !1 : 1 === a.nodeType && b ? !0 : "array" === c || 0 === b || "number" == typeof b && b > 0 && b - 1 in a;
-    }var s = function (a) {
-      var b,
-          c,
-          d,
-          e,
-          f,
-          g,
-          h,
-          i,
-          j,
-          k,
-          l,
-          m,
-          n,
-          o,
-          p,
-          q,
-          r,
-          s,
-          t,
-          u = "sizzle" + 1 * new Date(),
-          v = a.document,
-          w = 0,
-          x = 0,
-          y = ha(),
-          z = ha(),
-          A = ha(),
-          B = function B(a, b) {
-        return a === b && (l = !0), 0;
-      },
-          C = 1 << 31,
-          D = {}.hasOwnProperty,
-          E = [],
-          F = E.pop,
-          G = E.push,
-          H = E.push,
-          I = E.slice,
-          J = function J(a, b) {
-        for (var c = 0, d = a.length; d > c; c++) {
-          if (a[c] === b) return c;
-        }return -1;
-      },
-          K = "checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped",
-          L = "[\\x20\\t\\r\\n\\f]",
-          M = "(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+",
-          N = M.replace("w", "w#"),
-          O = "\\[" + L + "*(" + M + ")(?:" + L + "*([*^$|!~]?=)" + L + "*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" + N + "))|)" + L + "*\\]",
-          P = ":(" + M + ")(?:\\((('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|((?:\\\\.|[^\\\\()[\\]]|" + O + ")*)|.*)\\)|)",
-          Q = new RegExp(L + "+", "g"),
-          R = new RegExp("^" + L + "+|((?:^|[^\\\\])(?:\\\\.)*)" + L + "+$", "g"),
-          S = new RegExp("^" + L + "*," + L + "*"),
-          T = new RegExp("^" + L + "*([>+~]|" + L + ")" + L + "*"),
-          U = new RegExp("=" + L + "*([^\\]'\"]*?)" + L + "*\\]", "g"),
-          V = new RegExp(P),
-          W = new RegExp("^" + N + "$"),
-          X = { ID: new RegExp("^#(" + M + ")"), CLASS: new RegExp("^\\.(" + M + ")"), TAG: new RegExp("^(" + M.replace("w", "w*") + ")"), ATTR: new RegExp("^" + O), PSEUDO: new RegExp("^" + P), CHILD: new RegExp("^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(" + L + "*(even|odd|(([+-]|)(\\d*)n|)" + L + "*(?:([+-]|)" + L + "*(\\d+)|))" + L + "*\\)|)", "i"), bool: new RegExp("^(?:" + K + ")$", "i"), needsContext: new RegExp("^" + L + "*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" + L + "*((?:-\\d)?\\d*)" + L + "*\\)|)(?=[^-]|$)", "i") },
-          Y = /^(?:input|select|textarea|button)$/i,
-          Z = /^h\d$/i,
-          $ = /^[^{]+\{\s*\[native \w/,
-          _ = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,
-          aa = /[+~]/,
-          ba = /'|\\/g,
-          ca = new RegExp("\\\\([\\da-f]{1,6}" + L + "?|(" + L + ")|.)", "ig"),
-          da = function da(a, b, c) {
-        var d = "0x" + b - 65536;return d !== d || c ? b : 0 > d ? String.fromCharCode(d + 65536) : String.fromCharCode(d >> 10 | 55296, 1023 & d | 56320);
-      },
-          ea = function ea() {
-        m();
-      };try {
-        H.apply(E = I.call(v.childNodes), v.childNodes), E[v.childNodes.length].nodeType;
-      } catch (fa) {
-        H = { apply: E.length ? function (a, b) {
-            G.apply(a, I.call(b));
-          } : function (a, b) {
-            var c = a.length,
-                d = 0;while (a[c++] = b[d++]) {}a.length = c - 1;
-          } };
-      }function ga(a, b, d, e) {
-        var f, h, j, k, l, o, r, s, w, x;if ((b ? b.ownerDocument || b : v) !== n && m(b), b = b || n, d = d || [], k = b.nodeType, "string" != typeof a || !a || 1 !== k && 9 !== k && 11 !== k) return d;if (!e && p) {
-          if (11 !== k && (f = _.exec(a))) if (j = f[1]) {
-            if (9 === k) {
-              if (h = b.getElementById(j), !h || !h.parentNode) return d;if (h.id === j) return d.push(h), d;
-            } else if (b.ownerDocument && (h = b.ownerDocument.getElementById(j)) && t(b, h) && h.id === j) return d.push(h), d;
-          } else {
-            if (f[2]) return H.apply(d, b.getElementsByTagName(a)), d;if ((j = f[3]) && c.getElementsByClassName) return H.apply(d, b.getElementsByClassName(j)), d;
-          }if (c.qsa && (!q || !q.test(a))) {
-            if (s = r = u, w = b, x = 1 !== k && a, 1 === k && "object" !== b.nodeName.toLowerCase()) {
-              o = g(a), (r = b.getAttribute("id")) ? s = r.replace(ba, "\\$&") : b.setAttribute("id", s), s = "[id='" + s + "'] ", l = o.length;while (l--) {
-                o[l] = s + ra(o[l]);
-              }w = aa.test(a) && pa(b.parentNode) || b, x = o.join(",");
-            }if (x) try {
-              return H.apply(d, w.querySelectorAll(x)), d;
-            } catch (y) {} finally {
-              r || b.removeAttribute("id");
-            }
-          }
-        }return i(a.replace(R, "$1"), b, d, e);
-      }function ha() {
-        var a = [];function b(c, e) {
-          return a.push(c + " ") > d.cacheLength && delete b[a.shift()], b[c + " "] = e;
-        }return b;
-      }function ia(a) {
-        return a[u] = !0, a;
-      }function ja(a) {
-        var b = n.createElement("div");try {
-          return !!a(b);
-        } catch (c) {
-          return !1;
-        } finally {
-          b.parentNode && b.parentNode.removeChild(b), b = null;
-        }
-      }function ka(a, b) {
-        var c = a.split("|"),
-            e = a.length;while (e--) {
-          d.attrHandle[c[e]] = b;
-        }
-      }function la(a, b) {
-        var c = b && a,
-            d = c && 1 === a.nodeType && 1 === b.nodeType && (~b.sourceIndex || C) - (~a.sourceIndex || C);if (d) return d;if (c) while (c = c.nextSibling) {
-          if (c === b) return -1;
-        }return a ? 1 : -1;
-      }function ma(a) {
-        return function (b) {
-          var c = b.nodeName.toLowerCase();return "input" === c && b.type === a;
-        };
-      }function na(a) {
-        return function (b) {
-          var c = b.nodeName.toLowerCase();return ("input" === c || "button" === c) && b.type === a;
-        };
-      }function oa(a) {
-        return ia(function (b) {
-          return b = +b, ia(function (c, d) {
-            var e,
-                f = a([], c.length, b),
-                g = f.length;while (g--) {
-              c[e = f[g]] && (c[e] = !(d[e] = c[e]));
-            }
-          });
-        });
-      }function pa(a) {
-        return a && "undefined" != typeof a.getElementsByTagName && a;
-      }c = ga.support = {}, f = ga.isXML = function (a) {
-        var b = a && (a.ownerDocument || a).documentElement;return b ? "HTML" !== b.nodeName : !1;
-      }, m = ga.setDocument = function (a) {
-        var b,
-            e,
-            g = a ? a.ownerDocument || a : v;return g !== n && 9 === g.nodeType && g.documentElement ? (n = g, o = g.documentElement, e = g.defaultView, e && e !== e.top && (e.addEventListener ? e.addEventListener("unload", ea, !1) : e.attachEvent && e.attachEvent("onunload", ea)), p = !f(g), c.attributes = ja(function (a) {
-          return a.className = "i", !a.getAttribute("className");
-        }), c.getElementsByTagName = ja(function (a) {
-          return a.appendChild(g.createComment("")), !a.getElementsByTagName("*").length;
-        }), c.getElementsByClassName = $.test(g.getElementsByClassName), c.getById = ja(function (a) {
-          return o.appendChild(a).id = u, !g.getElementsByName || !g.getElementsByName(u).length;
-        }), c.getById ? (d.find.ID = function (a, b) {
-          if ("undefined" != typeof b.getElementById && p) {
-            var c = b.getElementById(a);return c && c.parentNode ? [c] : [];
-          }
-        }, d.filter.ID = function (a) {
-          var b = a.replace(ca, da);return function (a) {
-            return a.getAttribute("id") === b;
-          };
-        }) : (delete d.find.ID, d.filter.ID = function (a) {
-          var b = a.replace(ca, da);return function (a) {
-            var c = "undefined" != typeof a.getAttributeNode && a.getAttributeNode("id");return c && c.value === b;
-          };
-        }), d.find.TAG = c.getElementsByTagName ? function (a, b) {
-          return "undefined" != typeof b.getElementsByTagName ? b.getElementsByTagName(a) : c.qsa ? b.querySelectorAll(a) : void 0;
-        } : function (a, b) {
-          var c,
-              d = [],
-              e = 0,
-              f = b.getElementsByTagName(a);if ("*" === a) {
-            while (c = f[e++]) {
-              1 === c.nodeType && d.push(c);
-            }return d;
-          }return f;
-        }, d.find.CLASS = c.getElementsByClassName && function (a, b) {
-          return p ? b.getElementsByClassName(a) : void 0;
-        }, r = [], q = [], (c.qsa = $.test(g.querySelectorAll)) && (ja(function (a) {
-          o.appendChild(a).innerHTML = "<a id='" + u + "'></a><select id='" + u + "-\f]' msallowcapture=''><option selected=''></option></select>", a.querySelectorAll("[msallowcapture^='']").length && q.push("[*^$]=" + L + "*(?:''|\"\")"), a.querySelectorAll("[selected]").length || q.push("\\[" + L + "*(?:value|" + K + ")"), a.querySelectorAll("[id~=" + u + "-]").length || q.push("~="), a.querySelectorAll(":checked").length || q.push(":checked"), a.querySelectorAll("a#" + u + "+*").length || q.push(".#.+[+~]");
-        }), ja(function (a) {
-          var b = g.createElement("input");b.setAttribute("type", "hidden"), a.appendChild(b).setAttribute("name", "D"), a.querySelectorAll("[name=d]").length && q.push("name" + L + "*[*^$|!~]?="), a.querySelectorAll(":enabled").length || q.push(":enabled", ":disabled"), a.querySelectorAll("*,:x"), q.push(",.*:");
-        })), (c.matchesSelector = $.test(s = o.matches || o.webkitMatchesSelector || o.mozMatchesSelector || o.oMatchesSelector || o.msMatchesSelector)) && ja(function (a) {
-          c.disconnectedMatch = s.call(a, "div"), s.call(a, "[s!='']:x"), r.push("!=", P);
-        }), q = q.length && new RegExp(q.join("|")), r = r.length && new RegExp(r.join("|")), b = $.test(o.compareDocumentPosition), t = b || $.test(o.contains) ? function (a, b) {
-          var c = 9 === a.nodeType ? a.documentElement : a,
-              d = b && b.parentNode;return a === d || !(!d || 1 !== d.nodeType || !(c.contains ? c.contains(d) : a.compareDocumentPosition && 16 & a.compareDocumentPosition(d)));
-        } : function (a, b) {
-          if (b) while (b = b.parentNode) {
-            if (b === a) return !0;
-          }return !1;
-        }, B = b ? function (a, b) {
-          if (a === b) return l = !0, 0;var d = !a.compareDocumentPosition - !b.compareDocumentPosition;return d ? d : (d = (a.ownerDocument || a) === (b.ownerDocument || b) ? a.compareDocumentPosition(b) : 1, 1 & d || !c.sortDetached && b.compareDocumentPosition(a) === d ? a === g || a.ownerDocument === v && t(v, a) ? -1 : b === g || b.ownerDocument === v && t(v, b) ? 1 : k ? J(k, a) - J(k, b) : 0 : 4 & d ? -1 : 1);
-        } : function (a, b) {
-          if (a === b) return l = !0, 0;var c,
-              d = 0,
-              e = a.parentNode,
-              f = b.parentNode,
-              h = [a],
-              i = [b];if (!e || !f) return a === g ? -1 : b === g ? 1 : e ? -1 : f ? 1 : k ? J(k, a) - J(k, b) : 0;if (e === f) return la(a, b);c = a;while (c = c.parentNode) {
-            h.unshift(c);
-          }c = b;while (c = c.parentNode) {
-            i.unshift(c);
-          }while (h[d] === i[d]) {
-            d++;
-          }return d ? la(h[d], i[d]) : h[d] === v ? -1 : i[d] === v ? 1 : 0;
-        }, g) : n;
-      }, ga.matches = function (a, b) {
-        return ga(a, null, null, b);
-      }, ga.matchesSelector = function (a, b) {
-        if ((a.ownerDocument || a) !== n && m(a), b = b.replace(U, "='$1']"), !(!c.matchesSelector || !p || r && r.test(b) || q && q.test(b))) try {
-          var d = s.call(a, b);if (d || c.disconnectedMatch || a.document && 11 !== a.document.nodeType) return d;
-        } catch (e) {}return ga(b, n, null, [a]).length > 0;
-      }, ga.contains = function (a, b) {
-        return (a.ownerDocument || a) !== n && m(a), t(a, b);
-      }, ga.attr = function (a, b) {
-        (a.ownerDocument || a) !== n && m(a);var e = d.attrHandle[b.toLowerCase()],
-            f = e && D.call(d.attrHandle, b.toLowerCase()) ? e(a, b, !p) : void 0;return void 0 !== f ? f : c.attributes || !p ? a.getAttribute(b) : (f = a.getAttributeNode(b)) && f.specified ? f.value : null;
-      }, ga.error = function (a) {
-        throw new Error("Syntax error, unrecognized expression: " + a);
-      }, ga.uniqueSort = function (a) {
-        var b,
-            d = [],
-            e = 0,
-            f = 0;if (l = !c.detectDuplicates, k = !c.sortStable && a.slice(0), a.sort(B), l) {
-          while (b = a[f++]) {
-            b === a[f] && (e = d.push(f));
-          }while (e--) {
-            a.splice(d[e], 1);
-          }
-        }return k = null, a;
-      }, e = ga.getText = function (a) {
-        var b,
-            c = "",
-            d = 0,
-            f = a.nodeType;if (f) {
-          if (1 === f || 9 === f || 11 === f) {
-            if ("string" == typeof a.textContent) return a.textContent;for (a = a.firstChild; a; a = a.nextSibling) {
-              c += e(a);
-            }
-          } else if (3 === f || 4 === f) return a.nodeValue;
-        } else while (b = a[d++]) {
-          c += e(b);
-        }return c;
-      }, d = ga.selectors = { cacheLength: 50, createPseudo: ia, match: X, attrHandle: {}, find: {}, relative: { ">": { dir: "parentNode", first: !0 }, " ": { dir: "parentNode" }, "+": { dir: "previousSibling", first: !0 }, "~": { dir: "previousSibling" } }, preFilter: { ATTR: function ATTR(a) {
-            return a[1] = a[1].replace(ca, da), a[3] = (a[3] || a[4] || a[5] || "").replace(ca, da), "~=" === a[2] && (a[3] = " " + a[3] + " "), a.slice(0, 4);
-          }, CHILD: function CHILD(a) {
-            return a[1] = a[1].toLowerCase(), "nth" === a[1].slice(0, 3) ? (a[3] || ga.error(a[0]), a[4] = +(a[4] ? a[5] + (a[6] || 1) : 2 * ("even" === a[3] || "odd" === a[3])), a[5] = +(a[7] + a[8] || "odd" === a[3])) : a[3] && ga.error(a[0]), a;
-          }, PSEUDO: function PSEUDO(a) {
-            var b,
-                c = !a[6] && a[2];return X.CHILD.test(a[0]) ? null : (a[3] ? a[2] = a[4] || a[5] || "" : c && V.test(c) && (b = g(c, !0)) && (b = c.indexOf(")", c.length - b) - c.length) && (a[0] = a[0].slice(0, b), a[2] = c.slice(0, b)), a.slice(0, 3));
-          } }, filter: { TAG: function TAG(a) {
-            var b = a.replace(ca, da).toLowerCase();return "*" === a ? function () {
-              return !0;
-            } : function (a) {
-              return a.nodeName && a.nodeName.toLowerCase() === b;
-            };
-          }, CLASS: function CLASS(a) {
-            var b = y[a + " "];return b || (b = new RegExp("(^|" + L + ")" + a + "(" + L + "|$)")) && y(a, function (a) {
-              return b.test("string" == typeof a.className && a.className || "undefined" != typeof a.getAttribute && a.getAttribute("class") || "");
-            });
-          }, ATTR: function ATTR(a, b, c) {
-            return function (d) {
-              var e = ga.attr(d, a);return null == e ? "!=" === b : b ? (e += "", "=" === b ? e === c : "!=" === b ? e !== c : "^=" === b ? c && 0 === e.indexOf(c) : "*=" === b ? c && e.indexOf(c) > -1 : "$=" === b ? c && e.slice(-c.length) === c : "~=" === b ? (" " + e.replace(Q, " ") + " ").indexOf(c) > -1 : "|=" === b ? e === c || e.slice(0, c.length + 1) === c + "-" : !1) : !0;
-            };
-          }, CHILD: function CHILD(a, b, c, d, e) {
-            var f = "nth" !== a.slice(0, 3),
-                g = "last" !== a.slice(-4),
-                h = "of-type" === b;return 1 === d && 0 === e ? function (a) {
-              return !!a.parentNode;
-            } : function (b, c, i) {
-              var j,
-                  k,
-                  l,
-                  m,
-                  n,
-                  o,
-                  p = f !== g ? "nextSibling" : "previousSibling",
-                  q = b.parentNode,
-                  r = h && b.nodeName.toLowerCase(),
-                  s = !i && !h;if (q) {
-                if (f) {
-                  while (p) {
-                    l = b;while (l = l[p]) {
-                      if (h ? l.nodeName.toLowerCase() === r : 1 === l.nodeType) return !1;
-                    }o = p = "only" === a && !o && "nextSibling";
-                  }return !0;
-                }if (o = [g ? q.firstChild : q.lastChild], g && s) {
-                  k = q[u] || (q[u] = {}), j = k[a] || [], n = j[0] === w && j[1], m = j[0] === w && j[2], l = n && q.childNodes[n];while (l = ++n && l && l[p] || (m = n = 0) || o.pop()) {
-                    if (1 === l.nodeType && ++m && l === b) {
-                      k[a] = [w, n, m];break;
-                    }
-                  }
-                } else if (s && (j = (b[u] || (b[u] = {}))[a]) && j[0] === w) m = j[1];else while (l = ++n && l && l[p] || (m = n = 0) || o.pop()) {
-                  if ((h ? l.nodeName.toLowerCase() === r : 1 === l.nodeType) && ++m && (s && ((l[u] || (l[u] = {}))[a] = [w, m]), l === b)) break;
-                }return m -= e, m === d || m % d === 0 && m / d >= 0;
-              }
-            };
-          }, PSEUDO: function PSEUDO(a, b) {
-            var c,
-                e = d.pseudos[a] || d.setFilters[a.toLowerCase()] || ga.error("unsupported pseudo: " + a);return e[u] ? e(b) : e.length > 1 ? (c = [a, a, "", b], d.setFilters.hasOwnProperty(a.toLowerCase()) ? ia(function (a, c) {
-              var d,
-                  f = e(a, b),
-                  g = f.length;while (g--) {
-                d = J(a, f[g]), a[d] = !(c[d] = f[g]);
-              }
-            }) : function (a) {
-              return e(a, 0, c);
-            }) : e;
-          } }, pseudos: { not: ia(function (a) {
-            var b = [],
-                c = [],
-                d = h(a.replace(R, "$1"));return d[u] ? ia(function (a, b, c, e) {
-              var f,
-                  g = d(a, null, e, []),
-                  h = a.length;while (h--) {
-                (f = g[h]) && (a[h] = !(b[h] = f));
-              }
-            }) : function (a, e, f) {
-              return b[0] = a, d(b, null, f, c), b[0] = null, !c.pop();
-            };
-          }), has: ia(function (a) {
-            return function (b) {
-              return ga(a, b).length > 0;
-            };
-          }), contains: ia(function (a) {
-            return a = a.replace(ca, da), function (b) {
-              return (b.textContent || b.innerText || e(b)).indexOf(a) > -1;
-            };
-          }), lang: ia(function (a) {
-            return W.test(a || "") || ga.error("unsupported lang: " + a), a = a.replace(ca, da).toLowerCase(), function (b) {
-              var c;do {
-                if (c = p ? b.lang : b.getAttribute("xml:lang") || b.getAttribute("lang")) return c = c.toLowerCase(), c === a || 0 === c.indexOf(a + "-");
-              } while ((b = b.parentNode) && 1 === b.nodeType);return !1;
-            };
-          }), target: function target(b) {
-            var c = a.location && a.location.hash;return c && c.slice(1) === b.id;
-          }, root: function root(a) {
-            return a === o;
-          }, focus: function focus(a) {
-            return a === n.activeElement && (!n.hasFocus || n.hasFocus()) && !!(a.type || a.href || ~a.tabIndex);
-          }, enabled: function enabled(a) {
-            return a.disabled === !1;
-          }, disabled: function disabled(a) {
-            return a.disabled === !0;
-          }, checked: function checked(a) {
-            var b = a.nodeName.toLowerCase();return "input" === b && !!a.checked || "option" === b && !!a.selected;
-          }, selected: function selected(a) {
-            return a.parentNode && a.parentNode.selectedIndex, a.selected === !0;
-          }, empty: function empty(a) {
-            for (a = a.firstChild; a; a = a.nextSibling) {
-              if (a.nodeType < 6) return !1;
-            }return !0;
-          }, parent: function parent(a) {
-            return !d.pseudos.empty(a);
-          }, header: function header(a) {
-            return Z.test(a.nodeName);
-          }, input: function input(a) {
-            return Y.test(a.nodeName);
-          }, button: function button(a) {
-            var b = a.nodeName.toLowerCase();return "input" === b && "button" === a.type || "button" === b;
-          }, text: function text(a) {
-            var b;return "input" === a.nodeName.toLowerCase() && "text" === a.type && (null == (b = a.getAttribute("type")) || "text" === b.toLowerCase());
-          }, first: oa(function () {
-            return [0];
-          }), last: oa(function (a, b) {
-            return [b - 1];
-          }), eq: oa(function (a, b, c) {
-            return [0 > c ? c + b : c];
-          }), even: oa(function (a, b) {
-            for (var c = 0; b > c; c += 2) {
-              a.push(c);
-            }return a;
-          }), odd: oa(function (a, b) {
-            for (var c = 1; b > c; c += 2) {
-              a.push(c);
-            }return a;
-          }), lt: oa(function (a, b, c) {
-            for (var d = 0 > c ? c + b : c; --d >= 0;) {
-              a.push(d);
-            }return a;
-          }), gt: oa(function (a, b, c) {
-            for (var d = 0 > c ? c + b : c; ++d < b;) {
-              a.push(d);
-            }return a;
-          }) } }, d.pseudos.nth = d.pseudos.eq;for (b in { radio: !0, checkbox: !0, file: !0, password: !0, image: !0 }) {
-        d.pseudos[b] = ma(b);
-      }for (b in { submit: !0, reset: !0 }) {
-        d.pseudos[b] = na(b);
-      }function qa() {}qa.prototype = d.filters = d.pseudos, d.setFilters = new qa(), g = ga.tokenize = function (a, b) {
-        var c,
-            e,
-            f,
-            g,
-            h,
-            i,
-            j,
-            k = z[a + " "];if (k) return b ? 0 : k.slice(0);h = a, i = [], j = d.preFilter;while (h) {
-          (!c || (e = S.exec(h))) && (e && (h = h.slice(e[0].length) || h), i.push(f = [])), c = !1, (e = T.exec(h)) && (c = e.shift(), f.push({ value: c, type: e[0].replace(R, " ") }), h = h.slice(c.length));for (g in d.filter) {
-            !(e = X[g].exec(h)) || j[g] && !(e = j[g](e)) || (c = e.shift(), f.push({ value: c, type: g, matches: e }), h = h.slice(c.length));
-          }if (!c) break;
-        }return b ? h.length : h ? ga.error(a) : z(a, i).slice(0);
-      };function ra(a) {
-        for (var b = 0, c = a.length, d = ""; c > b; b++) {
-          d += a[b].value;
-        }return d;
-      }function sa(a, b, c) {
-        var d = b.dir,
-            e = c && "parentNode" === d,
-            f = x++;return b.first ? function (b, c, f) {
-          while (b = b[d]) {
-            if (1 === b.nodeType || e) return a(b, c, f);
-          }
-        } : function (b, c, g) {
-          var h,
-              i,
-              j = [w, f];if (g) {
-            while (b = b[d]) {
-              if ((1 === b.nodeType || e) && a(b, c, g)) return !0;
-            }
-          } else while (b = b[d]) {
-            if (1 === b.nodeType || e) {
-              if (i = b[u] || (b[u] = {}), (h = i[d]) && h[0] === w && h[1] === f) return j[2] = h[2];if (i[d] = j, j[2] = a(b, c, g)) return !0;
-            }
-          }
-        };
-      }function ta(a) {
-        return a.length > 1 ? function (b, c, d) {
-          var e = a.length;while (e--) {
-            if (!a[e](b, c, d)) return !1;
-          }return !0;
-        } : a[0];
-      }function ua(a, b, c) {
-        for (var d = 0, e = b.length; e > d; d++) {
-          ga(a, b[d], c);
-        }return c;
-      }function va(a, b, c, d, e) {
-        for (var f, g = [], h = 0, i = a.length, j = null != b; i > h; h++) {
-          (f = a[h]) && (!c || c(f, d, e)) && (g.push(f), j && b.push(h));
-        }return g;
-      }function wa(a, b, c, d, e, f) {
-        return d && !d[u] && (d = wa(d)), e && !e[u] && (e = wa(e, f)), ia(function (f, g, h, i) {
-          var j,
-              k,
-              l,
-              m = [],
-              n = [],
-              o = g.length,
-              p = f || ua(b || "*", h.nodeType ? [h] : h, []),
-              q = !a || !f && b ? p : va(p, m, a, h, i),
-              r = c ? e || (f ? a : o || d) ? [] : g : q;if (c && c(q, r, h, i), d) {
-            j = va(r, n), d(j, [], h, i), k = j.length;while (k--) {
-              (l = j[k]) && (r[n[k]] = !(q[n[k]] = l));
-            }
-          }if (f) {
-            if (e || a) {
-              if (e) {
-                j = [], k = r.length;while (k--) {
-                  (l = r[k]) && j.push(q[k] = l);
-                }e(null, r = [], j, i);
-              }k = r.length;while (k--) {
-                (l = r[k]) && (j = e ? J(f, l) : m[k]) > -1 && (f[j] = !(g[j] = l));
-              }
-            }
-          } else r = va(r === g ? r.splice(o, r.length) : r), e ? e(null, g, r, i) : H.apply(g, r);
-        });
-      }function xa(a) {
-        for (var b, c, e, f = a.length, g = d.relative[a[0].type], h = g || d.relative[" "], i = g ? 1 : 0, k = sa(function (a) {
-          return a === b;
-        }, h, !0), l = sa(function (a) {
-          return J(b, a) > -1;
-        }, h, !0), m = [function (a, c, d) {
-          var e = !g && (d || c !== j) || ((b = c).nodeType ? k(a, c, d) : l(a, c, d));return b = null, e;
-        }]; f > i; i++) {
-          if (c = d.relative[a[i].type]) m = [sa(ta(m), c)];else {
-            if (c = d.filter[a[i].type].apply(null, a[i].matches), c[u]) {
-              for (e = ++i; f > e; e++) {
-                if (d.relative[a[e].type]) break;
-              }return wa(i > 1 && ta(m), i > 1 && ra(a.slice(0, i - 1).concat({ value: " " === a[i - 2].type ? "*" : "" })).replace(R, "$1"), c, e > i && xa(a.slice(i, e)), f > e && xa(a = a.slice(e)), f > e && ra(a));
-            }m.push(c);
-          }
-        }return ta(m);
-      }function ya(a, b) {
-        var c = b.length > 0,
-            e = a.length > 0,
-            f = function f(_f, g, h, i, k) {
-          var l,
-              m,
-              o,
-              p = 0,
-              q = "0",
-              r = _f && [],
-              s = [],
-              t = j,
-              u = _f || e && d.find.TAG("*", k),
-              v = w += null == t ? 1 : Math.random() || .1,
-              x = u.length;for (k && (j = g !== n && g); q !== x && null != (l = u[q]); q++) {
-            if (e && l) {
-              m = 0;while (o = a[m++]) {
-                if (o(l, g, h)) {
-                  i.push(l);break;
-                }
-              }k && (w = v);
-            }c && ((l = !o && l) && p--, _f && r.push(l));
-          }if (p += q, c && q !== p) {
-            m = 0;while (o = b[m++]) {
-              o(r, s, g, h);
-            }if (_f) {
-              if (p > 0) while (q--) {
-                r[q] || s[q] || (s[q] = F.call(i));
-              }s = va(s);
-            }H.apply(i, s), k && !_f && s.length > 0 && p + b.length > 1 && ga.uniqueSort(i);
-          }return k && (w = v, j = t), r;
-        };return c ? ia(f) : f;
-      }return h = ga.compile = function (a, b) {
-        var c,
-            d = [],
-            e = [],
-            f = A[a + " "];if (!f) {
-          b || (b = g(a)), c = b.length;while (c--) {
-            f = xa(b[c]), f[u] ? d.push(f) : e.push(f);
-          }f = A(a, ya(e, d)), f.selector = a;
-        }return f;
-      }, i = ga.select = function (a, b, e, f) {
-        var i,
-            j,
-            k,
-            l,
-            m,
-            n = "function" == typeof a && a,
-            o = !f && g(a = n.selector || a);if (e = e || [], 1 === o.length) {
-          if (j = o[0] = o[0].slice(0), j.length > 2 && "ID" === (k = j[0]).type && c.getById && 9 === b.nodeType && p && d.relative[j[1].type]) {
-            if (b = (d.find.ID(k.matches[0].replace(ca, da), b) || [])[0], !b) return e;n && (b = b.parentNode), a = a.slice(j.shift().value.length);
-          }i = X.needsContext.test(a) ? 0 : j.length;while (i--) {
-            if (k = j[i], d.relative[l = k.type]) break;if ((m = d.find[l]) && (f = m(k.matches[0].replace(ca, da), aa.test(j[0].type) && pa(b.parentNode) || b))) {
-              if (j.splice(i, 1), a = f.length && ra(j), !a) return H.apply(e, f), e;break;
-            }
-          }
-        }return (n || h(a, o))(f, b, !p, e, aa.test(a) && pa(b.parentNode) || b), e;
-      }, c.sortStable = u.split("").sort(B).join("") === u, c.detectDuplicates = !!l, m(), c.sortDetached = ja(function (a) {
-        return 1 & a.compareDocumentPosition(n.createElement("div"));
-      }), ja(function (a) {
-        return a.innerHTML = "<a href='#'></a>", "#" === a.firstChild.getAttribute("href");
-      }) || ka("type|href|height|width", function (a, b, c) {
-        return c ? void 0 : a.getAttribute(b, "type" === b.toLowerCase() ? 1 : 2);
-      }), c.attributes && ja(function (a) {
-        return a.innerHTML = "<input/>", a.firstChild.setAttribute("value", ""), "" === a.firstChild.getAttribute("value");
-      }) || ka("value", function (a, b, c) {
-        return c || "input" !== a.nodeName.toLowerCase() ? void 0 : a.defaultValue;
-      }), ja(function (a) {
-        return null == a.getAttribute("disabled");
-      }) || ka(K, function (a, b, c) {
-        var d;return c ? void 0 : a[b] === !0 ? b.toLowerCase() : (d = a.getAttributeNode(b)) && d.specified ? d.value : null;
-      }), ga;
-    }(a);m.find = s, m.expr = s.selectors, m.expr[":"] = m.expr.pseudos, m.unique = s.uniqueSort, m.text = s.getText, m.isXMLDoc = s.isXML, m.contains = s.contains;var t = m.expr.match.needsContext,
-        u = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
-        v = /^.[^:#\[\.,]*$/;function w(a, b, c) {
-      if (m.isFunction(b)) return m.grep(a, function (a, d) {
-        return !!b.call(a, d, a) !== c;
-      });if (b.nodeType) return m.grep(a, function (a) {
-        return a === b !== c;
-      });if ("string" == typeof b) {
-        if (v.test(b)) return m.filter(b, a, c);b = m.filter(b, a);
-      }return m.grep(a, function (a) {
-        return m.inArray(a, b) >= 0 !== c;
-      });
-    }m.filter = function (a, b, c) {
-      var d = b[0];return c && (a = ":not(" + a + ")"), 1 === b.length && 1 === d.nodeType ? m.find.matchesSelector(d, a) ? [d] : [] : m.find.matches(a, m.grep(b, function (a) {
-        return 1 === a.nodeType;
-      }));
-    }, m.fn.extend({ find: function find(a) {
-        var b,
-            c = [],
-            d = this,
-            e = d.length;if ("string" != typeof a) return this.pushStack(m(a).filter(function () {
-          for (b = 0; e > b; b++) {
-            if (m.contains(d[b], this)) return !0;
-          }
-        }));for (b = 0; e > b; b++) {
-          m.find(a, d[b], c);
-        }return c = this.pushStack(e > 1 ? m.unique(c) : c), c.selector = this.selector ? this.selector + " " + a : a, c;
-      }, filter: function filter(a) {
-        return this.pushStack(w(this, a || [], !1));
-      }, not: function not(a) {
-        return this.pushStack(w(this, a || [], !0));
-      }, is: function is(a) {
-        return !!w(this, "string" == typeof a && t.test(a) ? m(a) : a || [], !1).length;
-      } });var x,
-        y = a.document,
-        z = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/,
-        A = m.fn.init = function (a, b) {
-      var c, d;if (!a) return this;if ("string" == typeof a) {
-        if (c = "<" === a.charAt(0) && ">" === a.charAt(a.length - 1) && a.length >= 3 ? [null, a, null] : z.exec(a), !c || !c[1] && b) return !b || b.jquery ? (b || x).find(a) : this.constructor(b).find(a);if (c[1]) {
-          if (b = b instanceof m ? b[0] : b, m.merge(this, m.parseHTML(c[1], b && b.nodeType ? b.ownerDocument || b : y, !0)), u.test(c[1]) && m.isPlainObject(b)) for (c in b) {
-            m.isFunction(this[c]) ? this[c](b[c]) : this.attr(c, b[c]);
-          }return this;
-        }if (d = y.getElementById(c[2]), d && d.parentNode) {
-          if (d.id !== c[2]) return x.find(a);this.length = 1, this[0] = d;
-        }return this.context = y, this.selector = a, this;
-      }return a.nodeType ? (this.context = this[0] = a, this.length = 1, this) : m.isFunction(a) ? "undefined" != typeof x.ready ? x.ready(a) : a(m) : (void 0 !== a.selector && (this.selector = a.selector, this.context = a.context), m.makeArray(a, this));
-    };A.prototype = m.fn, x = m(y);var B = /^(?:parents|prev(?:Until|All))/,
-        C = { children: !0, contents: !0, next: !0, prev: !0 };m.extend({ dir: function dir(a, b, c) {
-        var d = [],
-            e = a[b];while (e && 9 !== e.nodeType && (void 0 === c || 1 !== e.nodeType || !m(e).is(c))) {
-          1 === e.nodeType && d.push(e), e = e[b];
-        }return d;
-      }, sibling: function sibling(a, b) {
-        for (var c = []; a; a = a.nextSibling) {
-          1 === a.nodeType && a !== b && c.push(a);
-        }return c;
-      } }), m.fn.extend({ has: function has(a) {
-        var b,
-            c = m(a, this),
-            d = c.length;return this.filter(function () {
-          for (b = 0; d > b; b++) {
-            if (m.contains(this, c[b])) return !0;
-          }
-        });
-      }, closest: function closest(a, b) {
-        for (var c, d = 0, e = this.length, f = [], g = t.test(a) || "string" != typeof a ? m(a, b || this.context) : 0; e > d; d++) {
-          for (c = this[d]; c && c !== b; c = c.parentNode) {
-            if (c.nodeType < 11 && (g ? g.index(c) > -1 : 1 === c.nodeType && m.find.matchesSelector(c, a))) {
-              f.push(c);break;
-            }
-          }
-        }return this.pushStack(f.length > 1 ? m.unique(f) : f);
-      }, index: function index(a) {
-        return a ? "string" == typeof a ? m.inArray(this[0], m(a)) : m.inArray(a.jquery ? a[0] : a, this) : this[0] && this[0].parentNode ? this.first().prevAll().length : -1;
-      }, add: function add(a, b) {
-        return this.pushStack(m.unique(m.merge(this.get(), m(a, b))));
-      }, addBack: function addBack(a) {
-        return this.add(null == a ? this.prevObject : this.prevObject.filter(a));
-      } });function D(a, b) {
-      do {
-        a = a[b];
-      } while (a && 1 !== a.nodeType);return a;
-    }m.each({ parent: function parent(a) {
-        var b = a.parentNode;return b && 11 !== b.nodeType ? b : null;
-      }, parents: function parents(a) {
-        return m.dir(a, "parentNode");
-      }, parentsUntil: function parentsUntil(a, b, c) {
-        return m.dir(a, "parentNode", c);
-      }, next: function next(a) {
-        return D(a, "nextSibling");
-      }, prev: function prev(a) {
-        return D(a, "previousSibling");
-      }, nextAll: function nextAll(a) {
-        return m.dir(a, "nextSibling");
-      }, prevAll: function prevAll(a) {
-        return m.dir(a, "previousSibling");
-      }, nextUntil: function nextUntil(a, b, c) {
-        return m.dir(a, "nextSibling", c);
-      }, prevUntil: function prevUntil(a, b, c) {
-        return m.dir(a, "previousSibling", c);
-      }, siblings: function siblings(a) {
-        return m.sibling((a.parentNode || {}).firstChild, a);
-      }, children: function children(a) {
-        return m.sibling(a.firstChild);
-      }, contents: function contents(a) {
-        return m.nodeName(a, "iframe") ? a.contentDocument || a.contentWindow.document : m.merge([], a.childNodes);
-      } }, function (a, b) {
-      m.fn[a] = function (c, d) {
-        var e = m.map(this, b, c);return "Until" !== a.slice(-5) && (d = c), d && "string" == typeof d && (e = m.filter(d, e)), this.length > 1 && (C[a] || (e = m.unique(e)), B.test(a) && (e = e.reverse())), this.pushStack(e);
-      };
-    });var E = /\S+/g,
-        F = {};function G(a) {
-      var b = F[a] = {};return m.each(a.match(E) || [], function (a, c) {
-        b[c] = !0;
-      }), b;
-    }m.Callbacks = function (a) {
-      a = "string" == typeof a ? F[a] || G(a) : m.extend({}, a);var b,
-          c,
-          d,
-          e,
-          f,
-          g,
-          h = [],
-          i = !a.once && [],
-          j = function j(l) {
-        for (c = a.memory && l, d = !0, f = g || 0, g = 0, e = h.length, b = !0; h && e > f; f++) {
-          if (h[f].apply(l[0], l[1]) === !1 && a.stopOnFalse) {
-            c = !1;break;
-          }
-        }b = !1, h && (i ? i.length && j(i.shift()) : c ? h = [] : k.disable());
-      },
-          k = { add: function add() {
-          if (h) {
-            var d = h.length;!function f(b) {
-              m.each(b, function (b, c) {
-                var d = m.type(c);"function" === d ? a.unique && k.has(c) || h.push(c) : c && c.length && "string" !== d && f(c);
-              });
-            }(arguments), b ? e = h.length : c && (g = d, j(c));
-          }return this;
-        }, remove: function remove() {
-          return h && m.each(arguments, function (a, c) {
-            var d;while ((d = m.inArray(c, h, d)) > -1) {
-              h.splice(d, 1), b && (e >= d && e--, f >= d && f--);
-            }
-          }), this;
-        }, has: function has(a) {
-          return a ? m.inArray(a, h) > -1 : !(!h || !h.length);
-        }, empty: function empty() {
-          return h = [], e = 0, this;
-        }, disable: function disable() {
-          return h = i = c = void 0, this;
-        }, disabled: function disabled() {
-          return !h;
-        }, lock: function lock() {
-          return i = void 0, c || k.disable(), this;
-        }, locked: function locked() {
-          return !i;
-        }, fireWith: function fireWith(a, c) {
-          return !h || d && !i || (c = c || [], c = [a, c.slice ? c.slice() : c], b ? i.push(c) : j(c)), this;
-        }, fire: function fire() {
-          return k.fireWith(this, arguments), this;
-        }, fired: function fired() {
-          return !!d;
-        } };return k;
-    }, m.extend({ Deferred: function Deferred(a) {
-        var b = [["resolve", "done", m.Callbacks("once memory"), "resolved"], ["reject", "fail", m.Callbacks("once memory"), "rejected"], ["notify", "progress", m.Callbacks("memory")]],
-            c = "pending",
-            d = { state: function state() {
-            return c;
-          }, always: function always() {
-            return e.done(arguments).fail(arguments), this;
-          }, then: function then() {
-            var a = arguments;return m.Deferred(function (c) {
-              m.each(b, function (b, f) {
-                var g = m.isFunction(a[b]) && a[b];e[f[1]](function () {
-                  var a = g && g.apply(this, arguments);a && m.isFunction(a.promise) ? a.promise().done(c.resolve).fail(c.reject).progress(c.notify) : c[f[0] + "With"](this === d ? c.promise() : this, g ? [a] : arguments);
-                });
-              }), a = null;
-            }).promise();
-          }, promise: function promise(a) {
-            return null != a ? m.extend(a, d) : d;
-          } },
-            e = {};return d.pipe = d.then, m.each(b, function (a, f) {
-          var g = f[2],
-              h = f[3];d[f[1]] = g.add, h && g.add(function () {
-            c = h;
-          }, b[1 ^ a][2].disable, b[2][2].lock), e[f[0]] = function () {
-            return e[f[0] + "With"](this === e ? d : this, arguments), this;
-          }, e[f[0] + "With"] = g.fireWith;
-        }), d.promise(e), a && a.call(e, e), e;
-      }, when: function when(a) {
-        var b = 0,
-            c = d.call(arguments),
-            e = c.length,
-            f = 1 !== e || a && m.isFunction(a.promise) ? e : 0,
-            g = 1 === f ? a : m.Deferred(),
-            h = function h(a, b, c) {
-          return function (e) {
-            b[a] = this, c[a] = arguments.length > 1 ? d.call(arguments) : e, c === i ? g.notifyWith(b, c) : --f || g.resolveWith(b, c);
-          };
-        },
-            i,
-            j,
-            k;if (e > 1) for (i = new Array(e), j = new Array(e), k = new Array(e); e > b; b++) {
-          c[b] && m.isFunction(c[b].promise) ? c[b].promise().done(h(b, k, c)).fail(g.reject).progress(h(b, j, i)) : --f;
-        }return f || g.resolveWith(k, c), g.promise();
-      } });var H;m.fn.ready = function (a) {
-      return m.ready.promise().done(a), this;
-    }, m.extend({ isReady: !1, readyWait: 1, holdReady: function holdReady(a) {
-        a ? m.readyWait++ : m.ready(!0);
-      }, ready: function ready(a) {
-        if (a === !0 ? ! --m.readyWait : !m.isReady) {
-          if (!y.body) return setTimeout(m.ready);m.isReady = !0, a !== !0 && --m.readyWait > 0 || (H.resolveWith(y, [m]), m.fn.triggerHandler && (m(y).triggerHandler("ready"), m(y).off("ready")));
-        }
-      } });function I() {
-      y.addEventListener ? (y.removeEventListener("DOMContentLoaded", J, !1), a.removeEventListener("load", J, !1)) : (y.detachEvent("onreadystatechange", J), a.detachEvent("onload", J));
-    }function J() {
-      (y.addEventListener || "load" === event.type || "complete" === y.readyState) && (I(), m.ready());
-    }m.ready.promise = function (b) {
-      if (!H) if (H = m.Deferred(), "complete" === y.readyState) setTimeout(m.ready);else if (y.addEventListener) y.addEventListener("DOMContentLoaded", J, !1), a.addEventListener("load", J, !1);else {
-        y.attachEvent("onreadystatechange", J), a.attachEvent("onload", J);var c = !1;try {
-          c = null == a.frameElement && y.documentElement;
-        } catch (d) {}c && c.doScroll && !function e() {
-          if (!m.isReady) {
-            try {
-              c.doScroll("left");
-            } catch (a) {
-              return setTimeout(e, 50);
-            }I(), m.ready();
-          }
-        }();
-      }return H.promise(b);
-    };var K = "undefined",
-        L;for (L in m(k)) {
-      break;
-    }k.ownLast = "0" !== L, k.inlineBlockNeedsLayout = !1, m(function () {
-      var a, b, c, d;c = y.getElementsByTagName("body")[0], c && c.style && (b = y.createElement("div"), d = y.createElement("div"), d.style.cssText = "position:absolute;border:0;width:0;height:0;top:0;left:-9999px", c.appendChild(d).appendChild(b), _typeof(b.style.zoom) !== K && (b.style.cssText = "display:inline;margin:0;border:0;padding:1px;width:1px;zoom:1", k.inlineBlockNeedsLayout = a = 3 === b.offsetWidth, a && (c.style.zoom = 1)), c.removeChild(d));
-    }), function () {
-      var a = y.createElement("div");if (null == k.deleteExpando) {
-        k.deleteExpando = !0;try {
-          delete a.test;
-        } catch (b) {
-          k.deleteExpando = !1;
-        }
-      }a = null;
-    }(), m.acceptData = function (a) {
-      var b = m.noData[(a.nodeName + " ").toLowerCase()],
-          c = +a.nodeType || 1;return 1 !== c && 9 !== c ? !1 : !b || b !== !0 && a.getAttribute("classid") === b;
-    };var M = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,
-        N = /([A-Z])/g;function O(a, b, c) {
-      if (void 0 === c && 1 === a.nodeType) {
-        var d = "data-" + b.replace(N, "-$1").toLowerCase();if (c = a.getAttribute(d), "string" == typeof c) {
-          try {
-            c = "true" === c ? !0 : "false" === c ? !1 : "null" === c ? null : +c + "" === c ? +c : M.test(c) ? m.parseJSON(c) : c;
-          } catch (e) {}m.data(a, b, c);
-        } else c = void 0;
-      }return c;
-    }function P(a) {
-      var b;for (b in a) {
-        if (("data" !== b || !m.isEmptyObject(a[b])) && "toJSON" !== b) return !1;
-      }return !0;
-    }function Q(a, b, d, e) {
-      if (m.acceptData(a)) {
-        var f,
-            g,
-            h = m.expando,
-            i = a.nodeType,
-            j = i ? m.cache : a,
-            k = i ? a[h] : a[h] && h;if (k && j[k] && (e || j[k].data) || void 0 !== d || "string" != typeof b) return k || (k = i ? a[h] = c.pop() || m.guid++ : h), j[k] || (j[k] = i ? {} : { toJSON: m.noop }), ("object" == (typeof b === "undefined" ? "undefined" : _typeof(b)) || "function" == typeof b) && (e ? j[k] = m.extend(j[k], b) : j[k].data = m.extend(j[k].data, b)), g = j[k], e || (g.data || (g.data = {}), g = g.data), void 0 !== d && (g[m.camelCase(b)] = d), "string" == typeof b ? (f = g[b], null == f && (f = g[m.camelCase(b)])) : f = g, f;
-      }
-    }function R(a, b, c) {
-      if (m.acceptData(a)) {
-        var d,
-            e,
-            f = a.nodeType,
-            g = f ? m.cache : a,
-            h = f ? a[m.expando] : m.expando;if (g[h]) {
-          if (b && (d = c ? g[h] : g[h].data)) {
-            m.isArray(b) ? b = b.concat(m.map(b, m.camelCase)) : b in d ? b = [b] : (b = m.camelCase(b), b = b in d ? [b] : b.split(" ")), e = b.length;while (e--) {
-              delete d[b[e]];
-            }if (c ? !P(d) : !m.isEmptyObject(d)) return;
-          }(c || (delete g[h].data, P(g[h]))) && (f ? m.cleanData([a], !0) : k.deleteExpando || g != g.window ? delete g[h] : g[h] = null);
-        }
-      }
-    }m.extend({ cache: {}, noData: { "applet ": !0, "embed ": !0, "object ": "clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" }, hasData: function hasData(a) {
-        return a = a.nodeType ? m.cache[a[m.expando]] : a[m.expando], !!a && !P(a);
-      }, data: function data(a, b, c) {
-        return Q(a, b, c);
-      }, removeData: function removeData(a, b) {
-        return R(a, b);
-      }, _data: function _data(a, b, c) {
-        return Q(a, b, c, !0);
-      }, _removeData: function _removeData(a, b) {
-        return R(a, b, !0);
-      } }), m.fn.extend({ data: function data(a, b) {
-        var c,
-            d,
-            e,
-            f = this[0],
-            g = f && f.attributes;if (void 0 === a) {
-          if (this.length && (e = m.data(f), 1 === f.nodeType && !m._data(f, "parsedAttrs"))) {
-            c = g.length;while (c--) {
-              g[c] && (d = g[c].name, 0 === d.indexOf("data-") && (d = m.camelCase(d.slice(5)), O(f, d, e[d])));
-            }m._data(f, "parsedAttrs", !0);
-          }return e;
-        }return "object" == (typeof a === "undefined" ? "undefined" : _typeof(a)) ? this.each(function () {
-          m.data(this, a);
-        }) : arguments.length > 1 ? this.each(function () {
-          m.data(this, a, b);
-        }) : f ? O(f, a, m.data(f, a)) : void 0;
-      }, removeData: function removeData(a) {
-        return this.each(function () {
-          m.removeData(this, a);
-        });
-      } }), m.extend({ queue: function queue(a, b, c) {
-        var d;return a ? (b = (b || "fx") + "queue", d = m._data(a, b), c && (!d || m.isArray(c) ? d = m._data(a, b, m.makeArray(c)) : d.push(c)), d || []) : void 0;
-      }, dequeue: function dequeue(a, b) {
-        b = b || "fx";var c = m.queue(a, b),
-            d = c.length,
-            e = c.shift(),
-            f = m._queueHooks(a, b),
-            g = function g() {
-          m.dequeue(a, b);
-        };"inprogress" === e && (e = c.shift(), d--), e && ("fx" === b && c.unshift("inprogress"), delete f.stop, e.call(a, g, f)), !d && f && f.empty.fire();
-      }, _queueHooks: function _queueHooks(a, b) {
-        var c = b + "queueHooks";return m._data(a, c) || m._data(a, c, { empty: m.Callbacks("once memory").add(function () {
-            m._removeData(a, b + "queue"), m._removeData(a, c);
-          }) });
-      } }), m.fn.extend({ queue: function queue(a, b) {
-        var c = 2;return "string" != typeof a && (b = a, a = "fx", c--), arguments.length < c ? m.queue(this[0], a) : void 0 === b ? this : this.each(function () {
-          var c = m.queue(this, a, b);m._queueHooks(this, a), "fx" === a && "inprogress" !== c[0] && m.dequeue(this, a);
-        });
-      }, dequeue: function dequeue(a) {
-        return this.each(function () {
-          m.dequeue(this, a);
-        });
-      }, clearQueue: function clearQueue(a) {
-        return this.queue(a || "fx", []);
-      }, promise: function promise(a, b) {
-        var c,
-            d = 1,
-            e = m.Deferred(),
-            f = this,
-            g = this.length,
-            h = function h() {
-          --d || e.resolveWith(f, [f]);
-        };"string" != typeof a && (b = a, a = void 0), a = a || "fx";while (g--) {
-          c = m._data(f[g], a + "queueHooks"), c && c.empty && (d++, c.empty.add(h));
-        }return h(), e.promise(b);
-      } });var S = /[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/.source,
-        T = ["Top", "Right", "Bottom", "Left"],
-        U = function U(a, b) {
-      return a = b || a, "none" === m.css(a, "display") || !m.contains(a.ownerDocument, a);
-    },
-        V = m.access = function (a, b, c, d, e, f, g) {
-      var h = 0,
-          i = a.length,
-          j = null == c;if ("object" === m.type(c)) {
-        e = !0;for (h in c) {
-          m.access(a, b, h, c[h], !0, f, g);
-        }
-      } else if (void 0 !== d && (e = !0, m.isFunction(d) || (g = !0), j && (g ? (b.call(a, d), b = null) : (j = b, b = function b(a, _b2, c) {
-        return j.call(m(a), c);
-      })), b)) for (; i > h; h++) {
-        b(a[h], c, g ? d : d.call(a[h], h, b(a[h], c)));
-      }return e ? a : j ? b.call(a) : i ? b(a[0], c) : f;
-    },
-        W = /^(?:checkbox|radio)$/i;!function () {
-      var a = y.createElement("input"),
-          b = y.createElement("div"),
-          c = y.createDocumentFragment();if (b.innerHTML = "  <link/><table></table><a href='/a'>a</a><input type='checkbox'/>", k.leadingWhitespace = 3 === b.firstChild.nodeType, k.tbody = !b.getElementsByTagName("tbody").length, k.htmlSerialize = !!b.getElementsByTagName("link").length, k.html5Clone = "<:nav></:nav>" !== y.createElement("nav").cloneNode(!0).outerHTML, a.type = "checkbox", a.checked = !0, c.appendChild(a), k.appendChecked = a.checked, b.innerHTML = "<textarea>x</textarea>", k.noCloneChecked = !!b.cloneNode(!0).lastChild.defaultValue, c.appendChild(b), b.innerHTML = "<input type='radio' checked='checked' name='t'/>", k.checkClone = b.cloneNode(!0).cloneNode(!0).lastChild.checked, k.noCloneEvent = !0, b.attachEvent && (b.attachEvent("onclick", function () {
-        k.noCloneEvent = !1;
-      }), b.cloneNode(!0).click()), null == k.deleteExpando) {
-        k.deleteExpando = !0;try {
-          delete b.test;
-        } catch (d) {
-          k.deleteExpando = !1;
-        }
-      }
-    }(), function () {
-      var b,
-          c,
-          d = y.createElement("div");for (b in { submit: !0, change: !0, focusin: !0 }) {
-        c = "on" + b, (k[b + "Bubbles"] = c in a) || (d.setAttribute(c, "t"), k[b + "Bubbles"] = d.attributes[c].expando === !1);
-      }d = null;
-    }();var X = /^(?:input|select|textarea)$/i,
-        Y = /^key/,
-        Z = /^(?:mouse|pointer|contextmenu)|click/,
-        $ = /^(?:focusinfocus|focusoutblur)$/,
-        _ = /^([^.]*)(?:\.(.+)|)$/;function aa() {
-      return !0;
-    }function ba() {
-      return !1;
-    }function ca() {
-      try {
-        return y.activeElement;
-      } catch (a) {}
-    }m.event = { global: {}, add: function add(a, b, c, d, e) {
-        var f,
-            g,
-            h,
-            i,
-            j,
-            k,
-            l,
-            n,
-            o,
-            p,
-            q,
-            r = m._data(a);if (r) {
-          c.handler && (i = c, c = i.handler, e = i.selector), c.guid || (c.guid = m.guid++), (g = r.events) || (g = r.events = {}), (k = r.handle) || (k = r.handle = function (a) {
-            return (typeof m === "undefined" ? "undefined" : _typeof(m)) === K || a && m.event.triggered === a.type ? void 0 : m.event.dispatch.apply(k.elem, arguments);
-          }, k.elem = a), b = (b || "").match(E) || [""], h = b.length;while (h--) {
-            f = _.exec(b[h]) || [], o = q = f[1], p = (f[2] || "").split(".").sort(), o && (j = m.event.special[o] || {}, o = (e ? j.delegateType : j.bindType) || o, j = m.event.special[o] || {}, l = m.extend({ type: o, origType: q, data: d, handler: c, guid: c.guid, selector: e, needsContext: e && m.expr.match.needsContext.test(e), namespace: p.join(".") }, i), (n = g[o]) || (n = g[o] = [], n.delegateCount = 0, j.setup && j.setup.call(a, d, p, k) !== !1 || (a.addEventListener ? a.addEventListener(o, k, !1) : a.attachEvent && a.attachEvent("on" + o, k))), j.add && (j.add.call(a, l), l.handler.guid || (l.handler.guid = c.guid)), e ? n.splice(n.delegateCount++, 0, l) : n.push(l), m.event.global[o] = !0);
-          }a = null;
-        }
-      }, remove: function remove(a, b, c, d, e) {
-        var f,
-            g,
-            h,
-            i,
-            j,
-            k,
-            l,
-            n,
-            o,
-            p,
-            q,
-            r = m.hasData(a) && m._data(a);if (r && (k = r.events)) {
-          b = (b || "").match(E) || [""], j = b.length;while (j--) {
-            if (h = _.exec(b[j]) || [], o = q = h[1], p = (h[2] || "").split(".").sort(), o) {
-              l = m.event.special[o] || {}, o = (d ? l.delegateType : l.bindType) || o, n = k[o] || [], h = h[2] && new RegExp("(^|\\.)" + p.join("\\.(?:.*\\.|)") + "(\\.|$)"), i = f = n.length;while (f--) {
-                g = n[f], !e && q !== g.origType || c && c.guid !== g.guid || h && !h.test(g.namespace) || d && d !== g.selector && ("**" !== d || !g.selector) || (n.splice(f, 1), g.selector && n.delegateCount--, l.remove && l.remove.call(a, g));
-              }i && !n.length && (l.teardown && l.teardown.call(a, p, r.handle) !== !1 || m.removeEvent(a, o, r.handle), delete k[o]);
-            } else for (o in k) {
-              m.event.remove(a, o + b[j], c, d, !0);
-            }
-          }m.isEmptyObject(k) && (delete r.handle, m._removeData(a, "events"));
-        }
-      }, trigger: function trigger(b, c, d, e) {
-        var f,
-            g,
-            h,
-            i,
-            k,
-            l,
-            n,
-            o = [d || y],
-            p = j.call(b, "type") ? b.type : b,
-            q = j.call(b, "namespace") ? b.namespace.split(".") : [];if (h = l = d = d || y, 3 !== d.nodeType && 8 !== d.nodeType && !$.test(p + m.event.triggered) && (p.indexOf(".") >= 0 && (q = p.split("."), p = q.shift(), q.sort()), g = p.indexOf(":") < 0 && "on" + p, b = b[m.expando] ? b : new m.Event(p, "object" == (typeof b === "undefined" ? "undefined" : _typeof(b)) && b), b.isTrigger = e ? 2 : 3, b.namespace = q.join("."), b.namespace_re = b.namespace ? new RegExp("(^|\\.)" + q.join("\\.(?:.*\\.|)") + "(\\.|$)") : null, b.result = void 0, b.target || (b.target = d), c = null == c ? [b] : m.makeArray(c, [b]), k = m.event.special[p] || {}, e || !k.trigger || k.trigger.apply(d, c) !== !1)) {
-          if (!e && !k.noBubble && !m.isWindow(d)) {
-            for (i = k.delegateType || p, $.test(i + p) || (h = h.parentNode); h; h = h.parentNode) {
-              o.push(h), l = h;
-            }l === (d.ownerDocument || y) && o.push(l.defaultView || l.parentWindow || a);
-          }n = 0;while ((h = o[n++]) && !b.isPropagationStopped()) {
-            b.type = n > 1 ? i : k.bindType || p, f = (m._data(h, "events") || {})[b.type] && m._data(h, "handle"), f && f.apply(h, c), f = g && h[g], f && f.apply && m.acceptData(h) && (b.result = f.apply(h, c), b.result === !1 && b.preventDefault());
-          }if (b.type = p, !e && !b.isDefaultPrevented() && (!k._default || k._default.apply(o.pop(), c) === !1) && m.acceptData(d) && g && d[p] && !m.isWindow(d)) {
-            l = d[g], l && (d[g] = null), m.event.triggered = p;try {
-              d[p]();
-            } catch (r) {}m.event.triggered = void 0, l && (d[g] = l);
-          }return b.result;
-        }
-      }, dispatch: function dispatch(a) {
-        a = m.event.fix(a);var b,
-            c,
-            e,
-            f,
-            g,
-            h = [],
-            i = d.call(arguments),
-            j = (m._data(this, "events") || {})[a.type] || [],
-            k = m.event.special[a.type] || {};if (i[0] = a, a.delegateTarget = this, !k.preDispatch || k.preDispatch.call(this, a) !== !1) {
-          h = m.event.handlers.call(this, a, j), b = 0;while ((f = h[b++]) && !a.isPropagationStopped()) {
-            a.currentTarget = f.elem, g = 0;while ((e = f.handlers[g++]) && !a.isImmediatePropagationStopped()) {
-              (!a.namespace_re || a.namespace_re.test(e.namespace)) && (a.handleObj = e, a.data = e.data, c = ((m.event.special[e.origType] || {}).handle || e.handler).apply(f.elem, i), void 0 !== c && (a.result = c) === !1 && (a.preventDefault(), a.stopPropagation()));
-            }
-          }return k.postDispatch && k.postDispatch.call(this, a), a.result;
-        }
-      }, handlers: function handlers(a, b) {
-        var c,
-            d,
-            e,
-            f,
-            g = [],
-            h = b.delegateCount,
-            i = a.target;if (h && i.nodeType && (!a.button || "click" !== a.type)) for (; i != this; i = i.parentNode || this) {
-          if (1 === i.nodeType && (i.disabled !== !0 || "click" !== a.type)) {
-            for (e = [], f = 0; h > f; f++) {
-              d = b[f], c = d.selector + " ", void 0 === e[c] && (e[c] = d.needsContext ? m(c, this).index(i) >= 0 : m.find(c, this, null, [i]).length), e[c] && e.push(d);
-            }e.length && g.push({ elem: i, handlers: e });
-          }
-        }return h < b.length && g.push({ elem: this, handlers: b.slice(h) }), g;
-      }, fix: function fix(a) {
-        if (a[m.expando]) return a;var b,
-            c,
-            d,
-            e = a.type,
-            f = a,
-            g = this.fixHooks[e];g || (this.fixHooks[e] = g = Z.test(e) ? this.mouseHooks : Y.test(e) ? this.keyHooks : {}), d = g.props ? this.props.concat(g.props) : this.props, a = new m.Event(f), b = d.length;while (b--) {
-          c = d[b], a[c] = f[c];
-        }return a.target || (a.target = f.srcElement || y), 3 === a.target.nodeType && (a.target = a.target.parentNode), a.metaKey = !!a.metaKey, g.filter ? g.filter(a, f) : a;
-      }, props: "altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shiftKey target timeStamp view which".split(" "), fixHooks: {}, keyHooks: { props: "char charCode key keyCode".split(" "), filter: function filter(a, b) {
-          return null == a.which && (a.which = null != b.charCode ? b.charCode : b.keyCode), a;
-        } }, mouseHooks: { props: "button buttons clientX clientY fromElement offsetX offsetY pageX pageY screenX screenY toElement".split(" "), filter: function filter(a, b) {
-          var c,
-              d,
-              e,
-              f = b.button,
-              g = b.fromElement;return null == a.pageX && null != b.clientX && (d = a.target.ownerDocument || y, e = d.documentElement, c = d.body, a.pageX = b.clientX + (e && e.scrollLeft || c && c.scrollLeft || 0) - (e && e.clientLeft || c && c.clientLeft || 0), a.pageY = b.clientY + (e && e.scrollTop || c && c.scrollTop || 0) - (e && e.clientTop || c && c.clientTop || 0)), !a.relatedTarget && g && (a.relatedTarget = g === a.target ? b.toElement : g), a.which || void 0 === f || (a.which = 1 & f ? 1 : 2 & f ? 3 : 4 & f ? 2 : 0), a;
-        } }, special: { load: { noBubble: !0 }, focus: { trigger: function trigger() {
-            if (this !== ca() && this.focus) try {
-              return this.focus(), !1;
-            } catch (a) {}
-          }, delegateType: "focusin" }, blur: { trigger: function trigger() {
-            return this === ca() && this.blur ? (this.blur(), !1) : void 0;
-          }, delegateType: "focusout" }, click: { trigger: function trigger() {
-            return m.nodeName(this, "input") && "checkbox" === this.type && this.click ? (this.click(), !1) : void 0;
-          }, _default: function _default(a) {
-            return m.nodeName(a.target, "a");
-          } }, beforeunload: { postDispatch: function postDispatch(a) {
-            void 0 !== a.result && a.originalEvent && (a.originalEvent.returnValue = a.result);
-          } } }, simulate: function simulate(a, b, c, d) {
-        var e = m.extend(new m.Event(), c, { type: a, isSimulated: !0, originalEvent: {} });d ? m.event.trigger(e, null, b) : m.event.dispatch.call(b, e), e.isDefaultPrevented() && c.preventDefault();
-      } }, m.removeEvent = y.removeEventListener ? function (a, b, c) {
-      a.removeEventListener && a.removeEventListener(b, c, !1);
-    } : function (a, b, c) {
-      var d = "on" + b;a.detachEvent && (_typeof(a[d]) === K && (a[d] = null), a.detachEvent(d, c));
-    }, m.Event = function (a, b) {
-      return this instanceof m.Event ? (a && a.type ? (this.originalEvent = a, this.type = a.type, this.isDefaultPrevented = a.defaultPrevented || void 0 === a.defaultPrevented && a.returnValue === !1 ? aa : ba) : this.type = a, b && m.extend(this, b), this.timeStamp = a && a.timeStamp || m.now(), void (this[m.expando] = !0)) : new m.Event(a, b);
-    }, m.Event.prototype = { isDefaultPrevented: ba, isPropagationStopped: ba, isImmediatePropagationStopped: ba, preventDefault: function preventDefault() {
-        var a = this.originalEvent;this.isDefaultPrevented = aa, a && (a.preventDefault ? a.preventDefault() : a.returnValue = !1);
-      }, stopPropagation: function stopPropagation() {
-        var a = this.originalEvent;this.isPropagationStopped = aa, a && (a.stopPropagation && a.stopPropagation(), a.cancelBubble = !0);
-      }, stopImmediatePropagation: function stopImmediatePropagation() {
-        var a = this.originalEvent;this.isImmediatePropagationStopped = aa, a && a.stopImmediatePropagation && a.stopImmediatePropagation(), this.stopPropagation();
-      } }, m.each({ mouseenter: "mouseover", mouseleave: "mouseout", pointerenter: "pointerover", pointerleave: "pointerout" }, function (a, b) {
-      m.event.special[a] = { delegateType: b, bindType: b, handle: function handle(a) {
-          var c,
-              d = this,
-              e = a.relatedTarget,
-              f = a.handleObj;return (!e || e !== d && !m.contains(d, e)) && (a.type = f.origType, c = f.handler.apply(this, arguments), a.type = b), c;
-        } };
-    }), k.submitBubbles || (m.event.special.submit = { setup: function setup() {
-        return m.nodeName(this, "form") ? !1 : void m.event.add(this, "click._submit keypress._submit", function (a) {
-          var b = a.target,
-              c = m.nodeName(b, "input") || m.nodeName(b, "button") ? b.form : void 0;c && !m._data(c, "submitBubbles") && (m.event.add(c, "submit._submit", function (a) {
-            a._submit_bubble = !0;
-          }), m._data(c, "submitBubbles", !0));
-        });
-      }, postDispatch: function postDispatch(a) {
-        a._submit_bubble && (delete a._submit_bubble, this.parentNode && !a.isTrigger && m.event.simulate("submit", this.parentNode, a, !0));
-      }, teardown: function teardown() {
-        return m.nodeName(this, "form") ? !1 : void m.event.remove(this, "._submit");
-      } }), k.changeBubbles || (m.event.special.change = { setup: function setup() {
-        return X.test(this.nodeName) ? (("checkbox" === this.type || "radio" === this.type) && (m.event.add(this, "propertychange._change", function (a) {
-          "checked" === a.originalEvent.propertyName && (this._just_changed = !0);
-        }), m.event.add(this, "click._change", function (a) {
-          this._just_changed && !a.isTrigger && (this._just_changed = !1), m.event.simulate("change", this, a, !0);
-        })), !1) : void m.event.add(this, "beforeactivate._change", function (a) {
-          var b = a.target;X.test(b.nodeName) && !m._data(b, "changeBubbles") && (m.event.add(b, "change._change", function (a) {
-            !this.parentNode || a.isSimulated || a.isTrigger || m.event.simulate("change", this.parentNode, a, !0);
-          }), m._data(b, "changeBubbles", !0));
-        });
-      }, handle: function handle(a) {
-        var b = a.target;return this !== b || a.isSimulated || a.isTrigger || "radio" !== b.type && "checkbox" !== b.type ? a.handleObj.handler.apply(this, arguments) : void 0;
-      }, teardown: function teardown() {
-        return m.event.remove(this, "._change"), !X.test(this.nodeName);
-      } }), k.focusinBubbles || m.each({ focus: "focusin", blur: "focusout" }, function (a, b) {
-      var c = function c(a) {
-        m.event.simulate(b, a.target, m.event.fix(a), !0);
-      };m.event.special[b] = { setup: function setup() {
-          var d = this.ownerDocument || this,
-              e = m._data(d, b);e || d.addEventListener(a, c, !0), m._data(d, b, (e || 0) + 1);
-        }, teardown: function teardown() {
-          var d = this.ownerDocument || this,
-              e = m._data(d, b) - 1;e ? m._data(d, b, e) : (d.removeEventListener(a, c, !0), m._removeData(d, b));
-        } };
-    }), m.fn.extend({ on: function on(a, b, c, d, e) {
-        var f, g;if ("object" == (typeof a === "undefined" ? "undefined" : _typeof(a))) {
-          "string" != typeof b && (c = c || b, b = void 0);for (f in a) {
-            this.on(f, b, c, a[f], e);
-          }return this;
-        }if (null == c && null == d ? (d = b, c = b = void 0) : null == d && ("string" == typeof b ? (d = c, c = void 0) : (d = c, c = b, b = void 0)), d === !1) d = ba;else if (!d) return this;return 1 === e && (g = d, d = function d(a) {
-          return m().off(a), g.apply(this, arguments);
-        }, d.guid = g.guid || (g.guid = m.guid++)), this.each(function () {
-          m.event.add(this, a, d, c, b);
-        });
-      }, one: function one(a, b, c, d) {
-        return this.on(a, b, c, d, 1);
-      }, off: function off(a, b, c) {
-        var d, e;if (a && a.preventDefault && a.handleObj) return d = a.handleObj, m(a.delegateTarget).off(d.namespace ? d.origType + "." + d.namespace : d.origType, d.selector, d.handler), this;if ("object" == (typeof a === "undefined" ? "undefined" : _typeof(a))) {
-          for (e in a) {
-            this.off(e, b, a[e]);
-          }return this;
-        }return (b === !1 || "function" == typeof b) && (c = b, b = void 0), c === !1 && (c = ba), this.each(function () {
-          m.event.remove(this, a, c, b);
-        });
-      }, trigger: function trigger(a, b) {
-        return this.each(function () {
-          m.event.trigger(a, b, this);
-        });
-      }, triggerHandler: function triggerHandler(a, b) {
-        var c = this[0];return c ? m.event.trigger(a, b, c, !0) : void 0;
-      } });function da(a) {
-      var b = ea.split("|"),
-          c = a.createDocumentFragment();if (c.createElement) while (b.length) {
-        c.createElement(b.pop());
-      }return c;
-    }var ea = "abbr|article|aside|audio|bdi|canvas|data|datalist|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video",
-        fa = / jQuery\d+="(?:null|\d+)"/g,
-        ga = new RegExp("<(?:" + ea + ")[\\s/>]", "i"),
-        ha = /^\s+/,
-        ia = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi,
-        ja = /<([\w:]+)/,
-        ka = /<tbody/i,
-        la = /<|&#?\w+;/,
-        ma = /<(?:script|style|link)/i,
-        na = /checked\s*(?:[^=]|=\s*.checked.)/i,
-        oa = /^$|\/(?:java|ecma)script/i,
-        pa = /^true\/(.*)/,
-        qa = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g,
-        ra = { option: [1, "<select multiple='multiple'>", "</select>"], legend: [1, "<fieldset>", "</fieldset>"], area: [1, "<map>", "</map>"], param: [1, "<object>", "</object>"], thead: [1, "<table>", "</table>"], tr: [2, "<table><tbody>", "</tbody></table>"], col: [2, "<table><tbody></tbody><colgroup>", "</colgroup></table>"], td: [3, "<table><tbody><tr>", "</tr></tbody></table>"], _default: k.htmlSerialize ? [0, "", ""] : [1, "X<div>", "</div>"] },
-        sa = da(y),
-        ta = sa.appendChild(y.createElement("div"));ra.optgroup = ra.option, ra.tbody = ra.tfoot = ra.colgroup = ra.caption = ra.thead, ra.th = ra.td;function ua(a, b) {
-      var c,
-          d,
-          e = 0,
-          f = _typeof(a.getElementsByTagName) !== K ? a.getElementsByTagName(b || "*") : _typeof(a.querySelectorAll) !== K ? a.querySelectorAll(b || "*") : void 0;if (!f) for (f = [], c = a.childNodes || a; null != (d = c[e]); e++) {
-        !b || m.nodeName(d, b) ? f.push(d) : m.merge(f, ua(d, b));
-      }return void 0 === b || b && m.nodeName(a, b) ? m.merge([a], f) : f;
-    }function va(a) {
-      W.test(a.type) && (a.defaultChecked = a.checked);
-    }function wa(a, b) {
-      return m.nodeName(a, "table") && m.nodeName(11 !== b.nodeType ? b : b.firstChild, "tr") ? a.getElementsByTagName("tbody")[0] || a.appendChild(a.ownerDocument.createElement("tbody")) : a;
-    }function xa(a) {
-      return a.type = (null !== m.find.attr(a, "type")) + "/" + a.type, a;
-    }function ya(a) {
-      var b = pa.exec(a.type);return b ? a.type = b[1] : a.removeAttribute("type"), a;
-    }function za(a, b) {
-      for (var c, d = 0; null != (c = a[d]); d++) {
-        m._data(c, "globalEval", !b || m._data(b[d], "globalEval"));
-      }
-    }function Aa(a, b) {
-      if (1 === b.nodeType && m.hasData(a)) {
-        var c,
-            d,
-            e,
-            f = m._data(a),
-            g = m._data(b, f),
-            h = f.events;if (h) {
-          delete g.handle, g.events = {};for (c in h) {
-            for (d = 0, e = h[c].length; e > d; d++) {
-              m.event.add(b, c, h[c][d]);
-            }
-          }
-        }g.data && (g.data = m.extend({}, g.data));
-      }
-    }function Ba(a, b) {
-      var c, d, e;if (1 === b.nodeType) {
-        if (c = b.nodeName.toLowerCase(), !k.noCloneEvent && b[m.expando]) {
-          e = m._data(b);for (d in e.events) {
-            m.removeEvent(b, d, e.handle);
-          }b.removeAttribute(m.expando);
-        }"script" === c && b.text !== a.text ? (xa(b).text = a.text, ya(b)) : "object" === c ? (b.parentNode && (b.outerHTML = a.outerHTML), k.html5Clone && a.innerHTML && !m.trim(b.innerHTML) && (b.innerHTML = a.innerHTML)) : "input" === c && W.test(a.type) ? (b.defaultChecked = b.checked = a.checked, b.value !== a.value && (b.value = a.value)) : "option" === c ? b.defaultSelected = b.selected = a.defaultSelected : ("input" === c || "textarea" === c) && (b.defaultValue = a.defaultValue);
-      }
-    }m.extend({ clone: function clone(a, b, c) {
-        var d,
-            e,
-            f,
-            g,
-            h,
-            i = m.contains(a.ownerDocument, a);if (k.html5Clone || m.isXMLDoc(a) || !ga.test("<" + a.nodeName + ">") ? f = a.cloneNode(!0) : (ta.innerHTML = a.outerHTML, ta.removeChild(f = ta.firstChild)), !(k.noCloneEvent && k.noCloneChecked || 1 !== a.nodeType && 11 !== a.nodeType || m.isXMLDoc(a))) for (d = ua(f), h = ua(a), g = 0; null != (e = h[g]); ++g) {
-          d[g] && Ba(e, d[g]);
-        }if (b) if (c) for (h = h || ua(a), d = d || ua(f), g = 0; null != (e = h[g]); g++) {
-          Aa(e, d[g]);
-        } else Aa(a, f);return d = ua(f, "script"), d.length > 0 && za(d, !i && ua(a, "script")), d = h = e = null, f;
-      }, buildFragment: function buildFragment(a, b, c, d) {
-        for (var e, f, g, h, i, j, l, n = a.length, o = da(b), p = [], q = 0; n > q; q++) {
-          if (f = a[q], f || 0 === f) if ("object" === m.type(f)) m.merge(p, f.nodeType ? [f] : f);else if (la.test(f)) {
-            h = h || o.appendChild(b.createElement("div")), i = (ja.exec(f) || ["", ""])[1].toLowerCase(), l = ra[i] || ra._default, h.innerHTML = l[1] + f.replace(ia, "<$1></$2>") + l[2], e = l[0];while (e--) {
-              h = h.lastChild;
-            }if (!k.leadingWhitespace && ha.test(f) && p.push(b.createTextNode(ha.exec(f)[0])), !k.tbody) {
-              f = "table" !== i || ka.test(f) ? "<table>" !== l[1] || ka.test(f) ? 0 : h : h.firstChild, e = f && f.childNodes.length;while (e--) {
-                m.nodeName(j = f.childNodes[e], "tbody") && !j.childNodes.length && f.removeChild(j);
-              }
-            }m.merge(p, h.childNodes), h.textContent = "";while (h.firstChild) {
-              h.removeChild(h.firstChild);
-            }h = o.lastChild;
-          } else p.push(b.createTextNode(f));
-        }h && o.removeChild(h), k.appendChecked || m.grep(ua(p, "input"), va), q = 0;while (f = p[q++]) {
-          if ((!d || -1 === m.inArray(f, d)) && (g = m.contains(f.ownerDocument, f), h = ua(o.appendChild(f), "script"), g && za(h), c)) {
-            e = 0;while (f = h[e++]) {
-              oa.test(f.type || "") && c.push(f);
-            }
-          }
-        }return h = null, o;
-      }, cleanData: function cleanData(a, b) {
-        for (var d, e, f, g, h = 0, i = m.expando, j = m.cache, l = k.deleteExpando, n = m.event.special; null != (d = a[h]); h++) {
-          if ((b || m.acceptData(d)) && (f = d[i], g = f && j[f])) {
-            if (g.events) for (e in g.events) {
-              n[e] ? m.event.remove(d, e) : m.removeEvent(d, e, g.handle);
-            }j[f] && (delete j[f], l ? delete d[i] : _typeof(d.removeAttribute) !== K ? d.removeAttribute(i) : d[i] = null, c.push(f));
-          }
-        }
-      } }), m.fn.extend({ text: function text(a) {
-        return V(this, function (a) {
-          return void 0 === a ? m.text(this) : this.empty().append((this[0] && this[0].ownerDocument || y).createTextNode(a));
-        }, null, a, arguments.length);
-      }, append: function append() {
-        return this.domManip(arguments, function (a) {
-          if (1 === this.nodeType || 11 === this.nodeType || 9 === this.nodeType) {
-            var b = wa(this, a);b.appendChild(a);
-          }
-        });
-      }, prepend: function prepend() {
-        return this.domManip(arguments, function (a) {
-          if (1 === this.nodeType || 11 === this.nodeType || 9 === this.nodeType) {
-            var b = wa(this, a);b.insertBefore(a, b.firstChild);
-          }
-        });
-      }, before: function before() {
-        return this.domManip(arguments, function (a) {
-          this.parentNode && this.parentNode.insertBefore(a, this);
-        });
-      }, after: function after() {
-        return this.domManip(arguments, function (a) {
-          this.parentNode && this.parentNode.insertBefore(a, this.nextSibling);
-        });
-      }, remove: function remove(a, b) {
-        for (var c, d = a ? m.filter(a, this) : this, e = 0; null != (c = d[e]); e++) {
-          b || 1 !== c.nodeType || m.cleanData(ua(c)), c.parentNode && (b && m.contains(c.ownerDocument, c) && za(ua(c, "script")), c.parentNode.removeChild(c));
-        }return this;
-      }, empty: function empty() {
-        for (var a, b = 0; null != (a = this[b]); b++) {
-          1 === a.nodeType && m.cleanData(ua(a, !1));while (a.firstChild) {
-            a.removeChild(a.firstChild);
-          }a.options && m.nodeName(a, "select") && (a.options.length = 0);
-        }return this;
-      }, clone: function clone(a, b) {
-        return a = null == a ? !1 : a, b = null == b ? a : b, this.map(function () {
-          return m.clone(this, a, b);
-        });
-      }, html: function html(a) {
-        return V(this, function (a) {
-          var b = this[0] || {},
-              c = 0,
-              d = this.length;if (void 0 === a) return 1 === b.nodeType ? b.innerHTML.replace(fa, "") : void 0;if (!("string" != typeof a || ma.test(a) || !k.htmlSerialize && ga.test(a) || !k.leadingWhitespace && ha.test(a) || ra[(ja.exec(a) || ["", ""])[1].toLowerCase()])) {
-            a = a.replace(ia, "<$1></$2>");try {
-              for (; d > c; c++) {
-                b = this[c] || {}, 1 === b.nodeType && (m.cleanData(ua(b, !1)), b.innerHTML = a);
-              }b = 0;
-            } catch (e) {}
-          }b && this.empty().append(a);
-        }, null, a, arguments.length);
-      }, replaceWith: function replaceWith() {
-        var a = arguments[0];return this.domManip(arguments, function (b) {
-          a = this.parentNode, m.cleanData(ua(this)), a && a.replaceChild(b, this);
-        }), a && (a.length || a.nodeType) ? this : this.remove();
-      }, detach: function detach(a) {
-        return this.remove(a, !0);
-      }, domManip: function domManip(a, b) {
-        a = e.apply([], a);var c,
-            d,
-            f,
-            g,
-            h,
-            i,
-            j = 0,
-            l = this.length,
-            n = this,
-            o = l - 1,
-            p = a[0],
-            q = m.isFunction(p);if (q || l > 1 && "string" == typeof p && !k.checkClone && na.test(p)) return this.each(function (c) {
-          var d = n.eq(c);q && (a[0] = p.call(this, c, d.html())), d.domManip(a, b);
-        });if (l && (i = m.buildFragment(a, this[0].ownerDocument, !1, this), c = i.firstChild, 1 === i.childNodes.length && (i = c), c)) {
-          for (g = m.map(ua(i, "script"), xa), f = g.length; l > j; j++) {
-            d = i, j !== o && (d = m.clone(d, !0, !0), f && m.merge(g, ua(d, "script"))), b.call(this[j], d, j);
-          }if (f) for (h = g[g.length - 1].ownerDocument, m.map(g, ya), j = 0; f > j; j++) {
-            d = g[j], oa.test(d.type || "") && !m._data(d, "globalEval") && m.contains(h, d) && (d.src ? m._evalUrl && m._evalUrl(d.src) : m.globalEval((d.text || d.textContent || d.innerHTML || "").replace(qa, "")));
-          }i = c = null;
-        }return this;
-      } }), m.each({ appendTo: "append", prependTo: "prepend", insertBefore: "before", insertAfter: "after", replaceAll: "replaceWith" }, function (a, b) {
-      m.fn[a] = function (a) {
-        for (var c, d = 0, e = [], g = m(a), h = g.length - 1; h >= d; d++) {
-          c = d === h ? this : this.clone(!0), m(g[d])[b](c), f.apply(e, c.get());
-        }return this.pushStack(e);
-      };
-    });var Ca,
-        Da = {};function Ea(b, c) {
-      var d,
-          e = m(c.createElement(b)).appendTo(c.body),
-          f = a.getDefaultComputedStyle && (d = a.getDefaultComputedStyle(e[0])) ? d.display : m.css(e[0], "display");return e.detach(), f;
-    }function Fa(a) {
-      var b = y,
-          c = Da[a];return c || (c = Ea(a, b), "none" !== c && c || (Ca = (Ca || m("<iframe frameborder='0' width='0' height='0'/>")).appendTo(b.documentElement), b = (Ca[0].contentWindow || Ca[0].contentDocument).document, b.write(), b.close(), c = Ea(a, b), Ca.detach()), Da[a] = c), c;
-    }!function () {
-      var a;k.shrinkWrapBlocks = function () {
-        if (null != a) return a;a = !1;var b, c, d;return c = y.getElementsByTagName("body")[0], c && c.style ? (b = y.createElement("div"), d = y.createElement("div"), d.style.cssText = "position:absolute;border:0;width:0;height:0;top:0;left:-9999px", c.appendChild(d).appendChild(b), _typeof(b.style.zoom) !== K && (b.style.cssText = "-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;display:block;margin:0;border:0;padding:1px;width:1px;zoom:1", b.appendChild(y.createElement("div")).style.width = "5px", a = 3 !== b.offsetWidth), c.removeChild(d), a) : void 0;
-      };
-    }();var Ga = /^margin/,
-        Ha = new RegExp("^(" + S + ")(?!px)[a-z%]+$", "i"),
-        Ia,
-        Ja,
-        Ka = /^(top|right|bottom|left)$/;a.getComputedStyle ? (Ia = function Ia(b) {
-      return b.ownerDocument.defaultView.opener ? b.ownerDocument.defaultView.getComputedStyle(b, null) : a.getComputedStyle(b, null);
-    }, Ja = function Ja(a, b, c) {
-      var d,
-          e,
-          f,
-          g,
-          h = a.style;return c = c || Ia(a), g = c ? c.getPropertyValue(b) || c[b] : void 0, c && ("" !== g || m.contains(a.ownerDocument, a) || (g = m.style(a, b)), Ha.test(g) && Ga.test(b) && (d = h.width, e = h.minWidth, f = h.maxWidth, h.minWidth = h.maxWidth = h.width = g, g = c.width, h.width = d, h.minWidth = e, h.maxWidth = f)), void 0 === g ? g : g + "";
-    }) : y.documentElement.currentStyle && (Ia = function Ia(a) {
-      return a.currentStyle;
-    }, Ja = function Ja(a, b, c) {
-      var d,
-          e,
-          f,
-          g,
-          h = a.style;return c = c || Ia(a), g = c ? c[b] : void 0, null == g && h && h[b] && (g = h[b]), Ha.test(g) && !Ka.test(b) && (d = h.left, e = a.runtimeStyle, f = e && e.left, f && (e.left = a.currentStyle.left), h.left = "fontSize" === b ? "1em" : g, g = h.pixelLeft + "px", h.left = d, f && (e.left = f)), void 0 === g ? g : g + "" || "auto";
-    });function La(a, b) {
-      return { get: function get() {
-          var c = a();if (null != c) return c ? void delete this.get : (this.get = b).apply(this, arguments);
-        } };
-    }!function () {
-      var b, c, d, e, f, g, h;if (b = y.createElement("div"), b.innerHTML = "  <link/><table></table><a href='/a'>a</a><input type='checkbox'/>", d = b.getElementsByTagName("a")[0], c = d && d.style) {
-        var _i = function _i() {
-          var b, c, d, i;c = y.getElementsByTagName("body")[0], c && c.style && (b = y.createElement("div"), d = y.createElement("div"), d.style.cssText = "position:absolute;border:0;width:0;height:0;top:0;left:-9999px", c.appendChild(d).appendChild(b), b.style.cssText = "-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;display:block;margin-top:1%;top:1%;border:1px;padding:1px;width:4px;position:absolute", e = f = !1, h = !0, a.getComputedStyle && (e = "1%" !== (a.getComputedStyle(b, null) || {}).top, f = "4px" === (a.getComputedStyle(b, null) || { width: "4px" }).width, i = b.appendChild(y.createElement("div")), i.style.cssText = b.style.cssText = "-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;display:block;margin:0;border:0;padding:0", i.style.marginRight = i.style.width = "0", b.style.width = "1px", h = !parseFloat((a.getComputedStyle(i, null) || {}).marginRight), b.removeChild(i)), b.innerHTML = "<table><tr><td></td><td>t</td></tr></table>", i = b.getElementsByTagName("td"), i[0].style.cssText = "margin:0;border:0;padding:0;display:none", g = 0 === i[0].offsetHeight, g && (i[0].style.display = "", i[1].style.display = "none", g = 0 === i[0].offsetHeight), c.removeChild(d));
-        };
-
-        c.cssText = "float:left;opacity:.5", k.opacity = "0.5" === c.opacity, k.cssFloat = !!c.cssFloat, b.style.backgroundClip = "content-box", b.cloneNode(!0).style.backgroundClip = "", k.clearCloneStyle = "content-box" === b.style.backgroundClip, k.boxSizing = "" === c.boxSizing || "" === c.MozBoxSizing || "" === c.WebkitBoxSizing, m.extend(k, { reliableHiddenOffsets: function reliableHiddenOffsets() {
-            return null == g && _i(), g;
-          }, boxSizingReliable: function boxSizingReliable() {
-            return null == f && _i(), f;
-          }, pixelPosition: function pixelPosition() {
-            return null == e && _i(), e;
-          }, reliableMarginRight: function reliableMarginRight() {
-            return null == h && _i(), h;
-          } });
-      }
-    }(), m.swap = function (a, b, c, d) {
-      var e,
-          f,
-          g = {};for (f in b) {
-        g[f] = a.style[f], a.style[f] = b[f];
-      }e = c.apply(a, d || []);for (f in b) {
-        a.style[f] = g[f];
-      }return e;
-    };var Ma = /alpha\([^)]*\)/i,
-        Na = /opacity\s*=\s*([^)]*)/,
-        Oa = /^(none|table(?!-c[ea]).+)/,
-        Pa = new RegExp("^(" + S + ")(.*)$", "i"),
-        Qa = new RegExp("^([+-])=(" + S + ")", "i"),
-        Ra = { position: "absolute", visibility: "hidden", display: "block" },
-        Sa = { letterSpacing: "0", fontWeight: "400" },
-        Ta = ["Webkit", "O", "Moz", "ms"];function Ua(a, b) {
-      if (b in a) return b;var c = b.charAt(0).toUpperCase() + b.slice(1),
-          d = b,
-          e = Ta.length;while (e--) {
-        if (b = Ta[e] + c, b in a) return b;
-      }return d;
-    }function Va(a, b) {
-      for (var c, d, e, f = [], g = 0, h = a.length; h > g; g++) {
-        d = a[g], d.style && (f[g] = m._data(d, "olddisplay"), c = d.style.display, b ? (f[g] || "none" !== c || (d.style.display = ""), "" === d.style.display && U(d) && (f[g] = m._data(d, "olddisplay", Fa(d.nodeName)))) : (e = U(d), (c && "none" !== c || !e) && m._data(d, "olddisplay", e ? c : m.css(d, "display"))));
-      }for (g = 0; h > g; g++) {
-        d = a[g], d.style && (b && "none" !== d.style.display && "" !== d.style.display || (d.style.display = b ? f[g] || "" : "none"));
-      }return a;
-    }function Wa(a, b, c) {
-      var d = Pa.exec(b);return d ? Math.max(0, d[1] - (c || 0)) + (d[2] || "px") : b;
-    }function Xa(a, b, c, d, e) {
-      for (var f = c === (d ? "border" : "content") ? 4 : "width" === b ? 1 : 0, g = 0; 4 > f; f += 2) {
-        "margin" === c && (g += m.css(a, c + T[f], !0, e)), d ? ("content" === c && (g -= m.css(a, "padding" + T[f], !0, e)), "margin" !== c && (g -= m.css(a, "border" + T[f] + "Width", !0, e))) : (g += m.css(a, "padding" + T[f], !0, e), "padding" !== c && (g += m.css(a, "border" + T[f] + "Width", !0, e)));
-      }return g;
-    }function Ya(a, b, c) {
-      var d = !0,
-          e = "width" === b ? a.offsetWidth : a.offsetHeight,
-          f = Ia(a),
-          g = k.boxSizing && "border-box" === m.css(a, "boxSizing", !1, f);if (0 >= e || null == e) {
-        if (e = Ja(a, b, f), (0 > e || null == e) && (e = a.style[b]), Ha.test(e)) return e;d = g && (k.boxSizingReliable() || e === a.style[b]), e = parseFloat(e) || 0;
-      }return e + Xa(a, b, c || (g ? "border" : "content"), d, f) + "px";
-    }m.extend({ cssHooks: { opacity: { get: function get(a, b) {
-            if (b) {
-              var c = Ja(a, "opacity");return "" === c ? "1" : c;
-            }
-          } } }, cssNumber: { columnCount: !0, fillOpacity: !0, flexGrow: !0, flexShrink: !0, fontWeight: !0, lineHeight: !0, opacity: !0, order: !0, orphans: !0, widows: !0, zIndex: !0, zoom: !0 }, cssProps: { "float": k.cssFloat ? "cssFloat" : "styleFloat" }, style: function style(a, b, c, d) {
-        if (a && 3 !== a.nodeType && 8 !== a.nodeType && a.style) {
-          var e,
-              f,
-              g,
-              h = m.camelCase(b),
-              i = a.style;if (b = m.cssProps[h] || (m.cssProps[h] = Ua(i, h)), g = m.cssHooks[b] || m.cssHooks[h], void 0 === c) return g && "get" in g && void 0 !== (e = g.get(a, !1, d)) ? e : i[b];if (f = typeof c === "undefined" ? "undefined" : _typeof(c), "string" === f && (e = Qa.exec(c)) && (c = (e[1] + 1) * e[2] + parseFloat(m.css(a, b)), f = "number"), null != c && c === c && ("number" !== f || m.cssNumber[h] || (c += "px"), k.clearCloneStyle || "" !== c || 0 !== b.indexOf("background") || (i[b] = "inherit"), !(g && "set" in g && void 0 === (c = g.set(a, c, d))))) try {
-            i[b] = c;
-          } catch (j) {}
-        }
-      }, css: function css(a, b, c, d) {
-        var e,
-            f,
-            g,
-            h = m.camelCase(b);return b = m.cssProps[h] || (m.cssProps[h] = Ua(a.style, h)), g = m.cssHooks[b] || m.cssHooks[h], g && "get" in g && (f = g.get(a, !0, c)), void 0 === f && (f = Ja(a, b, d)), "normal" === f && b in Sa && (f = Sa[b]), "" === c || c ? (e = parseFloat(f), c === !0 || m.isNumeric(e) ? e || 0 : f) : f;
-      } }), m.each(["height", "width"], function (a, b) {
-      m.cssHooks[b] = { get: function get(a, c, d) {
-          return c ? Oa.test(m.css(a, "display")) && 0 === a.offsetWidth ? m.swap(a, Ra, function () {
-            return Ya(a, b, d);
-          }) : Ya(a, b, d) : void 0;
-        }, set: function set(a, c, d) {
-          var e = d && Ia(a);return Wa(a, c, d ? Xa(a, b, d, k.boxSizing && "border-box" === m.css(a, "boxSizing", !1, e), e) : 0);
-        } };
-    }), k.opacity || (m.cssHooks.opacity = { get: function get(a, b) {
-        return Na.test((b && a.currentStyle ? a.currentStyle.filter : a.style.filter) || "") ? .01 * parseFloat(RegExp.$1) + "" : b ? "1" : "";
-      }, set: function set(a, b) {
-        var c = a.style,
-            d = a.currentStyle,
-            e = m.isNumeric(b) ? "alpha(opacity=" + 100 * b + ")" : "",
-            f = d && d.filter || c.filter || "";c.zoom = 1, (b >= 1 || "" === b) && "" === m.trim(f.replace(Ma, "")) && c.removeAttribute && (c.removeAttribute("filter"), "" === b || d && !d.filter) || (c.filter = Ma.test(f) ? f.replace(Ma, e) : f + " " + e);
-      } }), m.cssHooks.marginRight = La(k.reliableMarginRight, function (a, b) {
-      return b ? m.swap(a, { display: "inline-block" }, Ja, [a, "marginRight"]) : void 0;
-    }), m.each({ margin: "", padding: "", border: "Width" }, function (a, b) {
-      m.cssHooks[a + b] = { expand: function expand(c) {
-          for (var d = 0, e = {}, f = "string" == typeof c ? c.split(" ") : [c]; 4 > d; d++) {
-            e[a + T[d] + b] = f[d] || f[d - 2] || f[0];
-          }return e;
-        } }, Ga.test(a) || (m.cssHooks[a + b].set = Wa);
-    }), m.fn.extend({ css: function css(a, b) {
-        return V(this, function (a, b, c) {
-          var d,
-              e,
-              f = {},
-              g = 0;if (m.isArray(b)) {
-            for (d = Ia(a), e = b.length; e > g; g++) {
-              f[b[g]] = m.css(a, b[g], !1, d);
-            }return f;
-          }return void 0 !== c ? m.style(a, b, c) : m.css(a, b);
-        }, a, b, arguments.length > 1);
-      }, show: function show() {
-        return Va(this, !0);
-      }, hide: function hide() {
-        return Va(this);
-      }, toggle: function toggle(a) {
-        return "boolean" == typeof a ? a ? this.show() : this.hide() : this.each(function () {
-          U(this) ? m(this).show() : m(this).hide();
-        });
-      } });function Za(a, b, c, d, e) {
-      return new Za.prototype.init(a, b, c, d, e);
-    }m.Tween = Za, Za.prototype = { constructor: Za, init: function init(a, b, c, d, e, f) {
-        this.elem = a, this.prop = c, this.easing = e || "swing", this.options = b, this.start = this.now = this.cur(), this.end = d, this.unit = f || (m.cssNumber[c] ? "" : "px");
-      }, cur: function cur() {
-        var a = Za.propHooks[this.prop];return a && a.get ? a.get(this) : Za.propHooks._default.get(this);
-      }, run: function run(a) {
-        var b,
-            c = Za.propHooks[this.prop];return this.options.duration ? this.pos = b = m.easing[this.easing](a, this.options.duration * a, 0, 1, this.options.duration) : this.pos = b = a, this.now = (this.end - this.start) * b + this.start, this.options.step && this.options.step.call(this.elem, this.now, this), c && c.set ? c.set(this) : Za.propHooks._default.set(this), this;
-      } }, Za.prototype.init.prototype = Za.prototype, Za.propHooks = { _default: { get: function get(a) {
-          var b;return null == a.elem[a.prop] || a.elem.style && null != a.elem.style[a.prop] ? (b = m.css(a.elem, a.prop, ""), b && "auto" !== b ? b : 0) : a.elem[a.prop];
-        }, set: function set(a) {
-          m.fx.step[a.prop] ? m.fx.step[a.prop](a) : a.elem.style && (null != a.elem.style[m.cssProps[a.prop]] || m.cssHooks[a.prop]) ? m.style(a.elem, a.prop, a.now + a.unit) : a.elem[a.prop] = a.now;
-        } } }, Za.propHooks.scrollTop = Za.propHooks.scrollLeft = { set: function set(a) {
-        a.elem.nodeType && a.elem.parentNode && (a.elem[a.prop] = a.now);
-      } }, m.easing = { linear: function linear(a) {
-        return a;
-      }, swing: function swing(a) {
-        return .5 - Math.cos(a * Math.PI) / 2;
-      } }, m.fx = Za.prototype.init, m.fx.step = {};var $a,
-        _a,
-        ab = /^(?:toggle|show|hide)$/,
-        bb = new RegExp("^(?:([+-])=|)(" + S + ")([a-z%]*)$", "i"),
-        cb = /queueHooks$/,
-        db = [ib],
-        eb = { "*": [function (a, b) {
-        var c = this.createTween(a, b),
-            d = c.cur(),
-            e = bb.exec(b),
-            f = e && e[3] || (m.cssNumber[a] ? "" : "px"),
-            g = (m.cssNumber[a] || "px" !== f && +d) && bb.exec(m.css(c.elem, a)),
-            h = 1,
-            i = 20;if (g && g[3] !== f) {
-          f = f || g[3], e = e || [], g = +d || 1;do {
-            h = h || ".5", g /= h, m.style(c.elem, a, g + f);
-          } while (h !== (h = c.cur() / d) && 1 !== h && --i);
-        }return e && (g = c.start = +g || +d || 0, c.unit = f, c.end = e[1] ? g + (e[1] + 1) * e[2] : +e[2]), c;
-      }] };function fb() {
-      return setTimeout(function () {
-        $a = void 0;
-      }), $a = m.now();
-    }function gb(a, b) {
-      var c,
-          d = { height: a },
-          e = 0;for (b = b ? 1 : 0; 4 > e; e += 2 - b) {
-        c = T[e], d["margin" + c] = d["padding" + c] = a;
-      }return b && (d.opacity = d.width = a), d;
-    }function hb(a, b, c) {
-      for (var d, e = (eb[b] || []).concat(eb["*"]), f = 0, g = e.length; g > f; f++) {
-        if (d = e[f].call(c, b, a)) return d;
-      }
-    }function ib(a, b, c) {
-      var d,
-          e,
-          f,
-          g,
-          h,
-          i,
-          j,
-          l,
-          n = this,
-          o = {},
-          p = a.style,
-          q = a.nodeType && U(a),
-          r = m._data(a, "fxshow");c.queue || (h = m._queueHooks(a, "fx"), null == h.unqueued && (h.unqueued = 0, i = h.empty.fire, h.empty.fire = function () {
-        h.unqueued || i();
-      }), h.unqueued++, n.always(function () {
-        n.always(function () {
-          h.unqueued--, m.queue(a, "fx").length || h.empty.fire();
-        });
-      })), 1 === a.nodeType && ("height" in b || "width" in b) && (c.overflow = [p.overflow, p.overflowX, p.overflowY], j = m.css(a, "display"), l = "none" === j ? m._data(a, "olddisplay") || Fa(a.nodeName) : j, "inline" === l && "none" === m.css(a, "float") && (k.inlineBlockNeedsLayout && "inline" !== Fa(a.nodeName) ? p.zoom = 1 : p.display = "inline-block")), c.overflow && (p.overflow = "hidden", k.shrinkWrapBlocks() || n.always(function () {
-        p.overflow = c.overflow[0], p.overflowX = c.overflow[1], p.overflowY = c.overflow[2];
-      }));for (d in b) {
-        if (e = b[d], ab.exec(e)) {
-          if (delete b[d], f = f || "toggle" === e, e === (q ? "hide" : "show")) {
-            if ("show" !== e || !r || void 0 === r[d]) continue;q = !0;
-          }o[d] = r && r[d] || m.style(a, d);
-        } else j = void 0;
-      }if (m.isEmptyObject(o)) "inline" === ("none" === j ? Fa(a.nodeName) : j) && (p.display = j);else {
-        r ? "hidden" in r && (q = r.hidden) : r = m._data(a, "fxshow", {}), f && (r.hidden = !q), q ? m(a).show() : n.done(function () {
-          m(a).hide();
-        }), n.done(function () {
-          var b;m._removeData(a, "fxshow");for (b in o) {
-            m.style(a, b, o[b]);
-          }
-        });for (d in o) {
-          g = hb(q ? r[d] : 0, d, n), d in r || (r[d] = g.start, q && (g.end = g.start, g.start = "width" === d || "height" === d ? 1 : 0));
-        }
-      }
-    }function jb(a, b) {
-      var c, d, e, f, g;for (c in a) {
-        if (d = m.camelCase(c), e = b[d], f = a[c], m.isArray(f) && (e = f[1], f = a[c] = f[0]), c !== d && (a[d] = f, delete a[c]), g = m.cssHooks[d], g && "expand" in g) {
-          f = g.expand(f), delete a[d];for (c in f) {
-            c in a || (a[c] = f[c], b[c] = e);
-          }
-        } else b[d] = e;
-      }
-    }function kb(a, b, c) {
-      var d,
-          e,
-          f = 0,
-          g = db.length,
-          h = m.Deferred().always(function () {
-        delete i.elem;
-      }),
-          i = function i() {
-        if (e) return !1;for (var b = $a || fb(), c = Math.max(0, j.startTime + j.duration - b), d = c / j.duration || 0, f = 1 - d, g = 0, i = j.tweens.length; i > g; g++) {
-          j.tweens[g].run(f);
-        }return h.notifyWith(a, [j, f, c]), 1 > f && i ? c : (h.resolveWith(a, [j]), !1);
-      },
-          j = h.promise({ elem: a, props: m.extend({}, b), opts: m.extend(!0, { specialEasing: {} }, c), originalProperties: b, originalOptions: c, startTime: $a || fb(), duration: c.duration, tweens: [], createTween: function createTween(b, c) {
-          var d = m.Tween(a, j.opts, b, c, j.opts.specialEasing[b] || j.opts.easing);return j.tweens.push(d), d;
-        }, stop: function stop(b) {
-          var c = 0,
-              d = b ? j.tweens.length : 0;if (e) return this;for (e = !0; d > c; c++) {
-            j.tweens[c].run(1);
-          }return b ? h.resolveWith(a, [j, b]) : h.rejectWith(a, [j, b]), this;
-        } }),
-          k = j.props;for (jb(k, j.opts.specialEasing); g > f; f++) {
-        if (d = db[f].call(j, a, k, j.opts)) return d;
-      }return m.map(k, hb, j), m.isFunction(j.opts.start) && j.opts.start.call(a, j), m.fx.timer(m.extend(i, { elem: a, anim: j, queue: j.opts.queue })), j.progress(j.opts.progress).done(j.opts.done, j.opts.complete).fail(j.opts.fail).always(j.opts.always);
-    }m.Animation = m.extend(kb, { tweener: function tweener(a, b) {
-        m.isFunction(a) ? (b = a, a = ["*"]) : a = a.split(" ");for (var c, d = 0, e = a.length; e > d; d++) {
-          c = a[d], eb[c] = eb[c] || [], eb[c].unshift(b);
-        }
-      }, prefilter: function prefilter(a, b) {
-        b ? db.unshift(a) : db.push(a);
-      } }), m.speed = function (a, b, c) {
-      var d = a && "object" == (typeof a === "undefined" ? "undefined" : _typeof(a)) ? m.extend({}, a) : { complete: c || !c && b || m.isFunction(a) && a, duration: a, easing: c && b || b && !m.isFunction(b) && b };return d.duration = m.fx.off ? 0 : "number" == typeof d.duration ? d.duration : d.duration in m.fx.speeds ? m.fx.speeds[d.duration] : m.fx.speeds._default, (null == d.queue || d.queue === !0) && (d.queue = "fx"), d.old = d.complete, d.complete = function () {
-        m.isFunction(d.old) && d.old.call(this), d.queue && m.dequeue(this, d.queue);
-      }, d;
-    }, m.fn.extend({ fadeTo: function fadeTo(a, b, c, d) {
-        return this.filter(U).css("opacity", 0).show().end().animate({ opacity: b }, a, c, d);
-      }, animate: function animate(a, b, c, d) {
-        var e = m.isEmptyObject(a),
-            f = m.speed(b, c, d),
-            g = function g() {
-          var b = kb(this, m.extend({}, a), f);(e || m._data(this, "finish")) && b.stop(!0);
-        };return g.finish = g, e || f.queue === !1 ? this.each(g) : this.queue(f.queue, g);
-      }, stop: function stop(a, b, c) {
-        var d = function d(a) {
-          var b = a.stop;delete a.stop, b(c);
-        };return "string" != typeof a && (c = b, b = a, a = void 0), b && a !== !1 && this.queue(a || "fx", []), this.each(function () {
-          var b = !0,
-              e = null != a && a + "queueHooks",
-              f = m.timers,
-              g = m._data(this);if (e) g[e] && g[e].stop && d(g[e]);else for (e in g) {
-            g[e] && g[e].stop && cb.test(e) && d(g[e]);
-          }for (e = f.length; e--;) {
-            f[e].elem !== this || null != a && f[e].queue !== a || (f[e].anim.stop(c), b = !1, f.splice(e, 1));
-          }(b || !c) && m.dequeue(this, a);
-        });
-      }, finish: function finish(a) {
-        return a !== !1 && (a = a || "fx"), this.each(function () {
-          var b,
-              c = m._data(this),
-              d = c[a + "queue"],
-              e = c[a + "queueHooks"],
-              f = m.timers,
-              g = d ? d.length : 0;for (c.finish = !0, m.queue(this, a, []), e && e.stop && e.stop.call(this, !0), b = f.length; b--;) {
-            f[b].elem === this && f[b].queue === a && (f[b].anim.stop(!0), f.splice(b, 1));
-          }for (b = 0; g > b; b++) {
-            d[b] && d[b].finish && d[b].finish.call(this);
-          }delete c.finish;
-        });
-      } }), m.each(["toggle", "show", "hide"], function (a, b) {
-      var c = m.fn[b];m.fn[b] = function (a, d, e) {
-        return null == a || "boolean" == typeof a ? c.apply(this, arguments) : this.animate(gb(b, !0), a, d, e);
-      };
-    }), m.each({ slideDown: gb("show"), slideUp: gb("hide"), slideToggle: gb("toggle"), fadeIn: { opacity: "show" }, fadeOut: { opacity: "hide" }, fadeToggle: { opacity: "toggle" } }, function (a, b) {
-      m.fn[a] = function (a, c, d) {
-        return this.animate(b, a, c, d);
-      };
-    }), m.timers = [], m.fx.tick = function () {
-      var a,
-          b = m.timers,
-          c = 0;for ($a = m.now(); c < b.length; c++) {
-        a = b[c], a() || b[c] !== a || b.splice(c--, 1);
-      }b.length || m.fx.stop(), $a = void 0;
-    }, m.fx.timer = function (a) {
-      m.timers.push(a), a() ? m.fx.start() : m.timers.pop();
-    }, m.fx.interval = 13, m.fx.start = function () {
-      _a || (_a = setInterval(m.fx.tick, m.fx.interval));
-    }, m.fx.stop = function () {
-      clearInterval(_a), _a = null;
-    }, m.fx.speeds = { slow: 600, fast: 200, _default: 400 }, m.fn.delay = function (a, b) {
-      return a = m.fx ? m.fx.speeds[a] || a : a, b = b || "fx", this.queue(b, function (b, c) {
-        var d = setTimeout(b, a);c.stop = function () {
-          clearTimeout(d);
-        };
-      });
-    }, function () {
-      var a, b, c, d, e;b = y.createElement("div"), b.setAttribute("className", "t"), b.innerHTML = "  <link/><table></table><a href='/a'>a</a><input type='checkbox'/>", d = b.getElementsByTagName("a")[0], c = y.createElement("select"), e = c.appendChild(y.createElement("option")), a = b.getElementsByTagName("input")[0], d.style.cssText = "top:1px", k.getSetAttribute = "t" !== b.className, k.style = /top/.test(d.getAttribute("style")), k.hrefNormalized = "/a" === d.getAttribute("href"), k.checkOn = !!a.value, k.optSelected = e.selected, k.enctype = !!y.createElement("form").enctype, c.disabled = !0, k.optDisabled = !e.disabled, a = y.createElement("input"), a.setAttribute("value", ""), k.input = "" === a.getAttribute("value"), a.value = "t", a.setAttribute("type", "radio"), k.radioValue = "t" === a.value;
-    }();var lb = /\r/g;m.fn.extend({ val: function val(a) {
-        var b,
-            c,
-            d,
-            e = this[0];{
-          if (arguments.length) return d = m.isFunction(a), this.each(function (c) {
-            var e;1 === this.nodeType && (e = d ? a.call(this, c, m(this).val()) : a, null == e ? e = "" : "number" == typeof e ? e += "" : m.isArray(e) && (e = m.map(e, function (a) {
-              return null == a ? "" : a + "";
-            })), b = m.valHooks[this.type] || m.valHooks[this.nodeName.toLowerCase()], b && "set" in b && void 0 !== b.set(this, e, "value") || (this.value = e));
-          });if (e) return b = m.valHooks[e.type] || m.valHooks[e.nodeName.toLowerCase()], b && "get" in b && void 0 !== (c = b.get(e, "value")) ? c : (c = e.value, "string" == typeof c ? c.replace(lb, "") : null == c ? "" : c);
-        }
-      } }), m.extend({ valHooks: { option: { get: function get(a) {
-            var b = m.find.attr(a, "value");return null != b ? b : m.trim(m.text(a));
-          } }, select: { get: function get(a) {
-            for (var b, c, d = a.options, e = a.selectedIndex, f = "select-one" === a.type || 0 > e, g = f ? null : [], h = f ? e + 1 : d.length, i = 0 > e ? h : f ? e : 0; h > i; i++) {
-              if (c = d[i], !(!c.selected && i !== e || (k.optDisabled ? c.disabled : null !== c.getAttribute("disabled")) || c.parentNode.disabled && m.nodeName(c.parentNode, "optgroup"))) {
-                if (b = m(c).val(), f) return b;g.push(b);
-              }
-            }return g;
-          }, set: function set(a, b) {
-            var c,
-                d,
-                e = a.options,
-                f = m.makeArray(b),
-                g = e.length;while (g--) {
-              if (d = e[g], m.inArray(m.valHooks.option.get(d), f) >= 0) try {
-                d.selected = c = !0;
-              } catch (h) {
-                d.scrollHeight;
-              } else d.selected = !1;
-            }return c || (a.selectedIndex = -1), e;
-          } } } }), m.each(["radio", "checkbox"], function () {
-      m.valHooks[this] = { set: function set(a, b) {
-          return m.isArray(b) ? a.checked = m.inArray(m(a).val(), b) >= 0 : void 0;
-        } }, k.checkOn || (m.valHooks[this].get = function (a) {
-        return null === a.getAttribute("value") ? "on" : a.value;
-      });
-    });var mb,
-        nb,
-        ob = m.expr.attrHandle,
-        pb = /^(?:checked|selected)$/i,
-        qb = k.getSetAttribute,
-        rb = k.input;m.fn.extend({ attr: function attr(a, b) {
-        return V(this, m.attr, a, b, arguments.length > 1);
-      }, removeAttr: function removeAttr(a) {
-        return this.each(function () {
-          m.removeAttr(this, a);
-        });
-      } }), m.extend({ attr: function attr(a, b, c) {
-        var d,
-            e,
-            f = a.nodeType;if (a && 3 !== f && 8 !== f && 2 !== f) return _typeof(a.getAttribute) === K ? m.prop(a, b, c) : (1 === f && m.isXMLDoc(a) || (b = b.toLowerCase(), d = m.attrHooks[b] || (m.expr.match.bool.test(b) ? nb : mb)), void 0 === c ? d && "get" in d && null !== (e = d.get(a, b)) ? e : (e = m.find.attr(a, b), null == e ? void 0 : e) : null !== c ? d && "set" in d && void 0 !== (e = d.set(a, c, b)) ? e : (a.setAttribute(b, c + ""), c) : void m.removeAttr(a, b));
-      }, removeAttr: function removeAttr(a, b) {
-        var c,
-            d,
-            e = 0,
-            f = b && b.match(E);if (f && 1 === a.nodeType) while (c = f[e++]) {
-          d = m.propFix[c] || c, m.expr.match.bool.test(c) ? rb && qb || !pb.test(c) ? a[d] = !1 : a[m.camelCase("default-" + c)] = a[d] = !1 : m.attr(a, c, ""), a.removeAttribute(qb ? c : d);
-        }
-      }, attrHooks: { type: { set: function set(a, b) {
-            if (!k.radioValue && "radio" === b && m.nodeName(a, "input")) {
-              var c = a.value;return a.setAttribute("type", b), c && (a.value = c), b;
-            }
-          } } } }), nb = { set: function set(a, b, c) {
-        return b === !1 ? m.removeAttr(a, c) : rb && qb || !pb.test(c) ? a.setAttribute(!qb && m.propFix[c] || c, c) : a[m.camelCase("default-" + c)] = a[c] = !0, c;
-      } }, m.each(m.expr.match.bool.source.match(/\w+/g), function (a, b) {
-      var c = ob[b] || m.find.attr;ob[b] = rb && qb || !pb.test(b) ? function (a, b, d) {
-        var e, f;return d || (f = ob[b], ob[b] = e, e = null != c(a, b, d) ? b.toLowerCase() : null, ob[b] = f), e;
-      } : function (a, b, c) {
-        return c ? void 0 : a[m.camelCase("default-" + b)] ? b.toLowerCase() : null;
-      };
-    }), rb && qb || (m.attrHooks.value = { set: function set(a, b, c) {
-        return m.nodeName(a, "input") ? void (a.defaultValue = b) : mb && mb.set(a, b, c);
-      } }), qb || (mb = { set: function set(a, b, c) {
-        var d = a.getAttributeNode(c);return d || a.setAttributeNode(d = a.ownerDocument.createAttribute(c)), d.value = b += "", "value" === c || b === a.getAttribute(c) ? b : void 0;
-      } }, ob.id = ob.name = ob.coords = function (a, b, c) {
-      var d;return c ? void 0 : (d = a.getAttributeNode(b)) && "" !== d.value ? d.value : null;
-    }, m.valHooks.button = { get: function get(a, b) {
-        var c = a.getAttributeNode(b);return c && c.specified ? c.value : void 0;
-      }, set: mb.set }, m.attrHooks.contenteditable = { set: function set(a, b, c) {
-        mb.set(a, "" === b ? !1 : b, c);
-      } }, m.each(["width", "height"], function (a, b) {
-      m.attrHooks[b] = { set: function set(a, c) {
-          return "" === c ? (a.setAttribute(b, "auto"), c) : void 0;
-        } };
-    })), k.style || (m.attrHooks.style = { get: function get(a) {
-        return a.style.cssText || void 0;
-      }, set: function set(a, b) {
-        return a.style.cssText = b + "";
-      } });var sb = /^(?:input|select|textarea|button|object)$/i,
-        tb = /^(?:a|area)$/i;m.fn.extend({ prop: function prop(a, b) {
-        return V(this, m.prop, a, b, arguments.length > 1);
-      }, removeProp: function removeProp(a) {
-        return a = m.propFix[a] || a, this.each(function () {
-          try {
-            this[a] = void 0, delete this[a];
-          } catch (b) {}
-        });
-      } }), m.extend({ propFix: { "for": "htmlFor", "class": "className" }, prop: function prop(a, b, c) {
-        var d,
-            e,
-            f,
-            g = a.nodeType;if (a && 3 !== g && 8 !== g && 2 !== g) return f = 1 !== g || !m.isXMLDoc(a), f && (b = m.propFix[b] || b, e = m.propHooks[b]), void 0 !== c ? e && "set" in e && void 0 !== (d = e.set(a, c, b)) ? d : a[b] = c : e && "get" in e && null !== (d = e.get(a, b)) ? d : a[b];
-      }, propHooks: { tabIndex: { get: function get(a) {
-            var b = m.find.attr(a, "tabindex");return b ? parseInt(b, 10) : sb.test(a.nodeName) || tb.test(a.nodeName) && a.href ? 0 : -1;
-          } } } }), k.hrefNormalized || m.each(["href", "src"], function (a, b) {
-      m.propHooks[b] = { get: function get(a) {
-          return a.getAttribute(b, 4);
-        } };
-    }), k.optSelected || (m.propHooks.selected = { get: function get(a) {
-        var b = a.parentNode;return b && (b.selectedIndex, b.parentNode && b.parentNode.selectedIndex), null;
-      } }), m.each(["tabIndex", "readOnly", "maxLength", "cellSpacing", "cellPadding", "rowSpan", "colSpan", "useMap", "frameBorder", "contentEditable"], function () {
-      m.propFix[this.toLowerCase()] = this;
-    }), k.enctype || (m.propFix.enctype = "encoding");var ub = /[\t\r\n\f]/g;m.fn.extend({ addClass: function addClass(a) {
-        var b,
-            c,
-            d,
-            e,
-            f,
-            g,
-            h = 0,
-            i = this.length,
-            j = "string" == typeof a && a;if (m.isFunction(a)) return this.each(function (b) {
-          m(this).addClass(a.call(this, b, this.className));
-        });if (j) for (b = (a || "").match(E) || []; i > h; h++) {
-          if (c = this[h], d = 1 === c.nodeType && (c.className ? (" " + c.className + " ").replace(ub, " ") : " ")) {
-            f = 0;while (e = b[f++]) {
-              d.indexOf(" " + e + " ") < 0 && (d += e + " ");
-            }g = m.trim(d), c.className !== g && (c.className = g);
-          }
-        }return this;
-      }, removeClass: function removeClass(a) {
-        var b,
-            c,
-            d,
-            e,
-            f,
-            g,
-            h = 0,
-            i = this.length,
-            j = 0 === arguments.length || "string" == typeof a && a;if (m.isFunction(a)) return this.each(function (b) {
-          m(this).removeClass(a.call(this, b, this.className));
-        });if (j) for (b = (a || "").match(E) || []; i > h; h++) {
-          if (c = this[h], d = 1 === c.nodeType && (c.className ? (" " + c.className + " ").replace(ub, " ") : "")) {
-            f = 0;while (e = b[f++]) {
-              while (d.indexOf(" " + e + " ") >= 0) {
-                d = d.replace(" " + e + " ", " ");
-              }
-            }g = a ? m.trim(d) : "", c.className !== g && (c.className = g);
-          }
-        }return this;
-      }, toggleClass: function toggleClass(a, b) {
-        var c = typeof a === "undefined" ? "undefined" : _typeof(a);return "boolean" == typeof b && "string" === c ? b ? this.addClass(a) : this.removeClass(a) : this.each(m.isFunction(a) ? function (c) {
-          m(this).toggleClass(a.call(this, c, this.className, b), b);
-        } : function () {
-          if ("string" === c) {
-            var b,
-                d = 0,
-                e = m(this),
-                f = a.match(E) || [];while (b = f[d++]) {
-              e.hasClass(b) ? e.removeClass(b) : e.addClass(b);
-            }
-          } else (c === K || "boolean" === c) && (this.className && m._data(this, "__className__", this.className), this.className = this.className || a === !1 ? "" : m._data(this, "__className__") || "");
-        });
-      }, hasClass: function hasClass(a) {
-        for (var b = " " + a + " ", c = 0, d = this.length; d > c; c++) {
-          if (1 === this[c].nodeType && (" " + this[c].className + " ").replace(ub, " ").indexOf(b) >= 0) return !0;
-        }return !1;
-      } }), m.each("blur focus focusin focusout load resize scroll unload click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup error contextmenu".split(" "), function (a, b) {
-      m.fn[b] = function (a, c) {
-        return arguments.length > 0 ? this.on(b, null, a, c) : this.trigger(b);
-      };
-    }), m.fn.extend({ hover: function hover(a, b) {
-        return this.mouseenter(a).mouseleave(b || a);
-      }, bind: function bind(a, b, c) {
-        return this.on(a, null, b, c);
-      }, unbind: function unbind(a, b) {
-        return this.off(a, null, b);
-      }, delegate: function delegate(a, b, c, d) {
-        return this.on(b, a, c, d);
-      }, undelegate: function undelegate(a, b, c) {
-        return 1 === arguments.length ? this.off(a, "**") : this.off(b, a || "**", c);
-      } });var vb = m.now(),
-        wb = /\?/,
-        xb = /(,)|(\[|{)|(}|])|"(?:[^"\\\r\n]|\\["\\\/bfnrt]|\\u[\da-fA-F]{4})*"\s*:?|true|false|null|-?(?!0\d)\d+(?:\.\d+|)(?:[eE][+-]?\d+|)/g;m.parseJSON = function (b) {
-      if (a.JSON && a.JSON.parse) return a.JSON.parse(b + "");var c,
-          d = null,
-          e = m.trim(b + "");return e && !m.trim(e.replace(xb, function (a, b, e, f) {
-        return c && b && (d = 0), 0 === d ? a : (c = e || b, d += !f - !e, "");
-      })) ? Function("return " + e)() : m.error("Invalid JSON: " + b);
-    }, m.parseXML = function (b) {
-      var c, d;if (!b || "string" != typeof b) return null;try {
-        a.DOMParser ? (d = new DOMParser(), c = d.parseFromString(b, "text/xml")) : (c = new ActiveXObject("Microsoft.XMLDOM"), c.async = "false", c.loadXML(b));
-      } catch (e) {
-        c = void 0;
-      }return c && c.documentElement && !c.getElementsByTagName("parsererror").length || m.error("Invalid XML: " + b), c;
-    };var yb,
-        zb,
-        Ab = /#.*$/,
-        Bb = /([?&])_=[^&]*/,
-        Cb = /^(.*?):[ \t]*([^\r\n]*)\r?$/gm,
-        Db = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
-        Eb = /^(?:GET|HEAD)$/,
-        Fb = /^\/\//,
-        Gb = /^([\w.+-]+:)(?:\/\/(?:[^\/?#]*@|)([^\/?#:]*)(?::(\d+)|)|)/,
-        Hb = {},
-        Ib = {},
-        Jb = "*/".concat("*");try {
-      zb = location.href;
-    } catch (Kb) {
-      zb = y.createElement("a"), zb.href = "", zb = zb.href;
-    }yb = Gb.exec(zb.toLowerCase()) || [];function Lb(a) {
-      return function (b, c) {
-        "string" != typeof b && (c = b, b = "*");var d,
-            e = 0,
-            f = b.toLowerCase().match(E) || [];if (m.isFunction(c)) while (d = f[e++]) {
-          "+" === d.charAt(0) ? (d = d.slice(1) || "*", (a[d] = a[d] || []).unshift(c)) : (a[d] = a[d] || []).push(c);
-        }
-      };
-    }function Mb(a, b, c, d) {
-      var e = {},
-          f = a === Ib;function g(h) {
-        var i;return e[h] = !0, m.each(a[h] || [], function (a, h) {
-          var j = h(b, c, d);return "string" != typeof j || f || e[j] ? f ? !(i = j) : void 0 : (b.dataTypes.unshift(j), g(j), !1);
-        }), i;
-      }return g(b.dataTypes[0]) || !e["*"] && g("*");
-    }function Nb(a, b) {
-      var c,
-          d,
-          e = m.ajaxSettings.flatOptions || {};for (d in b) {
-        void 0 !== b[d] && ((e[d] ? a : c || (c = {}))[d] = b[d]);
-      }return c && m.extend(!0, a, c), a;
-    }function Ob(a, b, c) {
-      var d,
-          e,
-          f,
-          g,
-          h = a.contents,
-          i = a.dataTypes;while ("*" === i[0]) {
-        i.shift(), void 0 === e && (e = a.mimeType || b.getResponseHeader("Content-Type"));
-      }if (e) for (g in h) {
-        if (h[g] && h[g].test(e)) {
-          i.unshift(g);break;
-        }
-      }if (i[0] in c) f = i[0];else {
-        for (g in c) {
-          if (!i[0] || a.converters[g + " " + i[0]]) {
-            f = g;break;
-          }d || (d = g);
-        }f = f || d;
-      }return f ? (f !== i[0] && i.unshift(f), c[f]) : void 0;
-    }function Pb(a, b, c, d) {
-      var e,
-          f,
-          g,
-          h,
-          i,
-          j = {},
-          k = a.dataTypes.slice();if (k[1]) for (g in a.converters) {
-        j[g.toLowerCase()] = a.converters[g];
-      }f = k.shift();while (f) {
-        if (a.responseFields[f] && (c[a.responseFields[f]] = b), !i && d && a.dataFilter && (b = a.dataFilter(b, a.dataType)), i = f, f = k.shift()) if ("*" === f) f = i;else if ("*" !== i && i !== f) {
-          if (g = j[i + " " + f] || j["* " + f], !g) for (e in j) {
-            if (h = e.split(" "), h[1] === f && (g = j[i + " " + h[0]] || j["* " + h[0]])) {
-              g === !0 ? g = j[e] : j[e] !== !0 && (f = h[0], k.unshift(h[1]));break;
-            }
-          }if (g !== !0) if (g && a["throws"]) b = g(b);else try {
-            b = g(b);
-          } catch (l) {
-            return { state: "parsererror", error: g ? l : "No conversion from " + i + " to " + f };
-          }
-        }
-      }return { state: "success", data: b };
-    }m.extend({ active: 0, lastModified: {}, etag: {}, ajaxSettings: { url: zb, type: "GET", isLocal: Db.test(yb[1]), global: !0, processData: !0, async: !0, contentType: "application/x-www-form-urlencoded; charset=UTF-8", accepts: { "*": Jb, text: "text/plain", html: "text/html", xml: "application/xml, text/xml", json: "application/json, text/javascript" }, contents: { xml: /xml/, html: /html/, json: /json/ }, responseFields: { xml: "responseXML", text: "responseText", json: "responseJSON" }, converters: { "* text": String, "text html": !0, "text json": m.parseJSON, "text xml": m.parseXML }, flatOptions: { url: !0, context: !0 } }, ajaxSetup: function ajaxSetup(a, b) {
-        return b ? Nb(Nb(a, m.ajaxSettings), b) : Nb(m.ajaxSettings, a);
-      }, ajaxPrefilter: Lb(Hb), ajaxTransport: Lb(Ib), ajax: function ajax(a, b) {
-        "object" == (typeof a === "undefined" ? "undefined" : _typeof(a)) && (b = a, a = void 0), b = b || {};var c,
-            d,
-            e,
-            f,
-            g,
-            h,
-            i,
-            j,
-            k = m.ajaxSetup({}, b),
-            l = k.context || k,
-            n = k.context && (l.nodeType || l.jquery) ? m(l) : m.event,
-            o = m.Deferred(),
-            p = m.Callbacks("once memory"),
-            q = k.statusCode || {},
-            r = {},
-            s = {},
-            t = 0,
-            u = "canceled",
-            v = { readyState: 0, getResponseHeader: function getResponseHeader(a) {
-            var b;if (2 === t) {
-              if (!j) {
-                j = {};while (b = Cb.exec(f)) {
-                  j[b[1].toLowerCase()] = b[2];
-                }
-              }b = j[a.toLowerCase()];
-            }return null == b ? null : b;
-          }, getAllResponseHeaders: function getAllResponseHeaders() {
-            return 2 === t ? f : null;
-          }, setRequestHeader: function setRequestHeader(a, b) {
-            var c = a.toLowerCase();return t || (a = s[c] = s[c] || a, r[a] = b), this;
-          }, overrideMimeType: function overrideMimeType(a) {
-            return t || (k.mimeType = a), this;
-          }, statusCode: function statusCode(a) {
-            var b;if (a) if (2 > t) for (b in a) {
-              q[b] = [q[b], a[b]];
-            } else v.always(a[v.status]);return this;
-          }, abort: function abort(a) {
-            var b = a || u;return i && i.abort(b), x(0, b), this;
-          } };if (o.promise(v).complete = p.add, v.success = v.done, v.error = v.fail, k.url = ((a || k.url || zb) + "").replace(Ab, "").replace(Fb, yb[1] + "//"), k.type = b.method || b.type || k.method || k.type, k.dataTypes = m.trim(k.dataType || "*").toLowerCase().match(E) || [""], null == k.crossDomain && (c = Gb.exec(k.url.toLowerCase()), k.crossDomain = !(!c || c[1] === yb[1] && c[2] === yb[2] && (c[3] || ("http:" === c[1] ? "80" : "443")) === (yb[3] || ("http:" === yb[1] ? "80" : "443")))), k.data && k.processData && "string" != typeof k.data && (k.data = m.param(k.data, k.traditional)), Mb(Hb, k, b, v), 2 === t) return v;h = m.event && k.global, h && 0 === m.active++ && m.event.trigger("ajaxStart"), k.type = k.type.toUpperCase(), k.hasContent = !Eb.test(k.type), e = k.url, k.hasContent || (k.data && (e = k.url += (wb.test(e) ? "&" : "?") + k.data, delete k.data), k.cache === !1 && (k.url = Bb.test(e) ? e.replace(Bb, "$1_=" + vb++) : e + (wb.test(e) ? "&" : "?") + "_=" + vb++)), k.ifModified && (m.lastModified[e] && v.setRequestHeader("If-Modified-Since", m.lastModified[e]), m.etag[e] && v.setRequestHeader("If-None-Match", m.etag[e])), (k.data && k.hasContent && k.contentType !== !1 || b.contentType) && v.setRequestHeader("Content-Type", k.contentType), v.setRequestHeader("Accept", k.dataTypes[0] && k.accepts[k.dataTypes[0]] ? k.accepts[k.dataTypes[0]] + ("*" !== k.dataTypes[0] ? ", " + Jb + "; q=0.01" : "") : k.accepts["*"]);for (d in k.headers) {
-          v.setRequestHeader(d, k.headers[d]);
-        }if (k.beforeSend && (k.beforeSend.call(l, v, k) === !1 || 2 === t)) return v.abort();u = "abort";for (d in { success: 1, error: 1, complete: 1 }) {
-          v[d](k[d]);
-        }if (i = Mb(Ib, k, b, v)) {
-          v.readyState = 1, h && n.trigger("ajaxSend", [v, k]), k.async && k.timeout > 0 && (g = setTimeout(function () {
-            v.abort("timeout");
-          }, k.timeout));try {
-            t = 1, i.send(r, x);
-          } catch (w) {
-            if (!(2 > t)) throw w;x(-1, w);
-          }
-        } else x(-1, "No Transport");function x(a, b, c, d) {
-          var j,
-              r,
-              s,
-              u,
-              w,
-              x = b;2 !== t && (t = 2, g && clearTimeout(g), i = void 0, f = d || "", v.readyState = a > 0 ? 4 : 0, j = a >= 200 && 300 > a || 304 === a, c && (u = Ob(k, v, c)), u = Pb(k, u, v, j), j ? (k.ifModified && (w = v.getResponseHeader("Last-Modified"), w && (m.lastModified[e] = w), w = v.getResponseHeader("etag"), w && (m.etag[e] = w)), 204 === a || "HEAD" === k.type ? x = "nocontent" : 304 === a ? x = "notmodified" : (x = u.state, r = u.data, s = u.error, j = !s)) : (s = x, (a || !x) && (x = "error", 0 > a && (a = 0))), v.status = a, v.statusText = (b || x) + "", j ? o.resolveWith(l, [r, x, v]) : o.rejectWith(l, [v, x, s]), v.statusCode(q), q = void 0, h && n.trigger(j ? "ajaxSuccess" : "ajaxError", [v, k, j ? r : s]), p.fireWith(l, [v, x]), h && (n.trigger("ajaxComplete", [v, k]), --m.active || m.event.trigger("ajaxStop")));
-        }return v;
-      }, getJSON: function getJSON(a, b, c) {
-        return m.get(a, b, c, "json");
-      }, getScript: function getScript(a, b) {
-        return m.get(a, void 0, b, "script");
-      } }), m.each(["get", "post"], function (a, b) {
-      m[b] = function (a, c, d, e) {
-        return m.isFunction(c) && (e = e || d, d = c, c = void 0), m.ajax({ url: a, type: b, dataType: e, data: c, success: d });
-      };
-    }), m._evalUrl = function (a) {
-      return m.ajax({ url: a, type: "GET", dataType: "script", async: !1, global: !1, "throws": !0 });
-    }, m.fn.extend({ wrapAll: function wrapAll(a) {
-        if (m.isFunction(a)) return this.each(function (b) {
-          m(this).wrapAll(a.call(this, b));
-        });if (this[0]) {
-          var b = m(a, this[0].ownerDocument).eq(0).clone(!0);this[0].parentNode && b.insertBefore(this[0]), b.map(function () {
-            var a = this;while (a.firstChild && 1 === a.firstChild.nodeType) {
-              a = a.firstChild;
-            }return a;
-          }).append(this);
-        }return this;
-      }, wrapInner: function wrapInner(a) {
-        return this.each(m.isFunction(a) ? function (b) {
-          m(this).wrapInner(a.call(this, b));
-        } : function () {
-          var b = m(this),
-              c = b.contents();c.length ? c.wrapAll(a) : b.append(a);
-        });
-      }, wrap: function wrap(a) {
-        var b = m.isFunction(a);return this.each(function (c) {
-          m(this).wrapAll(b ? a.call(this, c) : a);
-        });
-      }, unwrap: function unwrap() {
-        return this.parent().each(function () {
-          m.nodeName(this, "body") || m(this).replaceWith(this.childNodes);
-        }).end();
-      } }), m.expr.filters.hidden = function (a) {
-      return a.offsetWidth <= 0 && a.offsetHeight <= 0 || !k.reliableHiddenOffsets() && "none" === (a.style && a.style.display || m.css(a, "display"));
-    }, m.expr.filters.visible = function (a) {
-      return !m.expr.filters.hidden(a);
-    };var Qb = /%20/g,
-        Rb = /\[\]$/,
-        Sb = /\r?\n/g,
-        Tb = /^(?:submit|button|image|reset|file)$/i,
-        Ub = /^(?:input|select|textarea|keygen)/i;function Vb(a, b, c, d) {
-      var e;if (m.isArray(b)) m.each(b, function (b, e) {
-        c || Rb.test(a) ? d(a, e) : Vb(a + "[" + ("object" == (typeof e === "undefined" ? "undefined" : _typeof(e)) ? b : "") + "]", e, c, d);
-      });else if (c || "object" !== m.type(b)) d(a, b);else for (e in b) {
-        Vb(a + "[" + e + "]", b[e], c, d);
-      }
-    }m.param = function (a, b) {
-      var c,
-          d = [],
-          e = function e(a, b) {
-        b = m.isFunction(b) ? b() : null == b ? "" : b, d[d.length] = encodeURIComponent(a) + "=" + encodeURIComponent(b);
-      };if (void 0 === b && (b = m.ajaxSettings && m.ajaxSettings.traditional), m.isArray(a) || a.jquery && !m.isPlainObject(a)) m.each(a, function () {
-        e(this.name, this.value);
-      });else for (c in a) {
-        Vb(c, a[c], b, e);
-      }return d.join("&").replace(Qb, "+");
-    }, m.fn.extend({ serialize: function serialize() {
-        return m.param(this.serializeArray());
-      }, serializeArray: function serializeArray() {
-        return this.map(function () {
-          var a = m.prop(this, "elements");return a ? m.makeArray(a) : this;
-        }).filter(function () {
-          var a = this.type;return this.name && !m(this).is(":disabled") && Ub.test(this.nodeName) && !Tb.test(a) && (this.checked || !W.test(a));
-        }).map(function (a, b) {
-          var c = m(this).val();return null == c ? null : m.isArray(c) ? m.map(c, function (a) {
-            return { name: b.name, value: a.replace(Sb, "\r\n") };
-          }) : { name: b.name, value: c.replace(Sb, "\r\n") };
-        }).get();
-      } }), m.ajaxSettings.xhr = void 0 !== a.ActiveXObject ? function () {
-      return !this.isLocal && /^(get|post|head|put|delete|options)$/i.test(this.type) && Zb() || $b();
-    } : Zb;var Wb = 0,
-        Xb = {},
-        Yb = m.ajaxSettings.xhr();a.attachEvent && a.attachEvent("onunload", function () {
-      for (var a in Xb) {
-        Xb[a](void 0, !0);
-      }
-    }), k.cors = !!Yb && "withCredentials" in Yb, Yb = k.ajax = !!Yb, Yb && m.ajaxTransport(function (a) {
-      if (!a.crossDomain || k.cors) {
-        var _b3;return { send: function send(c, d) {
-            var e,
-                f = a.xhr(),
-                g = ++Wb;if (f.open(a.type, a.url, a.async, a.username, a.password), a.xhrFields) for (e in a.xhrFields) {
-              f[e] = a.xhrFields[e];
-            }a.mimeType && f.overrideMimeType && f.overrideMimeType(a.mimeType), a.crossDomain || c["X-Requested-With"] || (c["X-Requested-With"] = "XMLHttpRequest");for (e in c) {
-              void 0 !== c[e] && f.setRequestHeader(e, c[e] + "");
-            }f.send(a.hasContent && a.data || null), _b3 = function b(c, e) {
-              var h, i, j;if (_b3 && (e || 4 === f.readyState)) if (delete Xb[g], _b3 = void 0, f.onreadystatechange = m.noop, e) 4 !== f.readyState && f.abort();else {
-                j = {}, h = f.status, "string" == typeof f.responseText && (j.text = f.responseText);try {
-                  i = f.statusText;
-                } catch (k) {
-                  i = "";
-                }h || !a.isLocal || a.crossDomain ? 1223 === h && (h = 204) : h = j.text ? 200 : 404;
-              }j && d(h, i, j, f.getAllResponseHeaders());
-            }, a.async ? 4 === f.readyState ? setTimeout(_b3) : f.onreadystatechange = Xb[g] = _b3 : _b3();
-          }, abort: function abort() {
-            _b3 && _b3(void 0, !0);
-          } };
-      }
-    });function Zb() {
-      try {
-        return new a.XMLHttpRequest();
-      } catch (b) {}
-    }function $b() {
-      try {
-        return new a.ActiveXObject("Microsoft.XMLHTTP");
-      } catch (b) {}
-    }m.ajaxSetup({ accepts: { script: "text/javascript, application/javascript, application/ecmascript, application/x-ecmascript" }, contents: { script: /(?:java|ecma)script/ }, converters: { "text script": function textScript(a) {
-          return m.globalEval(a), a;
-        } } }), m.ajaxPrefilter("script", function (a) {
-      void 0 === a.cache && (a.cache = !1), a.crossDomain && (a.type = "GET", a.global = !1);
-    }), m.ajaxTransport("script", function (a) {
-      if (a.crossDomain) {
-        var b,
-            c = y.head || m("head")[0] || y.documentElement;return { send: function send(d, e) {
-            b = y.createElement("script"), b.async = !0, a.scriptCharset && (b.charset = a.scriptCharset), b.src = a.url, b.onload = b.onreadystatechange = function (a, c) {
-              (c || !b.readyState || /loaded|complete/.test(b.readyState)) && (b.onload = b.onreadystatechange = null, b.parentNode && b.parentNode.removeChild(b), b = null, c || e(200, "success"));
-            }, c.insertBefore(b, c.firstChild);
-          }, abort: function abort() {
-            b && b.onload(void 0, !0);
-          } };
-      }
-    });var _b = [],
-        ac = /(=)\?(?=&|$)|\?\?/;m.ajaxSetup({ jsonp: "callback", jsonpCallback: function jsonpCallback() {
-        var a = _b.pop() || m.expando + "_" + vb++;return this[a] = !0, a;
-      } }), m.ajaxPrefilter("json jsonp", function (b, c, d) {
-      var e,
-          f,
-          g,
-          h = b.jsonp !== !1 && (ac.test(b.url) ? "url" : "string" == typeof b.data && !(b.contentType || "").indexOf("application/x-www-form-urlencoded") && ac.test(b.data) && "data");return h || "jsonp" === b.dataTypes[0] ? (e = b.jsonpCallback = m.isFunction(b.jsonpCallback) ? b.jsonpCallback() : b.jsonpCallback, h ? b[h] = b[h].replace(ac, "$1" + e) : b.jsonp !== !1 && (b.url += (wb.test(b.url) ? "&" : "?") + b.jsonp + "=" + e), b.converters["script json"] = function () {
-        return g || m.error(e + " was not called"), g[0];
-      }, b.dataTypes[0] = "json", f = a[e], a[e] = function () {
-        g = arguments;
-      }, d.always(function () {
-        a[e] = f, b[e] && (b.jsonpCallback = c.jsonpCallback, _b.push(e)), g && m.isFunction(f) && f(g[0]), g = f = void 0;
-      }), "script") : void 0;
-    }), m.parseHTML = function (a, b, c) {
-      if (!a || "string" != typeof a) return null;"boolean" == typeof b && (c = b, b = !1), b = b || y;var d = u.exec(a),
-          e = !c && [];return d ? [b.createElement(d[1])] : (d = m.buildFragment([a], b, e), e && e.length && m(e).remove(), m.merge([], d.childNodes));
-    };var bc = m.fn.load;m.fn.load = function (a, b, c) {
-      if ("string" != typeof a && bc) return bc.apply(this, arguments);var d,
-          e,
-          f,
-          g = this,
-          h = a.indexOf(" ");return h >= 0 && (d = m.trim(a.slice(h, a.length)), a = a.slice(0, h)), m.isFunction(b) ? (c = b, b = void 0) : b && "object" == (typeof b === "undefined" ? "undefined" : _typeof(b)) && (f = "POST"), g.length > 0 && m.ajax({ url: a, type: f, dataType: "html", data: b }).done(function (a) {
-        e = arguments, g.html(d ? m("<div>").append(m.parseHTML(a)).find(d) : a);
-      }).complete(c && function (a, b) {
-        g.each(c, e || [a.responseText, b, a]);
-      }), this;
-    }, m.each(["ajaxStart", "ajaxStop", "ajaxComplete", "ajaxError", "ajaxSuccess", "ajaxSend"], function (a, b) {
-      m.fn[b] = function (a) {
-        return this.on(b, a);
-      };
-    }), m.expr.filters.animated = function (a) {
-      return m.grep(m.timers, function (b) {
-        return a === b.elem;
-      }).length;
-    };var cc = a.document.documentElement;function dc(a) {
-      return m.isWindow(a) ? a : 9 === a.nodeType ? a.defaultView || a.parentWindow : !1;
-    }m.offset = { setOffset: function setOffset(a, b, c) {
-        var d,
-            e,
-            f,
-            g,
-            h,
-            i,
-            j,
-            k = m.css(a, "position"),
-            l = m(a),
-            n = {};"static" === k && (a.style.position = "relative"), h = l.offset(), f = m.css(a, "top"), i = m.css(a, "left"), j = ("absolute" === k || "fixed" === k) && m.inArray("auto", [f, i]) > -1, j ? (d = l.position(), g = d.top, e = d.left) : (g = parseFloat(f) || 0, e = parseFloat(i) || 0), m.isFunction(b) && (b = b.call(a, c, h)), null != b.top && (n.top = b.top - h.top + g), null != b.left && (n.left = b.left - h.left + e), "using" in b ? b.using.call(a, n) : l.css(n);
-      } }, m.fn.extend({ offset: function offset(a) {
-        if (arguments.length) return void 0 === a ? this : this.each(function (b) {
-          m.offset.setOffset(this, a, b);
-        });var b,
-            c,
-            d = { top: 0, left: 0 },
-            e = this[0],
-            f = e && e.ownerDocument;if (f) return b = f.documentElement, m.contains(b, e) ? (_typeof(e.getBoundingClientRect) !== K && (d = e.getBoundingClientRect()), c = dc(f), { top: d.top + (c.pageYOffset || b.scrollTop) - (b.clientTop || 0), left: d.left + (c.pageXOffset || b.scrollLeft) - (b.clientLeft || 0) }) : d;
-      }, position: function position() {
-        if (this[0]) {
-          var a,
-              b,
-              c = { top: 0, left: 0 },
-              d = this[0];return "fixed" === m.css(d, "position") ? b = d.getBoundingClientRect() : (a = this.offsetParent(), b = this.offset(), m.nodeName(a[0], "html") || (c = a.offset()), c.top += m.css(a[0], "borderTopWidth", !0), c.left += m.css(a[0], "borderLeftWidth", !0)), { top: b.top - c.top - m.css(d, "marginTop", !0), left: b.left - c.left - m.css(d, "marginLeft", !0) };
-        }
-      }, offsetParent: function offsetParent() {
-        return this.map(function () {
-          var a = this.offsetParent || cc;while (a && !m.nodeName(a, "html") && "static" === m.css(a, "position")) {
-            a = a.offsetParent;
-          }return a || cc;
-        });
-      } }), m.each({ scrollLeft: "pageXOffset", scrollTop: "pageYOffset" }, function (a, b) {
-      var c = /Y/.test(b);m.fn[a] = function (d) {
-        return V(this, function (a, d, e) {
-          var f = dc(a);return void 0 === e ? f ? b in f ? f[b] : f.document.documentElement[d] : a[d] : void (f ? f.scrollTo(c ? m(f).scrollLeft() : e, c ? e : m(f).scrollTop()) : a[d] = e);
-        }, a, d, arguments.length, null);
-      };
-    }), m.each(["top", "left"], function (a, b) {
-      m.cssHooks[b] = La(k.pixelPosition, function (a, c) {
-        return c ? (c = Ja(a, b), Ha.test(c) ? m(a).position()[b] + "px" : c) : void 0;
-      });
-    }), m.each({ Height: "height", Width: "width" }, function (a, b) {
-      m.each({ padding: "inner" + a, content: b, "": "outer" + a }, function (c, d) {
-        m.fn[d] = function (d, e) {
-          var f = arguments.length && (c || "boolean" != typeof d),
-              g = c || (d === !0 || e === !0 ? "margin" : "border");return V(this, function (b, c, d) {
-            var e;return m.isWindow(b) ? b.document.documentElement["client" + a] : 9 === b.nodeType ? (e = b.documentElement, Math.max(b.body["scroll" + a], e["scroll" + a], b.body["offset" + a], e["offset" + a], e["client" + a])) : void 0 === d ? m.css(b, c, g) : m.style(b, c, d, g);
-          }, b, f ? d : void 0, f, null);
-        };
-      });
-    }), m.fn.size = function () {
-      return this.length;
-    }, m.fn.andSelf = m.fn.addBack, "function" == typeof define && define.amd && define("jquery", [], function () {
-      return m;
-    });var ec = a.jQuery,
-        fc = a.$;return m.noConflict = function (b) {
-      return a.$ === m && (a.$ = fc), b && a.jQuery === m && (a.jQuery = ec), m;
-    }, (typeof b === "undefined" ? "undefined" : _typeof(b)) === K && (a.jQuery = a.$ = m), m;
-  });
-});
-define('assets/js/main',[], function () {
-	'use strict';
-
-	(function ($) {
-
-		skel.breakpoints({
-			xlarge: '(max-width: 1680px)',
-			large: '(max-width: 1280px)',
-			medium: '(max-width: 980px)',
-			small: '(max-width: 736px)',
-			xsmall: '(max-width: 480px)'
-		});
-
-		$(function () {
-
-			var $window = $(window),
-			    $body = $('body');
-
-			$body.addClass('is-loading');
-
-			$window.on('load', function () {
-				window.setTimeout(function () {
-					$body.removeClass('is-loading');
-				}, 100);
-			});
-
-			$('form').placeholder();
-
-			skel.on('+medium -medium', function () {
-				$.prioritize('.important\\28 medium\\29', skel.breakpoint('medium').active);
-			});
-		});
-	})(jQuery);
-});
-define(["module", "exports"], function (module, exports) {
-  "use strict";
-
-  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-  };
-
-  var skel = function () {
-    "use strict";
-    var t = { breakpointIds: null, events: {}, isInit: !1, obj: { attachments: {}, breakpoints: {}, head: null, states: {} }, sd: "/", state: null, stateHandlers: {}, stateId: "", vars: {}, DOMReady: null, indexOf: null, isArray: null, iterate: null, matchesMedia: null, extend: function extend(e, n) {
-        t.iterate(n, function (i) {
-          t.isArray(n[i]) ? (t.isArray(e[i]) || (e[i] = []), t.extend(e[i], n[i])) : "object" == _typeof(n[i]) ? ("object" != _typeof(e[i]) && (e[i] = {}), t.extend(e[i], n[i])) : e[i] = n[i];
-        });
-      }, newStyle: function newStyle(t) {
-        var e = document.createElement("style");return e.type = "text/css", e.innerHTML = t, e;
-      }, _canUse: null, canUse: function canUse(e) {
-        t._canUse || (t._canUse = document.createElement("div"));var n = t._canUse.style,
-            i = e.charAt(0).toUpperCase() + e.slice(1);return e in n || "Moz" + i in n || "Webkit" + i in n || "O" + i in n || "ms" + i in n;
-      }, on: function on(e, n) {
-        var i = e.split(/[\s]+/);return t.iterate(i, function (e) {
-          var a = i[e];if (t.isInit) {
-            if ("init" == a) return void n();if ("change" == a) n();else {
-              var r = a.charAt(0);if ("+" == r || "!" == r) {
-                var o = a.substring(1);if (o in t.obj.breakpoints) if ("+" == r && t.obj.breakpoints[o].active) n();else if ("!" == r && !t.obj.breakpoints[o].active) return void n();
-              }
-            }
-          }t.events[a] || (t.events[a] = []), t.events[a].push(n);
-        }), t;
-      }, trigger: function trigger(e) {
-        return t.events[e] && 0 != t.events[e].length ? (t.iterate(t.events[e], function (n) {
-          t.events[e][n]();
-        }), t) : void 0;
-      }, breakpoint: function breakpoint(e) {
-        return t.obj.breakpoints[e];
-      }, breakpoints: function breakpoints(e) {
-        function n(t, e) {
-          this.name = this.id = t, this.media = e, this.active = !1, this.wasActive = !1;
-        }return n.prototype.matches = function () {
-          return t.matchesMedia(this.media);
-        }, n.prototype.sync = function () {
-          this.wasActive = this.active, this.active = this.matches();
-        }, t.iterate(e, function (i) {
-          t.obj.breakpoints[i] = new n(i, e[i]);
-        }), window.setTimeout(function () {
-          t.poll();
-        }, 0), t;
-      }, addStateHandler: function addStateHandler(e, n) {
-        t.stateHandlers[e] = n;
-      }, callStateHandler: function callStateHandler(e) {
-        var n = t.stateHandlers[e]();t.iterate(n, function (e) {
-          t.state.attachments.push(n[e]);
-        });
-      }, changeState: function changeState(e) {
-        t.iterate(t.obj.breakpoints, function (e) {
-          t.obj.breakpoints[e].sync();
-        }), t.vars.lastStateId = t.stateId, t.stateId = e, t.breakpointIds = t.stateId === t.sd ? [] : t.stateId.substring(1).split(t.sd), t.obj.states[t.stateId] ? t.state = t.obj.states[t.stateId] : (t.obj.states[t.stateId] = { attachments: [] }, t.state = t.obj.states[t.stateId], t.iterate(t.stateHandlers, t.callStateHandler)), t.detachAll(t.state.attachments), t.attachAll(t.state.attachments), t.vars.stateId = t.stateId, t.vars.state = t.state, t.trigger("change"), t.iterate(t.obj.breakpoints, function (e) {
-          t.obj.breakpoints[e].active ? t.obj.breakpoints[e].wasActive || t.trigger("+" + e) : t.obj.breakpoints[e].wasActive && t.trigger("-" + e);
-        });
-      }, generateStateConfig: function generateStateConfig(e, n) {
-        var i = {};return t.extend(i, e), t.iterate(t.breakpointIds, function (e) {
-          t.extend(i, n[t.breakpointIds[e]]);
-        }), i;
-      }, getStateId: function getStateId() {
-        var e = "";return t.iterate(t.obj.breakpoints, function (n) {
-          var i = t.obj.breakpoints[n];i.matches() && (e += t.sd + i.id);
-        }), e;
-      }, poll: function poll() {
-        var e = "";e = t.getStateId(), "" === e && (e = t.sd), e !== t.stateId && t.changeState(e);
-      }, _attach: null, attach: function attach(e) {
-        var n = t.obj.head,
-            i = e.element;return i.parentNode && i.parentNode.tagName ? !1 : (t._attach || (t._attach = n.firstChild), n.insertBefore(i, t._attach.nextSibling), e.permanent && (t._attach = i), !0);
-      }, attachAll: function attachAll(e) {
-        var n = [];t.iterate(e, function (t) {
-          n[e[t].priority] || (n[e[t].priority] = []), n[e[t].priority].push(e[t]);
-        }), n.reverse(), t.iterate(n, function (e) {
-          t.iterate(n[e], function (i) {
-            t.attach(n[e][i]);
-          });
-        });
-      }, detach: function detach(t) {
-        var e = t.element;return t.permanent || !e.parentNode || e.parentNode && !e.parentNode.tagName ? !1 : (e.parentNode.removeChild(e), !0);
-      }, detachAll: function detachAll(e) {
-        var n = {};t.iterate(e, function (t) {
-          n[e[t].id] = !0;
-        }), t.iterate(t.obj.attachments, function (e) {
-          e in n || t.detach(t.obj.attachments[e]);
-        });
-      }, attachment: function attachment(e) {
-        return e in t.obj.attachments ? t.obj.attachments[e] : null;
-      }, newAttachment: function newAttachment(e, n, i, a) {
-        return t.obj.attachments[e] = { id: e, element: n, priority: i, permanent: a };
-      }, init: function init() {
-        t.initMethods(), t.initVars(), t.initEvents(), t.obj.head = document.getElementsByTagName("head")[0], t.isInit = !0, t.trigger("init");
-      }, initEvents: function initEvents() {
-        t.on("resize", function () {
-          t.poll();
-        }), t.on("orientationChange", function () {
-          t.poll();
-        }), t.DOMReady(function () {
-          t.trigger("ready");
-        }), window.onload && t.on("load", window.onload), window.onload = function () {
-          t.trigger("load");
-        }, window.onresize && t.on("resize", window.onresize), window.onresize = function () {
-          t.trigger("resize");
-        }, window.onorientationchange && t.on("orientationChange", window.onorientationchange), window.onorientationchange = function () {
-          t.trigger("orientationChange");
-        };
-      }, initMethods: function initMethods() {
-        document.addEventListener ? !function (e, n) {
-          t.DOMReady = n();
-        }("domready", function () {
-          function t(t) {
-            for (r = 1; t = n.shift();) {
-              t();
-            }
-          }var _e,
-              n = [],
-              i = document,
-              a = "DOMContentLoaded",
-              r = /^loaded|^c/.test(i.readyState);return i.addEventListener(a, _e = function e() {
-            i.removeEventListener(a, _e), t();
-          }), function (t) {
-            r ? t() : n.push(t);
-          };
-        }) : !function (e, n) {
-          t.DOMReady = n();
-        }("domready", function (t) {
-          function e(t) {
-            for (h = 1; t = i.shift();) {
-              t();
-            }
-          }var _n2,
-              i = [],
-              a = !1,
-              r = document,
-              o = r.documentElement,
-              s = o.doScroll,
-              c = "DOMContentLoaded",
-              d = "addEventListener",
-              u = "onreadystatechange",
-              l = "readyState",
-              f = s ? /^loaded|^c/ : /^loaded|c/,
-              h = f.test(r[l]);return r[d] && r[d](c, _n2 = function n() {
-            r.removeEventListener(c, _n2, a), e();
-          }, a), s && r.attachEvent(u, _n2 = function _n() {
-            /^c/.test(r[l]) && (r.detachEvent(u, _n2), e());
-          }), t = s ? function (e) {
-            self != top ? h ? e() : i.push(e) : function () {
-              try {
-                o.doScroll("left");
-              } catch (n) {
-                return setTimeout(function () {
-                  t(e);
-                }, 50);
-              }e();
-            }();
-          } : function (t) {
-            h ? t() : i.push(t);
-          };
-        }), Array.prototype.indexOf ? t.indexOf = function (t, e) {
-          return t.indexOf(e);
-        } : t.indexOf = function (t, e) {
-          if ("string" == typeof t) return t.indexOf(e);var n,
-              i,
-              a = e ? e : 0;if (!this) throw new TypeError();if (i = this.length, 0 === i || a >= i) return -1;for (0 > a && (a = i - Math.abs(a)), n = a; i > n; n++) {
-            if (this[n] === t) return n;
-          }return -1;
-        }, Array.isArray ? t.isArray = function (t) {
-          return Array.isArray(t);
-        } : t.isArray = function (t) {
-          return "[object Array]" === Object.prototype.toString.call(t);
-        }, Object.keys ? t.iterate = function (t, e) {
-          if (!t) return [];var n,
-              i = Object.keys(t);for (n = 0; i[n] && e(i[n], t[i[n]]) !== !1; n++) {}
-        } : t.iterate = function (t, e) {
-          if (!t) return [];var n;for (n in t) {
-            if (Object.prototype.hasOwnProperty.call(t, n) && e(n, t[n]) === !1) break;
-          }
-        }, window.matchMedia ? t.matchesMedia = function (t) {
-          return "" == t ? !0 : window.matchMedia(t).matches;
-        } : window.styleMedia || window.media ? t.matchesMedia = function (t) {
-          if ("" == t) return !0;var e = window.styleMedia || window.media;return e.matchMedium(t || "all");
-        } : window.getComputedStyle ? t.matchesMedia = function (t) {
-          if ("" == t) return !0;var e = document.createElement("style"),
-              n = document.getElementsByTagName("script")[0],
-              i = null;e.type = "text/css", e.id = "matchmediajs-test", n.parentNode.insertBefore(e, n), i = "getComputedStyle" in window && window.getComputedStyle(e, null) || e.currentStyle;var a = "@media " + t + "{ #matchmediajs-test { width: 1px; } }";return e.styleSheet ? e.styleSheet.cssText = a : e.textContent = a, "1px" === i.width;
-        } : t.matchesMedia = function (t) {
-          if ("" == t) return !0;var e,
-              n,
-              i,
-              a,
-              r = { "min-width": null, "max-width": null },
-              o = !1;for (i = t.split(/\s+and\s+/), e = 0; e < i.length; e++) {
-            n = i[e], "(" == n.charAt(0) && (n = n.substring(1, n.length - 1), a = n.split(/:\s+/), 2 == a.length && (r[a[0].replace(/^\s+|\s+$/g, "")] = parseInt(a[1]), o = !0));
-          }if (!o) return !1;var s = document.documentElement.clientWidth,
-              c = document.documentElement.clientHeight;return null !== r["min-width"] && s < r["min-width"] || null !== r["max-width"] && s > r["max-width"] || null !== r["min-height"] && c < r["min-height"] || null !== r["max-height"] && c > r["max-height"] ? !1 : !0;
-        }, navigator.userAgent.match(/MSIE ([0-9]+)/) && RegExp.$1 < 9 && (t.newStyle = function (t) {
-          var e = document.createElement("span");return e.innerHTML = '&nbsp;<style type="text/css">' + t + "</style>", e;
-        });
-      }, initVars: function initVars() {
-        var e,
-            n,
-            i,
-            a = navigator.userAgent;e = "other", n = 0, i = [["firefox", /Firefox\/([0-9\.]+)/], ["bb", /BlackBerry.+Version\/([0-9\.]+)/], ["bb", /BB[0-9]+.+Version\/([0-9\.]+)/], ["opera", /OPR\/([0-9\.]+)/], ["opera", /Opera\/([0-9\.]+)/], ["edge", /Edge\/([0-9\.]+)/], ["safari", /Version\/([0-9\.]+).+Safari/], ["chrome", /Chrome\/([0-9\.]+)/], ["ie", /MSIE ([0-9]+)/], ["ie", /Trident\/.+rv:([0-9]+)/]], t.iterate(i, function (t, i) {
-          return a.match(i[1]) ? (e = i[0], n = parseFloat(RegExp.$1), !1) : void 0;
-        }), t.vars.browser = e, t.vars.browserVersion = n, e = "other", n = 0, i = [["ios", /([0-9_]+) like Mac OS X/, function (t) {
-          return t.replace("_", ".").replace("_", "");
-        }], ["ios", /CPU like Mac OS X/, function (t) {
-          return 0;
-        }], ["android", /Android ([0-9\.]+)/, null], ["mac", /Macintosh.+Mac OS X ([0-9_]+)/, function (t) {
-          return t.replace("_", ".").replace("_", "");
-        }], ["wp", /Windows Phone ([0-9\.]+)/, null], ["windows", /Windows NT ([0-9\.]+)/, null], ["bb", /BlackBerry.+Version\/([0-9\.]+)/, null], ["bb", /BB[0-9]+.+Version\/([0-9\.]+)/, null]], t.iterate(i, function (t, i) {
-          return a.match(i[1]) ? (e = i[0], n = parseFloat(i[2] ? i[2](RegExp.$1) : RegExp.$1), !1) : void 0;
-        }), t.vars.os = e, t.vars.osVersion = n, t.vars.IEVersion = "ie" == t.vars.browser ? t.vars.browserVersion : 99, t.vars.touch = "wp" == t.vars.os ? navigator.msMaxTouchPoints > 0 : !!("ontouchstart" in window), t.vars.mobile = "wp" == t.vars.os || "android" == t.vars.os || "ios" == t.vars.os || "bb" == t.vars.os;
-      } };return t.init(), t;
-  }();!function (t, e) {
-    "function" == typeof define && define.amd ? define([], e) : "object" == (typeof exports === "undefined" ? "undefined" : _typeof(exports)) ? module.exports = e() : t.skel = e();
-  }(undefined, function () {
-    return skel;
-  });
-});
-define('assets/js/util',[], function () {
-	'use strict';
-
-	(function ($) {
-		$.fn.navList = function () {
-
-			var $this = $(this);
-			$a = $this.find('a'), b = [];
-
-			$a.each(function () {
-
-				var $this = $(this),
-				    indent = Math.max(0, $this.parents('li').length - 1),
-				    href = $this.attr('href'),
-				    target = $this.attr('target');
-
-				b.push('<a ' + 'class="link depth-' + indent + '"' + (typeof target !== 'undefined' && target != '' ? ' target="' + target + '"' : '') + (typeof href !== 'undefined' && href != '' ? ' href="' + href + '"' : '') + '>' + '<span class="indent-' + indent + '"></span>' + $this.text() + '</a>');
-			});
-
-			return b.join('');
-		};
-
-		$.fn.panel = function (userConfig) {
-			if (this.length == 0) return $this;
-
-			if (this.length > 1) {
-
-				for (var i = 0; i < this.length; i++) {
-					$(this[i]).panel(userConfig);
-				}return $this;
-			}
-
-			var $this = $(this),
-			    $body = $('body'),
-			    $window = $(window),
-			    id = $this.attr('id'),
-			    config;
-
-			config = $.extend({
-				delay: 0,
-
-				hideOnClick: false,
-
-				hideOnEscape: false,
-
-				hideOnSwipe: false,
-
-				resetScroll: false,
-
-				resetForms: false,
-
-				side: null,
-
-				target: $this,
-
-				visibleClass: 'visible'
-
-			}, userConfig);
-
-			if (typeof config.target != 'jQuery') config.target = $(config.target);
-
-			$this._hide = function (event) {
-				if (!config.target.hasClass(config.visibleClass)) return;
-
-				if (event) {
-
-					event.preventDefault();
-					event.stopPropagation();
-				}
-
-				config.target.removeClass(config.visibleClass);
-
-				window.setTimeout(function () {
-					if (config.resetScroll) $this.scrollTop(0);
-
-					if (config.resetForms) $this.find('form').each(function () {
-						this.reset();
-					});
-				}, config.delay);
-			};
-
-			$this.css('-ms-overflow-style', '-ms-autohiding-scrollbar').css('-webkit-overflow-scrolling', 'touch');
-
-			if (config.hideOnClick) {
-
-				$this.find('a').css('-webkit-tap-highlight-color', 'rgba(0,0,0,0)');
-
-				$this.on('click', 'a', function (event) {
-
-					var $a = $(this),
-					    href = $a.attr('href'),
-					    target = $a.attr('target');
-
-					if (!href || href == '#' || href == '' || href == '#' + id) return;
-
-					event.preventDefault();
-					event.stopPropagation();
-
-					$this._hide();
-
-					window.setTimeout(function () {
-
-						if (target == '_blank') window.open(href);else window.location.href = href;
-					}, config.delay + 10);
-				});
-			}
-
-			$this.on('touchstart', function (event) {
-
-				$this.touchPosX = event.originalEvent.touches[0].pageX;
-				$this.touchPosY = event.originalEvent.touches[0].pageY;
-			});
-
-			$this.on('touchmove', function (event) {
-
-				if ($this.touchPosX === null || $this.touchPosY === null) return;
-
-				var diffX = $this.touchPosX - event.originalEvent.touches[0].pageX,
-				    diffY = $this.touchPosY - event.originalEvent.touches[0].pageY,
-				    th = $this.outerHeight(),
-				    ts = $this.get(0).scrollHeight - $this.scrollTop();
-
-				if (config.hideOnSwipe) {
-
-					var result = false,
-					    boundary = 20,
-					    delta = 50;
-
-					switch (config.side) {
-
-						case 'left':
-							result = diffY < boundary && diffY > -1 * boundary && diffX > delta;
-							break;
-
-						case 'right':
-							result = diffY < boundary && diffY > -1 * boundary && diffX < -1 * delta;
-							break;
-
-						case 'top':
-							result = diffX < boundary && diffX > -1 * boundary && diffY > delta;
-							break;
-
-						case 'bottom':
-							result = diffX < boundary && diffX > -1 * boundary && diffY < -1 * delta;
-							break;
-
-						default:
-							break;
-
-					}
-
-					if (result) {
-
-						$this.touchPosX = null;
-						$this.touchPosY = null;
-						$this._hide();
-
-						return false;
-					}
-				}
-
-				if ($this.scrollTop() < 0 && diffY < 0 || ts > th - 2 && ts < th + 2 && diffY > 0) {
-
-					event.preventDefault();
-					event.stopPropagation();
-				}
-			});
-
-			$this.on('click touchend touchstart touchmove', function (event) {
-				event.stopPropagation();
-			});
-
-			$this.on('click', 'a[href="#' + id + '"]', function (event) {
-
-				event.preventDefault();
-				event.stopPropagation();
-
-				config.target.removeClass(config.visibleClass);
-			});
-
-			$body.on('click touchend', function (event) {
-				$this._hide(event);
-			});
-
-			$body.on('click', 'a[href="#' + id + '"]', function (event) {
-
-				event.preventDefault();
-				event.stopPropagation();
-
-				config.target.toggleClass(config.visibleClass);
-			});
-
-			if (config.hideOnEscape) $window.on('keydown', function (event) {
-
-				if (event.keyCode == 27) $this._hide(event);
-			});
-
-			return $this;
-		};
-
-		$.fn.placeholder = function () {
-			if (typeof document.createElement('input').placeholder != 'undefined') return $(this);
-
-			if (this.length == 0) return $this;
-
-			if (this.length > 1) {
-
-				for (var i = 0; i < this.length; i++) {
-					$(this[i]).placeholder();
-				}return $this;
-			}
-
-			var $this = $(this);
-
-			$this.find('input[type=text],textarea').each(function () {
-
-				var i = $(this);
-
-				if (i.val() == '' || i.val() == i.attr('placeholder')) i.addClass('polyfill-placeholder').val(i.attr('placeholder'));
-			}).on('blur', function () {
-
-				var i = $(this);
-
-				if (i.attr('name').match(/-polyfill-field$/)) return;
-
-				if (i.val() == '') i.addClass('polyfill-placeholder').val(i.attr('placeholder'));
-			}).on('focus', function () {
-
-				var i = $(this);
-
-				if (i.attr('name').match(/-polyfill-field$/)) return;
-
-				if (i.val() == i.attr('placeholder')) i.removeClass('polyfill-placeholder').val('');
-			});
-
-			$this.find('input[type=password]').each(function () {
-
-				var i = $(this);
-				var x = $($('<div>').append(i.clone()).remove().html().replace(/type="password"/i, 'type="text"').replace(/type=password/i, 'type=text'));
-
-				if (i.attr('id') != '') x.attr('id', i.attr('id') + '-polyfill-field');
-
-				if (i.attr('name') != '') x.attr('name', i.attr('name') + '-polyfill-field');
-
-				x.addClass('polyfill-placeholder').val(x.attr('placeholder')).insertAfter(i);
-
-				if (i.val() == '') i.hide();else x.hide();
-
-				i.on('blur', function (event) {
-
-					event.preventDefault();
-
-					var x = i.parent().find('input[name=' + i.attr('name') + '-polyfill-field]');
-
-					if (i.val() == '') {
-
-						i.hide();
-						x.show();
-					}
-				});
-
-				x.on('focus', function (event) {
-
-					event.preventDefault();
-
-					var i = x.parent().find('input[name=' + x.attr('name').replace('-polyfill-field', '') + ']');
-
-					x.hide();
-
-					i.show().focus();
-				}).on('keypress', function (event) {
-
-					event.preventDefault();
-					x.val('');
-				});
-			});
-
-			$this.on('submit', function () {
-
-				$this.find('input[type=text],input[type=password],textarea').each(function (event) {
-
-					var i = $(this);
-
-					if (i.attr('name').match(/-polyfill-field$/)) i.attr('name', '');
-
-					if (i.val() == i.attr('placeholder')) {
-
-						i.removeClass('polyfill-placeholder');
-						i.val('');
-					}
-				});
-			}).on('reset', function (event) {
-
-				event.preventDefault();
-
-				$this.find('select').val($('option:first').val());
-
-				$this.find('input,textarea').each(function () {
-
-					var i = $(this),
-					    x;
-
-					i.removeClass('polyfill-placeholder');
-
-					switch (this.type) {
-
-						case 'submit':
-						case 'reset':
-							break;
-
-						case 'password':
-							i.val(i.attr('defaultValue'));
-
-							x = i.parent().find('input[name=' + i.attr('name') + '-polyfill-field]');
-
-							if (i.val() == '') {
-								i.hide();
-								x.show();
-							} else {
-								i.show();
-								x.hide();
-							}
-
-							break;
-
-						case 'checkbox':
-						case 'radio':
-							i.attr('checked', i.attr('defaultValue'));
-							break;
-
-						case 'text':
-						case 'textarea':
-							i.val(i.attr('defaultValue'));
-
-							if (i.val() == '') {
-								i.addClass('polyfill-placeholder');
-								i.val(i.attr('placeholder'));
-							}
-
-							break;
-
-						default:
-							i.val(i.attr('defaultValue'));
-							break;
-
-					}
-				});
-			});
-
-			return $this;
-		};
-
-		$.prioritize = function ($elements, condition) {
-
-			var key = '__prioritize';
-
-			if (typeof $elements != 'jQuery') $elements = $($elements);
-
-			$elements.each(function () {
-
-				var $e = $(this),
-				    $p,
-				    $parent = $e.parent();
-
-				if ($parent.length == 0) return;
-
-				if (!$e.data(key)) {
-					if (!condition) return;
-
-					$p = $e.prev();
-
-					if ($p.length == 0) return;
-
-					$e.prependTo($parent);
-
-					$e.data(key, $p);
-				} else {
-						if (condition) return;
-
-						$p = $e.data(key);
-
-						$e.insertAfter($p);
-
-						$e.removeData(key);
-					}
-			});
-		};
-	})(jQuery);
-});
-define('assets/js/ie/html5shiv',[], function () {
-  "use strict";
-
-  (function (l, f) {
-    function m() {
-      var a = e.elements;return "string" == typeof a ? a.split(" ") : a;
-    }function i(a) {
-      var b = n[a[o]];b || (b = {}, h++, a[o] = h, n[h] = b);return b;
-    }function p(a, b, c) {
-      b || (b = f);if (g) return b.createElement(a);c || (c = i(b));b = c.cache[a] ? c.cache[a].cloneNode() : r.test(a) ? (c.cache[a] = c.createElem(a)).cloneNode() : c.createElem(a);return b.canHaveChildren && !s.test(a) ? c.frag.appendChild(b) : b;
-    }function t(a, b) {
-      if (!b.cache) b.cache = {}, b.createElem = a.createElement, b.createFrag = a.createDocumentFragment, b.frag = b.createFrag();
-      a.createElement = function (c) {
-        return !e.shivMethods ? b.createElem(c) : p(c, a, b);
-      };a.createDocumentFragment = Function("h,f", "return function(){var n=f.cloneNode(),c=n.createElement;h.shivMethods&&(" + m().join().replace(/\w+/g, function (a) {
-        b.createElem(a);b.frag.createElement(a);return 'c("' + a + '")';
-      }) + ");return n}")(e, b.frag);
-    }function q(a) {
-      a || (a = f);var b = i(a);if (e.shivCSS && !j && !b.hasCSS) {
-        var c,
-            d = a;c = d.createElement("p");d = d.getElementsByTagName("head")[0] || d.documentElement;c.innerHTML = "x<style>article,aside,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}mark{background:#FF0;color:#000}</style>";
-        c = d.insertBefore(c.lastChild, d.firstChild);b.hasCSS = !!c;
-      }g || t(a, b);return a;
-    }var k = l.html5 || {},
-        s = /^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i,
-        r = /^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i,
-        j,
-        o = "_html5shiv",
-        h = 0,
-        n = {},
-        g;(function () {
-      try {
-        var a = f.createElement("a");a.innerHTML = "<xyz></xyz>";j = "hidden" in a;var b;if (!(b = 1 == a.childNodes.length)) {
-          f.createElement("a");var c = f.createDocumentFragment();b = "undefined" == typeof c.cloneNode || "undefined" == typeof c.createDocumentFragment || "undefined" == typeof c.createElement;
-        }g = b;
-      } catch (d) {
-        g = j = !0;
-      }
-    })();var e = { elements: k.elements || "abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup main mark meter nav output progress section summary time video", version: "3.6.2", shivCSS: !1 !== k.shivCSS, supportsUnknownElements: g, shivMethods: !1 !== k.shivMethods, type: "default", shivDocument: q, createElement: p, createDocumentFragment: function createDocumentFragment(a, b) {
-        a || (a = f);if (g) return a.createDocumentFragment();
-        for (var b = b || i(a), c = b.frag.cloneNode(), d = 0, e = m(), h = e.length; d < h; d++) {
-          c.createElement(e[d]);
-        }return c;
-      } };l.html5 = e;q(f);
-  })(undefined, document);
-});
-define('assets/js/ie/respond.min',[], function () {
-  "use strict";
-
-  !function (a) {
-    "use strict";
-    a.matchMedia = a.matchMedia || function (a) {
-      var b,
-          c = a.documentElement,
-          d = c.firstElementChild || c.firstChild,
-          e = a.createElement("body"),
-          f = a.createElement("div");return f.id = "mq-test-1", f.style.cssText = "position:absolute;top:-100em", e.style.background = "none", e.appendChild(f), function (a) {
-        return f.innerHTML = '&shy;<style media="' + a + '"> #mq-test-1 { width: 42px; }</style>', c.insertBefore(e, d), b = 42 === f.offsetWidth, c.removeChild(e), { matches: b, media: a };
-      };
-    }(a.document);
-  }(undefined), function (a) {
-    "use strict";
-    function b() {
-      v(!0);
-    }var c = {};a.respond = c, c.update = function () {};var d = [],
-        e = function () {
-      var b = !1;try {
-        b = new a.XMLHttpRequest();
-      } catch (c) {
-        b = new a.ActiveXObject("Microsoft.XMLHTTP");
-      }return function () {
-        return b;
-      };
-    }(),
-        f = function f(a, b) {
-      var c = e();c && (c.open("GET", a, !0), c.onreadystatechange = function () {
-        4 !== c.readyState || 200 !== c.status && 304 !== c.status || b(c.responseText);
-      }, 4 !== c.readyState && c.send(null));
-    },
-        g = function g(a) {
-      return a.replace(c.regex.minmaxwh, "").match(c.regex.other);
-    };if (c.ajax = f, c.queue = d, c.unsupportedmq = g, c.regex = { media: /@media[^\{]+\{([^\{\}]*\{[^\}\{]*\})+/gi, keyframes: /@(?:\-(?:o|moz|webkit)\-)?keyframes[^\{]+\{(?:[^\{\}]*\{[^\}\{]*\})+[^\}]*\}/gi, comments: /\/\*[^*]*\*+([^/][^*]*\*+)*\//gi, urls: /(url\()['"]?([^\/\)'"][^:\)'"]+)['"]?(\))/g, findStyles: /@media *([^\{]+)\{([\S\s]+?)$/, only: /(only\s+)?([a-zA-Z]+)\s?/, minw: /\(\s*min\-width\s*:\s*(\s*[0-9\.]+)(px|em)\s*\)/, maxw: /\(\s*max\-width\s*:\s*(\s*[0-9\.]+)(px|em)\s*\)/, minmaxwh: /\(\s*m(in|ax)\-(height|width)\s*:\s*(\s*[0-9\.]+)(px|em)\s*\)/gi, other: /\([^\)]*\)/g }, c.mediaQueriesSupported = a.matchMedia && null !== a.matchMedia("only all") && a.matchMedia("only all").matches, !c.mediaQueriesSupported) {
-      var h,
-          i,
-          j,
-          k = a.document,
-          l = k.documentElement,
-          m = [],
-          n = [],
-          o = [],
-          p = {},
-          q = 30,
-          r = k.getElementsByTagName("head")[0] || l,
-          s = k.getElementsByTagName("base")[0],
-          t = r.getElementsByTagName("link"),
-          u = function u() {
-        var a,
-            b = k.createElement("div"),
-            c = k.body,
-            d = l.style.fontSize,
-            e = c && c.style.fontSize,
-            f = !1;return b.style.cssText = "position:absolute;font-size:1em;width:1em", c || (c = f = k.createElement("body"), c.style.background = "none"), l.style.fontSize = "100%", c.style.fontSize = "100%", c.appendChild(b), f && l.insertBefore(c, l.firstChild), a = b.offsetWidth, f ? l.removeChild(c) : c.removeChild(b), l.style.fontSize = d, e && (c.style.fontSize = e), a = j = parseFloat(a);
-      },
-          v = function v(b) {
-        var c = "clientWidth",
-            d = l[c],
-            e = "CSS1Compat" === k.compatMode && d || k.body[c] || d,
-            f = {},
-            g = t[t.length - 1],
-            p = new Date().getTime();if (b && h && q > p - h) return a.clearTimeout(i), i = a.setTimeout(v, q), void 0;h = p;for (var s in m) {
-          if (m.hasOwnProperty(s)) {
-            var w = m[s],
-                x = w.minw,
-                y = w.maxw,
-                z = null === x,
-                A = null === y,
-                B = "em";x && (x = parseFloat(x) * (x.indexOf(B) > -1 ? j || u() : 1)), y && (y = parseFloat(y) * (y.indexOf(B) > -1 ? j || u() : 1)), w.hasquery && (z && A || !(z || e >= x) || !(A || y >= e)) || (f[w.media] || (f[w.media] = []), f[w.media].push(n[w.rules]));
-          }
-        }for (var C in o) {
-          o.hasOwnProperty(C) && o[C] && o[C].parentNode === r && r.removeChild(o[C]);
-        }o.length = 0;for (var D in f) {
-          if (f.hasOwnProperty(D)) {
-            var E = k.createElement("style"),
-                F = f[D].join("\n");E.type = "text/css", E.media = D, r.insertBefore(E, g.nextSibling), E.styleSheet ? E.styleSheet.cssText = F : E.appendChild(k.createTextNode(F)), o.push(E);
-          }
-        }
-      },
-          w = function w(a, b, d) {
-        var e = a.replace(c.regex.comments, "").replace(c.regex.keyframes, "").match(c.regex.media),
-            f = e && e.length || 0;b = b.substring(0, b.lastIndexOf("/"));var h = function h(a) {
-          return a.replace(c.regex.urls, "$1" + b + "$2$3");
-        },
-            i = !f && d;b.length && (b += "/"), i && (f = 1);for (var j = 0; f > j; j++) {
-          var k, l, o, p;i ? (k = d, n.push(h(a))) : (k = e[j].match(c.regex.findStyles) && RegExp.$1, n.push(RegExp.$2 && h(RegExp.$2))), o = k.split(","), p = o.length;for (var q = 0; p > q; q++) {
-            l = o[q], g(l) || m.push({ media: l.split("(")[0].match(c.regex.only) && RegExp.$2 || "all", rules: n.length - 1, hasquery: l.indexOf("(") > -1, minw: l.match(c.regex.minw) && parseFloat(RegExp.$1) + (RegExp.$2 || ""), maxw: l.match(c.regex.maxw) && parseFloat(RegExp.$1) + (RegExp.$2 || "") });
-          }
-        }v();
-      },
-          x = function x() {
-        if (d.length) {
-          var b = d.shift();f(b.href, function (c) {
-            w(c, b.href, b.media), p[b.href] = !0, a.setTimeout(function () {
-              x();
-            }, 0);
-          });
-        }
-      },
-          y = function y() {
-        for (var b = 0; b < t.length; b++) {
-          var c = t[b],
-              e = c.href,
-              f = c.media,
-              g = c.rel && "stylesheet" === c.rel.toLowerCase();e && g && !p[e] && (c.styleSheet && c.styleSheet.rawCssText ? (w(c.styleSheet.rawCssText, e, f), p[e] = !0) : (!/^([a-zA-Z:]*\/\/)/.test(e) && !s || e.replace(RegExp.$1, "").split("/")[0] === a.location.host) && ("//" === e.substring(0, 2) && (e = a.location.protocol + e), d.push({ href: e, media: f })));
-        }x();
-      };y(), c.update = y, c.getEmValue = u, a.addEventListener ? a.addEventListener("resize", b, !1) : a.attachEvent && a.attachEvent("onresize", b);
     }
-  }(undefined);
+
+    var results = exports.results = function () {
+        function results() {
+            _classCallCheck(this, results);
+        }
+
+        results.prototype.attached = function attached() {
+            var context = document.getElementById("myChart").getContext('2d');
+            console.log(context);
+
+            var myChart = new _Chart.Chart(context, {
+                type: 'bar',
+                data: {
+                    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+                        borderColor: ['rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+            console.log(myChart);
+            $("#myChart").hide();
+            console.log($("#myChart"));
+        };
+
+        results.prototype.what = function what() {
+            $("#myChart").show();
+            console.log($('#myChart'));
+        };
+
+        return results;
+    }();
+});
+define('src/services/constants.js',["exports"], function (exports) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    var wagePerc = exports.wagePerc = [0.0699, 0.031, 0.0088, 0.0495, 0.0392, 0.0199, 0.0501, 0.0245, 0.0409, 0.018, 0.06, 0.0557, 0.0687, 0.0578, 0.0496, 0.0502, 0.098, 0.0626, 0.0594, 0.0747, 0.069, 0.0599, 0.0794, 0.0875, 0.0901, 0.1007, 0.0551, 0.0487, 0.0588, 0.0426, 0.0297, 0.0638, 0.0493, 0.0396, 0.0462, 0.0373, 0.0515, 0.0086, 0.0268, 0.0401, 0.0489, 0.0584, 0.0523, 0.0557, 0.0553, 0.0239, 0.01, 0.0244, 0.0465, 0.0366, 0.046, 0.0454, 0.023, -0.0151, 0.0236, 0.0313, 0.0128, 0.0355, 0.0348, 0.0348, 0.045955, 0.045955];
+
+    var inflationIndex = exports.inflationIndex = [13.6165708, 13.2076684, 13.0923376, 12.4743581, 12.0032916, 11.7693797, 11.2081442, 10.9398609, 10.5103293, 10.3244303, 9.7397982, 9.2258912, 8.6325739, 8.1609414, 7.7750993, 7.4031149, 6.7423575, 6.3453318, 5.9892999, 5.5728277, 5.2131073, 4.918342, 4.5565075, 4.1899732, 3.8437514, 3.4922153, 3.3099927, 3.1562355, 2.9809992, 2.8591827, 2.7767654, 2.6102952, 2.4877692, 2.3930202, 2.2873633, 2.2051858, 2.0971332, 2.0792511, 2.0249045, 1.9468668, 1.8560938, 1.7537603, 1.666536, 1.5785652, 1.4958451, 1.460991, 1.4464844, 1.4119683, 1.3492451, 1.3016185, 1.2444211, 1.1903987, 1.1636305, 1.1814475, 1.1541687, 1.1191035, 1.085217, 1.0715215, 1.0347904, 1, 1, 1];
+
+    var allowedSalary = exports.allowedSalary = [4200, 4200, 4200, 4800, 4800, 4800, 4800, 4800, 4800, 4800, 6600, 6600, 7800, 7800, 7800, 7800, 9000, 10800, 13200, 14100, 15300, 16500, 17700, 22900, 25900, 29700, 32400, 35700, 37800, 39600, 42000, 43800, 45000, 48000, 51300, 53400, 55500, 57600, 60600, 61200, 62700, 65400, 68400, 72600, 76200, 80400, 84900, 87000, 87900, 90000, 94200, 97500, 102000, 106800, 106800, 110100, 113700, 117000, 118500, 118500, 118500, 127200];
+
+    var consttier1 = exports.consttier1 = 885;
+    var tier1perc = exports.tier1perc = 0.90;
+    var consttier2 = exports.consttier2 = 5336;
+    var tier2perc = exports.tier2perc = 0.32;
+    var tier3perc = exports.tier3perc = 0.15;
+
+    var subEarningsPerc = exports.subEarningsPerc = [.9000, .8500, .8000, .7500, .7000, .6500, .6000, .5500, .5000, .4500, .4000];
+
+    var EL1943plus = exports.EL1943plus = [0.75, 0.8, 0.867, 0.933, 1, 1.08, 1.16, 1.24, 1.32];
+
+    var EL1955 = exports.EL1955 = [0.742, 0.796, 0.856, 0.922, 0.989, 1.069, 1.149, 1.229, 1.309];
+
+    var EL1956 = exports.EL1956 = [0.733, 0.783, 0.844, 0.911, 0.978, 1.058, 1.138, 1.218, 1.298];
+
+    var EL1957 = exports.EL1957 = [0.725, 0.775, 0.833, 0.9, 0.967, 1.047, 1.127, 1.207, 1.287];
+
+    var EL1958 = exports.EL1958 = [0.717, 0.767, 0.822, 0.889, 0.956, 1.036, 1.116, 1.196, 1.276];
+
+    var EL1959 = exports.EL1959 = [0.708, 0.758, 0.811, 0.878, 0.944, 1.024, 1.104, 1.184, 1.264];
+
+    var EL1960plus = exports.EL1960plus = [0.7, 0.75, 0.8, 0.867, 0.933, 1, 1.08, 1.16, 1.24];
+});
+define('services/user',["exports"], function (exports) {
+        "use strict";
+
+        Object.defineProperty(exports, "__esModule", {
+                value: true
+        });
+
+        function _classCallCheck(instance, Constructor) {
+                if (!(instance instanceof Constructor)) {
+                        throw new TypeError("Cannot call a class as a function");
+                }
+        }
+
+        var User = exports.User = function User() {
+                _classCallCheck(this, User);
+
+                this.baseSS = 0;
+                this.wep = false;
+                this.yrsOfSubEarnings = 0;
+
+                this.name = "";
+                this.gender = "";
+                this.dateOfBirth = "";
+                this.age = 0;
+                this.employmentStatus = "";
+
+                this.salary = 0;
+                this.wages = [];
+
+                this.maritalStatus = "";
+                this.numOfDependents = 0;
+                this.ageOfDependent = [];
+                this.retirementIncome = 0;
+                this.retirementAge = 65;
+                this.lifeExpectancy = 91;
+
+                this.eligibleSS = false;
+                this.cola = 2.5;
+                this.widowerIncome = 0;
+        };
+});
+define('services/userdata',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.UserData = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var UserData = exports.UserData = (_dec = (0, _aureliaFramework.singleton)(), _dec(_class = function UserData() {
+        _classCallCheck(this, UserData);
+
+        this.client = new _user.User();
+        this.spouse = new _user.User();
+    }) || _class);
 });
 /*!
  * Chart.js
@@ -17085,17 +13545,11 @@ module.exports = function(Chart) {
 
 },{"1":1}]},{},[7])(7)
 });
-define('text!advanced-1.html', ['module'], function(module) { module.exports = "<template>\r\n\r\n\t<link href=\"./styles/advanced.css\" rel=\"stylesheet\" type=\"text/css\" />\r\n    <div class=\"container\">\r\n    <form class=\"well form-horizontal\" action=\" \" method=\"post\"  id=\"contact_form\">\r\n    <fieldset>\r\n\r\n    <!-- Form Name -->\r\n    <legend>Personal Information</legend>\r\n\r\n    <!-- Text input-->\r\n\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">First Name</label>  \r\n    <div class=\"col-md-4 inputGroupContainer\">\r\n    <div class=\"input-group\">\r\n    <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-user\"></i></span>\r\n    <input  name=\"first_name\" placeholder=\"First Name\" class=\"form-control\"  type=\"text\" value.bind=\"firstName\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n\r\n    <!-- Text input-->\r\n\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\" >Last Name</label> \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n    <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-user\"></i></span>\r\n    <input name=\"last_name\" placeholder=\"Last Name\" class=\"form-control\"  type=\"text\" value.bind=\"lastName\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n\r\n\r\n    <!-- Text input-->\r\n        \r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Date of Birth</label>  \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-earphone\"></i></span>\r\n    <input type=\"date\" class=\"form-control\" id=\"exampleInputDOB1\" placeholder=\"Date of Birth\" value.bind=\"dateOfBirth\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n\r\n\r\n    <!-- Text input-->\r\n    \r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Expected Age to Claim Benefits</label>  \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-home\"></i></span>\r\n            <input type=\"date\" class=\"form-control\" id=\"exampleInputDOB1\" placeholder=\"Date of Birth\" value.bind=\"benefitAge\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n    <!-- Text input-->\r\n        \r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Marital Status</label>  \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n            <div class=\"radio\">\r\n                <label>\r\n                    <input type=\"radio\" name=\"hosting\" value=\"single\" click.delegate=\"yesnoCheck('single')\"> Single\r\n                </label>\r\n                <label>\r\n                    <input type=\"radio\" name=\"hosting\" value=\"married\" click.delegate=\"yesnoCheck('married')\"> Married\r\n                </label>\r\n                <label>\r\n                    <input type=\"radio\" name=\"hosting\" value=\"divorced\" click.delegate=\"yesnoCheck('divorced')\"> Divorced\r\n                </label>\r\n                <label>\r\n                    <input type=\"radio\" name=\"hosting\" value=\"widowed\" click.delegate=\"yesnoCheck('widowed')\"> Widowed \r\n                </label>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div id=\"ifYes\" style=\"display: none;\">\r\n\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Spouse's Date of Birth</label>  \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-earphone\"></i></span>\r\n    <input type=\"date\" class=\"form-control\" id=\"exampleInputDOB1\" placeholder=\"Date of Birth\" value.bind=\"dateOfBirthSpouse\">\r\n        </div>\r\n    </div>\r\n    </div>    \r\n    \r\n    <!-- Only need age for this input-->\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Spouse's Expected Age to Claim Benefits</label>  \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-earphone\"></i></span>\r\n    <input type=\"date\" class=\"form-control\" id=\"exampleInputDOB1\" placeholder=\"Date of Birth\" value.bind=\"benefitAgeSpouse\">\r\n        </div>\r\n    </div>\r\n    </div>    \r\n\r\n    </div>\r\n\r\n\r\n       <!-- Text input-->\r\n        \r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Number of Children</label>  \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-home\"></i></span>\r\n    <input name=\"address\" placeholder=\"Address\" class=\"form-control\" type=\"text\" value.bind=\"numChildren\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n\r\n        <!-- Nav Bottom Button -->\r\n    <div class=\"form-group\">\r\n        <label class=\"col-md-8 control-label\"></label>\r\n            <div class=\"col-md-4\">\r\n                <a href=\"#\" route-href=\"route: basic-calc\" class=\"btn btn-default\">Back</a>\r\n                <a href=\"#\" class=\"btn btn-success\" click.delegate=\"submit(firstName, lastName, dateOfBirth, numChildren, benefitAge) next(firstName, lastName, dateOfBirth, numChildren, benefitAge)\">Next</a>\r\n            </div>\r\n    </div>\r\n\r\n    </fieldset>\r\n    </form>\r\n    </div>\r\n    </div><!-- /.container -->\r\n\r\n</template>"; });
-define('text!assets/css/font-awesome.min.css', ['module'], function(module) { module.exports = "/*!\r\n *  Font Awesome 4.3.0 by @davegandy - http://fontawesome.io - @fontawesome\r\n *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)\r\n */@font-face{font-family:'FontAwesome';src:url('../fonts/fontawesome-webfont.eot?v=4.3.0');src:url('../fonts/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'),url('../fonts/fontawesome-webfont.woff2?v=4.3.0') format('woff2'),url('../fonts/fontawesome-webfont.woff?v=4.3.0') format('woff'),url('../fonts/fontawesome-webfont.ttf?v=4.3.0') format('truetype'),url('../fonts/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');font-weight:normal;font-style:normal}.fa{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;transform:translate(0, 0)}.fa-lg{font-size:1.33333333em;line-height:.75em;vertical-align:-15%}.fa-2x{font-size:2em}.fa-3x{font-size:3em}.fa-4x{font-size:4em}.fa-5x{font-size:5em}.fa-fw{width:1.28571429em;text-align:center}.fa-ul{padding-left:0;margin-left:2.14285714em;list-style-type:none}.fa-ul>li{position:relative}.fa-li{position:absolute;left:-2.14285714em;width:2.14285714em;top:.14285714em;text-align:center}.fa-li.fa-lg{left:-1.85714286em}.fa-border{padding:.2em .25em .15em;border:solid .08em #eee;border-radius:.1em}.pull-right{float:right}.pull-left{float:left}.fa.pull-left{margin-right:.3em}.fa.pull-right{margin-left:.3em}.fa-spin{-webkit-animation:fa-spin 2s infinite linear;animation:fa-spin 2s infinite linear}.fa-pulse{-webkit-animation:fa-spin 1s infinite steps(8);animation:fa-spin 1s infinite steps(8)}@-webkit-keyframes fa-spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-webkit-transform:rotate(359deg);transform:rotate(359deg)}}@keyframes fa-spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-webkit-transform:rotate(359deg);transform:rotate(359deg)}}.fa-rotate-90{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);-webkit-transform:rotate(90deg);-ms-transform:rotate(90deg);transform:rotate(90deg)}.fa-rotate-180{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);-webkit-transform:rotate(180deg);-ms-transform:rotate(180deg);transform:rotate(180deg)}.fa-rotate-270{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);-webkit-transform:rotate(270deg);-ms-transform:rotate(270deg);transform:rotate(270deg)}.fa-flip-horizontal{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);-webkit-transform:scale(-1, 1);-ms-transform:scale(-1, 1);transform:scale(-1, 1)}.fa-flip-vertical{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);-webkit-transform:scale(1, -1);-ms-transform:scale(1, -1);transform:scale(1, -1)}:root .fa-rotate-90,:root .fa-rotate-180,:root .fa-rotate-270,:root .fa-flip-horizontal,:root .fa-flip-vertical{filter:none}.fa-stack{position:relative;display:inline-block;width:2em;height:2em;line-height:2em;vertical-align:middle}.fa-stack-1x,.fa-stack-2x{position:absolute;left:0;width:100%;text-align:center}.fa-stack-1x{line-height:inherit}.fa-stack-2x{font-size:2em}.fa-inverse{color:#fff}.fa-glass:before{content:\"\\f000\"}.fa-music:before{content:\"\\f001\"}.fa-search:before{content:\"\\f002\"}.fa-envelope-o:before{content:\"\\f003\"}.fa-heart:before{content:\"\\f004\"}.fa-star:before{content:\"\\f005\"}.fa-star-o:before{content:\"\\f006\"}.fa-user:before{content:\"\\f007\"}.fa-film:before{content:\"\\f008\"}.fa-th-large:before{content:\"\\f009\"}.fa-th:before{content:\"\\f00a\"}.fa-th-list:before{content:\"\\f00b\"}.fa-check:before{content:\"\\f00c\"}.fa-remove:before,.fa-close:before,.fa-times:before{content:\"\\f00d\"}.fa-search-plus:before{content:\"\\f00e\"}.fa-search-minus:before{content:\"\\f010\"}.fa-power-off:before{content:\"\\f011\"}.fa-signal:before{content:\"\\f012\"}.fa-gear:before,.fa-cog:before{content:\"\\f013\"}.fa-trash-o:before{content:\"\\f014\"}.fa-home:before{content:\"\\f015\"}.fa-file-o:before{content:\"\\f016\"}.fa-clock-o:before{content:\"\\f017\"}.fa-road:before{content:\"\\f018\"}.fa-download:before{content:\"\\f019\"}.fa-arrow-circle-o-down:before{content:\"\\f01a\"}.fa-arrow-circle-o-up:before{content:\"\\f01b\"}.fa-inbox:before{content:\"\\f01c\"}.fa-play-circle-o:before{content:\"\\f01d\"}.fa-rotate-right:before,.fa-repeat:before{content:\"\\f01e\"}.fa-refresh:before{content:\"\\f021\"}.fa-list-alt:before{content:\"\\f022\"}.fa-lock:before{content:\"\\f023\"}.fa-flag:before{content:\"\\f024\"}.fa-headphones:before{content:\"\\f025\"}.fa-volume-off:before{content:\"\\f026\"}.fa-volume-down:before{content:\"\\f027\"}.fa-volume-up:before{content:\"\\f028\"}.fa-qrcode:before{content:\"\\f029\"}.fa-barcode:before{content:\"\\f02a\"}.fa-tag:before{content:\"\\f02b\"}.fa-tags:before{content:\"\\f02c\"}.fa-book:before{content:\"\\f02d\"}.fa-bookmark:before{content:\"\\f02e\"}.fa-print:before{content:\"\\f02f\"}.fa-camera:before{content:\"\\f030\"}.fa-font:before{content:\"\\f031\"}.fa-bold:before{content:\"\\f032\"}.fa-italic:before{content:\"\\f033\"}.fa-text-height:before{content:\"\\f034\"}.fa-text-width:before{content:\"\\f035\"}.fa-align-left:before{content:\"\\f036\"}.fa-align-center:before{content:\"\\f037\"}.fa-align-right:before{content:\"\\f038\"}.fa-align-justify:before{content:\"\\f039\"}.fa-list:before{content:\"\\f03a\"}.fa-dedent:before,.fa-outdent:before{content:\"\\f03b\"}.fa-indent:before{content:\"\\f03c\"}.fa-video-camera:before{content:\"\\f03d\"}.fa-photo:before,.fa-image:before,.fa-picture-o:before{content:\"\\f03e\"}.fa-pencil:before{content:\"\\f040\"}.fa-map-marker:before{content:\"\\f041\"}.fa-adjust:before{content:\"\\f042\"}.fa-tint:before{content:\"\\f043\"}.fa-edit:before,.fa-pencil-square-o:before{content:\"\\f044\"}.fa-share-square-o:before{content:\"\\f045\"}.fa-check-square-o:before{content:\"\\f046\"}.fa-arrows:before{content:\"\\f047\"}.fa-step-backward:before{content:\"\\f048\"}.fa-fast-backward:before{content:\"\\f049\"}.fa-backward:before{content:\"\\f04a\"}.fa-play:before{content:\"\\f04b\"}.fa-pause:before{content:\"\\f04c\"}.fa-stop:before{content:\"\\f04d\"}.fa-forward:before{content:\"\\f04e\"}.fa-fast-forward:before{content:\"\\f050\"}.fa-step-forward:before{content:\"\\f051\"}.fa-eject:before{content:\"\\f052\"}.fa-chevron-left:before{content:\"\\f053\"}.fa-chevron-right:before{content:\"\\f054\"}.fa-plus-circle:before{content:\"\\f055\"}.fa-minus-circle:before{content:\"\\f056\"}.fa-times-circle:before{content:\"\\f057\"}.fa-check-circle:before{content:\"\\f058\"}.fa-question-circle:before{content:\"\\f059\"}.fa-info-circle:before{content:\"\\f05a\"}.fa-crosshairs:before{content:\"\\f05b\"}.fa-times-circle-o:before{content:\"\\f05c\"}.fa-check-circle-o:before{content:\"\\f05d\"}.fa-ban:before{content:\"\\f05e\"}.fa-arrow-left:before{content:\"\\f060\"}.fa-arrow-right:before{content:\"\\f061\"}.fa-arrow-up:before{content:\"\\f062\"}.fa-arrow-down:before{content:\"\\f063\"}.fa-mail-forward:before,.fa-share:before{content:\"\\f064\"}.fa-expand:before{content:\"\\f065\"}.fa-compress:before{content:\"\\f066\"}.fa-plus:before{content:\"\\f067\"}.fa-minus:before{content:\"\\f068\"}.fa-asterisk:before{content:\"\\f069\"}.fa-exclamation-circle:before{content:\"\\f06a\"}.fa-gift:before{content:\"\\f06b\"}.fa-leaf:before{content:\"\\f06c\"}.fa-fire:before{content:\"\\f06d\"}.fa-eye:before{content:\"\\f06e\"}.fa-eye-slash:before{content:\"\\f070\"}.fa-warning:before,.fa-exclamation-triangle:before{content:\"\\f071\"}.fa-plane:before{content:\"\\f072\"}.fa-calendar:before{content:\"\\f073\"}.fa-random:before{content:\"\\f074\"}.fa-comment:before{content:\"\\f075\"}.fa-magnet:before{content:\"\\f076\"}.fa-chevron-up:before{content:\"\\f077\"}.fa-chevron-down:before{content:\"\\f078\"}.fa-retweet:before{content:\"\\f079\"}.fa-shopping-cart:before{content:\"\\f07a\"}.fa-folder:before{content:\"\\f07b\"}.fa-folder-open:before{content:\"\\f07c\"}.fa-arrows-v:before{content:\"\\f07d\"}.fa-arrows-h:before{content:\"\\f07e\"}.fa-bar-chart-o:before,.fa-bar-chart:before{content:\"\\f080\"}.fa-twitter-square:before{content:\"\\f081\"}.fa-facebook-square:before{content:\"\\f082\"}.fa-camera-retro:before{content:\"\\f083\"}.fa-key:before{content:\"\\f084\"}.fa-gears:before,.fa-cogs:before{content:\"\\f085\"}.fa-comments:before{content:\"\\f086\"}.fa-thumbs-o-up:before{content:\"\\f087\"}.fa-thumbs-o-down:before{content:\"\\f088\"}.fa-star-half:before{content:\"\\f089\"}.fa-heart-o:before{content:\"\\f08a\"}.fa-sign-out:before{content:\"\\f08b\"}.fa-linkedin-square:before{content:\"\\f08c\"}.fa-thumb-tack:before{content:\"\\f08d\"}.fa-external-link:before{content:\"\\f08e\"}.fa-sign-in:before{content:\"\\f090\"}.fa-trophy:before{content:\"\\f091\"}.fa-github-square:before{content:\"\\f092\"}.fa-upload:before{content:\"\\f093\"}.fa-lemon-o:before{content:\"\\f094\"}.fa-phone:before{content:\"\\f095\"}.fa-square-o:before{content:\"\\f096\"}.fa-bookmark-o:before{content:\"\\f097\"}.fa-phone-square:before{content:\"\\f098\"}.fa-twitter:before{content:\"\\f099\"}.fa-facebook-f:before,.fa-facebook:before{content:\"\\f09a\"}.fa-github:before{content:\"\\f09b\"}.fa-unlock:before{content:\"\\f09c\"}.fa-credit-card:before{content:\"\\f09d\"}.fa-rss:before{content:\"\\f09e\"}.fa-hdd-o:before{content:\"\\f0a0\"}.fa-bullhorn:before{content:\"\\f0a1\"}.fa-bell:before{content:\"\\f0f3\"}.fa-certificate:before{content:\"\\f0a3\"}.fa-hand-o-right:before{content:\"\\f0a4\"}.fa-hand-o-left:before{content:\"\\f0a5\"}.fa-hand-o-up:before{content:\"\\f0a6\"}.fa-hand-o-down:before{content:\"\\f0a7\"}.fa-arrow-circle-left:before{content:\"\\f0a8\"}.fa-arrow-circle-right:before{content:\"\\f0a9\"}.fa-arrow-circle-up:before{content:\"\\f0aa\"}.fa-arrow-circle-down:before{content:\"\\f0ab\"}.fa-globe:before{content:\"\\f0ac\"}.fa-wrench:before{content:\"\\f0ad\"}.fa-tasks:before{content:\"\\f0ae\"}.fa-filter:before{content:\"\\f0b0\"}.fa-briefcase:before{content:\"\\f0b1\"}.fa-arrows-alt:before{content:\"\\f0b2\"}.fa-group:before,.fa-users:before{content:\"\\f0c0\"}.fa-chain:before,.fa-link:before{content:\"\\f0c1\"}.fa-cloud:before{content:\"\\f0c2\"}.fa-flask:before{content:\"\\f0c3\"}.fa-cut:before,.fa-scissors:before{content:\"\\f0c4\"}.fa-copy:before,.fa-files-o:before{content:\"\\f0c5\"}.fa-paperclip:before{content:\"\\f0c6\"}.fa-save:before,.fa-floppy-o:before{content:\"\\f0c7\"}.fa-square:before{content:\"\\f0c8\"}.fa-navicon:before,.fa-reorder:before,.fa-bars:before{content:\"\\f0c9\"}.fa-list-ul:before{content:\"\\f0ca\"}.fa-list-ol:before{content:\"\\f0cb\"}.fa-strikethrough:before{content:\"\\f0cc\"}.fa-underline:before{content:\"\\f0cd\"}.fa-table:before{content:\"\\f0ce\"}.fa-magic:before{content:\"\\f0d0\"}.fa-truck:before{content:\"\\f0d1\"}.fa-pinterest:before{content:\"\\f0d2\"}.fa-pinterest-square:before{content:\"\\f0d3\"}.fa-google-plus-square:before{content:\"\\f0d4\"}.fa-google-plus:before{content:\"\\f0d5\"}.fa-money:before{content:\"\\f0d6\"}.fa-caret-down:before{content:\"\\f0d7\"}.fa-caret-up:before{content:\"\\f0d8\"}.fa-caret-left:before{content:\"\\f0d9\"}.fa-caret-right:before{content:\"\\f0da\"}.fa-columns:before{content:\"\\f0db\"}.fa-unsorted:before,.fa-sort:before{content:\"\\f0dc\"}.fa-sort-down:before,.fa-sort-desc:before{content:\"\\f0dd\"}.fa-sort-up:before,.fa-sort-asc:before{content:\"\\f0de\"}.fa-envelope:before{content:\"\\f0e0\"}.fa-linkedin:before{content:\"\\f0e1\"}.fa-rotate-left:before,.fa-undo:before{content:\"\\f0e2\"}.fa-legal:before,.fa-gavel:before{content:\"\\f0e3\"}.fa-dashboard:before,.fa-tachometer:before{content:\"\\f0e4\"}.fa-comment-o:before{content:\"\\f0e5\"}.fa-comments-o:before{content:\"\\f0e6\"}.fa-flash:before,.fa-bolt:before{content:\"\\f0e7\"}.fa-sitemap:before{content:\"\\f0e8\"}.fa-umbrella:before{content:\"\\f0e9\"}.fa-paste:before,.fa-clipboard:before{content:\"\\f0ea\"}.fa-lightbulb-o:before{content:\"\\f0eb\"}.fa-exchange:before{content:\"\\f0ec\"}.fa-cloud-download:before{content:\"\\f0ed\"}.fa-cloud-upload:before{content:\"\\f0ee\"}.fa-user-md:before{content:\"\\f0f0\"}.fa-stethoscope:before{content:\"\\f0f1\"}.fa-suitcase:before{content:\"\\f0f2\"}.fa-bell-o:before{content:\"\\f0a2\"}.fa-coffee:before{content:\"\\f0f4\"}.fa-cutlery:before{content:\"\\f0f5\"}.fa-file-text-o:before{content:\"\\f0f6\"}.fa-building-o:before{content:\"\\f0f7\"}.fa-hospital-o:before{content:\"\\f0f8\"}.fa-ambulance:before{content:\"\\f0f9\"}.fa-medkit:before{content:\"\\f0fa\"}.fa-fighter-jet:before{content:\"\\f0fb\"}.fa-beer:before{content:\"\\f0fc\"}.fa-h-square:before{content:\"\\f0fd\"}.fa-plus-square:before{content:\"\\f0fe\"}.fa-angle-double-left:before{content:\"\\f100\"}.fa-angle-double-right:before{content:\"\\f101\"}.fa-angle-double-up:before{content:\"\\f102\"}.fa-angle-double-down:before{content:\"\\f103\"}.fa-angle-left:before{content:\"\\f104\"}.fa-angle-right:before{content:\"\\f105\"}.fa-angle-up:before{content:\"\\f106\"}.fa-angle-down:before{content:\"\\f107\"}.fa-desktop:before{content:\"\\f108\"}.fa-laptop:before{content:\"\\f109\"}.fa-tablet:before{content:\"\\f10a\"}.fa-mobile-phone:before,.fa-mobile:before{content:\"\\f10b\"}.fa-circle-o:before{content:\"\\f10c\"}.fa-quote-left:before{content:\"\\f10d\"}.fa-quote-right:before{content:\"\\f10e\"}.fa-spinner:before{content:\"\\f110\"}.fa-circle:before{content:\"\\f111\"}.fa-mail-reply:before,.fa-reply:before{content:\"\\f112\"}.fa-github-alt:before{content:\"\\f113\"}.fa-folder-o:before{content:\"\\f114\"}.fa-folder-open-o:before{content:\"\\f115\"}.fa-smile-o:before{content:\"\\f118\"}.fa-frown-o:before{content:\"\\f119\"}.fa-meh-o:before{content:\"\\f11a\"}.fa-gamepad:before{content:\"\\f11b\"}.fa-keyboard-o:before{content:\"\\f11c\"}.fa-flag-o:before{content:\"\\f11d\"}.fa-flag-checkered:before{content:\"\\f11e\"}.fa-terminal:before{content:\"\\f120\"}.fa-code:before{content:\"\\f121\"}.fa-mail-reply-all:before,.fa-reply-all:before{content:\"\\f122\"}.fa-star-half-empty:before,.fa-star-half-full:before,.fa-star-half-o:before{content:\"\\f123\"}.fa-location-arrow:before{content:\"\\f124\"}.fa-crop:before{content:\"\\f125\"}.fa-code-fork:before{content:\"\\f126\"}.fa-unlink:before,.fa-chain-broken:before{content:\"\\f127\"}.fa-question:before{content:\"\\f128\"}.fa-info:before{content:\"\\f129\"}.fa-exclamation:before{content:\"\\f12a\"}.fa-superscript:before{content:\"\\f12b\"}.fa-subscript:before{content:\"\\f12c\"}.fa-eraser:before{content:\"\\f12d\"}.fa-puzzle-piece:before{content:\"\\f12e\"}.fa-microphone:before{content:\"\\f130\"}.fa-microphone-slash:before{content:\"\\f131\"}.fa-shield:before{content:\"\\f132\"}.fa-calendar-o:before{content:\"\\f133\"}.fa-fire-extinguisher:before{content:\"\\f134\"}.fa-rocket:before{content:\"\\f135\"}.fa-maxcdn:before{content:\"\\f136\"}.fa-chevron-circle-left:before{content:\"\\f137\"}.fa-chevron-circle-right:before{content:\"\\f138\"}.fa-chevron-circle-up:before{content:\"\\f139\"}.fa-chevron-circle-down:before{content:\"\\f13a\"}.fa-html5:before{content:\"\\f13b\"}.fa-css3:before{content:\"\\f13c\"}.fa-anchor:before{content:\"\\f13d\"}.fa-unlock-alt:before{content:\"\\f13e\"}.fa-bullseye:before{content:\"\\f140\"}.fa-ellipsis-h:before{content:\"\\f141\"}.fa-ellipsis-v:before{content:\"\\f142\"}.fa-rss-square:before{content:\"\\f143\"}.fa-play-circle:before{content:\"\\f144\"}.fa-ticket:before{content:\"\\f145\"}.fa-minus-square:before{content:\"\\f146\"}.fa-minus-square-o:before{content:\"\\f147\"}.fa-level-up:before{content:\"\\f148\"}.fa-level-down:before{content:\"\\f149\"}.fa-check-square:before{content:\"\\f14a\"}.fa-pencil-square:before{content:\"\\f14b\"}.fa-external-link-square:before{content:\"\\f14c\"}.fa-share-square:before{content:\"\\f14d\"}.fa-compass:before{content:\"\\f14e\"}.fa-toggle-down:before,.fa-caret-square-o-down:before{content:\"\\f150\"}.fa-toggle-up:before,.fa-caret-square-o-up:before{content:\"\\f151\"}.fa-toggle-right:before,.fa-caret-square-o-right:before{content:\"\\f152\"}.fa-euro:before,.fa-eur:before{content:\"\\f153\"}.fa-gbp:before{content:\"\\f154\"}.fa-dollar:before,.fa-usd:before{content:\"\\f155\"}.fa-rupee:before,.fa-inr:before{content:\"\\f156\"}.fa-cny:before,.fa-rmb:before,.fa-yen:before,.fa-jpy:before{content:\"\\f157\"}.fa-ruble:before,.fa-rouble:before,.fa-rub:before{content:\"\\f158\"}.fa-won:before,.fa-krw:before{content:\"\\f159\"}.fa-bitcoin:before,.fa-btc:before{content:\"\\f15a\"}.fa-file:before{content:\"\\f15b\"}.fa-file-text:before{content:\"\\f15c\"}.fa-sort-alpha-asc:before{content:\"\\f15d\"}.fa-sort-alpha-desc:before{content:\"\\f15e\"}.fa-sort-amount-asc:before{content:\"\\f160\"}.fa-sort-amount-desc:before{content:\"\\f161\"}.fa-sort-numeric-asc:before{content:\"\\f162\"}.fa-sort-numeric-desc:before{content:\"\\f163\"}.fa-thumbs-up:before{content:\"\\f164\"}.fa-thumbs-down:before{content:\"\\f165\"}.fa-youtube-square:before{content:\"\\f166\"}.fa-youtube:before{content:\"\\f167\"}.fa-xing:before{content:\"\\f168\"}.fa-xing-square:before{content:\"\\f169\"}.fa-youtube-play:before{content:\"\\f16a\"}.fa-dropbox:before{content:\"\\f16b\"}.fa-stack-overflow:before{content:\"\\f16c\"}.fa-instagram:before{content:\"\\f16d\"}.fa-flickr:before{content:\"\\f16e\"}.fa-adn:before{content:\"\\f170\"}.fa-bitbucket:before{content:\"\\f171\"}.fa-bitbucket-square:before{content:\"\\f172\"}.fa-tumblr:before{content:\"\\f173\"}.fa-tumblr-square:before{content:\"\\f174\"}.fa-long-arrow-down:before{content:\"\\f175\"}.fa-long-arrow-up:before{content:\"\\f176\"}.fa-long-arrow-left:before{content:\"\\f177\"}.fa-long-arrow-right:before{content:\"\\f178\"}.fa-apple:before{content:\"\\f179\"}.fa-windows:before{content:\"\\f17a\"}.fa-android:before{content:\"\\f17b\"}.fa-linux:before{content:\"\\f17c\"}.fa-dribbble:before{content:\"\\f17d\"}.fa-skype:before{content:\"\\f17e\"}.fa-foursquare:before{content:\"\\f180\"}.fa-trello:before{content:\"\\f181\"}.fa-female:before{content:\"\\f182\"}.fa-male:before{content:\"\\f183\"}.fa-gittip:before,.fa-gratipay:before{content:\"\\f184\"}.fa-sun-o:before{content:\"\\f185\"}.fa-moon-o:before{content:\"\\f186\"}.fa-archive:before{content:\"\\f187\"}.fa-bug:before{content:\"\\f188\"}.fa-vk:before{content:\"\\f189\"}.fa-weibo:before{content:\"\\f18a\"}.fa-renren:before{content:\"\\f18b\"}.fa-pagelines:before{content:\"\\f18c\"}.fa-stack-exchange:before{content:\"\\f18d\"}.fa-arrow-circle-o-right:before{content:\"\\f18e\"}.fa-arrow-circle-o-left:before{content:\"\\f190\"}.fa-toggle-left:before,.fa-caret-square-o-left:before{content:\"\\f191\"}.fa-dot-circle-o:before{content:\"\\f192\"}.fa-wheelchair:before{content:\"\\f193\"}.fa-vimeo-square:before{content:\"\\f194\"}.fa-turkish-lira:before,.fa-try:before{content:\"\\f195\"}.fa-plus-square-o:before{content:\"\\f196\"}.fa-space-shuttle:before{content:\"\\f197\"}.fa-slack:before{content:\"\\f198\"}.fa-envelope-square:before{content:\"\\f199\"}.fa-wordpress:before{content:\"\\f19a\"}.fa-openid:before{content:\"\\f19b\"}.fa-institution:before,.fa-bank:before,.fa-university:before{content:\"\\f19c\"}.fa-mortar-board:before,.fa-graduation-cap:before{content:\"\\f19d\"}.fa-yahoo:before{content:\"\\f19e\"}.fa-google:before{content:\"\\f1a0\"}.fa-reddit:before{content:\"\\f1a1\"}.fa-reddit-square:before{content:\"\\f1a2\"}.fa-stumbleupon-circle:before{content:\"\\f1a3\"}.fa-stumbleupon:before{content:\"\\f1a4\"}.fa-delicious:before{content:\"\\f1a5\"}.fa-digg:before{content:\"\\f1a6\"}.fa-pied-piper:before{content:\"\\f1a7\"}.fa-pied-piper-alt:before{content:\"\\f1a8\"}.fa-drupal:before{content:\"\\f1a9\"}.fa-joomla:before{content:\"\\f1aa\"}.fa-language:before{content:\"\\f1ab\"}.fa-fax:before{content:\"\\f1ac\"}.fa-building:before{content:\"\\f1ad\"}.fa-child:before{content:\"\\f1ae\"}.fa-paw:before{content:\"\\f1b0\"}.fa-spoon:before{content:\"\\f1b1\"}.fa-cube:before{content:\"\\f1b2\"}.fa-cubes:before{content:\"\\f1b3\"}.fa-behance:before{content:\"\\f1b4\"}.fa-behance-square:before{content:\"\\f1b5\"}.fa-steam:before{content:\"\\f1b6\"}.fa-steam-square:before{content:\"\\f1b7\"}.fa-recycle:before{content:\"\\f1b8\"}.fa-automobile:before,.fa-car:before{content:\"\\f1b9\"}.fa-cab:before,.fa-taxi:before{content:\"\\f1ba\"}.fa-tree:before{content:\"\\f1bb\"}.fa-spotify:before{content:\"\\f1bc\"}.fa-deviantart:before{content:\"\\f1bd\"}.fa-soundcloud:before{content:\"\\f1be\"}.fa-database:before{content:\"\\f1c0\"}.fa-file-pdf-o:before{content:\"\\f1c1\"}.fa-file-word-o:before{content:\"\\f1c2\"}.fa-file-excel-o:before{content:\"\\f1c3\"}.fa-file-powerpoint-o:before{content:\"\\f1c4\"}.fa-file-photo-o:before,.fa-file-picture-o:before,.fa-file-image-o:before{content:\"\\f1c5\"}.fa-file-zip-o:before,.fa-file-archive-o:before{content:\"\\f1c6\"}.fa-file-sound-o:before,.fa-file-audio-o:before{content:\"\\f1c7\"}.fa-file-movie-o:before,.fa-file-video-o:before{content:\"\\f1c8\"}.fa-file-code-o:before{content:\"\\f1c9\"}.fa-vine:before{content:\"\\f1ca\"}.fa-codepen:before{content:\"\\f1cb\"}.fa-jsfiddle:before{content:\"\\f1cc\"}.fa-life-bouy:before,.fa-life-buoy:before,.fa-life-saver:before,.fa-support:before,.fa-life-ring:before{content:\"\\f1cd\"}.fa-circle-o-notch:before{content:\"\\f1ce\"}.fa-ra:before,.fa-rebel:before{content:\"\\f1d0\"}.fa-ge:before,.fa-empire:before{content:\"\\f1d1\"}.fa-git-square:before{content:\"\\f1d2\"}.fa-git:before{content:\"\\f1d3\"}.fa-hacker-news:before{content:\"\\f1d4\"}.fa-tencent-weibo:before{content:\"\\f1d5\"}.fa-qq:before{content:\"\\f1d6\"}.fa-wechat:before,.fa-weixin:before{content:\"\\f1d7\"}.fa-send:before,.fa-paper-plane:before{content:\"\\f1d8\"}.fa-send-o:before,.fa-paper-plane-o:before{content:\"\\f1d9\"}.fa-history:before{content:\"\\f1da\"}.fa-genderless:before,.fa-circle-thin:before{content:\"\\f1db\"}.fa-header:before{content:\"\\f1dc\"}.fa-paragraph:before{content:\"\\f1dd\"}.fa-sliders:before{content:\"\\f1de\"}.fa-share-alt:before{content:\"\\f1e0\"}.fa-share-alt-square:before{content:\"\\f1e1\"}.fa-bomb:before{content:\"\\f1e2\"}.fa-soccer-ball-o:before,.fa-futbol-o:before{content:\"\\f1e3\"}.fa-tty:before{content:\"\\f1e4\"}.fa-binoculars:before{content:\"\\f1e5\"}.fa-plug:before{content:\"\\f1e6\"}.fa-slideshare:before{content:\"\\f1e7\"}.fa-twitch:before{content:\"\\f1e8\"}.fa-yelp:before{content:\"\\f1e9\"}.fa-newspaper-o:before{content:\"\\f1ea\"}.fa-wifi:before{content:\"\\f1eb\"}.fa-calculator:before{content:\"\\f1ec\"}.fa-paypal:before{content:\"\\f1ed\"}.fa-google-wallet:before{content:\"\\f1ee\"}.fa-cc-visa:before{content:\"\\f1f0\"}.fa-cc-mastercard:before{content:\"\\f1f1\"}.fa-cc-discover:before{content:\"\\f1f2\"}.fa-cc-amex:before{content:\"\\f1f3\"}.fa-cc-paypal:before{content:\"\\f1f4\"}.fa-cc-stripe:before{content:\"\\f1f5\"}.fa-bell-slash:before{content:\"\\f1f6\"}.fa-bell-slash-o:before{content:\"\\f1f7\"}.fa-trash:before{content:\"\\f1f8\"}.fa-copyright:before{content:\"\\f1f9\"}.fa-at:before{content:\"\\f1fa\"}.fa-eyedropper:before{content:\"\\f1fb\"}.fa-paint-brush:before{content:\"\\f1fc\"}.fa-birthday-cake:before{content:\"\\f1fd\"}.fa-area-chart:before{content:\"\\f1fe\"}.fa-pie-chart:before{content:\"\\f200\"}.fa-line-chart:before{content:\"\\f201\"}.fa-lastfm:before{content:\"\\f202\"}.fa-lastfm-square:before{content:\"\\f203\"}.fa-toggle-off:before{content:\"\\f204\"}.fa-toggle-on:before{content:\"\\f205\"}.fa-bicycle:before{content:\"\\f206\"}.fa-bus:before{content:\"\\f207\"}.fa-ioxhost:before{content:\"\\f208\"}.fa-angellist:before{content:\"\\f209\"}.fa-cc:before{content:\"\\f20a\"}.fa-shekel:before,.fa-sheqel:before,.fa-ils:before{content:\"\\f20b\"}.fa-meanpath:before{content:\"\\f20c\"}.fa-buysellads:before{content:\"\\f20d\"}.fa-connectdevelop:before{content:\"\\f20e\"}.fa-dashcube:before{content:\"\\f210\"}.fa-forumbee:before{content:\"\\f211\"}.fa-leanpub:before{content:\"\\f212\"}.fa-sellsy:before{content:\"\\f213\"}.fa-shirtsinbulk:before{content:\"\\f214\"}.fa-simplybuilt:before{content:\"\\f215\"}.fa-skyatlas:before{content:\"\\f216\"}.fa-cart-plus:before{content:\"\\f217\"}.fa-cart-arrow-down:before{content:\"\\f218\"}.fa-diamond:before{content:\"\\f219\"}.fa-ship:before{content:\"\\f21a\"}.fa-user-secret:before{content:\"\\f21b\"}.fa-motorcycle:before{content:\"\\f21c\"}.fa-street-view:before{content:\"\\f21d\"}.fa-heartbeat:before{content:\"\\f21e\"}.fa-venus:before{content:\"\\f221\"}.fa-mars:before{content:\"\\f222\"}.fa-mercury:before{content:\"\\f223\"}.fa-transgender:before{content:\"\\f224\"}.fa-transgender-alt:before{content:\"\\f225\"}.fa-venus-double:before{content:\"\\f226\"}.fa-mars-double:before{content:\"\\f227\"}.fa-venus-mars:before{content:\"\\f228\"}.fa-mars-stroke:before{content:\"\\f229\"}.fa-mars-stroke-v:before{content:\"\\f22a\"}.fa-mars-stroke-h:before{content:\"\\f22b\"}.fa-neuter:before{content:\"\\f22c\"}.fa-facebook-official:before{content:\"\\f230\"}.fa-pinterest-p:before{content:\"\\f231\"}.fa-whatsapp:before{content:\"\\f232\"}.fa-server:before{content:\"\\f233\"}.fa-user-plus:before{content:\"\\f234\"}.fa-user-times:before{content:\"\\f235\"}.fa-hotel:before,.fa-bed:before{content:\"\\f236\"}.fa-viacoin:before{content:\"\\f237\"}.fa-train:before{content:\"\\f238\"}.fa-subway:before{content:\"\\f239\"}.fa-medium:before{content:\"\\f23a\"}"; });
-define('text!advanced-2.html', ['module'], function(module) { module.exports = "<template>\r\n\r\n\t<link href=\"./styles/advanced.css\" rel=\"stylesheet\" type=\"text/css\" />\r\n\r\n\t<div class=\"container\">\r\n\t<form class=\"well form-horizontal\" action=\" \" method=\"post\"  id=\"contact_form\">\r\n    <fieldset>\r\n\r\n    <!-- Form Name -->\r\n    <legend>Income </legend>\r\n\r\n    <!-- Text input-->\r\n\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">${data.currentIncme}</label>  \r\n    <div class=\"col-md-4 inputGroupContainer\">\r\n    <div class=\"input-group\">\r\n    <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-user\"></i></span>\r\n    <input  name=\"first_name\" placeholder=\"First Name\" class=\"form-control\"  type=\"text\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n\r\n    <!-- Text input-->\r\n\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\" >Income History</label> \r\n        <p> Please enter your income history, or calculations will be averaged based on previously entered highest income.</p>\r\n            <label class=\"col-sm-4 control-label\">Number of Years</label>  \r\n    <div class=\"col-sm-4 inputGroupContainer\">\r\n    <div class=\"input-group\">\r\n    <span class=\"input-group-addon\"></span>\r\n    <input  name=\"first_name\" placeholder=\"35\" class=\"form-control\"  type=\"text\" value.bind=\"numberRow\">\r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n    <br>\r\n    <button click.delegate=\"generate(numberRow)\" class=\"btn btn-warning\">Enter Income History</button>\r\n        <div id=\"container\"></div>\r\n    </div>\r\n    </div>\r\n\r\n    <!-- Text input-->\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Will you earn any extra income during retirement?</label>  \r\n        <div >\r\n            <div class=\"radio\">\r\n                <label>\r\n                    <input type=\"radio\" name=\"hosting\" value=\"single\" click.delegate=\"yesnoCheck('yes')\"> Yes\r\n                </label>\r\n                <label>\r\n                    <input type=\"radio\" name=\"hosting\" value=\"married\" click.delegate=\"yesnoCheck('no')\"> No\r\n                </label>\r\n\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div id=\"ifYes\" style=\"display: none;\">\r\n\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\" >Estimated Monthly Extra Income</label> \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n    <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-user\"></i></span>\r\n    <input name=\"last_name\" placeholder=\"Last Name\" class=\"form-control\"  type=\"text\" value.bind=\"lastName\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n    \r\n\r\n    </div>\r\n    <!--</div>-->\r\n    <!-- Nav Bottom Button -->\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-8 control-label\"></label>\r\n    <div class=\"col-md-4\">\r\n        <a href=\"#\" route-href=\"route: advanced-1\" class=\"btn btn-default\">Back</a>\r\n        <!-- As you can see here you can call two methods in one click.delegate-->\r\n        <a href=\"#\" class=\"btn btn-success\" click.delegate=\"totalIncomes(numberRow) next()\">Next</a>\r\n    </div>\r\n    </div>\r\n\r\n\r\n    </fieldset>\r\n    </form>\r\n    </div>\r\n    </div>\r\n\r\n</template>"; });
-define('text!assets/css/ie9.css', ['module'], function(module) { module.exports = "/*\r\n\tPrism by TEMPLATED\r\n\ttemplated.co @templatedco\r\n\tReleased for free under the Creative Commons Attribution 3.0 license (templated.co/license)\r\n*/\r\n\r\n/* Split */\r\n\r\n\t.split:after {\r\n\t\tcontent: '';\r\n\t\tdisplay: block;\r\n\t\tclear: both;\r\n\t}\r\n\r\n\t.split > * {\r\n\t\tfloat: left;\r\n\t}\r\n\r\n/* Spotlight */\r\n\r\n\t.spotlight:after {\r\n\t\tcontent: '';\r\n\t\tdisplay: block;\r\n\t\tclear: both;\r\n\t}\r\n\r\n\t.spotlight .image {\r\n\t\tfloat: left;\r\n\t}\r\n\r\n\t.spotlight .content {\r\n\t\tfloat: left;\r\n\t}\r\n\r\n/* Banner */\r\n\r\n\t#banner {\r\n\t\tbackground: #4A4771;\r\n\t}"; });
-define('text!advanced-3.html', ['module'], function(module) { module.exports = "<template>\r\n\r\n\t<link href=\"./styles/advanced.css\" rel=\"stylesheet\" type=\"text/css\" />\r\n\r\n\t<div class=\"container\">\r\n    <form class=\"well form-horizontal\" action=\" \" method=\"post\"  id=\"contact_form\">\r\n    <fieldset>\r\n\r\n    <!-- Form Name -->\r\n    <legend>Windfall Elimination Provision(WEP) & Government Pension Offset (GPO) & Survivor Benefit</legend>\r\n\r\n        <div class=\"form-group\">\r\n                            <label class=\"col-md-4 control-label\">Have you worked for a federal, state, or local goverment agency, a non-profit in another country during which you received a pension based on earning not covered by social security? If not, skip. If so, please proceed with WEP calculations.</label>\r\n                            <div class=\"col-md-4\">\r\n                                <div class=\"radio\">\r\n                                    <label>\r\n                                        <input type=\"radio\" name=\"hosting\" id=\"yes-wep\" value=\"yes\"  click.delegate=\"clickedWEP()\"/> Yes\r\n                                    </label>\r\n                                </div>\r\n                                <div class=\"radio\">\r\n                                    <label>\r\n                                        <input type=\"radio\" name=\"hosting\" id=\"no-wep\"value=\"no\"  click.delegate=\"clickedWEP()\" /> No\r\n                                    </label>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n\r\n    <!-- Text input-->\r\n\r\n    <div id=\"wep-input\" style=\"display:none\">\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Year you will turn 62</label>  \r\n    <div class=\"col-md-4 inputGroupContainer\">\r\n    <div class=\"input-group\">\r\n    <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-user\"></i></span>\r\n    <input  name=\"first_name\" placeholder=\"10\" class=\"form-control\"  type=\"text\" value.bind=\"monthlyPension\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n\r\n    <!-- Text input-->\r\n\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\" >Years of Substantial Income</label> \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n    <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-user\"></i></span>\r\n    <input name=\"last_name\" placeholder=\"7\" class=\"form-control\"  type=\"text\" value.bind=\"yearsSubstantialIncome\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n    </div>\r\n\r\n        <!-- radio checks -->\r\n\r\n                <div class=\"form-group\">\r\n                            <label class=\"col-md-4 control-label\">Have you worked for a federal, state, or local goverment agency, a non-profit in another country during which you received a pension based on earning not covered by social security? If not, skip. If so, please proceed with GPO calculations.</label>\r\n                            <div class=\"col-md-4\">\r\n                                <div class=\"radio\">\r\n                                    <label>\r\n                                        <input type=\"radio\" name=\"hosting\" value=\"yes\" id=\"yes-gpo\" checked.bind=\"$parent.selectedOption\" click.delegate=\"clickedGPO()\"/> Yes\r\n                                    </label>\r\n                                </div>\r\n                                <div class=\"radio\">\r\n                                    <label>\r\n                                        <input type=\"radio\" name=\"hosting\" value=\"no\" id=\"no-gpo\" checked.bind=\"$parent.selectedOption\" click.delegate=\"clickedGPO()\"/> No\r\n                                    </label>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n\r\n    <!-- Text input-->\r\n    <div id=\"gpo-input\" style=\"display: none\">\r\n        <!--<div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Number of years of substantial income</label>  \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-envelope\"></i></span>\r\n    <input name=\"email\" placeholder=\"7\" class=\"form-control\"  type=\"text\">\r\n        </div>\r\n    </div>\r\n    </div>-->\r\n\r\n\r\n    <!-- Text input-->\r\n        \r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Monthly pension amount</label>  \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-earphone\"></i></span>\r\n    <input name=\"phone\" placeholder=\"$2000\" class=\"form-control\" type=\"text\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n    </div>\r\n\r\n     <!--Text input\r\n        \r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Address</label>  \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-home\"></i></span>\r\n    <input name=\"address\" placeholder=\"Address\" class=\"form-control\" type=\"text\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n\r\n    <!-- Text input-->\r\n    \r\n    <!--<div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">City</label>  \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-home\"></i></span>\r\n    <input name=\"city\" placeholder=\"city\" class=\"form-control\"  type=\"text\">\r\n        </div>\r\n    </div>\r\n    </div>-->\r\n\r\n\r\n    <!-- Text input-->\r\n\r\n    <!--<div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Zip Code</label>  \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-home\"></i></span>\r\n    <input name=\"zip\" placeholder=\"Zip Code\" class=\"form-control\"  type=\"text\">\r\n        </div>\r\n    </div>\r\n    </div>-->\r\n\r\n    <!-- Text input-->\r\n    <!--<div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Website or domain name</label>  \r\n    <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-globe\"></i></span>\r\n    <input name=\"website\" placeholder=\"Website or domain name\" class=\"form-control\" type=\"text\">\r\n        </div>\r\n    </div>\r\n    </div>-->\r\n\r\n\r\n    <!-- Text area -->\r\n    \r\n    <!--<div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Project Description</label>\r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-pencil\"></i></span>\r\n                <textarea class=\"form-control\" name=\"comment\" placeholder=\"Project Description\"></textarea>\r\n    </div>\r\n    </div>\r\n    </div>\r\n    -->\r\n  \r\n        <!-- Nav Bottom Button -->\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-8 control-label\"></label>\r\n    <div class=\"col-md-4\">\r\n        <a href=\"#\" route-href=\"route: advanced-2\" class=\"btn btn-warning\">Back</a>\r\n        <a href=\"#\" class=\"btn btn-warning\" click.delegate=\"next()\">Next</a>\r\n    </div>\r\n    </div>\r\n\r\n    </fieldset>\r\n    </form>\r\n    </div>\r\n    </div><!-- /.container -->\r\n\r\n</template>"; });
-define('text!advanced-4.html', ['module'], function(module) { module.exports = "<template>\r\n\t<link href=\"./styles/advanced.css\" rel=\"stylesheet\" type=\"text/css\" />\r\n\r\n\t<div class=\"container\">\r\n    <form class=\"well form-horizontal\" action=\" \" method=\"post\"  id=\"contact_form\">\r\n    <fieldset>\r\n\r\n    <!-- Form Name -->\r\n    <legend>Extra Income</legend>\r\n\r\n    <!-- Text input-->\r\n\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Monthly Pension</label>  \r\n    <div class=\"col-md-4 inputGroupContainer\">\r\n    <div class=\"input-group\">\r\n    <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-user\"></i></span>\r\n    <input  name=\"first_name\" placeholder=\"5,000\" class=\"form-control\"  type=\"text\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n\r\n    <!-- Text input-->\r\n\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\" >Years of Substantial Income</label> \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n    <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-user\"></i></span>\r\n    <input name=\"last_name\" placeholder=\"7\" class=\"form-control\"  type=\"text\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n\r\n        <!-- radio checks -->\r\n    <div class=\"form-group\">\r\n                            <label class=\"col-md-4 control-label\">Have you worked for a federal, state, or local goverment agency, a non-profit in another country during which you received a pension based on earning not covered by social security? If not, skip. If so, please proceed with GPO calculations.</label>\r\n                            <div class=\"col-md-4\">\r\n                                <div class=\"radio\">\r\n                                    <label>\r\n                                        <input type=\"radio\" name=\"hosting\" value=\"yes\" /> Yes\r\n                                    </label>\r\n                                </div>\r\n                                <div class=\"radio\">\r\n                                    <label>\r\n                                        <input type=\"radio\" name=\"hosting\" value=\"no\" /> No\r\n                                    </label>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n\r\n    <!-- Text input-->\r\n        <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">E-Mail</label>  \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-envelope\"></i></span>\r\n    <input name=\"email\" placeholder=\"E-Mail Address\" class=\"form-control\"  type=\"text\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n\r\n\r\n    <!-- Text input-->\r\n        \r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Phone #</label>  \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-earphone\"></i></span>\r\n    <input name=\"phone\" placeholder=\"(845)555-1212\" class=\"form-control\" type=\"text\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n\r\n    <!-- Text input-->\r\n        \r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Address</label>  \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-home\"></i></span>\r\n    <input name=\"address\" placeholder=\"Address\" class=\"form-control\" type=\"text\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n\r\n    <!-- Text input-->\r\n    \r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">City</label>  \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-home\"></i></span>\r\n    <input name=\"city\" placeholder=\"city\" class=\"form-control\"  type=\"text\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n\r\n\r\n    <!-- Text input-->\r\n\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Zip Code</label>  \r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-home\"></i></span>\r\n    <input name=\"zip\" placeholder=\"Zip Code\" class=\"form-control\"  type=\"text\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n\r\n    <!-- Text input-->\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Website or domain name</label>  \r\n    <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-globe\"></i></span>\r\n    <input name=\"website\" placeholder=\"Website or domain name\" class=\"form-control\" type=\"text\">\r\n        </div>\r\n    </div>\r\n    </div>\r\n\r\n\r\n    <!-- Text area -->\r\n    \r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-4 control-label\">Project Description</label>\r\n        <div class=\"col-md-4 inputGroupContainer\">\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-pencil\"></i></span>\r\n                <textarea class=\"form-control\" name=\"comment\" placeholder=\"Project Description\"></textarea>\r\n    </div>\r\n    </div>\r\n    </div>\r\n    \r\n  \r\n        <!-- Nav Bottom Button -->\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-8 control-label\"></label>\r\n    <div class=\"col-md-4\">\r\n        <a href=\"#\" route-href=\"route: advanced-3\" class=\"btn btn-warning\">Back</a>\r\n        <a href=\"#\"  class=\"btn btn-warning\" click.delegate=\"next()\">Next</a>\r\n    </div>\r\n    </div>\r\n\r\n    </fieldset>\r\n    </form>\r\n    </div>\r\n    </div><!-- /.container -->\r\n\r\n</template>"; });
-define('text!advanced-results.html', ['module'], function(module) { module.exports = "<template>\r\n\r\n\t<head>\r\n\t\t<meta charset=\"utf-8\" />\r\n\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\r\n\t\t<!--[if lte IE 8]><script src=\"assets/js/ie/html5shiv.js\"></script><![endif]-->\r\n        <link href=\"./styles/main.css\" rel=\"stylesheet\" type=\"text/css\" />\r\n\t\t<!--[if lte IE 9]><link rel=\"stylesheet\" href=\"assets/css/ie9.css\" /><![endif]-->\r\n\t</head>\r\n\t<body>\r\n\r\n\t\t<!-- Banner -->\r\n\t\t\t<section id=\"banner\">\r\n\t\t\t\t<div class=\"inner split\">\r\n\t\t\t\t\t<section>\r\n\t\t\t\t\t\t<h2>RESULT</h2>\r\n                        <p>To help you plan for retirement.</p>\r\n\t\t\t\t\t</section>\r\n\t\t\t\t</div>\r\n\t\t\t</section>\r\n\r\n\t\t<!-- One -->\r\n\t\t\t<section id=\"one\" class=\"wrapper\">\r\n\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t<section>\r\n\t\t\t\t\t\t<h2>Results: Your good!</h2>\r\n\t\t\t\t\t\t<p>Yearly Benefits Summary</p>\r\n\t\t\t\t\t</section>\r\n\t\t\t\t\t<section>\r\n\t\t\t\t\t\t<canvas id=\"resultsChart\" width=\"300\" height=\"200\"></canvas>\r\n\t\t\t\t\t</section>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"row\">\r\n\r\n\t\t\t\t</div>\r\n\t\t\t</section>\r\n\r\n\t\t\t        <!-- Nav Bottom Button -->\r\n    <div class=\"form-group\">\r\n    \t<label class=\"col-md-8 control-label\"></label>\r\n    \t<div class=\"col-md-4\">\r\n        \t<a href=\"#\" route-href=\"route: advanced-3\" class=\"btn btn-warning\">Back</a>\r\n        \t<a href=\"#\" route-href=\"route: basic-calc\" class=\"btn btn-warning\">Finish</a>\r\n    \t</div>\r\n    </div>\r\n\r\n\r\n\t\t<!-- Scripts -->\r\n\t\t\t<script src=\"assets/js/jquery.min.js\"></script>\r\n\t\t\t<script src=\"assets/js/skel.min.js\"></script>\r\n\t\t\t<script src=\"assets/js/util.js\"></script>\r\n\t\t\t<!--[if lte IE 8]><script src=\"assets/js/ie/respond.min.js\"></script><![endif]-->\r\n\t\t\t<script src=\"assets/js/main.js\"></script>\r\n\r\n\t</body>\r\n</template>"; });
-define('text!advanced-welcome.html', ['module'], function(module) { module.exports = "<template>\r\n  <section class=\"au-animate\">\r\n    <h2>${heading}</h2>\r\n    <form role=\"form\" submit.delegate=\"submit()\">\r\n      <div class=\"form-group\">\r\n        <label for=\"fn\">First Name</label>\r\n        <input type=\"text\" value.bind=\"firstName\" class=\"form-control\" id=\"fn\" placeholder=\"first name\">\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label for=\"ln\">Last Name</label>\r\n        <input type=\"text\" value.bind=\"lastName\" class=\"form-control\" id=\"ln\" placeholder=\"last name\">\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label>Full Name</label>\r\n        <p class=\"help-block\">${fullName | upper}</p>\r\n      </div>\r\n      <button type=\"submit\" class=\"btn btn-default\">Submit</button>\r\n    </form>\r\n  </section>\r\n</template>\r\n"; });
-define('text!app.html', ['module'], function(module) { module.exports = "<template>\r\n\t<require from=\"./nav-bar\"></require>\r\n  <require from=\"bootstrap/css/bootstrap.css\"></require>\r\n  <nav-bar router.bind=\"router\"></nav-bar>\r\n\r\n  <div class=\"page-host\">\r\n    <router-view></router-view>\r\n  </div>\r\n</template>\r\n"; });
-define('text!basic-calc.html', ['module'], function(module) { module.exports = "<template>\r\n\t<router router.bind=\"router\"></router>\r\n\t<head>\r\n\t\t<meta charset=\"utf-8\" />\r\n\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\r\n\t\t<!--[if lte IE 8]><script src=\"assets/js/ie/html5shiv.js\"></script><![endif]-->\r\n        \t<link href=\"./styles/basic-calc.css\" rel=\"stylesheet\" type=\"text/css\" />\r\n\t\t\t    <link rel=\"stylesheet\" href=\"css/normalize.css\" />\r\n    <link rel=\"stylesheet\" href=\"./styles/ion.rangeSlider.css\" />\r\n    <link rel=\"stylesheet\" href=\"./styles/ion.rangeSlider.skinFlat.css\" /\r\n\t</head>\r\n\t<body class=\"body\">\r\n\t\t<!-- Banner -->\r\n\t\t\t<section id=\"banner\">\r\n\t\t\t\t<div class=\"inner split\">\r\n\t\t\t\t\t<section class=\"banner-left\">\r\n\t\t\t\t\t\t<h2>Planning for Retirement with PIEtech.</h2>\r\n                        <p>Helping you maximize your Social Security benefits.</p>\r\n\t\t\t\t\t</section>\r\n\t\t\t\t\t<section class=\"banner-right\">\r\n\t\t\t\t\t\t<img src=\"./styles/images/logo-pietech-sm.png\"/>\r\n\t\t\t\t\t</section>\r\n\t\t\t\t</div>\r\n\t\t\t</section>\r\n\r\n\t\t<!-- One -->\r\n\t\t\t<section id=\"one\" class=\"wrapper\">\r\n\t\t\t\t<div class=\"inner split\">\r\n\t\t\t\t\t<section>\r\n\t\t\t\t\t\t<h2>Step 1: Explore how claiming age impacts your Social Security retirement benefits.</h2>\r\n\t\t\t\t\t\t<p>Enter your information below to see your estimated benefits.</p>\r\n\t\t\t\t\t</section>\r\n                <form role=\"form\">\r\n\t\t\t    \t<div class=\"row\">\r\n\t\t\t    \t\t<div class=\"col-xs-3 col-sm-3 col-md-3\">\r\n                            <div class=\"form-group\">\r\n                                <label>Date of Birth</label>\r\n                                <input value.bind=\"dob\" type=\"date\" class=\"form-control\" id=\"exampleInputDOB1\" placeholder=\"Date of Birth\">\r\n                            </div>\r\n\t\t\t    \t\t</div>\r\n\t\t\t    \t\t<div class=\"col-xs-3 col-sm-3 col-md-3\">\r\n\t\t\t    \t\t\t<div class=\"form-group\">\r\n                                <label>Annual Income</label>\r\n\t\t\t    \t\t\t\t<input value.bind=\"income\" type=\"text\" name=\"annual-income\" id=\"annual-income\" class=\"form-control input-sm\" placeholder=\"50,000\">\r\n\t\t\t    \t\t\t</div>\r\n\t\t\t    \t    </div>\r\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-3 col-md-3\">\r\n                            <button click.delegate=\"attach(dob, income)\" class=\"btn-calculate\">Calculate</button>       \r\n                        </div>\r\n\t\t\t\t\t\t<div style=\"float: right\" class=\"col-xs-3 col-sm-3 col-md-3\">\r\n\t\t\t\t\t\t\t<p style=\"font-size:12px\" class=\"calculate-description\">We base your befit estimates on current formulas from the Social Security Administration. No information is stored or recorded to protect our privacy. These are rough estimates.</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t            </div>\r\n\t\t\t\t\t\t</div>\r\n                </form>\r\n\t\t\t</section>\r\n\r\n\t\t<!-- Two -->\r\n\t\t\t<section id=\"two\" class=\"wrapper style2 alt\">\r\n\t\t\t\t<div id=\"retirement-chart-container\" class=\"selected-retirement-age-container\">\r\n\t\t\t\t\t<div class=\"inner split\">\r\n\t\t\t\t\t<div>\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t<div>\r\n\t\t\t\t\t\t<div>\r\n\t\t\t\t\t\t\t<div class=\"retirement-age-container\">\r\n\t\t\t\t\t\t\t\t<p>Claiming your benefit at ${age} reduces your monthly benfit by ${benefitReduction}.</p>\r\n\t\t\t\t\t\t\t\t<p>At age 85 your total lifespan benefits will be ${benefitsTotal}.</p>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<div class=\"retirement-information-container\">\r\n\t\t\t\t\t\t\t\t<h3>About claiming your benefits:</h3>\r\n\t\t\t\t\t\t\t\t<ul>\r\n\t\t\t\t\t\t\t\t\t<li>The earliest age you can claim your benefits is age 62.</li>\r\n\t\t\t\t\t\t\t\t\t<li>Claiming your benefit before the full claiming age will reduce your benefit.</li>\r\n\t\t\t\t\t\t\t\t</ul>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<div class=\"retirement-more-information\">\r\n\t\t\t\t\t\t\t\t<a href=\"https://www.consumerfinance.gov/retirement/before-you-claim/about/\"> Where are you getting these numbers?</a>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div>\r\n\t\t\t\t\t<div class=\"chart\">\r\n                \t\t<div id=\"ssChart\" class=\"container\">\r\n                    \t\t<canvas id=\"myChart\" width=\"300\" height=\"200\"></canvas>\r\n\t\t\t\t\t\t\t<input type=\"text\" id=\"range\" value=\"\" name=\"range\" />\r\n                \t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t</section>\r\n\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"inner\">\r\n\t\t\t\t\t<div class=\"spotlight\">\r\n\t\t\t\t\t\t<div class=\"image\">\r\n\t\t\t\t\t\t\t<img src=\"./styles/images/social-security-image.jpg\">\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"content\">\r\n\t\t\t\t\t\t\t<h3>Advanced Social Security Calculator</h3>\r\n\t\t\t\t\t\t\t<p>This calcultor takes into account other factors such as partnerships, lifetime earnings, and much more. No personal information will be saved or recorded.</p>\r\n\t\t\t\t\t\t\t<ul class=\"actions\">\r\n\t\t\t\t\t\t\t\t<li><a href=\"#\" class=\"button alt\" route-href=\"route: advanced-1\">Comprehensive Calculator</a></li>\r\n\t\t\t\t\t\t\t</ul>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</section>\r\n\r\n\r\n\t\t<!-- Scripts -->\r\n\t\t\t<script src=\"assets/js/jquery.min.js\"></script>\r\n\t\t\t<script src=\"assets/js/skel.min.js\"></script>\r\n\t\t\t<script src=\"assets/js/util.js\"></script>\r\n\t\t\t<!--[if lte IE 8]><script src=\"assets/js/ie/respond.min.js\"></script><![endif]-->\r\n\t\t\t<script src=\"assets/js/main.js\"></script>\r\n\t</body>\r\n</template>\r\n"; });
-define('text!income-history.html', ['module'], function(module) { module.exports = "<template>\r\n    <require from=\"./nav-bar.html\"></require>\r\n\t<nav-bar router.bind=\"router\"></nav-bar>\r\n    <link href=\"./styles/advanced.css\" rel=\"stylesheet\" type=\"text/css\" />\r\n    <link rel=\"stylesheet\" href=\"bootstrap.min.css\">\r\n    <link rel=\"stylesheet\" href=\"bootstrap-table.css\">\r\n    <script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js\" type=\"text/javascript\"></script>\r\n    <body>\r\n    <div class=\"form-group\">\r\n    <label class=\"col-sm-4 control-label\">Number of Years</label>  \r\n    <div class=\"col-sm-4 inputGroupContainer\">\r\n    <div class=\"input-group\">\r\n    <span class=\"input-group-addon\"></span>\r\n    <input  name=\"first_name\" placeholder=\"35\" class=\"form-control\"  type=\"text\" value.bind=\"numberRow\">\r\n    <button click.delegate=\"generate(numberRow)\" class=\"btn btn-warning\"> Generate</button>\r\n        </div>\r\n    </div>\r\n    </div>\r\n\r\n    <div id=\"container\">\r\n        \r\n    </div>\r\n\r\n\r\n\r\n            <!-- Nav Bottom Button -->\r\n    <div class=\"form-group\">\r\n    <label class=\"col-md-8 control-label\"></label>\r\n    <div class=\"col-md-4\">\r\n        <a href=\"#\" route-href=\"route: advanced-2\" class=\"btn btn-warning\">Back</a>\r\n        <button click.delegate=\"totalIncomes()\" class=\"btn btn-warning\">Next</a>\r\n    </div>\r\n    </div>\r\n    </body>\r\n\r\n</template>"; });
-define('text!nav-bar.html', ['module'], function(module) { module.exports = "<template bindable=\"router\">\r\n    <link href=\"./styles/nav-bar.css\" rel=\"stylesheet\" type=\"text/css\" />\r\n    <nav class=\"navbar navbar-default navbar-fixed-top\" role=\"navigation\"/>         \r\n<!-- How it Works section -->\r\n    <section  class=\"section how-it-works\" id=\"how-it-works\">\r\n        <div class=\"container\">\r\n            <div class=\"row text-center\">\r\n                <div class=\"how-it-works-heading\">\r\n                    <!--<h2 class=\"section-title\">How It Work's</h2>-->\r\n                </div>\r\n            </div>\r\n            <div class=\"row\">\r\n                <div class=\"col-md-12 board\">\r\n                    <!-- <h2>Welcome to IGHALO!<sup>™</sup></h2>-->\r\n                    <div class=\"board-inner\">\r\n                        <ul class=\"nav nav-tabs\" id=\"myTab\">\r\n                            <div class=\"liner\"></div>\r\n                            <li class=\"active\" id=\"advanced1\">\r\n                                <a click.delegate=\"addClass('advanced1')\"  aria-controls=\"home\" role=\"tab\" data-toggle=\"tab\" title=\"User Experience\">\r\n                      <span class=\"round-tabs one\">\r\n                              <i class=\"icon icon-profile-male\"></i>\r\n                      </span>\r\n                                </a></li>\r\n\r\n                            <li id=\"advanced2\"><a click.delegate=\"addClass('advanced2')\" aria-controls=\"results\" role=\"tab\" data-toggle=\"tab\" title=\"Sketch\">\r\n                     <span class=\"round-tabs two\">\r\n                         <i class=\"icon icon-pencil\"></i>\r\n                     </span>\r\n                            </a>\r\n                            </li>\r\n                            <li id=\"advanced3\"><a click.delegate=\"addClass('advanced3')\" aria-controls=\"prototyping\" role=\"tab\" data-toggle=\"tab\" title=\"Prototyping\">\r\n                     <span class=\"round-tabs three\">\r\n                          <i class=\"icon icon-layers\"></i>\r\n                     </span> </a>\r\n                            </li>\r\n<!--\r\n                            <li id=\"advanced4\"><a click.delegate=\"addClass('advanced4')\"  aria-controls=\"uidesign\" role=\"tab\" data-toggle=\"tab\" title=\"UI Design\">\r\n                         <span class=\"round-tabs four\">\r\n                              <i class=\"icon icon-aperture\"></i>\r\n                         </span>\r\n                            </a></li>-->\r\n\r\n                            <li id=\"advancedResults\"><a click.delegate=\"addClass('advancedResults')\"  aria-controls=\"doner\" role=\"tab\" data-toggle=\"tab\" title=\"Development\">\r\n                         <span class=\"round-tabs five\">\r\n                              <i class=\"icon icon-tools-2\"></i>\r\n                         </span> </a>\r\n                            </li>\r\n\r\n                        </ul></div>\r\n\r\n                    <!--<div class=\"tab-content\">\r\n                        <div class=\"tab-pane fade in active\" id=\"home\">\r\n\r\n                            <h3 class=\"head text-center\">User Experience</h3>\r\n                            <p class=\"narrow text-center\">\r\n                                Lorem ipsum dolor sit amet, his ea mollis fabellas principes. Quo mazim facilis tincidunt ut, utinam saperet facilisi an vim.\r\n                            </p>\r\n\r\n                            <p class=\"text-center\">\r\n                                <a href=\"\" class=\"btn btn-success btn-outline-rounded green\"> Get Quote <span style=\"margin-left:10px;\" class=\"glyphicon glyphicon-send\"></span></a>\r\n                            </p>\r\n                        </div>\r\n                        <div class=\"tab-pane fade\" id=\"results\">\r\n                            <h3 class=\"head text-center\">Sketch</h3>\r\n                            <p class=\"narrow text-center\">\r\n                                Lorem ipsum dolor sit amet, his ea mollis fabellas principes. Quo mazim facilis tincidunt ut, utinam saperet facilisi an vim.\r\n                            </p>\r\n\r\n                            <p class=\"text-center\">\r\n                                <a href=\"\" class=\"btn btn-success btn-outline-rounded green\"> Get Quote <span style=\"margin-left:10px;\" class=\"glyphicon glyphicon-send\"></span></a>\r\n                            </p>\r\n\r\n                        </div>\r\n                        <div class=\"tab-pane fade\" id=\"prototyping\">\r\n                            <h3 class=\"head text-center\">Prototyping</h3>\r\n                            <p class=\"narrow text-center\">\r\n                                Lorem ipsum dolor sit amet, his ea mollis fabellas principes. Quo mazim facilis tincidunt ut, utinam saperet facilisi an vim.\r\n                            </p>\r\n\r\n                            <p class=\"text-center\">\r\n                                <a href=\"\" class=\"btn btn-success btn-outline-rounded green\"> Get Quote <span style=\"margin-left:10px;\" class=\"glyphicon glyphicon-send\"></span></a>\r\n                            </p>\r\n                        </div>\r\n                        <div class=\"tab-pane fade\" id=\"uidesign\">\r\n                            <h3 class=\"head text-center\">UI Design</h3>\r\n                            <p class=\"narrow text-center\">\r\n                                Lorem ipsum dolor sit amet, his ea mollis fabellas principes. Quo mazim facilis tincidunt ut, utinam saperet facilisi an vim.\r\n                            </p>\r\n\r\n                            <p class=\"text-center\">\r\n                                <a href=\"\" class=\"btn btn-success btn-outline-rounded green\"> Get Quote <span style=\"margin-left:10px;\" class=\"glyphicon glyphicon-send\"></span></a>\r\n                            </p>\r\n                        </div>\r\n                        <div class=\"tab-pane fade\" id=\"doner\">\r\n                            <div class=\"text-center\">\r\n                                <i class=\"img-intro icon-checkmark-circle\"></i>\r\n                            </div>\r\n                            <h3 class=\"head text-center\">Development</h3>\r\n                            <p class=\"narrow text-center\">\r\n                                Lorem ipsum dolor sit amet, his ea mollis fabellas principes. Quo mazim facilis tincidunt ut, utinam saperet facilisi an vim.\r\n                            </p>\r\n                            <p class=\"text-center\">\r\n                                <a href=\"\" class=\"btn btn-success btn-outline-rounded green\"> Get Quote <span style=\"margin-left:10px;\" class=\"glyphicon glyphicon-send\"></span></a>\r\n                            </p>\r\n                        </div>-->\r\n                        <div class=\"clearfix\"></div>\r\n                    </div>\r\n\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </section>\r\n    <!-- /How it work -->\r\n    </nav>\r\n\r\n</template>\r\n\r\n\r\n<!--<template bindable=\"router\">\r\n  <nav class=\"navbar navbar-default navbar-fixed-top\" role=\"navigation\">\r\n    <div class=\"navbar-header\">\r\n      <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#skeleton-navigation-navbar-collapse\">\r\n        <span class=\"sr-only\">Toggle Navigation</span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n      </button>\r\n      <a class=\"navbar-brand\" href=\"#\">\r\n        <i class=\"fa fa-home\"></i>\r\n        <span>${router.title}</span>\r\n      </a>\r\n    </div>\r\n\r\n    <div class=\"collapse navbar-collapse\" id=\"skeleton-navigation-navbar-collapse\">\r\n      <ul class=\"nav navbar-nav\">\r\n        <li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : ''}\">\r\n          <a data-toggle=\"collapse\" data-target=\"#skeleton-navigation-navbar-collapse.in\" href.bind=\"row.href\">${row.title}</a>\r\n        </li>\r\n      </ul>\r\n\r\n      <ul class=\"nav navbar-nav navbar-right\">\r\n        <li class=\"loader\" if.bind=\"router.isNavigating\">\r\n          <i class=\"fa fa-spinner fa-spin fa-2x\"></i>\r\n        </li>\r\n      </ul>\r\n    </div>\r\n  </nav>\r\n</template>-->"; });
-define('text!users.html', ['module'], function(module) { module.exports = "<template>\r\n  <require from=\"blur-image\"></require>\r\n\r\n  <section class=\"au-animate\">\r\n    <h2>${heading}</h2>\r\n    <div class=\"row au-stagger\">\r\n      <div class=\"col-sm-6 col-md-3 card-container au-animate\" repeat.for=\"user of users\">\r\n        <div class=\"card\">\r\n          <canvas class=\"header-bg\" width=\"250\" height=\"70\" blur-image.bind=\"image\"></canvas>\r\n          <div class=\"avatar\">\r\n            <img src.bind=\"user.avatar_url\" crossorigin ref=\"image\"/>\r\n          </div>\r\n          <div class=\"content\">\r\n            <p class=\"name\">${user.login}</p>\r\n            <p><a target=\"_blank\" class=\"btn btn-default\" href.bind=\"user.html_url\">Contact</a></p>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </section>\r\n</template>\r\n"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\"><span class=\"sr-only\">Toggle navigation</span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span></button> <a class=\"navbar-brand\" href=\"#\">Social Security Calculator</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : ''}\"><a href.bind=\"row.href\">${row.title}</a></li></ul></div></div></nav><router-view></router-view></template>"; });
+define('text!styles.css', ['module'], function(module) { module.exports = "#persinfointro {\r\n    text-align: center;\r\n    width: 1000px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#persinfo, #benefits, #results, #wagehistory, #exceptions {\r\n    text-align: center;\r\n    width: 375px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#custom-handle {\r\n    width: 3em;\r\n    height: 1.6em;\r\n    top: 50%;\r\n    margin-top: -.8em;\r\n    text-align: center;\r\n    line-height: 1.6em;\r\n  }\r\n\r\n .toggle input[type=\"checkbox\"] {\r\n     display: none;\r\n     margin: 4px 0 0;\r\n     line-height: normal;\r\n }\r\n\r\n.range-slider {\r\n    position: relative;\r\n    height: 80px;\r\n}\r\n"; });
+define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\".././styles.css\"></require><require from=\"jquery-ui-dist/jquery-ui.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinModern.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><div id=\"persinfointro\"><h1>Personal Information</h1><p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p></div><form id=\"persinfo\" submit.delegate=\"calculate()\"><div id=\"client\"><h3>Client</h3><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.client.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.client.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><input type=\"text\" value.bind=\"userData.client.dateOfBirth\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.client.employmentStatus\" id=\"empStatus\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div class=\"form-group\" id=\"salary\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><button type=\"button\" id=\"wagehistory\" click.delegate=\"wagehistory()\">?</button></div><div class=\"form-group\"><label for=\"maritalStatus\">Marital Status</label><select class=\"form-control\" value.bind=\"userData.client.maritalStatus\" id=\"maritalStatus\"><option data-hidden=\"true\">Please Select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select></div><div id=\"divorceCheck\"><label for=\"divorceCheck\">Have you been divorced for more than 10 years?</label><br><input type=\"checkbox\" checked=\"checked\" data-toggle=\"toggle\"></div><br><div class=\"form-group\"><label for=\"numOfDependents\">Number of Dependents:</label><select class=\"form-control\" value.bind=\"userData.client.numOfDependents\" id=\"numOfDependents\"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div><div class=\"form-group\" id=\"ageOfDependent\"><label for=\"ageOfDependent\">Age of Dependent(s):</label><input type=\"text\" value.bind=\"userData.client.ageOfDependent[0]\" class=\"form-control\" placeholder=\"10\"></div><br><hr><h1>Retirement Information</h1><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.retirementIncome\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><input type=\"text\" id=\"slider\" value=\"\" style=\"position:relative;height:80px\"></div><div id=\"spouse\"><br><br><br><h3>Co-Client</h3><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.spouse.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.spouse.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><input type=\"text\" value.bind=\"userData.spouse.dateOfBirth\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.spouse.employmentStatus\" id=\"empStatusSpouse\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div class=\"form-group\" id=\"salarySpouse\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><button type=\"button\" id=\"wagehistory\" click.delegate=\"wagehistory()\">?</button></div><br><hr><h1>Retirement Information</h1><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.retirementIncome\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><input type=\"text\" id=\"sliderSpouse\" value=\"\" style=\"position:relative;height:80px\"></div><br><br><button type=\"submit\" id=\"next\">Next</button></form></template>"; });
+define('text!aboutyou/wagehistory.html', ['module'], function(module) { module.exports = "<template><div id=\"wagehistory\"><h1>Wage History</h1><form submit.delegate=\"completeWages()\"><div class=\"form-group\" id=\"wageHist\"><label for=\"wagehistory\">Wages:</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.wages[0]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div></form></div></template>"; });
+define('text!benefits/benefits.html', ['module'], function(module) { module.exports = "<template><require from=\"jquery-ui-dist/jquery-ui.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinModern.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><form id=\"benefits\"><h1>Benefits</h1><div class=\"form-group\"><label for=\"exampleSelect1\">Are you eligible for Social Security benefits?</label><select class=\"form-control\" id=\"exampleSelect1\" value.bind=\"userData.client.eligibleSS\"><option>Yes</option><option>No</option></select></div><label for=\"cola\">Cost of Living Adjustment</label><input type=\"text\" id=\"benefitslider\" value=\"\" style=\"position:relative;height:80px\"><br><div class=\"form-group\"><label for=\"formGroupExampleInput\">Annual amount of widower income (if applicable):</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\" value.bind=\"userData.client.widowerIncome\"></div></div></form></template>"; });
+define('text!exceptions/exceptions.html', ['module'], function(module) { module.exports = "<template><div id=\"exceptions\"><h1>Exceptions</h1></div></template>"; });
+define('text!results/results.html', ['module'], function(module) { module.exports = "<template><div id=\"results\"><h1>Results</h1></div><canvas id=\"myChart\" width=\"400\" height=\"400\"></canvas><button click.delegate=\"what()\">Show Chart</button></template>"; });
 //# sourceMappingURL=app-bundle.js.map
