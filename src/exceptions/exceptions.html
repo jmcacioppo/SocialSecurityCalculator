@@ -1,5 +1,88 @@
 <template>
-    <div id="exceptions">
+    <form id="exceptions" submit.delegate="calculate()">
         <h1>Exceptions</h1>
-    </div>    
+
+        <div id="client">
+            <h3>Client</h3>
+
+            <div class="form-group">
+                <label for="clientMilitaryService">Military Service?</label>
+                <br>
+                <input type="checkbox" id="clientMilitaryService" checked.bind="clientMilitaryService" data-toggle="toggle">
+            </div>
+
+            <div class="form-group">
+                <label for="clientWorkedOnAFarm">Worked on a farm?</label>
+                <br>
+                <input type="checkbox" id="clientWorkedOnAFarm" checked.bind="clientWorkedOnAFarm" data-toggle="toggle">
+            </div>
+
+            <div class="form-group">
+                <label for="clientWorkedInAHousehold">Worked on a farm?</label>
+                <br>
+                <input type="checkbox" id="clientWorkedInAHousehold" checked.bind="clientWorkedInAHousehold" data-toggle="toggle">
+            </div>
+
+            <div class="form-group">
+                <label for="clientWorkedOnARailroad">Worked on a railroad?</label>
+                <br>
+                <input type="checkbox" id="clientWorkedOnARailroad" checked.bind="clientWorkedOnARailroad" data-toggle="toggle">
+            </div>
+
+            <div class="form-group">
+                <label for="clientRecievePension">Worked on a railroad?</label>
+                <br>
+                <input type="checkbox" id="clientRecievePension" checked.bind="clientRecievePension" data-toggle="toggle">
+            </div>
+
+            <div class="form-group">
+                <label for="clientWorkedForeignGov">Worked on a railroad?</label>
+                <br>
+                <input type="checkbox" id="clientWorkedForeignGov" checked.bind="clientWorkedForeignGov" data-toggle="toggle">
+            </div>
+        </div>
+
+        <div id="spouse">
+            <h3>Co-Client</h3>
+
+            <div class="form-group">
+                <label for="spouseMilitaryService">Military Service?</label>
+                <br>
+                <input type="checkbox" id="spouseMilitaryService" checked.bind="spouseMilitaryService" data-toggle="toggle">
+            </div>
+
+            <div class="form-group">
+                <label for="spouseWorkedOnAFarm">Worked on a farm?</label>
+                <br>
+                <input type="checkbox" id="spouseWorkedOnAFarm" checked.bind="spouseWorkedOnAFarm" data-toggle="toggle">
+            </div>
+
+            <div class="form-group">
+                <label for="spouseWorkedInAHousehold">Worked on a farm?</label>
+                <br>
+                <input type="checkbox" id="spouseWorkedInAHousehold" checked.bind="spouseWorkedInAHousehold" data-toggle="toggle">
+            </div>
+
+            <div class="form-group">
+                <label for="spouseWorkedOnARailroad">Worked on a railroad?</label>
+                <br>
+                <input type="checkbox" id="spouseWorkedOnARailroad" checked.bind="spouseWorkedOnARailroad" data-toggle="toggle">
+            </div>
+
+            <div class="form-group">
+                <label for="spouseRecievePension">Worked on a railroad?</label>
+                <br>
+                <input type="checkbox" id="spouseRecievePension" checked.bind="spouseRecievePension" data-toggle="toggle">
+            </div>
+
+            <div class="form-group">
+                <label for="spouseWorkedForeignGov">Worked on a railroad?</label>
+                <br>
+                <input type="checkbox" id="spouseWorkedForeignGov" checked.bind="spouseWorkedForeignGov" data-toggle="toggle">
+            </div>
+        </div>
+
+        <button type="submit" id="next">Next</button>
+    </form>    
+
 </template>
