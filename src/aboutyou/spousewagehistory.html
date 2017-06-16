@@ -1,20 +1,20 @@
 <template>
-    <div id="wagehistory">
-        <h1>Client's Wage History</h1>
+    <div id="spousewagehistory">
+        <h1>Co-Client's Wage History</h1>
 
         <div id="wage">
-            <label for="wageCheck">Click if you would like to input your own wages</label>
+            <label for="spousewageCheck">Click if you would like to input your own wages</label>
             <br>
-            <button id="wageCheck" click.delegate="showWages()">Input My Wages</button>        
+            <button id="spousewageCheck" click.delegate="showWages()">Input My Wages</button>        
         </div>
 
         <br> <br>
 
         <!--MANUALLY SUBMIT WAGE HISTORY-->
-        <form id="wageHist" submit.delegate="completeWages()">
+        <form id="spousewageHist" submit.delegate="completeWages()">
             <div class="form-group">
-                <label for="wagehistory">Wages:</label>
-                <div class="input-group mb-2 mr-sm-2 mb-sm-0" id="wages">
+                <label for="spousewagehistory">Wages:</label>
+                <div class="input-group mb-2 mr-sm-2 mb-sm-0" id="spousewages">
                     <!--<div class="input-group-addon">$</div>-->
                     <!--<input type="text" value.bind="userData.client.wages[0]" class="form-control" id="inlineFormInputGroup" placeholder="0">-->
                 </div>

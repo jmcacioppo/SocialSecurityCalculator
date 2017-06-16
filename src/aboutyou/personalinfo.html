@@ -47,7 +47,7 @@
             <!--EMPLOYMENT STATUS-->
             <div class="form-group">
                 <label for="empStatus">Employment Status</label>
-                <select class="form-control" value.bind="userData.client.employmentStatus" id="empStatus">
+                <select class="form-control" value.bind="userData.client.employmentStatus" change.delegate="checkEmployment(userData.client.employmentStatus)" id="empStatus">
                     <option data-hidden="true">Please Select</option>
                     <option>Employed</option>
                     <option>Business Owner</option>
@@ -57,19 +57,19 @@
             </div>
 
             <!--SALARY-->
-            <div class="form-group" id="salary">
+            <div show.bind="userData.client.isEmployed" class="form-group">
                 <label for="salary">Salary</label>
                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                     <div class="input-group-addon">$</div>
                     <input type="text" value.bind="userData.client.salary" class="form-control" id="inlineFormInputGroup" placeholder="0">
                 </div>
-                <button type="button" id="wagehistory" click.delegate="wagehistory()">?</button>
+                <button type="button" id="wagehistory" click.delegate="wagehistory()">Input Your Own Wages</button>
             </div>
 
             <!--MARITAL STATUS-->
             <div class="form-group">
                 <label for="maritalStatus">Marital Status</label>
-                <select class="form-control" value.bind="userData.client.maritalStatus" id="maritalStatus">
+                <select class="form-control" value.bind="userData.client.maritalStatus" change.delegate="checkMarried(userData.client.maritalStatus)" id="maritalStatus">
                     <option data-hidden="true">Please Select</option>                
                     <option>Single</option>
                     <option>Married</option>
@@ -84,23 +84,7 @@
                 <br>
                 <input type="checkbox" checked.bind="userData.client.divorceCheck" data-toggle="toggle" id="divorceCheck">
             </div>
-            
-            <br>
 
-            <!--NUMBER OF DEPENDENTS-->
-            <div class="form-group" id="numOfDependent">
-                <label for="numOfDependent">Number of Dependent(s):</label>
-                <input type="text" value.bind="userData.client.numOfDependent" id="numOfDependentsCheck" class="form-control" placeholder="2">
-            </div>
-            
-            <!--AGE OF EACH DEPENDENT-->
-            <div class="form-group" id="ageOfDependent">
-                <label for="ageOfDependent">Age of Dependent(s):</label>
-                <div id="ageOfDep"></div>
-                <!--<input type="text" value.bind="userData.client.ageOfDependent[0]" class="form-control" placeholder="10">-->
-            </div>
-
-            <br> 
             <hr />
             
             <!--RETIREMENT INFORMATION-->
@@ -116,12 +100,13 @@
             </div>
 
             <!--SLIDER FOR RETIREMENT AGE AND LIFE EXPECTANCY-->
+            <label for="retirementAge">Retirement Age and Life Expectancy</label>
             <input type="text" id="slider" value="" style="position: relative; height: 80px">
         </div>
 
 
         <!--CO-CLIENT INFORMATION-->
-        <div id="spouse">
+        <div show.bind="userData.client.isMarried">
             <br> <br> <br>
             <h3>Co-Client</h3>
 
@@ -166,10 +151,9 @@
                     <div class="input-group-addon">$</div>
                     <input type="text" value.bind="userData.spouse.salary" class="form-control" id="inlineFormInputGroup" placeholder="0">
                 </div>
-                <button type="button" id="wagehistory" click.delegate="wagehistory()">?</button>
+                <button type="button" id="spousewagehistory" click.delegate="spousewagehistory()">Input Your Own Wages</button>
             </div>
 
-            <br>
             <hr />
             
             <!--RETIREMENT INFORMATION-->
@@ -185,6 +169,7 @@
             </div>
 
             <!--SLIDER FOR RETIREMENT AGE AND LIFE EXPECTANCY-->
+            <label for="retirementAge">Retirement Age and Life Expectancy</label>         
             <input type="text" id="sliderSpouse" value="" style="position: relative; height: 80px">
         </div>
 
@@ -193,5 +178,14 @@
         <!--CLICK NEXT TO GO TO NEXT PAGE AND SUBMIT INFO-->
         <button type="submit" id="next">Next</button>
     </form>
+
+    <br> <br>
+
+    <!--<div class="form-group" id="persinfo">
+        <div id="dependents">
+            <button id="addDep">Add Dependent(s)</button>
+        </div>
+        <button click.delegate="check()">Click</button>
+    </div>-->
 
 </template>

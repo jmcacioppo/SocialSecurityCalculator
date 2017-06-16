@@ -19,21 +19,45 @@ export class personalinfo {
         this.router = router;
     }
 
+    checkMarried(value) {
+        if(value == "Married") {
+            this.userData.client.isMarried = true;
+            this.userData.client.isDivorced = false;
+        }
+        else if(value == "Divorced") {
+            this.userData.client.isDivorced = true;
+            this.userData.client.isMarried = false;
+        }
+        else {
+            this.userData.client.isMarried = false;
+            this.userData.client.isDivorced = false;
+        }
+    }
+
+    checkEmployment(value) {
+        if(value == "Employed" || value == "Business Owner") {
+            this.userData.client.isEmployed = true;
+        }
+        else this.userData.client.isEmployed = false;
+    }
+
     calculate() {
         function getAge(person) {
             var dob = person.dateOfBirth;
             var date = moment(dob, 'M/D/YYYY');
             var yearOfBirth = date.format('YYYY');
+            var currentYear = moment().format('YYYY');
             
             if(!((dob.indexOf(date.format('MM/DD/YYYY')) >= 0) || (dob.indexOf(date.format('M/DD/YYYY')) >= 0)
                 || (dob.indexOf(date.format('MM/D/YYYY')) >= 0) || (dob.indexOf(date.format('M/D/YYYY')) >= 0))
-                || !date.isValid() || yearOfBirth > 2017) {
+                || !date.isValid() || yearOfBirth > currentYear) {
                     alert('Invalid Date of Birth');
                     return;
                 }
             else {
                 person.age = moment().diff(dob, 'years');
                 person.yearOfBirth = yearOfBirth;
+                person.currentYear = currentYear;
             }
         }
         
@@ -129,6 +153,10 @@ export class personalinfo {
         this.router.navigate('#/wagehistory');  
     }
 
+    spousewagehistory() {
+        this.router.navigate('#/spousewagehistory');
+    }
+
     attached() {        
         //RETIREMENT AGE AND LIFE EXPECTANCY SLIDERS
         $("#slider").ionRangeSlider({
@@ -198,28 +226,17 @@ export class personalinfo {
         });
 
         //CHECK THE NUMBER OF DEPENDENTS AND ADD APPROPRIATE AMOUNT OF THEM
-        $('#ageOfDependent').hide(); 
-        $("#numOfDependentsCheck").bind("blur keyup change", function() {
-            var val = $(this).val() || 0;
-            console.log(val);
+        // var count = 0;
+        // $('#addDep').on('click', function() {
+        //     $('#dependents').append('<div id="remove ' + (count+1) + '"><br><label>Dependent ' + (count + 1) + ':</label><input type="text" value.bind="userData.client.ageOfDependent[' + count +
+        //          ']" id="added" class="form-control" placeholder="10">' + 
+        //          '<button id="remDep">Remove</button></div>');
+        //     count += 1; 
+        // });
 
-            if(val > 0) {
-                console.log($('#ageOfDep').children().length);
-                while($('#ageOfDep').children().length > 0) {
-                    $('#ageOfDep:last-child').remove();
-                }
-
-                for(var i=0; i<val; i++) {
-                    console.log(i);
-                    $('#ageOfDep').append('<input type="text" value.bind="userData.client.ageOfDependent[' + i + 
-                        ']" class="form-control" placeholder="10">');
-                }
-
-                $('#ageOfDependent').show();
-            }
-            else $('#ageOfDependent').hide();
-        });
-        // console.log(this.userData.client.ageOfDependent[0]);
-        // console.log(this.userData.client.ageOfDependent[1]);
+        // $('#dependents').on('click', '#remDep', function() {
+        //     $(this).parent().remove();
+        //     count -= 1;
+        // });
     }
 }
