@@ -13,9 +13,25 @@ export class benefits {
         this.router = router;
     }
 
-    attached () {
-        
+    benefitsCalc() {
+        console.log(this.userData);
+    }
 
+    attached () {        
+        $('#isEligible').hide();
+        $("#eligible").change(function() { 
+            var val = $(this).is(':checked');
+            if(val == true) $('#isEligible').show();
+            else $('#isEligible').hide();
+        });
+        
+        $('#yrsOfSubEarnings').hide();
+        $("#wep").change(function() { 
+            var val = $(this).is(':checked');
+            if(val == true) $('#yrsOfSubEarnings').show();
+            else $('#yrsOfSubEarnings').hide();
+        });
+        
         $("#benefitslider").ionRangeSlider({
             grid: true,
             type: "single",
@@ -23,12 +39,10 @@ export class benefits {
             max: 10,
             from: 2.5,
             step: 0.1,
+            postfix: "%",
             onFinish: (data) => {
                 this.userData.client.cola = data.from;
-                console.log(this.userData.client.cola);
             }
         });
-
-        // $( "#cola" ).val( $( "#benefitslider" ).slider( "values", 0 ) +"%");
    }
 }

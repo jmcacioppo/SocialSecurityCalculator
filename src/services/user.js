@@ -2,9 +2,7 @@ export class User {
      constructor() {
         // Social Security Values
         this.baseSS = 0;
-        this.wep = false;
-        this.yrsOfSubEarnings = 0;
-        
+       
         // Personal Info
         this.name = "";
         this.gender = "";
@@ -26,6 +24,8 @@ export class User {
         this.eligibleSS = false;
         this.cola = 2.5;
         this.widowerIncome = 0;
+        this.wep = false;
+        this.yrsOfSubEarnings = 0;
 
         //Results
      }
