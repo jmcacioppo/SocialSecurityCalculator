@@ -7,7 +7,7 @@ import {UserData} from '../services/userdata';
 import {Router} from 'aurelia-router';
 
 @inject(UserData, Router)
-export class wagehistory {
+export class spousewagehistory {
     constructor(userData, router) {
         this.userData = userData;
         this.router = router;
@@ -42,16 +42,16 @@ export class wagehistory {
 
             for(var i = ageFrom18; i <= currentYear; i++) {
                 var count = 0;
-                $('#wages').append('<br>' + i + ':<div class="input-group mb-2 mr-sm-2 mb-sm-0" id="wages">' +
+                $('#wages').append('<br>' + i + ':<div class="input-group mb-2 mr-sm-2 mb-sm-0" id="spousewages">' +
                     '<div class="input-group-addon">$</div>' +
-                    '<input type="text" value.bind="userData.client.wages[' + count + ']" class="form-control" id="inlineFormInputGroup" placeholder="0">' +
+                    '<input type="text" value.bind="userData.spouse.wages[' + count + ']" class="form-control" id="inlineFormInputGroup" placeholder="0">' +
                     '</div>');
                 count += 1;
             }
         }
 
-        $('#wageHist').show();
-        getWages(this.userData.client);
+        $('#spousewageHist').show();
+        getWages(this.userData.spouse);
     }
 
     completeWages() {
@@ -68,10 +68,10 @@ export class wagehistory {
             });
         }
 
-        getWages(this.userData.client);
+        getWages(this.userData.spouse);
     }
 
     attached() {
-        $('#wageHist').hide();
+        $('#spousewageHist').hide();
     }
 }

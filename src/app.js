@@ -12,7 +12,9 @@ export class App {
       { route: ['', 'personalinfo'], moduleId: 'aboutyou/personalinfo',
         name: 'personalinfo', title: 'Personal Info', nav: true},
       { route: 'wagehistory', moduleId: 'aboutyou/wagehistory',
-        name: 'wagehistory', title: 'Wage History', nav: false},  
+        name: 'wagehistory', title: 'Wage History', nav: false}, 
+      { route: 'spousewagehistory', moduleId: 'aboutyou/spousewagehistory',
+        name: 'spousewagehistory', title: 'Spouse Wage History', nav: false}, 
 
       { route: 'exceptions', moduleId: 'exceptions/exceptions',
         name: 'exceptions', title: 'Exceptions', nav: true},
