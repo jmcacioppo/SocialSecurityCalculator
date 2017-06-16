@@ -1,0 +1,134 @@
+<template>
+
+	<link href="./styles/advanced.css" rel="stylesheet" type="text/css" />
+    <div class="container">
+    <form class="well form-horizontal" action=" " method="post"  id="contact_form">
+    <fieldset>
+
+    <!-- Form Name -->
+    <legend>Personal Information</legend>
+
+    <!-- Text input-->
+
+    <div class="form-group">
+    <label class="col-md-4 control-label">First Name</label>  
+    <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+    <input  name="first_name" placeholder="First Name" class="form-control"  type="text" value.bind="firstName">
+        </div>
+    </div>
+    </div>
+
+    <!-- Text input-->
+
+    <div class="form-group">
+    <label class="col-md-4 control-label" >Last Name</label> 
+        <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+    <input name="last_name" placeholder="Last Name" class="form-control"  type="text" value.bind="lastName">
+        </div>
+    </div>
+    </div>
+
+
+    <!-- Text input-->
+        
+    <div class="form-group">
+    <label class="col-md-4 control-label">Date of Birth</label>  
+        <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
+    <input type="date" class="form-control" id="exampleInputDOB1" placeholder="Date of Birth" value.bind="dateOfBirth">
+        </div>
+    </div>
+    </div>
+
+
+    <!-- Text input-->
+    
+    <div class="form-group">
+    <label class="col-md-4 control-label">Expected Age to Claim Benefits</label>  
+        <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+            <input type="date" class="form-control" id="exampleInputDOB1" placeholder="Date of Birth" value.bind="benefitAge">
+        </div>
+    </div>
+    </div>
+    <!-- Text input-->
+        
+    <div class="form-group">
+    <label class="col-md-4 control-label">Marital Status</label>  
+        <div class="col-md-4 inputGroupContainer">
+            <div class="radio">
+                <label>
+                    <input type="radio" name="hosting" value="single" click.delegate="yesnoCheck('single')"> Single
+                </label>
+                <label>
+                    <input type="radio" name="hosting" value="married" click.delegate="yesnoCheck('married')"> Married
+                </label>
+                <label>
+                    <input type="radio" name="hosting" value="divorced" click.delegate="yesnoCheck('divorced')"> Divorced
+                </label>
+                <label>
+                    <input type="radio" name="hosting" value="widowed" click.delegate="yesnoCheck('widowed')"> Widowed 
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div id="ifYes" style="display: none;">
+
+    <div class="form-group">
+    <label class="col-md-4 control-label">Spouse's Date of Birth</label>  
+        <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
+    <input type="date" class="form-control" id="exampleInputDOB1" placeholder="Date of Birth" value.bind="dateOfBirthSpouse">
+        </div>
+    </div>
+    </div>    
+    
+    <!-- Only need age for this input-->
+    <div class="form-group">
+    <label class="col-md-4 control-label">Spouse's Expected Age to Claim Benefits</label>  
+        <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
+    <input type="date" class="form-control" id="exampleInputDOB1" placeholder="Date of Birth" value.bind="benefitAgeSpouse">
+        </div>
+    </div>
+    </div>    
+
+    </div>
+
+
+       <!-- Text input-->
+        
+    <div class="form-group">
+    <label class="col-md-4 control-label">Number of Children</label>  
+        <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+    <input name="address" placeholder="Address" class="form-control" type="text" value.bind="numChildren">
+        </div>
+    </div>
+    </div>
+
+        <!-- Nav Bottom Button -->
+    <div class="form-group">
+        <label class="col-md-8 control-label"></label>
+            <div class="col-md-4">
+                <a href="#" route-href="route: basic-calc" class="btn btn-default">Back</a>
+                <a href="#" class="btn btn-success" click.delegate="submit(firstName, lastName, dateOfBirth, numChildren, benefitAge) next(firstName, lastName, dateOfBirth, numChildren, benefitAge)">Next</a>
+            </div>
+    </div>
+
+    </fieldset>
+    </form>
+    </div>
+    </div><!-- /.container -->
+
+</template>

@@ -1,0 +1,174 @@
+<template>
+
+	<link href="./styles/advanced.css" rel="stylesheet" type="text/css" />
+
+	<div class="container">
+    <form class="well form-horizontal" action=" " method="post"  id="contact_form">
+    <fieldset>
+
+    <!-- Form Name -->
+    <legend>Windfall Elimination Provision(WEP) & Government Pension Offset (GPO) & Survivor Benefit</legend>
+
+        <div class="form-group">
+                            <label class="col-md-4 control-label">Have you worked for a federal, state, or local goverment agency, a non-profit in another country during which you received a pension based on earning not covered by social security? If not, skip. If so, please proceed with WEP calculations.</label>
+                            <div class="col-md-4">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="hosting" id="yes-wep" value="yes"  click.delegate="clickedWEP()"/> Yes
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="hosting" id="no-wep"value="no"  click.delegate="clickedWEP()" /> No
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+    <!-- Text input-->
+
+    <div id="wep-input" style="display:none">
+    <div class="form-group">
+    <label class="col-md-4 control-label">Year you will turn 62</label>  
+    <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+    <input  name="first_name" placeholder="10" class="form-control"  type="text" value.bind="monthlyPension">
+        </div>
+    </div>
+    </div>
+
+    <!-- Text input-->
+
+    <div class="form-group">
+    <label class="col-md-4 control-label" >Years of Substantial Income</label> 
+        <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+    <input name="last_name" placeholder="7" class="form-control"  type="text" value.bind="yearsSubstantialIncome">
+        </div>
+    </div>
+    </div>
+    </div>
+
+        <!-- radio checks -->
+
+                <div class="form-group">
+                            <label class="col-md-4 control-label">Have you worked for a federal, state, or local goverment agency, a non-profit in another country during which you received a pension based on earning not covered by social security? If not, skip. If so, please proceed with GPO calculations.</label>
+                            <div class="col-md-4">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="hosting" value="yes" id="yes-gpo" checked.bind="$parent.selectedOption" click.delegate="clickedGPO()"/> Yes
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="hosting" value="no" id="no-gpo" checked.bind="$parent.selectedOption" click.delegate="clickedGPO()"/> No
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+    <!-- Text input-->
+    <div id="gpo-input" style="display: none">
+        <!--<div class="form-group">
+    <label class="col-md-4 control-label">Number of years of substantial income</label>  
+        <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+    <input name="email" placeholder="7" class="form-control"  type="text">
+        </div>
+    </div>
+    </div>-->
+
+
+    <!-- Text input-->
+        
+    <div class="form-group">
+    <label class="col-md-4 control-label">Monthly pension amount</label>  
+        <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
+    <input name="phone" placeholder="$2000" class="form-control" type="text">
+        </div>
+    </div>
+    </div>
+    </div>
+
+     <!--Text input
+        
+    <div class="form-group">
+    <label class="col-md-4 control-label">Address</label>  
+        <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+    <input name="address" placeholder="Address" class="form-control" type="text">
+        </div>
+    </div>
+    </div>
+
+    <!-- Text input-->
+    
+    <!--<div class="form-group">
+    <label class="col-md-4 control-label">City</label>  
+        <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+    <input name="city" placeholder="city" class="form-control"  type="text">
+        </div>
+    </div>
+    </div>-->
+
+
+    <!-- Text input-->
+
+    <!--<div class="form-group">
+    <label class="col-md-4 control-label">Zip Code</label>  
+        <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+    <input name="zip" placeholder="Zip Code" class="form-control"  type="text">
+        </div>
+    </div>
+    </div>-->
+
+    <!-- Text input-->
+    <!--<div class="form-group">
+    <label class="col-md-4 control-label">Website or domain name</label>  
+    <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+    <input name="website" placeholder="Website or domain name" class="form-control" type="text">
+        </div>
+    </div>
+    </div>-->
+
+
+    <!-- Text area -->
+    
+    <!--<div class="form-group">
+    <label class="col-md-4 control-label">Project Description</label>
+        <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                <textarea class="form-control" name="comment" placeholder="Project Description"></textarea>
+    </div>
+    </div>
+    </div>
+    -->
+  
+        <!-- Nav Bottom Button -->
+    <div class="form-group">
+    <label class="col-md-8 control-label"></label>
+    <div class="col-md-4">
+        <a href="#" route-href="route: advanced-2" class="btn btn-warning">Back</a>
+        <a href="#" class="btn btn-warning" click.delegate="next()">Next</a>
+    </div>
+    </div>
+
+    </fieldset>
+    </form>
+    </div>
+    </div><!-- /.container -->
+
+</template>
