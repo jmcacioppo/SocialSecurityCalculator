@@ -121,7 +121,7 @@ export class personalinfo {
 
         console.log(this.userData);
         //GO TO BENEFITS
-        this.router.navigate('#/benefits');
+        this.router.navigate('#/exceptions');
     }
 
     //NAVIGATE TO WAGE HISTORY
@@ -179,12 +179,19 @@ export class personalinfo {
         });
 
         //CHECK FOR DIVORCE OR MARRIED CLIENT
-        $('#divorceCheck').hide();
+        $('#divorced').hide();
         $('#spouse').hide();
         $("#maritalStatus").change(function() { 
             var val = $(this).val();
-            if(val == "Divorced") $('#divorceCheck').show();
-            else $('#divorceCheck').hide();
+            if(val == "Divorced") {
+                $('#divorced').show();
+                $("#divorceCheck").change(function() { 
+                    var val = $(this).is(':checked');
+                    if(val == true) console.log("Divorced for more than 10");
+                    else console.log("Not divorced for more than 10");
+                });
+            }
+            else $('#divorced').hide();
 
             if(val == "Married") $('#spouse').show();
             else $('#spouse').hide();
@@ -192,18 +199,27 @@ export class personalinfo {
 
         //CHECK THE NUMBER OF DEPENDENTS AND ADD APPROPRIATE AMOUNT OF THEM
         $('#ageOfDependent').hide(); 
-        $("#numOfDependents").change(function() {
-            var val = $(this).val();
+        $("#numOfDependentsCheck").bind("blur keyup change", function() {
+            var val = $(this).val() || 0;
+            console.log(val);
+
             if(val > 0) {
-                $('#ageOfDependent').show();
-                for(var i = 1; i < val; i++) {
-                    $('#ageOfDependent').append('<input type="text" value.bind="userData.client.ageOfDependent[' + i + 
-                    ']" class="form-control" placeholder="10">');
+                console.log($('#ageOfDep').children().length);
+                while($('#ageOfDep').children().length > 0) {
+                    $('#ageOfDep:last-child').remove();
                 }
+
+                for(var i=0; i<val; i++) {
+                    console.log(i);
+                    $('#ageOfDep').append('<input type="text" value.bind="userData.client.ageOfDependent[' + i + 
+                        ']" class="form-control" placeholder="10">');
+                }
+
+                $('#ageOfDependent').show();
             }
             else $('#ageOfDependent').hide();
         });
         // console.log(this.userData.client.ageOfDependent[0]);
         // console.log(this.userData.client.ageOfDependent[1]);
-}
+    }
 }
