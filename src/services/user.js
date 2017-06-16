@@ -13,10 +13,13 @@ export class User {
         this.currentYear = 0;
         this.employmentStatus = "";
 
+        this.isEmployed = false;
+        this.isDivorced = false;
         this.salary = 0;
         this.wages = [];
 
         this.maritalStatus = "";
+        this.isMarried = false;
         this.divorceCheck = false;
 
         this.numOfDependents = 0;
