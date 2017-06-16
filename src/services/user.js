@@ -10,6 +10,7 @@ export class User {
         this.dateOfBirth = "";
         this.age = 0;
         this.yearOfBirth = 0;
+        this.currentYear = 0;
         this.employmentStatus = "";
 
         this.salary = 0;

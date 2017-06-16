@@ -63,7 +63,7 @@
                     <div class="input-group-addon">$</div>
                     <input type="text" value.bind="userData.client.salary" class="form-control" id="inlineFormInputGroup" placeholder="0">
                 </div>
-                <button type="button" id="wagehistory" click.delegate="wagehistory()">?</button>
+                <button type="button" id="wagehistory" click.delegate="wagehistory()">Input Your Own Wages</button>
             </div>
 
             <!--MARITAL STATUS-->
@@ -84,23 +84,7 @@
                 <br>
                 <input type="checkbox" checked.bind="userData.client.divorceCheck" data-toggle="toggle" id="divorceCheck">
             </div>
-            
-            <br>
 
-            <!--NUMBER OF DEPENDENTS-->
-            <div class="form-group" id="numOfDependent">
-                <label for="numOfDependent">Number of Dependent(s):</label>
-                <input type="text" value.bind="userData.client.numOfDependent" id="numOfDependentsCheck" class="form-control" placeholder="2">
-            </div>
-            
-            <!--AGE OF EACH DEPENDENT-->
-            <div class="form-group" id="ageOfDependent">
-                <label for="ageOfDependent">Age of Dependent(s):</label>
-                <div id="ageOfDep"></div>
-                <!--<input type="text" value.bind="userData.client.ageOfDependent[0]" class="form-control" placeholder="10">-->
-            </div>
-
-            <br> 
             <hr />
             
             <!--RETIREMENT INFORMATION-->
@@ -116,6 +100,7 @@
             </div>
 
             <!--SLIDER FOR RETIREMENT AGE AND LIFE EXPECTANCY-->
+            <label for="retirementAge">Retirement Age and Life Expectancy</label>
             <input type="text" id="slider" value="" style="position: relative; height: 80px">
         </div>
 
@@ -166,10 +151,9 @@
                     <div class="input-group-addon">$</div>
                     <input type="text" value.bind="userData.spouse.salary" class="form-control" id="inlineFormInputGroup" placeholder="0">
                 </div>
-                <button type="button" id="wagehistory" click.delegate="wagehistory()">?</button>
+                <button type="button" id="spousewagehistory" click.delegate="spousewagehistory()">Input Your Own Wages</button>
             </div>
 
-            <br>
             <hr />
             
             <!--RETIREMENT INFORMATION-->
@@ -185,6 +169,7 @@
             </div>
 
             <!--SLIDER FOR RETIREMENT AGE AND LIFE EXPECTANCY-->
+            <label for="retirementAge">Retirement Age and Life Expectancy</label>         
             <input type="text" id="sliderSpouse" value="" style="position: relative; height: 80px">
         </div>
 
@@ -193,5 +178,14 @@
         <!--CLICK NEXT TO GO TO NEXT PAGE AND SUBMIT INFO-->
         <button type="submit" id="next">Next</button>
     </form>
+
+    <br> <br>
+
+    <!--<div class="form-group" id="persinfo">
+        <div id="dependents">
+            <button id="addDep">Add Dependent(s)</button>
+        </div>
+        <button click.delegate="check()">Click</button>
+    </div>-->
 
 </template>

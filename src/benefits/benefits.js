@@ -182,6 +182,10 @@ export class benefits {
         console.log(this.userData);
     }
 
+    back() {
+        this.router.navigate('#/exceptions');
+    }
+
     attached () {        
         $('#isEligible').hide();
         $("#eligible").change(function() { 
