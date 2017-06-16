@@ -5,30 +5,41 @@
     <require from="ion-rangeslider/css/normalize.css"></require>
 
 
-    <form id="benefits">
+    <form id="benefits" submit.delegate="benefitsCalc()">
         <h1>Benefits</h1>
         <div class="form-group">
-            <label for="exampleSelect1">Are you eligible for Social Security benefits?</label>
-            <select class="form-control" id="exampleSelect1" value.bind="userData.client.eligibleSS">
-                <option>Yes</option>
-                <option>No</option>
-            </select>
+            <label for="eligible">Are you eligible for Social Security benefits?</label>
+            <br>
+            <input type="checkbox" id="eligible" checked.bind="userData.client.eligibleSS" data-toggle="toggle">
         </div>
 
-        <label for="cola">Cost of Living Adjustment</label>
-        
-        <input type="text" id="benefitslider" value="" style="position: relative; height: 80px">
+        <div id="isEligible">
+            <div class="form-group">
+                <label for="wep">Does WEP apply to you?</label>
+                <br>
+                <input type="checkbox" id="wep" checked.bind="userData.client.wep" data-toggle="toggle">
+            </div>
 
-        <br>
+            <div class="form-group" id="yrsOfSubEarnings">
+                <label for="dob">Years of Substantial Earnings</label>
+                <input type="text" value.bind="userData.client.yrsOfSubEarnings" class="form-control" id="yrsOfSubEarningsCheck">
+            </div>
 
-        <div class="form-group">
-            <label for="formGroupExampleInput">Annual amount of widower income (if applicable):</label>
-            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-            <div class="input-group-addon">$</div>
-                <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0" value.bind="userData.client.widowerIncome">
+            <label for="cola">Cost of Living Adjustment</label>
+            <input type="text" id="benefitslider" value="" style="position: relative; height: 80px">
+
+            <br>
+
+            <div class="form-group">
+                <label for="formGroupExampleInput">Annual amount of widower income (if applicable):</label>
+                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                <div class="input-group-addon">$</div>
+                    <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0" value.bind="userData.client.widowerIncome">
+                </div>
             </div>
         </div>
 
+        <button type="submit" id="next">Next</button>
     </form>
 
 </template>
