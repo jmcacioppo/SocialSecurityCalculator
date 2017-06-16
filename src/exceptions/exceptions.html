@@ -11,16 +11,40 @@
                 <input type="checkbox" id="clientMilitaryService" checked.bind="clientMilitaryService" data-toggle="toggle">
             </div>
 
+            <div id="clientServed">
+                <div class="form-group">
+                    <label for="clientBeganService">Began Service</label>
+                    <input type="text" value.bind="clientBeganService" class="form-control" id="clientBeganService" placeholder="01/01/1970">
+                </div>
+
+                <div class="form-group">
+                    <label for="clientEndService">End Service</label>
+                    <input type="text" value.bind="clientEndService" class="form-control" id="clientEndService" placeholder="01/01/1970">
+                </div>
+            </div>
+
             <div class="form-group">
                 <label for="clientWorkedOnAFarm">Worked on a farm?</label>
                 <br>
                 <input type="checkbox" id="clientWorkedOnAFarm" checked.bind="clientWorkedOnAFarm" data-toggle="toggle">
             </div>
 
+            <div class="form-group" id="clientMadeFarmMoney">
+                <label for="clientFarmMoney">Made more than $150 on the farm?</label>
+                <br>
+                <input type="checkbox" id="clientFarmMoney" checked.bind="clientFarmMoney" data-toggle="toggle">
+            </div>
+
             <div class="form-group">
-                <label for="clientWorkedInAHousehold">Worked on a farm?</label>
+                <label for="clientWorkedInAHousehold">Worked in a household?</label>
                 <br>
                 <input type="checkbox" id="clientWorkedInAHousehold" checked.bind="clientWorkedInAHousehold" data-toggle="toggle">
+            </div>
+
+            <div class="form-group" id="clientMadeHouseHoldMoney">
+                <label for="clientHouseholdMoney">Made over $2000 in the household?</label>
+                <br>
+                <input type="checkbox" id="clientHouseholdMoney" checked.bind="clientHouseholdMoney" data-toggle="toggle">
             </div>
 
             <div class="form-group">
@@ -29,18 +53,42 @@
                 <input type="checkbox" id="clientWorkedOnARailroad" checked.bind="clientWorkedOnARailroad" data-toggle="toggle">
             </div>
 
+            <div class="form-group" id="clientRailroadBox">
+                <label for="clientRailroadYears">Years worked on a railroad?</label>
+                <br>
+                <input type="checkbox" id="clientRailroadYears" checked.bind="clientRailroadYears" data-toggle="toggle">
+            </div>
+
             <div class="form-group">
-                <label for="clientRecievePension">Worked on a railroad?</label>
+                <label for="clientRecievePension">Receive a government pension?</label>
                 <br>
                 <input type="checkbox" id="clientRecievePension" checked.bind="clientRecievePension" data-toggle="toggle">
             </div>
 
-            <div class="form-group">
-                <label for="clientWorkedForeignGov">Worked on a railroad?</label>
-                <br>
-                <input type="checkbox" id="clientWorkedForeignGov" checked.bind="clientWorkedForeignGov" data-toggle="toggle">
+            <div class="form-group" id="clientPensionBox">
+                    <label for="clientPensionAmount">How much pension a month?</label>
+                    <input type="text" value.bind="clientPensionAmount" class="form-control" id="clientPensionAmount" placeholder="2000">
             </div>
+
+            <div class="form-group">
+                <label for="clientCitizenship">Citizenship</label>
+                <select class="form-control" value.bind="clientCitizenship" id="clientCitizenship">
+                    <option data-hidden="true">Please Select</option>
+                    <option>US Citizen</option>
+                    <option>Dual Citizen</option>
+                    <option>Not a US Citizen</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="clientWorkInstrumentality">
+                <label for="clientInstrumentality">Do you work for an Instrumentality?</label>
+                <br>
+                <input type="checkbox" id="clientInstrumentality" checked.bind="clientInstrumentality" data-toggle="toggle">
+            </div>
+            
         </div>
+
+
 
         <div id="spouse">
             <h3>Co-Client</h3>
@@ -58,7 +106,7 @@
             </div>
 
             <div class="form-group">
-                <label for="spouseWorkedInAHousehold">Worked on a farm?</label>
+                <label for="spouseWorkedInAHousehold">Work in a household?</label>
                 <br>
                 <input type="checkbox" id="spouseWorkedInAHousehold" checked.bind="spouseWorkedInAHousehold" data-toggle="toggle">
             </div>
@@ -70,13 +118,13 @@
             </div>
 
             <div class="form-group">
-                <label for="spouseRecievePension">Worked on a railroad?</label>
+                <label for="spouseRecievePension">Receive pension?</label>
                 <br>
                 <input type="checkbox" id="spouseRecievePension" checked.bind="spouseRecievePension" data-toggle="toggle">
             </div>
 
             <div class="form-group">
-                <label for="spouseWorkedForeignGov">Worked on a railroad?</label>
+                <label for="spouseWorkedForeignGov">Work for a foreign government?</label>
                 <br>
                 <input type="checkbox" id="spouseWorkedForeignGov" checked.bind="spouseWorkedForeignGov" data-toggle="toggle">
             </div>
