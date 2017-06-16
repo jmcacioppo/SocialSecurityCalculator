@@ -131,17 +131,17 @@ define('aboutyou/personalinfo',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
             this.router = router;
         }
 
-        personalinfo.prototype.calculate = function calculate() {
-            var name = this.userData.client.name;
-            var gender = this.userData.client.gender;
-            var dob = this.userData.client.dateOfBirth;
-            var empStatus = this.userData.client.employmentStatus;
-            var sal = this.userData.client.salary;
-            var maritalStatus = this.userData.client.maritalStatus;
-            var numOfDependents = this.userData.client.numOfDependents;
-            var wep = this.userData.client.wep;
-            var yrsOfSubearnings = this.userData.client.yrsOfSubearnings;
-            var retirementAge = this.userData.client.retirementAge;
+        personalinfo.prototype.calculateSSbase = function calculateSSbase(person) {
+            var name = person.name;
+            var gender = person.gender;
+            var dob = person.dateOfBirth;
+            var empStatus = person.employmentStatus;
+            var sal = person.salary;
+            var maritalStatus = person.maritalStatus;
+            var numOfDependents = person.numOfDependents;
+            var wep = person.wep;
+            var yrsOfSubearnings = person.yrsOfSubearnings;
+            var retirementAge = person.retirementAge;
 
             var pia;
             var wage = [];
@@ -413,16 +413,312 @@ define('aboutyou/personalinfo',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
 
                 var sumOfTiers = tier1 + tier2 + tier3;
                 ssBase = sumOfTiers * 12;
-                console.log(sumOfTiers);
-                console.log(ssBase);
-                this.userData.client.baseSS = ssBase;
-
-                console.log(this.userData);
-
-                this.router.navigate('#/benefits');
+                return ssBase;
             } else {
-                alert("You're not greater than 18.");
+                return null;
             }
+        };
+
+        personalinfo.prototype.calculate = function calculate() {
+
+            'use strict';
+
+            function calculateSSbase(person) {
+                var name = person.name;
+                var gender = person.gender;
+                var dob = person.dateOfBirth;
+                var empStatus = person.employmentStatus;
+                var sal = person.salary;
+                var maritalStatus = person.maritalStatus;
+                var numOfDependents = person.numOfDependents;
+                var wep = person.wep;
+                var yrsOfSubearnings = person.yrsOfSubearnings;
+                var retirementAge = person.retirementAge;
+
+                var pia;
+                var wage = [];
+                var projectedSal = [];
+                var inflationAdjusted = [];
+                var topThirtyFive = [];
+                var ssBase;
+                var age;
+
+                var date = (0, _moment2.default)(dob, 'M/D/YYYY');
+                var yearOfBirth = date.format('YYYY');
+                if (!(dob.indexOf(date.format('MM/DD/YYYY')) >= 0 || dob.indexOf(date.format('M/DD/YYYY')) >= 0 || dob.indexOf(date.format('MM/D/YYYY')) >= 0 || dob.indexOf(date.format('M/D/YYYY')) >= 0) || !date.isValid() || yearOfBirth > 2017) {
+                    alert('Invalid Date of Birth');
+                    return;
+                } else {
+                    person.age = (0, _moment2.default)().diff(dob, 'years');
+                    age = (0, _moment2.default)().diff(dob, 'years');
+                    console.log(age);
+                    console.log(yearOfBirth);
+                }
+
+                var ageFrom18 = age - 18;
+                var yrsUntilRetire = retirementAge - age;
+
+                if (ageFrom18 >= 0) {
+                    projectedSal[ageFrom18 - 1] = parseInt(sal);
+                    for (var i = ageFrom18 - 2; i >= 0; i--) {
+                        projectedSal[i] = projectedSal[i + 1] - projectedSal[i + 1] * _constants.wagePerc[i + 1];
+                    }
+                    for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+                        projectedSal[i] = parseFloat(projectedSal[i - 1]) + parseFloat(projectedSal[i - 1]) * _constants.wagePerc[_constants.wagePerc.length - 1];
+                    }
+
+                    for (var i = ageFrom18 - 1; i >= 0; i--) {
+                        if (projectedSal[i] > _constants.allowedSalary[_constants.inflationIndex.length - (ageFrom18 - i) - 1]) {
+                            inflationAdjusted[i] = _constants.allowedSalary[_constants.inflationIndex.length - (ageFrom18 - i) - 1] * _constants.inflationIndex[_constants.inflationIndex.length - (ageFrom18 - i) - 1];
+                        } else {
+                            inflationAdjusted[i] = projectedSal[i] * _constants.inflationIndex[_constants.inflationIndex.length - (ageFrom18 - i) - 1];
+                        }
+                    }
+                    for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+                        if (projectedSal[i] > _constants.allowedSalary[i]) {
+                            var lastYearAllowed = _constants.allowedSalary[_constants.allowedSalary.length - 1];
+                            inflationAdjusted[i] = lastYearAllowed * _constants.inflationIndex[_constants.inflationIndex.length - 1];
+                            lastYearAllowed = lastYearAllowed * 1.021;
+                        } else {
+                            inflationAdjusted[i] = projectedSal[i] * _constants.inflationIndex[_constants.inflationIndex.length - 1];
+                        }
+                    }
+
+                    inflationAdjusted = inflationAdjusted.sort(function (a, b) {
+                        return a - b;
+                    });
+                    topThirtyFive = inflationAdjusted.slice(inflationAdjusted.length - 35, inflationAdjusted.length);
+
+                    pia = topThirtyFive.reduce(function (a, b) {
+                        return a + b;
+                    }, 0) / 420;
+
+                    switch (yearOfBirth) {
+                        case 1955:
+                            switch (retirementAge) {
+                                case 62:
+                                    pia = pia * _constants.EL1955[0];break;
+                                case 63:
+                                    pia = pia * _constants.EL1955[1];break;
+                                case 64:
+                                    pia = pia * _constants.EL1955[2];break;
+                                case 65:
+                                    pia = pia * _constants.EL1955[3];break;
+                                case 66:
+                                    pia = pia * _constants.EL1955[4];break;
+                                case 67:
+                                    pia = pia * _constants.EL1955[5];break;
+                                case 68:
+                                    pia = pia * _constants.EL1955[6];break;
+                                case 69:
+                                    pia = pia * _constants.EL1955[7];break;
+                                case 70:
+                                    pia = pia * _constants.EL1955[8];break;
+                            }
+                        case 1956:
+                            switch (retirementAge) {
+                                case 62:
+                                    pia = pia * _constants.EL1956[0];break;
+                                case 63:
+                                    pia = pia * _constants.EL1956[1];break;
+                                case 64:
+                                    pia = pia * _constants.EL1956[2];break;
+                                case 65:
+                                    pia = pia * _constants.EL1956[3];break;
+                                case 66:
+                                    pia = pia * _constants.EL1956[4];break;
+                                case 67:
+                                    pia = pia * _constants.EL1956[5];break;
+                                case 68:
+                                    pia = pia * _constants.EL1956[6];break;
+                                case 69:
+                                    pia = pia * _constants.EL1956[7];break;
+                                case 70:
+                                    pia = pia * _constants.EL1956[8];break;
+                            }
+                        case 1957:
+                            switch (retirementAge) {
+                                case 62:
+                                    pia = pia * _constants.EL1957[0];break;
+                                case 63:
+                                    pia = pia * _constants.EL1957[1];break;
+                                case 64:
+                                    pia = pia * _constants.EL1957[2];break;
+                                case 65:
+                                    pia = pia * _constants.EL1957[3];break;
+                                case 66:
+                                    pia = pia * _constants.EL1957[4];break;
+                                case 67:
+                                    pia = pia * _constants.EL1957[5];break;
+                                case 68:
+                                    pia = pia * _constants.EL1957[6];break;
+                                case 69:
+                                    pia = pia * _constants.EL1957[7];break;
+                                case 70:
+                                    pia = pia * _constants.EL1957[8];break;
+                            }
+                        case 1958:
+                            switch (retirementAge) {
+                                case 62:
+                                    pia = pia * _constants.EL1958[0];break;
+                                case 63:
+                                    pia = pia * _constants.EL1958[1];break;
+                                case 64:
+                                    pia = pia * _constants.EL1958[2];break;
+                                case 65:
+                                    pia = pia * _constants.EL1958[3];break;
+                                case 66:
+                                    pia = pia * _constants.EL1958[4];break;
+                                case 67:
+                                    pia = pia * _constants.EL1958[5];break;
+                                case 68:
+                                    pia = pia * _constants.EL1958[6];break;
+                                case 69:
+                                    pia = pia * _constants.EL1958[7];break;
+                                case 70:
+                                    pia = pia * _constants.EL1958[8];break;
+                            }
+                        case 1959:
+                            switch (retirementAge) {
+                                case 62:
+                                    pia = pia * _constants.EL1959[0];break;
+                                case 63:
+                                    pia = pia * _constants.EL1959[1];break;
+                                case 64:
+                                    pia = pia * _constants.EL1959[2];break;
+                                case 65:
+                                    pia = pia * _constants.EL1959[3];break;
+                                case 66:
+                                    pia = pia * _constants.EL1959[4];break;
+                                case 67:
+                                    pia = pia * _constants.EL1959[5];break;
+                                case 68:
+                                    pia = pia * _constants.EL1959[6];break;
+                                case 69:
+                                    pia = pia * _constants.EL1959[7];break;
+                                case 70:
+                                    pia = pia * _constants.EL1959[8];break;
+                            }
+                        default:
+                            if (yearOfBirth <= 1954) {
+                                switch (retirementAge) {
+                                    case 62:
+                                        pia = pia * _constants.EL1943plus[0];break;
+                                    case 63:
+                                        pia = pia * _constants.EL1943plus[1];break;
+                                    case 64:
+                                        pia = pia * _constants.EL1943plus[2];break;
+                                    case 65:
+                                        pia = pia * _constants.EL1943plus[3];break;
+                                    case 66:
+                                        pia = pia * _constants.EL1943plus[4];break;
+                                    case 67:
+                                        pia = pia * _constants.EL1943plus[5];break;
+                                    case 68:
+                                        pia = pia * _constants.EL1943plus[6];break;
+                                    case 69:
+                                        pia = pia * _constants.EL1943plus[7];break;
+                                    case 70:
+                                        pia = pia * _constants.EL1943plus[8];break;
+                                }
+                            } else {
+                                switch (retirementAge) {
+                                    case 62:
+                                        pia = pia * _constants.EL1960plus[0];break;
+                                    case 63:
+                                        pia = pia * _constants.EL1960plus[1];break;
+                                    case 64:
+                                        pia = pia * _constants.EL1960plus[2];break;
+                                    case 65:
+                                        pia = pia * _constants.EL1960plus[3];break;
+                                    case 66:
+                                        pia = pia * _constants.EL1960plus[4];break;
+                                    case 67:
+                                        pia = pia * _constants.EL1960plus[5];break;
+                                    case 68:
+                                        pia = pia * _constants.EL1960plus[6];break;
+                                    case 69:
+                                        pia = pia * _constants.EL1960plus[7];break;
+                                    case 70:
+                                        pia = pia * _constants.EL1960plus[8];break;
+                                }
+                            }
+                    }
+
+                    yrsOfSubearnings = 22;
+
+                    var tier1, tier2, tier3;
+                    var sum = _constants.consttier1 + _constants.consttier2;
+                    if (pia > _constants.consttier1) {
+                        switch (yrsOfSubearnings) {
+                            case 29:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[1];break;
+                            case 28:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[2];break;
+                            case 27:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[3];break;
+                            case 26:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[4];break;
+                            case 25:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[5];break;
+                            case 24:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[6];break;
+                            case 23:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[7];break;
+                            case 22:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[8];break;
+                            case 21:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[9];break;
+                            default:
+                                if (yrsOfSubearnings >= 30) tier1 = _constants.consttier1 * _constants.subEarningsPerc[0];else tier1 = _constants.consttier1 * _constants.subEarningsPerc[10];
+                        }
+                    } else {
+                        switch (yrsOfSubearnings) {
+                            case 29:
+                                tier1 = pia * _constants.subEarningsPerc[1];break;
+                            case 28:
+                                tier1 = pia * _constants.subEarningsPerc[2];break;
+                            case 27:
+                                tier1 = pia * _constants.subEarningsPerc[3];break;
+                            case 26:
+                                tier1 = pia * _constants.subEarningsPerc[4];break;
+                            case 25:
+                                tier1 = pia * _constants.subEarningsPerc[5];break;
+                            case 24:
+                                tier1 = pia * _constants.subEarningsPerc[6];break;
+                            case 23:
+                                tier1 = pia * _constants.subEarningsPerc[7];break;
+                            case 22:
+                                tier1 = pia * _constants.subEarningsPerc[8];break;
+                            case 21:
+                                tier1 = pia * _constants.subEarningsPerc[9];break;
+                            default:
+                                if (yrsOfSubearnings >= 30) tier1 = pia * _constants.subEarningsPerc[0];else tier1 = pia * _constants.subEarningsPerc[10];
+                        }
+                    }
+
+                    if (pia > sum) {
+                        tier2 = _constants.consttier2 * _constants.tier2perc;
+                    } else tier2 = pia * _constants.tier2perc;
+
+                    if (pia > sum) {
+                        tier3 = (pia - sum) * _constants.tier3perc;
+                    } else tier3 = 0;
+
+                    var sumOfTiers = tier1 + tier2 + tier3;
+                    ssBase = sumOfTiers * 12;
+                    return ssBase;
+                } else {
+                    return null;
+                }
+            }
+
+            this.userData.client.ssBase = calculateSSbase(this.userData.client);
+            this.userData.spouse.ssBase = calculateSSbase(this.userData.spouse);
+
+            console.log(this.userData);
+
+            if (this.userData.client.ssBase == null || this.userData.spouse.ssBase == null && this.userData.client.maritalStatus == "Married") this.router.navigate('#/benefits');else alert('You or your spouse are not older than 18.');
         };
 
         personalinfo.prototype.wagehistory = function wagehistory() {
@@ -13561,8 +13857,8 @@ module.exports = function(Chart) {
 
 },{"1":1}]},{},[7])(7)
 });
-define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\"><span class=\"sr-only\">Toggle navigation</span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span></button> <a class=\"navbar-brand\" href=\"#\">Social Security Calculator</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : ''}\"><a href.bind=\"row.href\">${row.title}</a></li></ul></div></div></nav><router-view></router-view></template>"; });
 define('text!styles.css', ['module'], function(module) { module.exports = "#persinfointro {\r\n    text-align: center;\r\n    width: 1000px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#persinfo, #benefits, #results, #wagehistory, #exceptions {\r\n    text-align: center;\r\n    width: 375px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#custom-handle {\r\n    width: 3em;\r\n    height: 1.6em;\r\n    top: 50%;\r\n    margin-top: -.8em;\r\n    text-align: center;\r\n    line-height: 1.6em;\r\n  }\r\n\r\n .toggle input[type=\"checkbox\"] {\r\n     display: none;\r\n     margin: 4px 0 0;\r\n     line-height: normal;\r\n }\r\n\r\n.range-slider {\r\n    position: relative;\r\n    height: 80px;\r\n}\r\n"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\"><span class=\"sr-only\">Toggle navigation</span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span></button> <a class=\"navbar-brand\" href=\"#\">Social Security Calculator</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : ''}\"><a href.bind=\"row.href\">${row.title}</a></li></ul></div></div></nav><router-view></router-view></template>"; });
 define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\".././styles.css\"></require><require from=\"jquery-ui-dist/jquery-ui.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinModern.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><div id=\"persinfointro\"><h1>Personal Information</h1><p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p></div><form id=\"persinfo\" submit.delegate=\"calculate()\"><div id=\"client\"><h3>Client</h3><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.client.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.client.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><input type=\"text\" value.bind=\"userData.client.dateOfBirth\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.client.employmentStatus\" id=\"empStatus\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div class=\"form-group\" id=\"salary\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><button type=\"button\" id=\"wagehistory\" click.delegate=\"wagehistory()\">?</button></div><div class=\"form-group\"><label for=\"maritalStatus\">Marital Status</label><select class=\"form-control\" value.bind=\"userData.client.maritalStatus\" id=\"maritalStatus\"><option data-hidden=\"true\">Please Select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select></div><div id=\"divorceCheck\"><label for=\"divorceCheck\">Have you been divorced for more than 10 years?</label><br><input type=\"checkbox\" checked=\"checked\" data-toggle=\"toggle\"></div><br><div class=\"form-group\"><label for=\"numOfDependents\">Number of Dependents:</label><select class=\"form-control\" value.bind=\"userData.client.numOfDependents\" id=\"numOfDependents\"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div><div class=\"form-group\" id=\"ageOfDependent\"><label for=\"ageOfDependent\">Age of Dependent(s):</label><input type=\"text\" value.bind=\"userData.client.ageOfDependent[0]\" class=\"form-control\" placeholder=\"10\"></div><br><hr><h1>Retirement Information</h1><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.retirementIncome\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><input type=\"text\" id=\"slider\" value=\"\" style=\"position:relative;height:80px\"></div><div id=\"spouse\"><br><br><br><h3>Co-Client</h3><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.spouse.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.spouse.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><input type=\"text\" value.bind=\"userData.spouse.dateOfBirth\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.spouse.employmentStatus\" id=\"empStatusSpouse\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div class=\"form-group\" id=\"salarySpouse\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><button type=\"button\" id=\"wagehistory\" click.delegate=\"wagehistory()\">?</button></div><br><hr><h1>Retirement Information</h1><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.retirementIncome\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><input type=\"text\" id=\"sliderSpouse\" value=\"\" style=\"position:relative;height:80px\"></div><br><br><button type=\"submit\" id=\"next\">Next</button></form></template>"; });
 define('text!aboutyou/wagehistory.html', ['module'], function(module) { module.exports = "<template><div id=\"wagehistory\"><h1>Wage History</h1><form submit.delegate=\"completeWages()\"><div class=\"form-group\" id=\"wageHist\"><label for=\"wagehistory\">Wages:</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.wages[0]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div></form></div></template>"; });
 define('text!benefits/benefits.html', ['module'], function(module) { module.exports = "<template><require from=\"jquery-ui-dist/jquery-ui.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinModern.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><form id=\"benefits\" submit.delegate=\"benefitsCalc()\"><h1>Benefits</h1><div class=\"form-group\"><label for=\"eligible\">Are you eligible for Social Security benefits?</label><br><input type=\"checkbox\" id=\"eligible\" checked.bind=\"userData.client.eligibleSS\" data-toggle=\"toggle\"></div><div id=\"isEligible\"><div class=\"form-group\"><label for=\"wep\">Does WEP apply to you?</label><br><input type=\"checkbox\" id=\"wep\" checked.bind=\"userData.client.wep\" data-toggle=\"toggle\"></div><div class=\"form-group\" id=\"yrsOfSubEarnings\"><label for=\"dob\">Years of Substantial Earnings</label><input type=\"text\" value.bind=\"userData.client.yrsOfSubEarnings\" class=\"form-control\" id=\"yrsOfSubEarningsCheck\"></div><label for=\"cola\">Cost of Living Adjustment</label><input type=\"text\" id=\"benefitslider\" value=\"\" style=\"position:relative;height:80px\"><br><div class=\"form-group\"><label for=\"formGroupExampleInput\">Annual amount of widower income (if applicable):</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\" value.bind=\"userData.client.widowerIncome\"></div></div></div><button type=\"submit\" id=\"next\">Next</button></form></template>"; });

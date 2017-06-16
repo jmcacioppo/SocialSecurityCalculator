@@ -19,18 +19,19 @@ export class personalinfo {
         this.router = router;
     }
 
-    calculate() {
+    calculateSSbase(person)
+    {
         //GET ALL USER DATA
-        var name = this.userData.client.name; 
-        var gender = this.userData.client.gender;
-        var dob = this.userData.client.dateOfBirth;
-        var empStatus = this.userData.client.employmentStatus;
-        var sal = this.userData.client.salary;
-        var maritalStatus = this.userData.client.maritalStatus;
-        var numOfDependents = this.userData.client.numOfDependents;
-        var wep = this.userData.client.wep;
-        var yrsOfSubearnings = this.userData.client.yrsOfSubearnings;
-        var retirementAge = this.userData.client.retirementAge;
+        var name = person.name; 
+        var gender = person.gender;
+        var dob = person.dateOfBirth;
+        var empStatus = person.employmentStatus;
+        var sal = person.salary;
+        var maritalStatus = person.maritalStatus;
+        var numOfDependents = person.numOfDependents;
+        var wep = person.wep;
+        var yrsOfSubearnings = person.yrsOfSubearnings;
+        var retirementAge = person.retirementAge;
 
         //NEW VARIABLES
         var pia;
@@ -250,19 +251,513 @@ export class personalinfo {
             //ADD TIERS AND GET YEARLY BASE VALUE FOR SOCIAL SECURITY
             var sumOfTiers = tier1 + tier2 + tier3; 
             ssBase = sumOfTiers * 12; 
-            console.log(sumOfTiers);
-            console.log(ssBase);
-            this.userData.client.baseSS = ssBase;
-
-            console.log(this.userData);
-
-            //GO TO BENEFITS
-            this.router.navigate('#/benefits');  
+            return ssBase;
         }
-        else {
-            alert("You're not greater than 18.");
+        else
+        {
+            return null;
         }
     }
+
+    calculate() {
+
+        'use strict';
+    function calculateSSbase(person)
+    {
+        //GET ALL USER DATA
+        var name = person.name; 
+        var gender = person.gender;
+        var dob = person.dateOfBirth;
+        var empStatus = person.employmentStatus;
+        var sal = person.salary;
+        var maritalStatus = person.maritalStatus;
+        var numOfDependents = person.numOfDependents;
+        var wep = person.wep;
+        var yrsOfSubearnings = person.yrsOfSubearnings;
+        var retirementAge = person.retirementAge;
+
+        //NEW VARIABLES
+        var pia;
+        var wage = [];
+        var projectedSal = [];
+        var inflationAdjusted = [];
+        var topThirtyFive = [];
+        var ssBase;
+        var age;
+
+        //MAKE SURE EVERYTHING IS INPUTTED
+        // if(!name || !gender || !dob || !empStatus ||
+        //     empStatus == "Please Select" || !maritalStatus || 
+        //     maritalStatus == "Please Select" || !numOfDependents) {
+        //         alert("Fill in all information");
+        //         console.log(name + " " + gender + " " + sal + " " + dob);
+        //         return;
+        // }
+
+        //INTERPRETS DATE AND GETS AGE
+        var date = moment(dob, 'M/D/YYYY');
+        var yearOfBirth = date.format('YYYY');
+        if(!((dob.indexOf(date.format('MM/DD/YYYY')) >= 0)
+            || (dob.indexOf(date.format('M/DD/YYYY')) >= 0)
+            || (dob.indexOf(date.format('MM/D/YYYY')) >= 0)
+            || (dob.indexOf(date.format('M/D/YYYY')) >= 0))
+            || !date.isValid()
+            || yearOfBirth > 2017) {
+                alert('Invalid Date of Birth');
+                return;
+            }
+        else {
+            person.age = moment().diff(dob, 'years');
+            age = moment().diff(dob, 'years');
+            console.log(age);
+            console.log(yearOfBirth);
+        }
+
+        var ageFrom18 = age - 18;
+        var yrsUntilRetire = retirementAge - age;
+        
+        //COMPUTES PROJECTED SALARY 
+        if(ageFrom18 >= 0) {
+            projectedSal[ageFrom18-1] = parseInt(sal); //Current salary
+            for(var i = ageFrom18 - 2; i >= 0; i--) { //Loop through each wage percentage backwards so we go from current salary
+                projectedSal[i] = projectedSal[i+1] - (projectedSal[i+1] * wagePerc[i+1]); //Calculate projected salary
+            }
+            for(var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) { //Loop through each wage percentage backwards so we go from current salary
+                projectedSal[i] = parseFloat(projectedSal[i-1]) + (parseFloat(projectedSal[i-1]) * wagePerc[wagePerc.length-1]); //Calculate projected salary
+            }
+
+            //COMPUTES SALARY ADJUSTED FOR INFLATION
+            for(var i = ageFrom18-1; i >= 0; i--) {
+                if(projectedSal[i] > allowedSalary[inflationIndex.length-(ageFrom18-i)-1]) { //Check allowed salary and calculate adjusted inflation accordingly
+                    inflationAdjusted[i] = allowedSalary[inflationIndex.length-(ageFrom18-i)-1] * inflationIndex[inflationIndex.length-(ageFrom18-i)-1];
+                }
+                else {
+                    inflationAdjusted[i] = projectedSal[i] * inflationIndex[inflationIndex.length-(ageFrom18-i)-1];
+                }
+            }
+            for(var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+                if(projectedSal[i] > allowedSalary[i]) { //Check allowed salary and calculate adjusted inflation accordingly
+                    var lastYearAllowed = allowedSalary[allowedSalary.length-1];
+                    inflationAdjusted[i] = lastYearAllowed * inflationIndex[inflationIndex.length-1];
+                    lastYearAllowed = lastYearAllowed * 1.021;
+            }
+                else {
+                    inflationAdjusted[i] = projectedSal[i] * inflationIndex[inflationIndex.length-1];
+                }
+            }
+
+            //SORT AND GET TOP 35 ADJUSTED INFLATION SALARIES
+            inflationAdjusted = inflationAdjusted.sort((a, b) => a - b); 
+            topThirtyFive = inflationAdjusted.slice(inflationAdjusted.length - 35, inflationAdjusted.length); 
+
+            //PRIMARY INSURANCE AMOUNT
+            pia = topThirtyFive.reduce((a, b) => a + b, 0) / 420; 
+
+            //FIX PIA BASED ON YEAR OF BIRTH AND WHEN THEY WANT TO RETIRE
+            switch(yearOfBirth) {
+                case 1955:
+                    switch(retirementAge) {
+                        case 62: pia = pia * EL1955[0]; break;
+                        case 63: pia = pia * EL1955[1]; break;
+                        case 64: pia = pia * EL1955[2]; break;
+                        case 65: pia = pia * EL1955[3]; break;
+                        case 66: pia = pia * EL1955[4]; break;
+                        case 67: pia = pia * EL1955[5]; break;
+                        case 68: pia = pia * EL1955[6]; break;
+                        case 69: pia = pia * EL1955[7]; break;
+                        case 70: pia = pia * EL1955[8]; break;
+                    }
+                case 1956:
+                    switch(retirementAge) {
+                        case 62: pia = pia * EL1956[0]; break;
+                        case 63: pia = pia * EL1956[1]; break;
+                        case 64: pia = pia * EL1956[2]; break;
+                        case 65: pia = pia * EL1956[3]; break;
+                        case 66: pia = pia * EL1956[4]; break;
+                        case 67: pia = pia * EL1956[5]; break;
+                        case 68: pia = pia * EL1956[6]; break;
+                        case 69: pia = pia * EL1956[7]; break;
+                        case 70: pia = pia * EL1956[8]; break;
+                    }    
+                case 1957:
+                    switch(retirementAge) {
+                        case 62: pia = pia * EL1957[0]; break;
+                        case 63: pia = pia * EL1957[1]; break;
+                        case 64: pia = pia * EL1957[2]; break;
+                        case 65: pia = pia * EL1957[3]; break;
+                        case 66: pia = pia * EL1957[4]; break;
+                        case 67: pia = pia * EL1957[5]; break;
+                        case 68: pia = pia * EL1957[6]; break;
+                        case 69: pia = pia * EL1957[7]; break;
+                        case 70: pia = pia * EL1957[8]; break;
+                    }
+                case 1958:
+                    switch(retirementAge) {
+                        case 62: pia = pia * EL1958[0]; break;
+                        case 63: pia = pia * EL1958[1]; break;
+                        case 64: pia = pia * EL1958[2]; break;
+                        case 65: pia = pia * EL1958[3]; break;
+                        case 66: pia = pia * EL1958[4]; break;
+                        case 67: pia = pia * EL1958[5]; break;
+                        case 68: pia = pia * EL1958[6]; break;
+                        case 69: pia = pia * EL1958[7]; break;
+                        case 70: pia = pia * EL1958[8]; break;
+                    }
+                case 1959:
+                    switch(retirementAge) {
+                        case 62: pia = pia * EL1959[0]; break;
+                        case 63: pia = pia * EL1959[1]; break;
+                        case 64: pia = pia * EL1959[2]; break;
+                        case 65: pia = pia * EL1959[3]; break;
+                        case 66: pia = pia * EL1959[4]; break;
+                        case 67: pia = pia * EL1959[5]; break;
+                        case 68: pia = pia * EL1959[6]; break;
+                        case 69: pia = pia * EL1959[7]; break;
+                        case 70: pia = pia * EL1959[8]; break;
+                    }     
+                default:
+                    if(yearOfBirth <= 1954) {
+                        switch(retirementAge) {
+                            case 62: pia = pia * EL1943plus[0]; break;
+                            case 63: pia = pia * EL1943plus[1]; break;
+                            case 64: pia = pia * EL1943plus[2]; break;
+                            case 65: pia = pia * EL1943plus[3]; break;
+                            case 66: pia = pia * EL1943plus[4]; break;
+                            case 67: pia = pia * EL1943plus[5]; break;
+                            case 68: pia = pia * EL1943plus[6]; break;
+                            case 69: pia = pia * EL1943plus[7]; break;
+                            case 70: pia = pia * EL1943plus[8]; break;
+                        }   
+                    }  
+                    else {
+                        switch(retirementAge) {
+                            case 62: pia = pia * EL1960plus[0]; break;
+                            case 63: pia = pia * EL1960plus[1]; break;
+                            case 64: pia = pia * EL1960plus[2]; break;
+                            case 65: pia = pia * EL1960plus[3]; break;
+                            case 66: pia = pia * EL1960plus[4]; break;
+                            case 67: pia = pia * EL1960plus[5]; break;
+                            case 68: pia = pia * EL1960plus[6]; break;
+                            case 69: pia = pia * EL1960plus[7]; break;
+                            case 70: pia = pia * EL1960plus[8]; break;
+                        }   
+                    }     
+            }
+
+            yrsOfSubearnings = 22;
+            //Benefit Formula
+            var tier1, tier2, tier3;
+            var sum = consttier1 + consttier2; //Get sum of tier1 and tier2 constants
+            if(pia > consttier1) { //Tier1 for benefit formula - checking WEP and years of substantial earnings
+                switch(yrsOfSubearnings) {
+                    case 29: tier1 = consttier1 * subEarningsPerc[1]; break;
+                    case 28: tier1 = consttier1 * subEarningsPerc[2]; break;
+                    case 27: tier1 = consttier1 * subEarningsPerc[3]; break;
+                    case 26: tier1 = consttier1 * subEarningsPerc[4]; break;
+                    case 25: tier1 = consttier1 * subEarningsPerc[5]; break;
+                    case 24: tier1 = consttier1 * subEarningsPerc[6]; break;    
+                    case 23: tier1 = consttier1 * subEarningsPerc[7]; break;
+                    case 22: tier1 = consttier1 * subEarningsPerc[8]; break;
+                    case 21: tier1 = consttier1 * subEarningsPerc[9]; break;
+                    default: 
+                        if(yrsOfSubearnings >= 30) tier1 = consttier1 * subEarningsPerc[0];
+                        else tier1 = consttier1 * subEarningsPerc[10];
+                }
+            }
+            else {
+                switch(yrsOfSubearnings) {
+                    case 29: tier1 = pia * subEarningsPerc[1]; break;
+                    case 28: tier1 = pia * subEarningsPerc[2]; break;
+                    case 27: tier1 = pia * subEarningsPerc[3]; break;
+                    case 26: tier1 = pia * subEarningsPerc[4]; break;
+                    case 25: tier1 = pia * subEarningsPerc[5]; break;
+                    case 24: tier1 = pia * subEarningsPerc[6]; break;    
+                    case 23: tier1 = pia * subEarningsPerc[7]; break;
+                    case 22: tier1 = pia * subEarningsPerc[8]; break;
+                    case 21: tier1 = pia * subEarningsPerc[9]; break;
+                    default: 
+                        if(yrsOfSubearnings >= 30) tier1 = pia * subEarningsPerc[0];
+                        else tier1 = pia * subEarningsPerc[10];
+                }
+            } 
+            
+            //TIER2 FOR BENEFIT FORMULA
+            if(pia > sum) { 
+                tier2 = consttier2 * tier2perc
+            } 
+            else tier2 = pia * tier2perc; 
+
+            //TIER3 FOR BENEFIT FORMULA
+            if(pia > sum) {
+                tier3 = (pia - sum) * tier3perc; 
+            }
+            else tier3 = 0;
+
+            //ADD TIERS AND GET YEARLY BASE VALUE FOR SOCIAL SECURITY
+            var sumOfTiers = tier1 + tier2 + tier3; 
+            ssBase = sumOfTiers * 12; 
+            return ssBase;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+        // //GET ALL USER DATA
+        // var name = this.userData.client.name; 
+        // var gender = this.userData.client.gender;
+        // var dob = this.userData.client.dateOfBirth;
+        // var empStatus = this.userData.client.employmentStatus;
+        // var sal = this.userData.client.salary;
+        // var maritalStatus = this.userData.client.maritalStatus;
+        // var numOfDependents = this.userData.client.numOfDependents;
+        // var wep = this.userData.client.wep;
+        // var yrsOfSubearnings = this.userData.client.yrsOfSubearnings;
+        // var retirementAge = this.userData.client.retirementAge;
+
+        // //NEW VARIABLES
+        // var pia;
+        // var wage = [];
+        // var projectedSal = [];
+        // var inflationAdjusted = [];
+        // var topThirtyFive = [];
+        // var ssBase;
+        // var age;
+
+        // //MAKE SURE EVERYTHING IS INPUTTED
+        // // if(!name || !gender || !dob || !empStatus ||
+        // //     empStatus == "Please Select" || !maritalStatus || 
+        // //     maritalStatus == "Please Select" || !numOfDependents) {
+        // //         alert("Fill in all information");
+        // //         console.log(name + " " + gender + " " + sal + " " + dob);
+        // //         return;
+        // // }
+
+        // //INTERPRETS DATE AND GETS AGE
+        // var date = moment(dob, 'M/D/YYYY');
+        // var yearOfBirth = date.format('YYYY');
+        // if(!((dob.indexOf(date.format('MM/DD/YYYY')) >= 0)
+        //     || (dob.indexOf(date.format('M/DD/YYYY')) >= 0)
+        //     || (dob.indexOf(date.format('MM/D/YYYY')) >= 0)
+        //     || (dob.indexOf(date.format('M/D/YYYY')) >= 0))
+        //     || !date.isValid()
+        //     || yearOfBirth > 2017) {
+        //         alert('Invalid Date of Birth');
+        //         return;
+        //     }
+        // else {
+        //     this.userData.client.age = moment().diff(dob, 'years');
+        //     age = moment().diff(dob, 'years');
+        // }
+
+        // var ageFrom18 = age - 18;
+        // var yrsUntilRetire = retirementAge - age;
+        
+        // //COMPUTES PROJECTED SALARY 
+        // if(ageFrom18 >= 0) {
+        //     projectedSal[ageFrom18-1] = parseInt(sal); //Current salary
+        //     for(var i = ageFrom18 - 2; i >= 0; i--) { //Loop through each wage percentage backwards so we go from current salary
+        //         projectedSal[i] = projectedSal[i+1] - (projectedSal[i+1] * wagePerc[i+1]); //Calculate projected salary
+        //     }
+        //     for(var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) { //Loop through each wage percentage backwards so we go from current salary
+        //         projectedSal[i] = parseFloat(projectedSal[i-1]) + (parseFloat(projectedSal[i-1]) * wagePerc[wagePerc.length-1]); //Calculate projected salary
+        //     }
+
+        //     //COMPUTES SALARY ADJUSTED FOR INFLATION
+        //     for(var i = ageFrom18-1; i >= 0; i--) {
+        //         if(projectedSal[i] > allowedSalary[inflationIndex.length-(ageFrom18-i)-1]) { //Check allowed salary and calculate adjusted inflation accordingly
+        //             inflationAdjusted[i] = allowedSalary[inflationIndex.length-(ageFrom18-i)-1] * inflationIndex[inflationIndex.length-(ageFrom18-i)-1];
+        //         }
+        //         else {
+        //             inflationAdjusted[i] = projectedSal[i] * inflationIndex[inflationIndex.length-(ageFrom18-i)-1];
+        //         }
+        //     }
+        //     for(var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+        //         if(projectedSal[i] > allowedSalary[i]) { //Check allowed salary and calculate adjusted inflation accordingly
+        //             var lastYearAllowed = allowedSalary[allowedSalary.length-1];
+        //             inflationAdjusted[i] = lastYearAllowed * inflationIndex[inflationIndex.length-1];
+        //             lastYearAllowed = lastYearAllowed * 1.021;
+        //     }
+        //         else {
+        //             inflationAdjusted[i] = projectedSal[i] * inflationIndex[inflationIndex.length-1];
+        //         }
+        //     }
+
+        //     //SORT AND GET TOP 35 ADJUSTED INFLATION SALARIES
+        //     inflationAdjusted = inflationAdjusted.sort((a, b) => a - b); 
+        //     topThirtyFive = inflationAdjusted.slice(inflationAdjusted.length - 35, inflationAdjusted.length); 
+
+        //     //PRIMARY INSURANCE AMOUNT
+        //     pia = topThirtyFive.reduce((a, b) => a + b, 0) / 420; 
+
+        //     //FIX PIA BASED ON YEAR OF BIRTH AND WHEN THEY WANT TO RETIRE
+        //     switch(yearOfBirth) {
+        //         case 1955:
+        //             switch(retirementAge) {
+        //                 case 62: pia = pia * EL1955[0]; break;
+        //                 case 63: pia = pia * EL1955[1]; break;
+        //                 case 64: pia = pia * EL1955[2]; break;
+        //                 case 65: pia = pia * EL1955[3]; break;
+        //                 case 66: pia = pia * EL1955[4]; break;
+        //                 case 67: pia = pia * EL1955[5]; break;
+        //                 case 68: pia = pia * EL1955[6]; break;
+        //                 case 69: pia = pia * EL1955[7]; break;
+        //                 case 70: pia = pia * EL1955[8]; break;
+        //             }
+        //         case 1956:
+        //             switch(retirementAge) {
+        //                 case 62: pia = pia * EL1956[0]; break;
+        //                 case 63: pia = pia * EL1956[1]; break;
+        //                 case 64: pia = pia * EL1956[2]; break;
+        //                 case 65: pia = pia * EL1956[3]; break;
+        //                 case 66: pia = pia * EL1956[4]; break;
+        //                 case 67: pia = pia * EL1956[5]; break;
+        //                 case 68: pia = pia * EL1956[6]; break;
+        //                 case 69: pia = pia * EL1956[7]; break;
+        //                 case 70: pia = pia * EL1956[8]; break;
+        //             }    
+        //         case 1957:
+        //             switch(retirementAge) {
+        //                 case 62: pia = pia * EL1957[0]; break;
+        //                 case 63: pia = pia * EL1957[1]; break;
+        //                 case 64: pia = pia * EL1957[2]; break;
+        //                 case 65: pia = pia * EL1957[3]; break;
+        //                 case 66: pia = pia * EL1957[4]; break;
+        //                 case 67: pia = pia * EL1957[5]; break;
+        //                 case 68: pia = pia * EL1957[6]; break;
+        //                 case 69: pia = pia * EL1957[7]; break;
+        //                 case 70: pia = pia * EL1957[8]; break;
+        //             }
+        //         case 1958:
+        //             switch(retirementAge) {
+        //                 case 62: pia = pia * EL1958[0]; break;
+        //                 case 63: pia = pia * EL1958[1]; break;
+        //                 case 64: pia = pia * EL1958[2]; break;
+        //                 case 65: pia = pia * EL1958[3]; break;
+        //                 case 66: pia = pia * EL1958[4]; break;
+        //                 case 67: pia = pia * EL1958[5]; break;
+        //                 case 68: pia = pia * EL1958[6]; break;
+        //                 case 69: pia = pia * EL1958[7]; break;
+        //                 case 70: pia = pia * EL1958[8]; break;
+        //             }
+        //         case 1959:
+        //             switch(retirementAge) {
+        //                 case 62: pia = pia * EL1959[0]; break;
+        //                 case 63: pia = pia * EL1959[1]; break;
+        //                 case 64: pia = pia * EL1959[2]; break;
+        //                 case 65: pia = pia * EL1959[3]; break;
+        //                 case 66: pia = pia * EL1959[4]; break;
+        //                 case 67: pia = pia * EL1959[5]; break;
+        //                 case 68: pia = pia * EL1959[6]; break;
+        //                 case 69: pia = pia * EL1959[7]; break;
+        //                 case 70: pia = pia * EL1959[8]; break;
+        //             }     
+        //         default:
+        //             if(yearOfBirth <= 1954) {
+        //                 switch(retirementAge) {
+        //                     case 62: pia = pia * EL1943plus[0]; break;
+        //                     case 63: pia = pia * EL1943plus[1]; break;
+        //                     case 64: pia = pia * EL1943plus[2]; break;
+        //                     case 65: pia = pia * EL1943plus[3]; break;
+        //                     case 66: pia = pia * EL1943plus[4]; break;
+        //                     case 67: pia = pia * EL1943plus[5]; break;
+        //                     case 68: pia = pia * EL1943plus[6]; break;
+        //                     case 69: pia = pia * EL1943plus[7]; break;
+        //                     case 70: pia = pia * EL1943plus[8]; break;
+        //                 }   
+        //             }  
+        //             else {
+        //                 switch(retirementAge) {
+        //                     case 62: pia = pia * EL1960plus[0]; break;
+        //                     case 63: pia = pia * EL1960plus[1]; break;
+        //                     case 64: pia = pia * EL1960plus[2]; break;
+        //                     case 65: pia = pia * EL1960plus[3]; break;
+        //                     case 66: pia = pia * EL1960plus[4]; break;
+        //                     case 67: pia = pia * EL1960plus[5]; break;
+        //                     case 68: pia = pia * EL1960plus[6]; break;
+        //                     case 69: pia = pia * EL1960plus[7]; break;
+        //                     case 70: pia = pia * EL1960plus[8]; break;
+        //                 }   
+        //             }     
+        //     }
+
+        //     yrsOfSubearnings = 22;
+        //     //Benefit Formula
+        //     var tier1, tier2, tier3;
+        //     var sum = consttier1 + consttier2; //Get sum of tier1 and tier2 constants
+        //     if(pia > consttier1) { //Tier1 for benefit formula - checking WEP and years of substantial earnings
+        //         switch(yrsOfSubearnings) {
+        //             case 29: tier1 = consttier1 * subEarningsPerc[1]; break;
+        //             case 28: tier1 = consttier1 * subEarningsPerc[2]; break;
+        //             case 27: tier1 = consttier1 * subEarningsPerc[3]; break;
+        //             case 26: tier1 = consttier1 * subEarningsPerc[4]; break;
+        //             case 25: tier1 = consttier1 * subEarningsPerc[5]; break;
+        //             case 24: tier1 = consttier1 * subEarningsPerc[6]; break;    
+        //             case 23: tier1 = consttier1 * subEarningsPerc[7]; break;
+        //             case 22: tier1 = consttier1 * subEarningsPerc[8]; break;
+        //             case 21: tier1 = consttier1 * subEarningsPerc[9]; break;
+        //             default: 
+        //                 if(yrsOfSubearnings >= 30) tier1 = consttier1 * subEarningsPerc[0];
+        //                 else tier1 = consttier1 * subEarningsPerc[10];
+        //         }
+        //     }
+        //     else {
+        //         switch(yrsOfSubearnings) {
+        //             case 29: tier1 = pia * subEarningsPerc[1]; break;
+        //             case 28: tier1 = pia * subEarningsPerc[2]; break;
+        //             case 27: tier1 = pia * subEarningsPerc[3]; break;
+        //             case 26: tier1 = pia * subEarningsPerc[4]; break;
+        //             case 25: tier1 = pia * subEarningsPerc[5]; break;
+        //             case 24: tier1 = pia * subEarningsPerc[6]; break;    
+        //             case 23: tier1 = pia * subEarningsPerc[7]; break;
+        //             case 22: tier1 = pia * subEarningsPerc[8]; break;
+        //             case 21: tier1 = pia * subEarningsPerc[9]; break;
+        //             default: 
+        //                 if(yrsOfSubearnings >= 30) tier1 = pia * subEarningsPerc[0];
+        //                 else tier1 = pia * subEarningsPerc[10];
+        //         }
+        //     } 
+            
+        //     //TIER2 FOR BENEFIT FORMULA
+        //     if(pia > sum) { 
+        //         tier2 = consttier2 * tier2perc
+        //     } 
+        //     else tier2 = pia * tier2perc; 
+
+        //     //TIER3 FOR BENEFIT FORMULA
+        //     if(pia > sum) {
+        //         tier3 = (pia - sum) * tier3perc; 
+        //     }
+        //     else tier3 = 0;
+
+        //     //ADD TIERS AND GET YEARLY BASE VALUE FOR SOCIAL SECURITY
+        //     var sumOfTiers = tier1 + tier2 + tier3; 
+        //     ssBase = sumOfTiers * 12; 
+        //     console.log(sumOfTiers);
+        //     console.log(ssBase);
+        //     this.userData.client.baseSS = ssBase;
+
+        //     console.log(this.userData);
+
+        //     //GO TO BENEFITS
+        //     this.router.navigate('#/benefits');  
+        // }
+        // else {
+        //     alert("You're not greater than 18.");
+        // }
+
+        this.userData.client.ssBase = calculateSSbase(this.userData.client);
+        this.userData.spouse.ssBase = calculateSSbase(this.userData.spouse);
+
+        console.log(this.userData);
+
+        if (this.userData.client.ssBase == null || (this.userData.spouse.ssBase == null && this.userData.client.maritalStatus == "Married") )
+            this.router.navigate('#/benefits');
+        else
+            alert('You or your spouse are not older than 18.');
+    }
+
 
     //NAVIGATE TO WAGE HISTORY
     wagehistory() {
