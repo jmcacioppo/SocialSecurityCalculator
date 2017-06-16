@@ -1,0 +1,17 @@
+<template>
+    <div id="wagehistory">
+        <h1>Wage History</h1>
+
+        <!--MANUALLY SUBMIT WAGE HISTORY-->
+        <form submit.delegate="completeWages()">
+            <div class="form-group" id="wageHist">
+                <label for="wagehistory">Wages:</label>
+                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                    <div class="input-group-addon">$</div>
+                    <input type="text" value.bind="userData.client.wages[0]" class="form-control" id="inlineFormInputGroup" placeholder="0">
+                </div>
+            </div>
+
+        </form>
+    </div>
+</template>

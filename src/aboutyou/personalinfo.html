@@ -1,0 +1,209 @@
+<template>
+    <require from=".././styles.css"></require>
+    <require from="jquery-ui-dist/jquery-ui.css"></require>
+
+    <require from="ion-rangeslider/css/ion.rangeSlider.css"></require>
+    <require from="ion-rangeslider/css/ion.rangeSlider.skinModern.css"></require>
+    <require from="ion-rangeslider/css/normalize.css"></require>
+
+    <!--<require from="bootstrap-toggle/css/bootstrap-toggle.css"></require>
+    <require from="bootstrap-toggle/css/bootstrap2-toggle.css"></require>-->
+
+    <!--PERSONAL INFORMATION HEADER-->
+    <div id="persinfointro">
+        <h1>Personal Information</h1>
+        <p>Please enter the specified personal information, so we can make 
+            the best estimates of your lifetime Social Security benefits.</p>
+    </div>
+
+    <!--SUBMIT MEANS DO CALCULATIONS-->
+    <form id="persinfo" submit.delegate="calculate()"> 
+    <!--CLIENT INFORMATION    -->
+        <div id="client">
+            <h3>Client</h3>
+
+            <!--NAME-->
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" value.bind="userData.client.name" class="form-control" id="name" placeholder="John">
+            </div>
+
+            <!--GENDER-->
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select class="form-control" value.bind="userData.client.gender" id="gender">
+                    <option data-hidden="true">Please Select</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                </select>
+            </div>
+
+            <!--DATE OF BIRTH-->
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="text" value.bind="userData.client.dateOfBirth" class="form-control" id="dob" placeholder="01/01/1970">
+            </div>
+
+            <!--EMPLOYMENT STATUS-->
+            <div class="form-group">
+                <label for="empStatus">Employment Status</label>
+                <select class="form-control" value.bind="userData.client.employmentStatus" id="empStatus">
+                    <option data-hidden="true">Please Select</option>
+                    <option>Employed</option>
+                    <option>Business Owner</option>
+                    <option>Retired</option>
+                    <option>Not Currently Employed</option>
+                </select>
+            </div>
+
+            <!--SALARY-->
+            <div class="form-group" id="salary">
+                <label for="salary">Salary</label>
+                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                    <div class="input-group-addon">$</div>
+                    <input type="text" value.bind="userData.client.salary" class="form-control" id="inlineFormInputGroup" placeholder="0">
+                </div>
+                <button type="button" id="wagehistory" click.delegate="wagehistory()">?</button>
+            </div>
+
+            <!--MARITAL STATUS-->
+            <div class="form-group">
+                <label for="maritalStatus">Marital Status</label>
+                <select class="form-control" value.bind="userData.client.maritalStatus" id="maritalStatus">
+                    <option data-hidden="true">Please Select</option>                
+                    <option>Single</option>
+                    <option>Married</option>
+                    <option>Divorced</option>
+                    <option>Widowed</option>
+                </select>
+            </div>
+
+            <!--CHECK IF DIVORCED FOR 10+ YEARS-->
+            <div id="divorceCheck">
+                <label for="divorceCheck">Have you been divorced for more than 10 years?</label>
+                <br>
+
+                <input type="checkbox" checked data-toggle="toggle">
+                <!--<div class="toggle-group" data-toggle="toggle">
+                    <label class="btn btn-primary">Yes</label> 
+                    <label class="btn btn-default">No</label>    -->
+                    <!--<span class="toggle-handle btn btn-default"></span>-->
+                <!--</div> -->
+            </div>
+            
+            <br>
+
+            <!--NUMBER OF DEPENDENTS-->
+            <div class="form-group">
+                <label for="numOfDependents">Number of Dependents:</label>
+                <select class="form-control" value.bind="userData.client.numOfDependents" id="numOfDependents">
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </div>
+            
+            <!--AGE OF EACH DEPENDENT-->
+            <div class="form-group" id="ageOfDependent">
+                <label for="ageOfDependent">Age of Dependent(s):</label>
+                <input type="text" value.bind="userData.client.ageOfDependent[0]" class="form-control" placeholder="10">
+            </div>
+
+            <br> 
+            <hr />
+            
+            <!--RETIREMENT INFORMATION-->
+            <h1>Retirement Information</h1>
+
+            <!--RETIREMENT INCOME -->
+            <div class="form-group">
+                <label for="retirementIncome">Retirement Income</label>
+                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                <div class="input-group-addon">$</div>
+                    <input type="text" value.bind="userData.client.retirementIncome" class="form-control" id="retirementIncome" placeholder="0">
+                </div>
+            </div>
+
+            <!--SLIDER FOR RETIREMENT AGE AND LIFE EXPECTANCY-->
+            <input type="text" id="slider" value="" style="position: relative; height: 80px">
+        </div>
+
+
+        <!--CO-CLIENT INFORMATION-->
+        <div id="spouse">
+            <br> <br> <br>
+            <h3>Co-Client</h3>
+
+            <!--NAME-->
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" value.bind="userData.spouse.name" class="form-control" id="name" placeholder="John">
+            </div>
+
+            <!--GENDER-->
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select class="form-control" value.bind="userData.spouse.gender" id="gender">
+                    <option data-hidden="true">Please Select</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                </select>
+            </div>
+        
+            <!--DATE OF BIRTH -->
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="text" value.bind="userData.spouse.dateOfBirth" class="form-control" id="dob" placeholder="01/01/1970">
+            </div>
+
+            <!--EMPLOYMENT STATUS-->
+            <div class="form-group">
+                <label for="empStatus">Employment Status</label>
+                <select class="form-control" value.bind="userData.spouse.employmentStatus" id="empStatusSpouse">
+                    <option data-hidden="true">Please Select</option>
+                    <option>Employed</option>
+                    <option>Business Owner</option>
+                    <option>Retired</option>
+                    <option>Not Currently Employed</option>
+                </select>
+            </div>
+
+            <!--SALARY-->
+            <div class="form-group" id="salarySpouse">
+                <label for="salary">Salary</label>
+                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                    <div class="input-group-addon">$</div>
+                    <input type="text" value.bind="userData.spouse.salary" class="form-control" id="inlineFormInputGroup" placeholder="0">
+                </div>
+                <button type="button" id="wagehistory" click.delegate="wagehistory()">?</button>
+            </div>
+
+            <br>
+            <hr />
+            
+            <!--RETIREMENT INFORMATION-->
+            <h1>Retirement Information</h1>
+
+            <!--RETIREMENT INCOME-->
+            <div class="form-group">
+                <label for="retirementIncome">Retirement Income</label>
+                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                <div class="input-group-addon">$</div>
+                    <input type="text" value.bind="userData.spouse.retirementIncome" class="form-control" id="retirementIncome" placeholder="0">
+                </div>
+            </div>
+
+            <!--SLIDER FOR RETIREMENT AGE AND LIFE EXPECTANCY-->
+            <input type="text" id="sliderSpouse" value="" style="position: relative; height: 80px">
+        </div>
+
+        <br> <br>
+
+        <!--CLICK NEXT TO GO TO NEXT PAGE AND SUBMIT INFO-->
+        <button type="submit" id="next">Next</button>
+    </form>
+
+</template>

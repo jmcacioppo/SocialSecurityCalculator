@@ -1,0 +1,31 @@
+#persinfointro {
+    text-align: center;
+    width: 1000px;
+    margin: 0 auto;
+}
+
+#persinfo, #benefits, #results, #wagehistory, #exceptions {
+    text-align: center;
+    width: 375px;
+    margin: 0 auto;
+}
+
+#custom-handle {
+    width: 3em;
+    height: 1.6em;
+    top: 50%;
+    margin-top: -.8em;
+    text-align: center;
+    line-height: 1.6em;
+  }
+
+ .toggle input[type="checkbox"] {
+     display: none;
+     margin: 4px 0 0;
+     line-height: normal;
+ }
+
+.range-slider {
+    position: relative;
+    height: 80px;
+}
