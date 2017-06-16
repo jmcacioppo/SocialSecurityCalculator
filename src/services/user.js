@@ -16,6 +16,8 @@ export class User {
         this.wages = [];
 
         this.maritalStatus = "";
+        this.divorceCheck = false;
+
         this.numOfDependents = 0;
         this.ageOfDependent = [];
         this.retirementIncome = 0;

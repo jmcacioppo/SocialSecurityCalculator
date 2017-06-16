@@ -79,32 +79,25 @@
             </div>
 
             <!--CHECK IF DIVORCED FOR 10+ YEARS-->
-            <div id="divorceCheck">
+            <div id="divorced">
                 <label for="divorceCheck">Have you been divorced for more than 10 years?</label>
                 <br>
-
-                <input type="checkbox" checked data-toggle="toggle">
+                <input type="checkbox" checked.bind="userData.client.divorceCheck" data-toggle="toggle" id="divorceCheck">
             </div>
             
             <br>
 
             <!--NUMBER OF DEPENDENTS-->
-            <div class="form-group">
-                <label for="numOfDependents">Number of Dependents:</label>
-                <select class="form-control" value.bind="userData.client.numOfDependents" id="numOfDependents">
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </select>
+            <div class="form-group" id="numOfDependent">
+                <label for="numOfDependent">Number of Dependent(s):</label>
+                <input type="text" value.bind="userData.client.numOfDependent" id="numOfDependentsCheck" class="form-control" placeholder="2">
             </div>
             
             <!--AGE OF EACH DEPENDENT-->
             <div class="form-group" id="ageOfDependent">
                 <label for="ageOfDependent">Age of Dependent(s):</label>
-                <input type="text" value.bind="userData.client.ageOfDependent[0]" class="form-control" placeholder="10">
+                <div id="ageOfDep"></div>
+                <!--<input type="text" value.bind="userData.client.ageOfDependent[0]" class="form-control" placeholder="10">-->
             </div>
 
             <br> 
