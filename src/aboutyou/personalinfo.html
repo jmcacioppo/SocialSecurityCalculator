@@ -47,7 +47,7 @@
             <!--EMPLOYMENT STATUS-->
             <div class="form-group">
                 <label for="empStatus">Employment Status</label>
-                <select class="form-control" value.bind="userData.client.employmentStatus" id="empStatus">
+                <select class="form-control" value.bind="userData.client.employmentStatus" change.delegate="checkEmployment(userData.client.employmentStatus)" id="empStatus">
                     <option data-hidden="true">Please Select</option>
                     <option>Employed</option>
                     <option>Business Owner</option>
@@ -57,7 +57,7 @@
             </div>
 
             <!--SALARY-->
-            <div class="form-group" id="salary">
+            <div show.bind="userData.client.isEmployed" class="form-group">
                 <label for="salary">Salary</label>
                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                     <div class="input-group-addon">$</div>
@@ -69,7 +69,7 @@
             <!--MARITAL STATUS-->
             <div class="form-group">
                 <label for="maritalStatus">Marital Status</label>
-                <select class="form-control" value.bind="userData.client.maritalStatus" id="maritalStatus">
+                <select class="form-control" value.bind="userData.client.maritalStatus" change.delegate="checkMarried(userData.client.maritalStatus)" id="maritalStatus">
                     <option data-hidden="true">Please Select</option>                
                     <option>Single</option>
                     <option>Married</option>
@@ -106,7 +106,7 @@
 
 
         <!--CO-CLIENT INFORMATION-->
-        <div id="spouse">
+        <div show.bind="userData.client.isMarried">
             <br> <br> <br>
             <h3>Co-Client</h3>
 

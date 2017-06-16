@@ -19,6 +19,28 @@ export class personalinfo {
         this.router = router;
     }
 
+    checkMarried(value) {
+        if(value == "Married") {
+            this.userData.client.isMarried = true;
+            this.userData.client.isDivorced = false;
+        }
+        else if(value == "Divorced") {
+            this.userData.client.isDivorced = true;
+            this.userData.client.isMarried = false;
+        }
+        else {
+            this.userData.client.isMarried = false;
+            this.userData.client.isDivorced = false;
+        }
+    }
+
+    checkEmployment(value) {
+        if(value == "Employed" || value == "Business Owner") {
+            this.userData.client.isEmployed = true;
+        }
+        else this.userData.client.isEmployed = false;
+    }
+
     calculate() {
         function getAge(person) {
             var dob = person.dateOfBirth;
