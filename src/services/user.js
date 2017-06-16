@@ -1,13 +1,15 @@
 export class User {
      constructor() {
         // Social Security Values
-        this.baseSS = 0;
+        this.ssBase = 0;
+        this.pia = 0;
        
         // Personal Info
         this.name = "";
         this.gender = "";
         this.dateOfBirth = "";
         this.age = 0;
+        this.yearOfBirth = 0;
         this.employmentStatus = "";
 
         this.salary = 0;
