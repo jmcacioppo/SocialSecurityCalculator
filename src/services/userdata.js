@@ -6,5 +6,6 @@ export class UserData {
     constructor() {
         this.client = new User();
         this.spouse = new User();
+        this.deceased = new User();
     }
 }
