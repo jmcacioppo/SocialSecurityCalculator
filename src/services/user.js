@@ -10,6 +10,7 @@ export class User {
         this.gender = "";
         this.dateOfBirth = "";
 
+        // Age Info
         this.age = 0;
         this.ageFrom18 = 0;
         this.yearOfBirth = 0;
@@ -19,6 +20,7 @@ export class User {
         this.yearFRA = 0;
         this.monthFRA = 0;
 
+        // Employment and Salary Info
         this.employmentStatus = "";
         this.isEmployed = false;
         this.salary = 0;
@@ -27,30 +29,35 @@ export class User {
         this.topThirtyFive = [];
         this.wages = [];
 
+        // Marital Status Info
         this.maritalStatus = "";
         this.isMarried = false;
         this.isDivorced = false;
         this.divorceCheck = false;
         this.isSurvivor = false;
 
+        // Dependent Info
         this.numOfDeps = 0;
         this.ageOfDeps = [];
         this.showAgeOfDeps = false;
+
+        // Retirement Info
         this.retirementIncome = 0;
         this.retirementAge = 65;
         this.lifeExpectancy = 91;
 
         //EXCEPTIONS
+        //Military Info
         this.militaryService = false;
         this.beganService = "";
         this.endService = "";
 
-        this.workedOnAFarm = false;
-        this.farmMoney = false;
+        this.beginMonth = 0;
+        this.beginYear = 0;
+        this.endMonth = 0;
+        this.endYear = 0;
 
-        this.workedInAHousehold = false;
-        this.householdMoney = false;
-
+        //Railroad Info
         this.workedOnARailroad = false;
         this.yearsWorkedOnRailroad = 0;
 
