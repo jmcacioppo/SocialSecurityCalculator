@@ -70,7 +70,7 @@
                     <input type="text" value.bind="clientPensionAmount" class="form-control" id="clientPensionAmount" placeholder="2000">
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="clientCitizenshipBox">
                 <label for="clientCitizenship">Citizenship</label>
                 <select class="form-control" value.bind="clientCitizenship" id="clientCitizenship">
                     <option data-hidden="true">Please Select</option>
@@ -80,10 +80,28 @@
                 </select>
             </div>
 
-            <div class="form-group" id="clientWorkInstrumentality">
+            <div class="form-group" id="clientInstrumentalityBox">
                 <label for="clientInstrumentality">Do you work for an Instrumentality?</label>
                 <br>
                 <input type="checkbox" id="clientInstrumentality" checked.bind="clientInstrumentality" data-toggle="toggle">
+            </div>
+            
+            <div class="form-group" id="clientOneOrTwoBox">
+                <label for="clientOneOrTwo">Do all 3 of these conditions apply?</label>
+                <br>
+                <input type="checkbox" id="clientOneOrTwo" checked.bind="clientOneOrTwo" data-toggle="toggle">
+            </div>
+
+            <div class="form-group" id="client26CountriesBox">
+                <label for="client26Countries">Is your dual citizenship with one of these 26 coutnries?</label>
+                <br>
+                <input type="checkbox" id="client26Countries" checked.bind="client26Countries" data-toggle="toggle">
+            </div>
+
+            <div class="form-group" id="clientCanadaItalyBox">
+                <label for="clientCanadaItaly">Is your dual citizenship with Italy or Canada (provided you were hired in the US by the Canadian government)?</label>
+                <br>
+                <input type="checkbox" id="clientCanadaItaly" checked.bind="clientCanadaItaly" data-toggle="toggle">
             </div>
             
         </div>
