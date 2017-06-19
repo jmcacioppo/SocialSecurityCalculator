@@ -41,7 +41,7 @@
             <!--DATE OF BIRTH-->
             <div class="form-group">
                 <label for="dob">Date of Birth</label>
-                <input type="text" value.bind="userData.client.dateOfBirth" class="form-control" id="dob" placeholder="01/01/1970">
+                <input type="text" value.bind="userData.client.dateOfBirth" change.delegate="dob(userData.client.dateOfBirth)" class="form-control" id="dob" placeholder="01/01/1970">
             </div>
 
             <!--EMPLOYMENT STATUS-->
@@ -79,10 +79,27 @@
             </div>
 
             <!--CHECK IF DIVORCED FOR 10+ YEARS-->
-            <div id="divorced">
+            <div show.bind="userData.client.isDivorced">
                 <label for="divorceCheck">Have you been divorced for more than 10 years?</label>
                 <br>
                 <input type="checkbox" checked.bind="userData.client.divorceCheck" data-toggle="toggle" id="divorceCheck">
+            </div>
+
+            <!--NUMBER OF DEPENDENTS-->
+            <div class="form-group">
+                <label for="numOfDeps">Number of Dependents</label>
+                <input type="text" value.bind="userData.client.numOfDeps" change.delegate="checkNumOfDeps(userData.client.numOfDeps)" class="form-control" id="numOfDeps">
+            </div>
+
+            <!--AGE OF DEPENDENTS-->
+            <div show.bind="showAgeOfDeps" class="form-group">
+                <label for="ageOfDeps">Age of Dependents:</label>
+                <div class="input-group mb-2 mr-sm-2 mb-sm-0" id="ageOfDep">
+                    <div repeat.for="num of userData.client.numOfDeps">
+                        <label for="ageOfDep">Age of Dependent ${num}</label>
+                        <input type="text" value.bind="userData.client.ageOfDeps[num]" class="form-control" id="inlineFormInputGroup" placeholder="0">
+                    </div>
+                </div>
             </div>
 
             <hr />
@@ -129,13 +146,13 @@
             <!--DATE OF BIRTH -->
             <div class="form-group">
                 <label for="dob">Date of Birth</label>
-                <input type="text" value.bind="userData.spouse.dateOfBirth" class="form-control" id="dob" placeholder="01/01/1970">
+                <input type="text" value.bind="userData.spouse.dateOfBirth" change.delegate="spousedob(userData.spouse.dateOfBirth)" class="form-control" id="dob" placeholder="01/01/1970">
             </div>
 
             <!--EMPLOYMENT STATUS-->
             <div class="form-group">
                 <label for="empStatus">Employment Status</label>
-                <select class="form-control" value.bind="userData.spouse.employmentStatus" id="empStatusSpouse">
+                <select class="form-control" value.bind="userData.spouse.employmentStatus" change.delegate="checkEmploymentSpouse(userData.spouse.employmentStatus)" id="empStatusSpouse">
                     <option data-hidden="true">Please Select</option>
                     <option>Employed</option>
                     <option>Business Owner</option>
@@ -145,7 +162,7 @@
             </div>
 
             <!--SALARY-->
-            <div class="form-group" id="salarySpouse">
+            <div show.bind="userData.spouse.isEmployed" class="form-group">
                 <label for="salary">Salary</label>
                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                     <div class="input-group-addon">$</div>
@@ -178,14 +195,4 @@
         <!--CLICK NEXT TO GO TO NEXT PAGE AND SUBMIT INFO-->
         <button type="submit" id="next">Next</button>
     </form>
-
-    <br> <br>
-
-    <!--<div class="form-group" id="persinfo">
-        <div id="dependents">
-            <button id="addDep">Add Dependent(s)</button>
-        </div>
-        <button click.delegate="check()">Click</button>
-    </div>-->
-
 </template>

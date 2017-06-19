@@ -11,12 +11,14 @@
         <br> <br>
 
         <!--MANUALLY SUBMIT WAGE HISTORY-->
-        <form id="wageHist" submit.delegate="completeWages()">
+        <form show.bind="userData.client.showWages" submit.delegate="completeWages()">
             <div class="form-group">
                 <label for="wagehistory">Wages:</label>
                 <div class="input-group mb-2 mr-sm-2 mb-sm-0" id="wages">
-                    <!--<div class="input-group-addon">$</div>-->
-                    <!--<input type="text" value.bind="userData.client.wages[0]" class="form-control" id="inlineFormInputGroup" placeholder="0">-->
+                    <div repeat.for="age of userData.client.ageFrom18">
+                        <label for="year">${userData.client.yearOfBirth + 18 + age}</label>
+                        <input type="text" value.bind="userData.client.wages[age]" class="form-control" id="inlineFormInputGroup" placeholder="0">
+                    </div>
                 </div>
             </div>
             <button type="submit">Submit Wages</button>

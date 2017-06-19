@@ -19,6 +19,46 @@ export class personalinfo {
         this.router = router;
     }
 
+    dob(value) {
+        var dob = value;
+        var date = moment(dob, 'M/D/YYYY');
+        var yearOfBirth = date.format('YYYY');
+        var currentYear = moment().format('YYYY');
+        
+        if(!((dob.indexOf(date.format('MM/DD/YYYY')) >= 0) || (dob.indexOf(date.format('M/DD/YYYY')) >= 0)
+            || (dob.indexOf(date.format('MM/D/YYYY')) >= 0) || (dob.indexOf(date.format('M/D/YYYY')) >= 0))
+            || !date.isValid() || yearOfBirth > currentYear) {
+                alert('Invalid Date of Birth');
+                return;
+            }
+        else {
+            this.userData.client.age = moment().diff(dob, 'years');
+            this.userData.client.yearOfBirth = parseInt(yearOfBirth);
+            this.userData.client.currentYear = parseInt(currentYear);
+            this.userData.client.ageFrom18 = this.userData.client.age - 18;
+        }
+    }
+
+    spousedob(value) {
+        var dob = value;
+        var date = moment(dob, 'M/D/YYYY');
+        var yearOfBirth = date.format('YYYY');
+        var currentYear = moment().format('YYYY');
+        
+        if(!((dob.indexOf(date.format('MM/DD/YYYY')) >= 0) || (dob.indexOf(date.format('M/DD/YYYY')) >= 0)
+            || (dob.indexOf(date.format('MM/D/YYYY')) >= 0) || (dob.indexOf(date.format('M/D/YYYY')) >= 0))
+            || !date.isValid() || yearOfBirth > currentYear) {
+                alert('Invalid Date of Birth');
+                return;
+            }
+        else {
+            this.userData.spouse.age = moment().diff(dob, 'years');
+            this.userData.spouse.yearOfBirth = parseInt(yearOfBirth);
+            this.userData.spouse.currentYear = parseInt(currentYear);
+            this.userData.spouse.ageFrom18 = this.userData.spouse.age - 18;
+        }
+    }
+
     checkMarried(value) {
         if(value == "Married") {
             this.userData.client.isMarried = true;
@@ -41,26 +81,19 @@ export class personalinfo {
         else this.userData.client.isEmployed = false;
     }
 
-    calculate() {
-        function getAge(person) {
-            var dob = person.dateOfBirth;
-            var date = moment(dob, 'M/D/YYYY');
-            var yearOfBirth = date.format('YYYY');
-            var currentYear = moment().format('YYYY');
-            
-            if(!((dob.indexOf(date.format('MM/DD/YYYY')) >= 0) || (dob.indexOf(date.format('M/DD/YYYY')) >= 0)
-                || (dob.indexOf(date.format('MM/D/YYYY')) >= 0) || (dob.indexOf(date.format('M/D/YYYY')) >= 0))
-                || !date.isValid() || yearOfBirth > currentYear) {
-                    alert('Invalid Date of Birth');
-                    return;
-                }
-            else {
-                person.age = moment().diff(dob, 'years');
-                person.yearOfBirth = yearOfBirth;
-                person.currentYear = currentYear;
-            }
+    checkEmploymentSpouse(value) {
+        if(value == "Employed" || value == "Business Owner") {
+            this.userData.spouse.isEmployed = true;
         }
-        
+        else this.userData.spouse.isEmployed = false;
+    }
+
+    checkNumOfDeps(value) {
+        if(value > 0) this.userData.client.showAgeOfDeps = true;
+        else this.userData.client.showAgeOfDeps = false;
+    }
+
+    calculate() {
         function calculatePIA(person) {
             //GET ALL USER DATA            
             var empStatus = person.employmentStatus;
@@ -68,9 +101,6 @@ export class personalinfo {
             var retirementAge = person.retirementAge;
             //NEW VARIABLES
             var pia, ageFrom18, yrsUntilRetire;
-            var projectedSal = [];
-            var inflationAdjusted = [];
-            var topThirtyFive = [];
 
             //MAKE SURE EVERYTHING IS INPUTTED
             // if(!name || !gender || !dob || !empStatus ||
@@ -81,47 +111,47 @@ export class personalinfo {
             //         return;
             // }
 
-            //COMPUTE AGE OF PERSON
-            getAge(person);
-            ageFrom18 = person.age - 18;
-            yrsUntilRetire = retirementAge - person.age;
-            
+            //GET AGE OF PERSON
+            ageFrom18 = person.ageFrom18;
+            yrsUntilRetire = person.retirementAge - person.age;
+
             //COMPUTES PROJECTED SALARY 
             if(ageFrom18 >= 0) {
-                projectedSal[ageFrom18-1] = parseInt(sal); //Current salary
+                person.projectedSal[ageFrom18-1] = parseInt(sal); //Current salary
                 for(var i = ageFrom18 - 2; i >= 0; i--) { //Loop through each wage percentage backwards so we go from current salary
-                    projectedSal[i] = projectedSal[i+1] - (projectedSal[i+1] * wagePerc[i+1]); //Calculate projected salary
+                    person.projectedSal[i] = person.projectedSal[i+1] - (person.projectedSal[i+1] * wagePerc[wagePerc.length-i-3]); //Calculate projected salary
                 }
                 for(var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) { //Loop through each wage percentage backwards so we go from current salary
-                    projectedSal[i] = parseFloat(projectedSal[i-1]) + (parseFloat(projectedSal[i-1]) * wagePerc[wagePerc.length-1]); //Calculate projected salary
+                    person.projectedSal[i] = parseFloat(person.projectedSal[i-1]) + (parseFloat(person.projectedSal[i-1]) * wagePerc[wagePerc.length-1]); //Calculate projected salary
                 }
 
                 //COMPUTES SALARY ADJUSTED FOR INFLATION
                 for(var i = ageFrom18-1; i >= 0; i--) {
-                    if(projectedSal[i] > allowedSalary[inflationIndex.length-(ageFrom18-i)-1]) { //Check allowed salary and calculate adjusted inflation accordingly
-                        inflationAdjusted[i] = allowedSalary[inflationIndex.length-(ageFrom18-i)-1] * inflationIndex[inflationIndex.length-(ageFrom18-i)-1];
+                    if(person.projectedSal[i] > allowedSalary[inflationIndex.length-(ageFrom18-i)-1]) { //Check allowed salary and calculate adjusted inflation accordingly
+                        person.inflationAdjusted[i] = allowedSalary[inflationIndex.length-(ageFrom18-i)-1] * inflationIndex[inflationIndex.length-(ageFrom18-i)-1];
                     }
                     else {
-                        inflationAdjusted[i] = projectedSal[i] * inflationIndex[inflationIndex.length-(ageFrom18-i)-1];
+                        person.inflationAdjusted[i] = person.projectedSal[i] * inflationIndex[inflationIndex.length-(ageFrom18-i)-1];
                     }
                 }
+
+                var lastYearAllowed = allowedSalary[allowedSalary.length-1];
                 for(var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
-                    if(projectedSal[i] > allowedSalary[i]) { //Check allowed salary and calculate adjusted inflation accordingly
-                        var lastYearAllowed = allowedSalary[allowedSalary.length-1];
-                        inflationAdjusted[i] = lastYearAllowed * inflationIndex[inflationIndex.length-1];
+                    if(person.projectedSal[i] > allowedSalary[i]) { //Check allowed salary and calculate adjusted inflation accordingly
+                        person.inflationAdjusted[i] = lastYearAllowed * inflationIndex[inflationIndex.length-1];
                         lastYearAllowed = lastYearAllowed * 1.021;
-                }
+                    }
                     else {
-                        inflationAdjusted[i] = projectedSal[i] * inflationIndex[inflationIndex.length-1];
+                        person.inflationAdjusted[i] = person.projectedSal[i] * inflationIndex[inflationIndex.length-1];
                     }
                 }
 
                 //SORT AND GET TOP 35 ADJUSTED INFLATION SALARIES
-                inflationAdjusted = inflationAdjusted.sort((a, b) => a - b); 
-                topThirtyFive = inflationAdjusted.slice(inflationAdjusted.length - 35, inflationAdjusted.length); 
+                person.inflationAdjusted = person.inflationAdjusted.sort((a, b) => a - b); 
+                person.topThirtyFive = person.inflationAdjusted.slice(person.inflationAdjusted.length - 35, person.inflationAdjusted.length); 
 
                 //PRIMARY INSURANCE AMOUNT
-                pia = topThirtyFive.reduce((a, b) => a + b, 0) / 420;
+                pia = person.topThirtyFive.reduce((a, b) => a + b, 0) / 420;
                 person.pia = pia; 
                 return pia;
             }
@@ -189,14 +219,6 @@ export class personalinfo {
 
         //TOGGLE SWITCH
         $('#toggle').bootstrapToggle();
-        
-        //SHOW SALARY IF CLIENT IS EMPLOYED
-        $('#salary').hide();
-        $("#empStatus").change(function() { 
-            var val = $(this).val();
-            if(val == "Employed" || val == "Business Owner") $('#salary').show();
-            else $('#salary').hide();
-        });
 
         //SALARY FOR SPOUSE
         $('#salarySpouse').hide();
@@ -205,38 +227,5 @@ export class personalinfo {
             if(val == "Employed" || val == "Business Owner") $('#salarySpouse').show();
             else $('#salarySpouse').hide();
         });
-
-        //CHECK FOR DIVORCE OR MARRIED CLIENT
-        $('#divorced').hide();
-        $('#spouse').hide();
-        $("#maritalStatus").change(function() { 
-            var val = $(this).val();
-            if(val == "Divorced") {
-                $('#divorced').show();
-                $("#divorceCheck").change(function() { 
-                    var val = $(this).is(':checked');
-                    if(val == true) console.log("Divorced for more than 10");
-                    else console.log("Not divorced for more than 10");
-                });
-            }
-            else $('#divorced').hide();
-
-            if(val == "Married") $('#spouse').show();
-            else $('#spouse').hide();
-        });
-
-        //CHECK THE NUMBER OF DEPENDENTS AND ADD APPROPRIATE AMOUNT OF THEM
-        // var count = 0;
-        // $('#addDep').on('click', function() {
-        //     $('#dependents').append('<div id="remove ' + (count+1) + '"><br><label>Dependent ' + (count + 1) + ':</label><input type="text" value.bind="userData.client.ageOfDependent[' + count +
-        //          ']" id="added" class="form-control" placeholder="10">' + 
-        //          '<button id="remDep">Remove</button></div>');
-        //     count += 1; 
-        // });
-
-        // $('#dependents').on('click', '#remDep', function() {
-        //     $(this).parent().remove();
-        //     count -= 1;
-        // });
     }
 }
