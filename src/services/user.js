@@ -59,7 +59,9 @@ export class User {
 
         //Railroad Info
         this.workedOnARailroad = false;
-        this.yearsWorkedOnRailroad = 0;
+        this.yearsStartedOnRailroad = 0;
+        this.yearsEndedOnRailroad = 0;
+        this.yearsOnRailroad = [];
 
         this.recievePension = false;
         this.pensionAmount = 0;
@@ -80,7 +82,6 @@ export class User {
         //Benefits
         this.eligibleSS = false;
         this.cola = 2.5;
-        this.widowerIncome = 0;
         this.wep = false;
         this.yrsOfSubEarnings = 0;
 

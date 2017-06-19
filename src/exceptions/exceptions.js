@@ -24,13 +24,37 @@ export class exceptions {
 
     calculate() {
         function militarySalary(person, sal) {
+            if(person.beginYear >= 1940 && person.endYear <= 1967) {
+
+            }
+            else if(person.beginYear >= 1967 && person.endYear <= 2001) {
+
+            }
+        }
+
+        function railroadSalary(person, sal) {
+            var start = person.yearsStartedOnRailroad;
+            var end = person.yearsEndedOnRailroad;
+            var difference = end - start;
+            if(difference >= 10 || (difference >= 5 && start >= 1995)) {
+                var i = 0;
+                while(start < end) {
+                    person.yearsOnRailroad[i] = start;
+                    i++;
+                    start++;
+                }
+            }
+        }
+
+        function GPO(person) {
+            var pension = person.pensionAmount * 2/3;
 
         }
         
         function calculatePIA(person, widowcheck) {
             //GET ALL USER DATA            
             var empStatus = person.employmentStatus;
-            var sal = person.salary;
+            var sal = parseInt(person.salary);
             var retirementAge = person.retirementAge;
             //NEW VARIABLES
             var pia, ageFrom18, yrsUntilRetire;
@@ -40,13 +64,18 @@ export class exceptions {
             yrsUntilRetire = person.retirementAge - person.age;
 
             //INCLUDE EXCEPTIONS
-            if(person.militaryService) {
-                militarySalary(person, sal);
-            }
+            // if(person.militaryService) {
+            //     militarySalary(person, sal);
+            // }
+            // if(person.workedOnARailroad) {
+            //     railroadSalary(person, sal);
+            // }
+
+            sal = parseInt(person.salary);
 
             //COMPUTES PROJECTED SALARY 
             if(ageFrom18 >= 0) {
-                person.projectedSal[ageFrom18-1] = parseInt(sal); //Current salary
+                person.projectedSal[ageFrom18-1] = sal; //Current salary
                 for(var i = ageFrom18 - 2; i >= 0; i--) { //Loop through each wage percentage backwards so we go from current salary
                     person.projectedSal[i] = person.projectedSal[i+1] - (person.projectedSal[i+1] * wagePerc[wagePerc.length-i-3]); //Calculate projected salary
                 }
@@ -347,8 +376,7 @@ export class exceptions {
         if(value == true) alert("You are not eligible for Social Security");
     }
 
-    attached() {
-
+    back() {
+        this.router.navigate('#/personalinfo');
     }
-    
 }
