@@ -23,6 +23,10 @@ export class exceptions {
     }
 
     calculate() {
+        function militarySalary(person, sal) {
+
+        }
+        
         function calculatePIA(person, widowcheck) {
             //GET ALL USER DATA            
             var empStatus = person.employmentStatus;
@@ -34,6 +38,11 @@ export class exceptions {
             //GET AGE OF PERSON
             ageFrom18 = person.ageFrom18;
             yrsUntilRetire = person.retirementAge - person.age;
+
+            //INCLUDE EXCEPTIONS
+            if(person.militaryService) {
+                militarySalary(person, sal);
+            }
 
             //COMPUTES PROJECTED SALARY 
             if(ageFrom18 >= 0) {
@@ -230,6 +239,74 @@ export class exceptions {
         console.log(this.userData);
         //GO TO BENEFITS
         this.router.navigate('#/benefits');
+    }
+
+    beganService(date) {
+        var beganService = moment(date, 'M/D/YYYY');
+        var currentYear = moment().format('YYYY');
+        var beginYear = beganService.format('YYYY');
+        
+        if(!((date.indexOf(beganService.format('MM/DD/YYYY')) >= 0) || (date.indexOf(beganService.format('M/DD/YYYY')) >= 0)
+            || (date.indexOf(beganService.format('MM/D/YYYY')) >= 0) || (date.indexOf(beganService.format('M/D/YYYY')) >= 0))
+            || !beganService.isValid() || beginYear > currentYear) {
+                alert('Invalid Year');
+                return;
+            }
+        else {
+            this.userData.client.beginYear = beginYear;
+            this.userData.client.beginMonth = beganService.month();
+        }
+    }
+
+    endService(date) {
+        var endService = moment(date, 'M/D/YYYY');
+        var currentYear = moment().format('YYYY');
+        var endYear = endService.format('YYYY');
+        
+        if(!((date.indexOf(endService.format('MM/DD/YYYY')) >= 0) || (date.indexOf(endService.format('M/DD/YYYY')) >= 0)
+            || (date.indexOf(endService.format('MM/D/YYYY')) >= 0) || (date.indexOf(endService.format('M/D/YYYY')) >= 0))
+            || !endService.isValid() || endYear > currentYear) {
+                alert('Invalid Year');
+                return;
+            }
+        else {
+            this.userData.client.endYear = endYear;
+            this.userData.client.endMonth = endService.month();
+        }
+    }
+
+    beganServiceSpouse(date) {
+        var beganService = moment(date, 'M/D/YYYY');
+        var currentYear = moment().format('YYYY');
+        var beginYear = beganService.format('YYYY');
+        
+        if(!((date.indexOf(beganService.format('MM/DD/YYYY')) >= 0) || (date.indexOf(beganService.format('M/DD/YYYY')) >= 0)
+            || (date.indexOf(beganService.format('MM/D/YYYY')) >= 0) || (date.indexOf(beganService.format('M/D/YYYY')) >= 0))
+            || !beganService.isValid() || beginYear > currentYear) {
+                alert('Invalid Year');
+                return;
+            }
+        else {
+            this.userData.spouse.beginYear = beginYear;
+            this.userData.spouse.beginMonth = beganService.month();
+        }
+    }
+
+    endServiceSpouse(date) {
+        var endService = moment(date, 'M/D/YYYY');
+        var currentYear = moment().format('YYYY');
+        var endYear = endService.format('YYYY');
+        
+        if(!((date.indexOf(endService.format('MM/DD/YYYY')) >= 0) || (date.indexOf(endService.format('M/DD/YYYY')) >= 0)
+            || (date.indexOf(endService.format('MM/D/YYYY')) >= 0) || (date.indexOf(endService.format('M/D/YYYY')) >= 0))
+            || !endService.isValid() || endYear > currentYear) {
+                alert('Invalid Year');
+                return;
+            }
+        else {
+            this.userData.spouse.endYear = endYear;
+            this.userData.spouse.endMonth = endService.month();
+        }
     }
 
     checkCitizenship(value) {
