@@ -136,6 +136,7 @@ define('aboutyou/personalinfo',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
             var dob = value;
             var date = (0, _moment2.default)(dob, 'M/D/YYYY');
             var yearOfBirth = date.format('YYYY');
+            var monthOfBirth = date.month();
             var currentYear = (0, _moment2.default)().format('YYYY');
 
             if (!(dob.indexOf(date.format('MM/DD/YYYY')) >= 0 || dob.indexOf(date.format('M/DD/YYYY')) >= 0 || dob.indexOf(date.format('MM/D/YYYY')) >= 0 || dob.indexOf(date.format('M/D/YYYY')) >= 0) || !date.isValid() || yearOfBirth > currentYear) {
@@ -144,8 +145,78 @@ define('aboutyou/personalinfo',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
             } else {
                 this.userData.client.age = (0, _moment2.default)().diff(dob, 'years');
                 this.userData.client.yearOfBirth = parseInt(yearOfBirth);
+                this.userData.client.monthOfBirth = parseInt(monthOfBirth);
                 this.userData.client.currentYear = parseInt(currentYear);
                 this.userData.client.ageFrom18 = this.userData.client.age - 18;
+
+                if (yearOfBirth >= 1900 && yearOfBirth <= 1937) {
+                    this.userData.client.yearFRA = 65;
+                    this.userData.client.monthFRA = 0;
+                } else if (yearOfBirth == 1938) {
+                    this.userData.client.yearFRA = 65;
+                    this.userData.client.monthFRA = 2;
+                } else if (yearOfBirth == 1939) {
+                    this.userData.client.yearFRA = 65;
+                    this.userData.client.monthFRA = 4;
+                } else if (yearOfBirth == 1940) {
+                    this.userData.client.yearFRA = 65;
+                    this.userData.client.monthFRA = 6;
+                } else if (yearOfBirth == 1941) {
+                    this.userData.client.yearFRA = 65;
+                    this.userData.client.monthFRA = 8;
+                } else if (yearOfBirth == 1942) {
+                    this.userData.client.yearFRA = 65;
+                    this.userData.client.monthFRA = 10;
+                } else if (yearOfBirth >= 1943 && yearOfBirth <= 1954) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 0;
+                } else if (yearOfBirth == 1955) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 2;
+                } else if (yearOfBirth == 1956) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 4;
+                } else if (yearOfBirth == 1957) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 6;
+                } else if (yearOfBirth == 1958) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 8;
+                } else if (yearOfBirth == 1959) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 10;
+                } else {
+                    this.userData.client.yearFRA = 67;
+                    this.userData.client.monthFRA = 0;
+                }
+
+                if (this.userData.client.isSurvivor) {
+                    if (this.userData.client.yearOfBirth >= 1945 && this.userData.client.yearOfBirth <= 1956) {
+                        this.userData.client.yearFRA = 66;
+                        this.userData.client.monthFRA = 0;
+                    } else if (this.userData.client.yearOfBirth == 1957) {
+                        this.userData.client.yearFRA = 66;
+                        this.userData.client.monthFRA = 2;
+                    } else if (this.userData.client.yearOfBirth == 1958) {
+                        this.userData.client.yearFRA = 66;
+                        this.userData.client.monthFRA = 4;
+                    } else if (this.userData.client.yearOfBirth == 1959) {
+                        this.userData.client.yearFRA = 66;
+                        this.userData.client.monthFRA = 6;
+                    } else if (this.userData.client.yearOfBirth == 1960) {
+                        this.userData.client.yearFRA = 66;
+                        this.userData.client.monthFRA = 8;
+                    } else if (this.userData.client.yearOfBirth == 1961) {
+                        this.userData.client.yearFRA = 66;
+                        this.userData.client.monthFRA = 10;
+                    } else if (this.userData.client.yearOfBirth >= 1962 && this.userData.client.yearOfBirth <= 2000) {
+                        this.userData.client.yearFRA = 67;
+                        this.userData.client.monthFRA = 0;
+                    }
+                }
+
+                console.log(this.userData.client.yearFRA);
+                console.log(this.userData.client.monthFRA);
             }
         };
 
@@ -153,6 +224,7 @@ define('aboutyou/personalinfo',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
             var dob = value;
             var date = (0, _moment2.default)(dob, 'M/D/YYYY');
             var yearOfBirth = date.format('YYYY');
+            var monthOfBirth = date.month();
             var currentYear = (0, _moment2.default)().format('YYYY');
 
             if (!(dob.indexOf(date.format('MM/DD/YYYY')) >= 0 || dob.indexOf(date.format('M/DD/YYYY')) >= 0 || dob.indexOf(date.format('MM/D/YYYY')) >= 0 || dob.indexOf(date.format('M/D/YYYY')) >= 0) || !date.isValid() || yearOfBirth > currentYear) {
@@ -161,8 +233,68 @@ define('aboutyou/personalinfo',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
             } else {
                 this.userData.spouse.age = (0, _moment2.default)().diff(dob, 'years');
                 this.userData.spouse.yearOfBirth = parseInt(yearOfBirth);
+                this.userData.spouse.monthOfBirth = parseInt(monthOfBirth);
                 this.userData.spouse.currentYear = parseInt(currentYear);
                 this.userData.spouse.ageFrom18 = this.userData.spouse.age - 18;
+
+                if (yearOfBirth >= 1900 && yearOfBirth <= 1937) {
+                    this.userData.spouse.yearFRA = 65;
+                    this.userData.spouse.monthFRA = 0;
+                } else if (yearOfBirth == 1938) {
+                    this.userData.spouse.yearFRA = 65;
+                    this.userData.spouse.monthFRA = 2;
+                } else if (yearOfBirth == 1939) {
+                    this.userData.spouse.yearFRA = 65;
+                    this.userData.spouse.monthFRA = 4;
+                } else if (yearOfBirth == 1940) {
+                    this.userData.spouse.yearFRA = 65;
+                    this.userData.spouse.monthFRA = 6;
+                } else if (yearOfBirth == 1941) {
+                    this.userData.spouse.yearFRA = 65;
+                    this.userData.spouse.monthFRA = 8;
+                } else if (yearOfBirth == 1942) {
+                    this.userData.spouse.yearFRA = 65;
+                    this.userData.spouse.monthFRA = 10;
+                } else if (yearOfBirth >= 1943 && yearOfBirth <= 1954) {
+                    this.userData.spouse.yearFRA = 66;
+                    this.userData.spouse.monthFRA = 0;
+                } else if (yearOfBirth == 1955) {
+                    this.userData.spouse.yearFRA = 66;
+                    this.userData.spouse.monthFRA = 2;
+                } else if (yearOfBirth == 1956) {
+                    this.userData.spouse.yearFRA = 66;
+                    this.userData.spouse.monthFRA = 4;
+                } else if (yearOfBirth == 1957) {
+                    this.userData.spouse.yearFRA = 66;
+                    this.userData.spouse.monthFRA = 6;
+                } else if (yearOfBirth == 1958) {
+                    this.userData.spouse.yearFRA = 66;
+                    this.userData.spouse.monthFRA = 8;
+                } else if (yearOfBirth == 1959) {
+                    this.userData.spouse.yearFRA = 66;
+                    this.userData.spouse.monthFRA = 10;
+                } else {
+                    this.userData.spouse.yearFRA = 67;
+                    this.userData.spouse.monthFRA = 0;
+                }
+            }
+        };
+
+        personalinfo.prototype.deceaseddob = function deceaseddob(value) {
+            var dob = value;
+            var date = (0, _moment2.default)(dob, 'M/D/YYYY');
+            var yearOfBirth = date.format('YYYY');
+            var monthOfBirth = date.month();
+            var currentYear = (0, _moment2.default)().format('YYYY');
+
+            if (!(dob.indexOf(date.format('MM/DD/YYYY')) >= 0 || dob.indexOf(date.format('M/DD/YYYY')) >= 0 || dob.indexOf(date.format('MM/D/YYYY')) >= 0 || dob.indexOf(date.format('M/D/YYYY')) >= 0) || !date.isValid() || yearOfBirth > currentYear) {
+                alert('Invalid Date of Birth');
+                return;
+            } else {
+                this.userData.deceased.age = this.userData.deceased.yearOfPassing - parseInt(yearOfBirth);
+                this.userData.deceased.yearOfBirth = parseInt(yearOfBirth);
+                this.userData.deceased.monthOfBirth = parseInt(monthOfBirth);
+                this.userData.deceased.ageFrom18 = this.userData.deceased.age - 18;
             }
         };
 
@@ -170,12 +302,46 @@ define('aboutyou/personalinfo',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
             if (value == "Married") {
                 this.userData.client.isMarried = true;
                 this.userData.client.isDivorced = false;
+                this.userData.client.isSurvivor = false;
             } else if (value == "Divorced") {
                 this.userData.client.isDivorced = true;
                 this.userData.client.isMarried = false;
+                this.userData.client.isSurvivor = false;
+            } else if (value == "Widowed") {
+                this.userData.client.isSurvivor = true;
+                this.userData.client.isMarried = false;
+                this.userData.client.isDivorced = false;
+
+                if (this.userData.client.dateOfBirth) {
+                    if (this.userData.client.yearOfBirth >= 1945 && this.userData.client.yearOfBirth <= 1956) {
+                        this.userData.client.yearFRA = 66;
+                        this.userData.client.monthFRA = 0;
+                    } else if (this.userData.client.yearOfBirth == 1957) {
+                        this.userData.client.yearFRA = 66;
+                        this.userData.client.monthFRA = 2;
+                    } else if (this.userData.client.yearOfBirth == 1958) {
+                        this.userData.client.yearFRA = 66;
+                        this.userData.client.monthFRA = 4;
+                    } else if (this.userData.client.yearOfBirth == 1959) {
+                        this.userData.client.yearFRA = 66;
+                        this.userData.client.monthFRA = 6;
+                    } else if (this.userData.client.yearOfBirth == 1960) {
+                        this.userData.client.yearFRA = 66;
+                        this.userData.client.monthFRA = 8;
+                    } else if (this.userData.client.yearOfBirth == 1961) {
+                        this.userData.client.yearFRA = 66;
+                        this.userData.client.monthFRA = 10;
+                    } else if (this.userData.client.yearOfBirth >= 1962 && this.userData.client.yearOfBirth <= 2000) {
+                        this.userData.client.yearFRA = 67;
+                        this.userData.client.monthFRA = 0;
+                    }
+                }
+                console.log(this.userData.client.yearFRA);
+                console.log(this.userData.client.monthFRA);
             } else {
                 this.userData.client.isMarried = false;
                 this.userData.client.isDivorced = false;
+                this.userData.client.isSurvivor = false;
             }
         };
 
@@ -699,7 +865,7 @@ define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
         }
 
         exceptions.prototype.calculate = function calculate() {
-            function calculatePIA(person) {
+            function calculatePIA(person, widowcheck) {
                 var empStatus = person.employmentStatus;
                 var sal = person.salary;
                 var retirementAge = person.retirementAge;
@@ -714,8 +880,15 @@ define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
                     for (var i = ageFrom18 - 2; i >= 0; i--) {
                         person.projectedSal[i] = person.projectedSal[i + 1] - person.projectedSal[i + 1] * _constants.wagePerc[_constants.wagePerc.length - i - 3];
                     }
-                    for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
-                        person.projectedSal[i] = parseFloat(person.projectedSal[i - 1]) + parseFloat(person.projectedSal[i - 1]) * _constants.wagePerc[_constants.wagePerc.length - 1];
+
+                    if (!widowcheck) {
+                        for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+                            person.projectedSal[i] = parseFloat(person.projectedSal[i - 1]) + parseFloat(person.projectedSal[i - 1]) * _constants.wagePerc[_constants.wagePerc.length - 1];
+                        }
+                    } else {
+                        for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+                            person.projectedSal[i] = 0;
+                        }
                     }
 
                     for (var i = ageFrom18 - 1; i >= 0; i--) {
@@ -726,13 +899,19 @@ define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
                         }
                     }
 
-                    var lastYearAllowed = _constants.allowedSalary[_constants.allowedSalary.length - 1];
-                    for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
-                        if (person.projectedSal[i] > _constants.allowedSalary[i]) {
-                            person.inflationAdjusted[i] = lastYearAllowed * _constants.inflationIndex[_constants.inflationIndex.length - 1];
-                            lastYearAllowed = lastYearAllowed * 1.021;
-                        } else {
-                            person.inflationAdjusted[i] = person.projectedSal[i] * _constants.inflationIndex[_constants.inflationIndex.length - 1];
+                    if (!widowcheck) {
+                        var lastYearAllowed = _constants.allowedSalary[_constants.allowedSalary.length - 1];
+                        for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+                            if (person.projectedSal[i] > _constants.allowedSalary[i]) {
+                                person.inflationAdjusted[i] = lastYearAllowed * _constants.inflationIndex[_constants.inflationIndex.length - 1];
+                                lastYearAllowed = lastYearAllowed * 1.021;
+                            } else {
+                                person.inflationAdjusted[i] = person.projectedSal[i] * _constants.inflationIndex[_constants.inflationIndex.length - 1];
+                            }
+                        }
+                    } else {
+                        for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+                            person.inflationAdjusted[i] = 0;
                         }
                     }
 
@@ -745,6 +924,7 @@ define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
                         return a + b;
                     }, 0) / 420;
                     person.pia = pia;
+
                     return pia;
                 } else {
                     alert("Client must be older than 18.");
@@ -752,16 +932,57 @@ define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
                 }
             }
 
-            var maritalStatus = this.userData.client.maritalStatus;
+            function adjustSurvivorPIA(client, deceased) {
+                switch (client.yearOfBirth) {
+                    case 1957:
+                        switch (client.retirementAge) {
+                            case 60:
+                                client.survivorpia = deceased.pia * _constants.survivorFRA1957[0];
+                            case 60:
+                                client.survivorpia = deceased.pia * _constants.survivorFRA1957[0];
+                            case 60:
+                                client.survivorpia = deceased.pia * _constants.survivorFRA1957[0];
+                            case 60:
+                                client.survivorpia = deceased.pia * _constants.survivorFRA1957[0];
+                            case 60:
+                                client.survivorpia = deceased.pia * _constants.survivorFRA1957[0];
+                            case 60:
+                                client.survivorpia = deceased.pia * _constants.survivorFRA1957[0];
+                            case 60:
+                                client.survivorpia = deceased.pia * _constants.survivorFRA1957[0];
+                            case 60:
+                                client.survivorpia = deceased.pia * _constants.survivorFRA1957[0];
+                            case 60:
+                                client.survivorpia = deceased.pia * _constants.survivorFRA1957[0];
+                            case 60:
+                                client.survivorpia = deceased.pia * _constants.survivorFRA1957[0];
+                            case 60:
+                                client.survivorpia = deceased.pia * _constants.survivorFRA1957[0];
+                        }
+                }
+            }
 
-            if (calculatePIA(this.userData.client) == null) {
+            var maritalStatus = this.userData.client.maritalStatus;
+            var widowcheck = false;
+
+            if (calculatePIA(this.userData.client, widowcheck) == null) {
                 return;
             }
 
             if (maritalStatus == "Married") {
-                if (calculatePIA(this.userData.spouse) == null) {
+                if (calculatePIA(this.userData.spouse, widowcheck) == null) {
                     return;
                 }
+            } else if (maritalStatus = "Widowed") {
+                widowcheck = true;
+                if (calculatePIA(this.userData.deceased, widowcheck) == null) {
+                    return;
+                }
+                adjustSurvivorPIA(this.userData.client, this.userData.deceased);
+            }
+
+            if (this.userData.client.pia < this.userData.client.survivorpia) {
+                this.userData.client.pia = this.userData.client.survivorpia;
             }
 
             console.log(this.userData);
@@ -908,6 +1129,20 @@ define('src/services/constants.js',["exports"], function (exports) {
     var EL1959 = exports.EL1959 = [0.708, 0.758, 0.811, 0.878, 0.944, 1.024, 1.104, 1.184, 1.264];
 
     var EL1960plus = exports.EL1960plus = [0.7, 0.75, 0.8, 0.867, 0.933, 1, 1.08, 1.16, 1.24];
+
+    var survivorFRA1945to1956 = exports.survivorFRA1945to1956 = [0.71488, 0.7624, 0.80992, 0.85744, 0.90496, 0.95248, 1, 1, 1, 1, 1];
+
+    var survivorFRA1957 = exports.survivorFRA1957 = [0.7151, 0.7613, 0.8075, 0.8537, 0.8999, 0.9461, 0.9923, 1, 1, 1, 1];
+
+    var survivorFRA1958 = exports.survivorFRA1958 = [0.715, 0.76, 0.805, 0.85, 0.895, 0.94, 0.985, 1, 1, 1, 1];
+
+    var survivorFRA1959 = exports.survivorFRA1959 = [0.7153, 0.7591, 0.8029, 0.8467, 0.8905, 0.9343, 0.9781, 1, 1, 1, 1];
+
+    var survivorFRA1960 = exports.survivorFRA1960 = [0.7152, 0.75792, 0.80064, 0.84336, 0.88608, 0.9288, 0.97152, 1, 1, 1, 1];
+
+    var survivorFRA1961 = exports.survivorFRA1961 = [0.71464, 0.7564, 0.79816, 0.83992, 0.88168, 0.92344, 0.9652, 1, 1, 1, 1];
+
+    var survivorFRA1962to2000 = exports.survivorFRA1962to2000 = [0.71524, 0.75592, 0.7966, 0.83728, 0.87796, 0.91864, 0.95932, 1, 1, 1, 1];
 });
 define('services/user',["exports"], function (exports) {
         "use strict";
@@ -927,14 +1162,20 @@ define('services/user',["exports"], function (exports) {
 
                 this.ssBase = 0;
                 this.pia = 0;
+                this.survivorpia = 0;
 
                 this.name = "";
                 this.gender = "";
                 this.dateOfBirth = "";
+
                 this.age = 0;
                 this.ageFrom18 = 0;
                 this.yearOfBirth = 0;
+                this.monthOfBirth = 0;
                 this.currentYear = 0;
+                this.yearOfPassing = 0;
+                this.yearFRA = 0;
+                this.monthFRA = 0;
 
                 this.employmentStatus = "";
                 this.isEmployed = false;
@@ -948,6 +1189,7 @@ define('services/user',["exports"], function (exports) {
                 this.isMarried = false;
                 this.isDivorced = false;
                 this.divorceCheck = false;
+                this.isSurvivor = false;
 
                 this.numOfDeps = 0;
                 this.ageOfDeps = [];
@@ -1012,6 +1254,7 @@ define('services/userdata',['exports', 'aurelia-framework', '../services/user'],
 
         this.client = new _user.User();
         this.spouse = new _user.User();
+        this.deceased = new _user.User();
     }) || _class);
 });
 /*!
@@ -13771,9 +14014,9 @@ module.exports = function(Chart) {
 
 },{"1":1}]},{},[7])(7)
 });
-define('text!styles.css', ['module'], function(module) { module.exports = "#persinfointro {\r\n    text-align: center;\r\n    width: 1000px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#persinfo, #benefits, #results, #wagehistory, #exceptions, #spousewagehistory {\r\n    text-align: center;\r\n    width: 375px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#custom-handle {\r\n    width: 3em;\r\n    height: 1.6em;\r\n    top: 50%;\r\n    margin-top: -.8em;\r\n    text-align: center;\r\n    line-height: 1.6em;\r\n  }\r\n\r\n .toggle input[type=\"checkbox\"] {\r\n     display: none;\r\n     margin: 4px 0 0;\r\n     line-height: normal;\r\n }\r\n\r\n.range-slider {\r\n    position: relative;\r\n    height: 80px;\r\n}\r\n"; });
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\"><span class=\"sr-only\">Toggle navigation</span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span></button> <a class=\"navbar-brand\" href=\"#\">Social Security Calculator</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : ''}\"><a href.bind=\"row.href\">${row.title}</a></li></ul></div></div></nav><router-view></router-view></template>"; });
-define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\".././styles.css\"></require><require from=\"jquery-ui-dist/jquery-ui.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinModern.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><div id=\"persinfointro\"><h1>Personal Information</h1><p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p></div><form id=\"persinfo\" submit.delegate=\"next()\"><div id=\"client\"><h3>Client</h3><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.client.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.client.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><input type=\"text\" value.bind=\"userData.client.dateOfBirth\" change.delegate=\"dob(userData.client.dateOfBirth)\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.client.employmentStatus\" change.delegate=\"checkEmployment(userData.client.employmentStatus)\" id=\"empStatus\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div show.bind=\"userData.client.isEmployed\" class=\"form-group\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><button type=\"button\" id=\"wagehistory\" click.delegate=\"wagehistory()\">Input Your Own Wages</button></div><div class=\"form-group\"><label for=\"maritalStatus\">Marital Status</label><select class=\"form-control\" value.bind=\"userData.client.maritalStatus\" change.delegate=\"checkMarried(userData.client.maritalStatus)\" id=\"maritalStatus\"><option data-hidden=\"true\">Please Select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select></div><div show.bind=\"userData.client.isDivorced\"><label for=\"divorceCheck\">Have you been divorced for more than 10 years?</label><br><input type=\"checkbox\" checked.bind=\"userData.client.divorceCheck\" data-toggle=\"toggle\" id=\"divorceCheck\"></div><div class=\"form-group\"><label for=\"numOfDeps\">Number of Dependents</label><input type=\"text\" value.bind=\"userData.client.numOfDeps\" change.delegate=\"checkNumOfDeps(userData.client.numOfDeps)\" class=\"form-control\" id=\"numOfDeps\"></div><div show.bind=\"showAgeOfDeps\" class=\"form-group\"><label for=\"ageOfDeps\">Age of Dependents:</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\" id=\"ageOfDep\"><div repeat.for=\"num of userData.client.numOfDeps\"><label for=\"ageOfDep\">Age of Dependent ${num}</label><input type=\"text\" value.bind=\"userData.client.ageOfDeps[num]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div></div><hr><h1>Retirement Information</h1><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.retirementIncome\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><label for=\"retirementAge\">Retirement Age and Life Expectancy</label><input type=\"text\" id=\"slider\" value=\"\" style=\"position:relative;height:80px\"></div><div show.bind=\"userData.client.isMarried\"><br><br><br><h3>Co-Client</h3><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.spouse.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.spouse.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><input type=\"text\" value.bind=\"userData.spouse.dateOfBirth\" change.delegate=\"spousedob(userData.spouse.dateOfBirth)\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.spouse.employmentStatus\" change.delegate=\"checkEmploymentSpouse(userData.spouse.employmentStatus)\" id=\"empStatusSpouse\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div show.bind=\"userData.spouse.isEmployed\" class=\"form-group\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><button type=\"button\" id=\"spousewagehistory\" click.delegate=\"spousewagehistory()\">Input Your Own Wages</button></div><hr><h1>Retirement Information</h1><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.retirementIncome\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><label for=\"retirementAge\">Retirement Age and Life Expectancy</label><input type=\"text\" id=\"sliderSpouse\" value=\"\" style=\"position:relative;height:80px\"></div><br><br><button type=\"submit\" id=\"next\">Next</button></form></template>"; });
+define('text!styles.css', ['module'], function(module) { module.exports = "#persinfointro {\r\n    text-align: center;\r\n    width: 1000px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#persinfo, #benefits, #results, #wagehistory, #exceptions, #spousewagehistory {\r\n    text-align: center;\r\n    width: 375px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#custom-handle {\r\n    width: 3em;\r\n    height: 1.6em;\r\n    top: 50%;\r\n    margin-top: -.8em;\r\n    text-align: center;\r\n    line-height: 1.6em;\r\n  }\r\n\r\n .toggle input[type=\"checkbox\"] {\r\n     display: none;\r\n     margin: 4px 0 0;\r\n     line-height: normal;\r\n }\r\n\r\n.range-slider {\r\n    position: relative;\r\n    height: 80px;\r\n}\r\n"; });
+define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\".././styles.css\"></require><require from=\"jquery-ui-dist/jquery-ui.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinModern.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><div id=\"persinfointro\"><h1>Personal Information</h1><p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p></div><form id=\"persinfo\" submit.delegate=\"next()\"><div id=\"client\"><h3>Client</h3><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.client.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.client.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><input type=\"text\" value.bind=\"userData.client.dateOfBirth\" change.delegate=\"dob(userData.client.dateOfBirth)\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.client.employmentStatus\" change.delegate=\"checkEmployment(userData.client.employmentStatus)\" id=\"empStatus\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div show.bind=\"userData.client.isEmployed\" class=\"form-group\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><button type=\"button\" id=\"wagehistory\" click.delegate=\"wagehistory()\">Input Your Own Wages</button></div><div class=\"form-group\"><label for=\"maritalStatus\">Marital Status</label><select class=\"form-control\" value.bind=\"userData.client.maritalStatus\" change.delegate=\"checkMarried(userData.client.maritalStatus)\" id=\"maritalStatus\"><option data-hidden=\"true\">Please Select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select></div><div show.bind=\"userData.client.isDivorced\"><label for=\"divorceCheck\">Have you been divorced for more than 10 years?</label><br><input type=\"checkbox\" checked.bind=\"userData.client.divorceCheck\" data-toggle=\"toggle\" id=\"divorceCheck\"></div><div show.bind=\"userData.client.isSurvivor\"><div class=\"form-group\"><label for=\"salary\">Most Recent Salary of Deceased</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.deceased.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><button type=\"button\" id=\"wagehistory\" click.delegate=\"deceasedwagehistory()\">Input Your Own Wages</button></div><div class=\"form-group\"><label for=\"deceaseddob\">Date of Birth</label><input type=\"text\" value.bind=\"userData.deceased.dateOfBirth\" change.delegate=\"deceaseddob(userData.deceased.dateOfBirth)\" class=\"form-control\" id=\"deceaseddob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"dob\">Year of Passing</label><input type=\"text\" value.bind=\"userData.deceased.yearOfPassing\" change.delegate=\"deceaseddob(userData.deceased.dateOfBirth)\" class=\"form-control\" id=\"deceasedPassing\" placeholder=\"60\"></div></div><div class=\"form-group\"><label for=\"numOfDeps\">Number of Dependents</label><input type=\"text\" value.bind=\"userData.client.numOfDeps\" change.delegate=\"checkNumOfDeps(userData.client.numOfDeps)\" class=\"form-control\" id=\"numOfDeps\"></div><div show.bind=\"showAgeOfDeps\" class=\"form-group\"><label for=\"ageOfDeps\">Age of Dependents:</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\" id=\"ageOfDep\"><div repeat.for=\"num of userData.client.numOfDeps\"><label for=\"ageOfDep\">Age of Dependent ${num}</label><input type=\"text\" value.bind=\"userData.client.ageOfDeps[num]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div></div><hr><h1>Retirement Information</h1><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.retirementIncome\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><label for=\"retirementAge\">Retirement Age and Life Expectancy</label><input type=\"text\" id=\"slider\" value=\"\" style=\"position:relative;height:80px\"></div><div show.bind=\"userData.client.isMarried\"><br><br><br><h3>Co-Client</h3><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.spouse.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.spouse.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><input type=\"text\" value.bind=\"userData.spouse.dateOfBirth\" change.delegate=\"spousedob(userData.spouse.dateOfBirth)\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.spouse.employmentStatus\" change.delegate=\"checkEmploymentSpouse(userData.spouse.employmentStatus)\" id=\"empStatusSpouse\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div show.bind=\"userData.spouse.isEmployed\" class=\"form-group\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><button type=\"button\" id=\"spousewagehistory\" click.delegate=\"spousewagehistory()\">Input Your Own Wages</button></div><hr><h1>Retirement Information</h1><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.retirementIncome\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><label for=\"retirementAge\">Retirement Age and Life Expectancy</label><input type=\"text\" id=\"sliderSpouse\" value=\"\" style=\"position:relative;height:80px\"></div><br><br><button type=\"submit\" id=\"next\">Next</button></form></template>"; });
 define('text!aboutyou/spousewagehistory.html', ['module'], function(module) { module.exports = "<template><div id=\"wagehistory\"><h1>Co-Client's Wage History</h1><div id=\"wage\"><label for=\"spousewageCheck\">Click if you would like to input your own wages</label><br><button id=\"spousewageCheck\" click.delegate=\"showWages()\">Input My Wages</button></div><br><br><form show.bind=\"userData.spouse.showWages\" submit.delegate=\"completeWages()\"><div class=\"form-group\"><label for=\"spousewagehistory\">Wages:</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\" id=\"spousewages\"><div repeat.for=\"age of userData.spouse.ageFrom18\"><label for=\"year\">${userData.spouse.yearOfBirth + 18 + age}</label><input type=\"text\" value.bind=\"userData.spouse.wages[age]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div></div><button type=\"submit\">Submit Wages</button></form></div></template>"; });
 define('text!aboutyou/wagehistory.html', ['module'], function(module) { module.exports = "<template><div id=\"wagehistory\"><h1>Client's Wage History</h1><div id=\"wage\"><label for=\"wageCheck\">Click if you would like to input your own wages</label><br><button id=\"wageCheck\" click.delegate=\"showWages()\">Input My Wages</button></div><br><br><form show.bind=\"userData.client.showWages\" submit.delegate=\"completeWages()\"><div class=\"form-group\"><label for=\"wagehistory\">Wages:</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\" id=\"wages\"><div repeat.for=\"age of userData.client.ageFrom18\"><label for=\"year\">${userData.client.yearOfBirth + 18 + age}</label><input type=\"text\" value.bind=\"userData.client.wages[age]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div></div><button type=\"submit\">Submit Wages</button></form></div></template>"; });
 define('text!benefits/benefits.html', ['module'], function(module) { module.exports = "<template><require from=\"jquery-ui-dist/jquery-ui.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinModern.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><form id=\"benefits\" submit.delegate=\"benefitsCalc()\"><h1>Benefits</h1><div class=\"form-group\"><label for=\"eligible\">Are you eligible for Social Security benefits?</label><br><input type=\"checkbox\" id=\"eligible\" checked.bind=\"userData.client.eligibleSS\" data-toggle=\"toggle\"></div><div show.bind=\"userData.client.eligibleSS\"><div class=\"form-group\"><label for=\"wep\">Does WEP apply to you?</label><br><input type=\"checkbox\" id=\"wep\" checked.bind=\"userData.client.wep\" data-toggle=\"toggle\"></div><div show.bind=\"userData.client.wep\" class=\"form-group\"><label for=\"dob\">Years of Substantial Earnings</label><input type=\"text\" value.bind=\"userData.client.yrsOfSubEarnings\" class=\"form-control\" id=\"yrsOfSubEarningsCheck\"></div><label for=\"cola\">Cost of Living Adjustment</label><input type=\"text\" id=\"benefitslider\" value=\"\" style=\"position:relative;height:80px\"><br><div class=\"form-group\"><label for=\"formGroupExampleInput\">Annual amount of widower income (if applicable):</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\" value.bind=\"userData.client.widowerIncome\"></div></div></div><button click.delegate=\"back()\" id=\"back\">Back</button> <button type=\"submit\" id=\"next\">Next</button></form></template>"; });

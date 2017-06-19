@@ -23,6 +23,7 @@ export class personalinfo {
         var dob = value;
         var date = moment(dob, 'M/D/YYYY');
         var yearOfBirth = date.format('YYYY');
+        var monthOfBirth = date.month();
         var currentYear = moment().format('YYYY');
         
         if(!((dob.indexOf(date.format('MM/DD/YYYY')) >= 0) || (dob.indexOf(date.format('M/DD/YYYY')) >= 0)
@@ -34,8 +35,96 @@ export class personalinfo {
         else {
             this.userData.client.age = moment().diff(dob, 'years');
             this.userData.client.yearOfBirth = parseInt(yearOfBirth);
+            this.userData.client.monthOfBirth = parseInt(monthOfBirth);
             this.userData.client.currentYear = parseInt(currentYear);
             this.userData.client.ageFrom18 = this.userData.client.age - 18;
+
+            if(yearOfBirth >= 1900 && yearOfBirth <= 1937) { //SET FRA
+                this.userData.client.yearFRA = 65; 
+                this.userData.client.monthFRA = 0;
+            }
+            else if(yearOfBirth == 1938) {
+                this.userData.client.yearFRA = 65; 
+                this.userData.client.monthFRA = 2;
+            }
+            else if(yearOfBirth == 1939) {
+                this.userData.client.yearFRA = 65; 
+                this.userData.client.monthFRA = 4;
+            }
+            else if(yearOfBirth == 1940) {
+                this.userData.client.yearFRA = 65; 
+                this.userData.client.monthFRA = 6;
+            }
+            else if(yearOfBirth == 1941) { 
+                this.userData.client.yearFRA = 65; 
+                this.userData.client.monthFRA = 8;
+            }
+            else if(yearOfBirth == 1942) {
+                this.userData.client.yearFRA = 65; 
+                this.userData.client.monthFRA = 10;
+            }
+            else if(yearOfBirth >= 1943 && yearOfBirth <= 1954) {
+                this.userData.client.yearFRA = 66; 
+                this.userData.client.monthFRA = 0;
+            }
+            else if(yearOfBirth == 1955) {
+                this.userData.client.yearFRA = 66; 
+                this.userData.client.monthFRA = 2;
+            }
+            else if(yearOfBirth == 1956) {
+                this.userData.client.yearFRA = 66; 
+                this.userData.client.monthFRA = 4;
+            }
+            else if(yearOfBirth == 1957) {
+                this.userData.client.yearFRA = 66; 
+                this.userData.client.monthFRA = 6;
+            }
+            else if(yearOfBirth == 1958) {
+                this.userData.client.yearFRA = 66; 
+                this.userData.client.monthFRA = 8;
+            }
+            else if(yearOfBirth == 1959) {
+                this.userData.client.yearFRA = 66; 
+                this.userData.client.monthFRA = 10;
+            }
+            else {
+                this.userData.client.yearFRA = 67; 
+                this.userData.client.monthFRA = 0;
+            }
+
+            if(this.userData.client.isSurvivor) { //SET FRA FOR SURVIVOR CLIENT
+                if(this.userData.client.yearOfBirth >= 1945 && this.userData.client.yearOfBirth <= 1956) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 0;
+                }
+                else if(this.userData.client.yearOfBirth == 1957) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 2;
+                }
+                else if(this.userData.client.yearOfBirth == 1958) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 4;
+                }
+                else if(this.userData.client.yearOfBirth == 1959) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 6;
+                }
+                else if(this.userData.client.yearOfBirth == 1960) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 8;
+                }
+                else if(this.userData.client.yearOfBirth == 1961) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 10;
+                }
+                else if(this.userData.client.yearOfBirth >= 1962 && this.userData.client.yearOfBirth <= 2000) {
+                    this.userData.client.yearFRA = 67;
+                    this.userData.client.monthFRA = 0;
+                }
+            }
+
+            console.log(this.userData.client.yearFRA);
+            console.log(this.userData.client.monthFRA);
         }
     }
 
@@ -43,6 +132,7 @@ export class personalinfo {
         var dob = value;
         var date = moment(dob, 'M/D/YYYY');
         var yearOfBirth = date.format('YYYY');
+        var monthOfBirth = date.month();
         var currentYear = moment().format('YYYY');
         
         if(!((dob.indexOf(date.format('MM/DD/YYYY')) >= 0) || (dob.indexOf(date.format('M/DD/YYYY')) >= 0)
@@ -54,8 +144,83 @@ export class personalinfo {
         else {
             this.userData.spouse.age = moment().diff(dob, 'years');
             this.userData.spouse.yearOfBirth = parseInt(yearOfBirth);
+            this.userData.spouse.monthOfBirth = parseInt(monthOfBirth);
             this.userData.spouse.currentYear = parseInt(currentYear);
             this.userData.spouse.ageFrom18 = this.userData.spouse.age - 18;
+
+            if(yearOfBirth >= 1900 && yearOfBirth <= 1937) {
+                this.userData.spouse.yearFRA = 65; 
+                this.userData.spouse.monthFRA = 0;
+            }
+            else if(yearOfBirth == 1938) {
+                this.userData.spouse.yearFRA = 65; 
+                this.userData.spouse.monthFRA = 2;
+            }
+            else if(yearOfBirth == 1939) {
+                this.userData.spouse.yearFRA = 65; 
+                this.userData.spouse.monthFRA = 4;
+            }
+            else if(yearOfBirth == 1940) {
+                this.userData.spouse.yearFRA = 65; 
+                this.userData.spouse.monthFRA = 6;
+            }
+            else if(yearOfBirth == 1941) { 
+                this.userData.spouse.yearFRA = 65; 
+                this.userData.spouse.monthFRA = 8;
+            }
+            else if(yearOfBirth == 1942) {
+                this.userData.spouse.yearFRA = 65; 
+                this.userData.spouse.monthFRA = 10;
+            }
+            else if(yearOfBirth >= 1943 && yearOfBirth <= 1954) {
+                this.userData.spouse.yearFRA = 66; 
+                this.userData.spouse.monthFRA = 0;
+            }
+            else if(yearOfBirth == 1955) {
+                this.userData.spouse.yearFRA = 66; 
+                this.userData.spouse.monthFRA = 2;
+            }
+            else if(yearOfBirth == 1956) {
+                this.userData.spouse.yearFRA = 66; 
+                this.userData.spouse.monthFRA = 4;
+            }
+            else if(yearOfBirth == 1957) {
+                this.userData.spouse.yearFRA = 66; 
+                this.userData.spouse.monthFRA = 6;
+            }
+            else if(yearOfBirth == 1958) {
+                this.userData.spouse.yearFRA = 66; 
+                this.userData.spouse.monthFRA = 8;
+            }
+            else if(yearOfBirth == 1959) {
+                this.userData.spouse.yearFRA = 66; 
+                this.userData.spouse.monthFRA = 10;
+            }
+            else {
+                this.userData.spouse.yearFRA = 67; 
+                this.userData.spouse.monthFRA = 0;
+            }
+        }
+    }
+
+    deceaseddob(value) {
+        var dob = value;
+        var date = moment(dob, 'M/D/YYYY');
+        var yearOfBirth = date.format('YYYY');
+        var monthOfBirth = date.month();
+        var currentYear = moment().format('YYYY');
+        
+        if(!((dob.indexOf(date.format('MM/DD/YYYY')) >= 0) || (dob.indexOf(date.format('M/DD/YYYY')) >= 0)
+            || (dob.indexOf(date.format('MM/D/YYYY')) >= 0) || (dob.indexOf(date.format('M/D/YYYY')) >= 0))
+            || !date.isValid() || yearOfBirth > currentYear) {
+                alert('Invalid Date of Birth');
+                return;
+            }
+        else {
+            this.userData.deceased.age = this.userData.deceased.yearOfPassing - parseInt(yearOfBirth);
+            this.userData.deceased.yearOfBirth = parseInt(yearOfBirth);
+            this.userData.deceased.monthOfBirth = parseInt(monthOfBirth);
+            this.userData.deceased.ageFrom18 = this.userData.deceased.age - 18;
         }
     }
 
@@ -63,14 +228,55 @@ export class personalinfo {
         if(value == "Married") {
             this.userData.client.isMarried = true;
             this.userData.client.isDivorced = false;
+            this.userData.client.isSurvivor = false;
         }
         else if(value == "Divorced") {
             this.userData.client.isDivorced = true;
             this.userData.client.isMarried = false;
+            this.userData.client.isSurvivor = false;
+        }
+        else if(value == "Widowed") {
+            this.userData.client.isSurvivor = true;
+            this.userData.client.isMarried = false;
+            this.userData.client.isDivorced = false;
+
+            if(this.userData.client.dateOfBirth) { //NEW FRA FOR SURVIVOR CLIENT
+                if(this.userData.client.yearOfBirth >= 1945 && this.userData.client.yearOfBirth <= 1956) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 0;
+                }
+                else if(this.userData.client.yearOfBirth == 1957) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 2;
+                }
+                else if(this.userData.client.yearOfBirth == 1958) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 4;
+                }
+                else if(this.userData.client.yearOfBirth == 1959) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 6;
+                }
+                else if(this.userData.client.yearOfBirth == 1960) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 8;
+                }
+                else if(this.userData.client.yearOfBirth == 1961) {
+                    this.userData.client.yearFRA = 66;
+                    this.userData.client.monthFRA = 10;
+                }
+                else if(this.userData.client.yearOfBirth >= 1962 && this.userData.client.yearOfBirth <= 2000) {
+                    this.userData.client.yearFRA = 67;
+                    this.userData.client.monthFRA = 0;
+                }
+            }
+            console.log(this.userData.client.yearFRA);
+            console.log(this.userData.client.monthFRA);
         }
         else {
             this.userData.client.isMarried = false;
             this.userData.client.isDivorced = false;
+            this.userData.client.isSurvivor = false;
         }
     }
 

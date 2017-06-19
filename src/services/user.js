@@ -3,15 +3,21 @@ export class User {
         // Social Security Values
         this.ssBase = 0;
         this.pia = 0;
+        this.survivorpia = 0;
        
         // Personal Info
         this.name = "";
         this.gender = "";
         this.dateOfBirth = "";
+
         this.age = 0;
         this.ageFrom18 = 0;
         this.yearOfBirth = 0;
+        this.monthOfBirth = 0;
         this.currentYear = 0;
+        this.yearOfPassing = 0;
+        this.yearFRA = 0;
+        this.monthFRA = 0;
 
         this.employmentStatus = "";
         this.isEmployed = false;
@@ -25,6 +31,7 @@ export class User {
         this.isMarried = false;
         this.isDivorced = false;
         this.divorceCheck = false;
+        this.isSurvivor = false;
 
         this.numOfDeps = 0;
         this.ageOfDeps = [];
@@ -60,8 +67,6 @@ export class User {
         this.checkIntrumentality = false;
         this.checkConditions = false;
         
-
-
         //Wage History
         this.showWages = false;
 

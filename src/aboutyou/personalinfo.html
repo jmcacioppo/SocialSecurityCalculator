@@ -85,6 +85,29 @@
                 <input type="checkbox" checked.bind="userData.client.divorceCheck" data-toggle="toggle" id="divorceCheck">
             </div>
 
+            <!--CHECK IF WIDOWED-->
+            <div show.bind="userData.client.isSurvivor">
+               <div class="form-group">
+                    <label for="salary">Most Recent Salary of Deceased</label>
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <div class="input-group-addon">$</div>
+                        <input type="text" value.bind="userData.deceased.salary" class="form-control" id="inlineFormInputGroup" placeholder="0">
+                    </div>
+                    <button type="button" id="wagehistory" click.delegate="deceasedwagehistory()">Input Your Own Wages</button>
+                </div>
+
+                <!--DATE OF BIRTH-->
+                <div class="form-group">
+                    <label for="deceaseddob">Date of Birth</label>
+                    <input type="text" value.bind="userData.deceased.dateOfBirth" change.delegate="deceaseddob(userData.deceased.dateOfBirth)" class="form-control" id="deceaseddob" placeholder="01/01/1970">
+                </div>
+
+                <div class="form-group">
+                    <label for="dob">Year of Passing</label>
+                    <input type="text" value.bind="userData.deceased.yearOfPassing" change.delegate="deceaseddob(userData.deceased.dateOfBirth)" class="form-control" id="deceasedPassing" placeholder="60">
+                </div>
+            </div>
+
             <!--NUMBER OF DEPENDENTS-->
             <div class="form-group">
                 <label for="numOfDeps">Number of Dependents</label>
