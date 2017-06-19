@@ -33,6 +33,35 @@ export class User {
         this.retirementAge = 65;
         this.lifeExpectancy = 91;
 
+        //EXCEPTIONS
+        this.militaryService = false;
+        this.beganService = "";
+        this.endService = "";
+
+        this.workedOnAFarm = false;
+        this.farmMoney = false;
+
+        this.workedInAHousehold = false;
+        this.householdMoney = false;
+
+        this.workedOnARailroad = false;
+        this.yearsWorkedOnRailroad = 0;
+
+        this.recievePension = false;
+        this.pensionAmount = 0;
+
+        this.citizenship = "";
+
+        this.dual26Countries = false;
+        this.isDual26Countries = false;
+        this.dualCanadaItaly = true;
+
+        this.notCitizen = false;
+        this.checkIntrumentality = false;
+        this.checkConditions = false;
+        
+
+
         //Wage History
         this.showWages = false;
 

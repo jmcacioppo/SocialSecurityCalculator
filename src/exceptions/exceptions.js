@@ -16,122 +16,125 @@ import {wagePerc, allowedSalary, inflationIndex, tier1perc, tier2perc, tier3perc
 export class exceptions {
     constructor(userData, router)
     {
-        this.clientMilitaryService = false;
-        this.clientBeganService = "";
-        this.clientEndService = "";
-        this.clientWorkedOnAFarm = false;
-        this.clientWorkedInAHousehold = false;
-        this.clientWorkedOnARailroad = false;
-        this.clientRecievePension = false;
-        this.clientWorkedForeignGov = false;
-
-        this.clientCanadaItaly = true;
-
-        this.spouseMilitaryService = false;
-        this.spouseWorkedOnAFarm = false;
-        this.spouseWorkedInAHousehold = false;
-        this.spouseWorkedOnARailroad = false;
-        this.spouseRecievePension = false;
-        this.spouseWorkedForeignGov = false;
-
         this.router = router;
         this.userData = userData;
     }
 
-    calculate()
-    {
+    calculate() {
+        function calculatePIA(person) {
+            //GET ALL USER DATA            
+            var empStatus = person.employmentStatus;
+            var sal = person.salary;
+            var retirementAge = person.retirementAge;
+            //NEW VARIABLES
+            var pia, ageFrom18, yrsUntilRetire;
 
+            //GET AGE OF PERSON
+            ageFrom18 = person.ageFrom18;
+            yrsUntilRetire = person.retirementAge - person.age;
 
+            //COMPUTES PROJECTED SALARY 
+            if(ageFrom18 >= 0) {
+                person.projectedSal[ageFrom18-1] = parseInt(sal); //Current salary
+                for(var i = ageFrom18 - 2; i >= 0; i--) { //Loop through each wage percentage backwards so we go from current salary
+                    person.projectedSal[i] = person.projectedSal[i+1] - (person.projectedSal[i+1] * wagePerc[wagePerc.length-i-3]); //Calculate projected salary
+                }
+                for(var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) { //Loop through each wage percentage backwards so we go from current salary
+                    person.projectedSal[i] = parseFloat(person.projectedSal[i-1]) + (parseFloat(person.projectedSal[i-1]) * wagePerc[wagePerc.length-1]); //Calculate projected salary
+                }
+
+                //COMPUTES SALARY ADJUSTED FOR INFLATION
+                for(var i = ageFrom18-1; i >= 0; i--) {
+                    if(person.projectedSal[i] > allowedSalary[inflationIndex.length-(ageFrom18-i)-1]) { //Check allowed salary and calculate adjusted inflation accordingly
+                        person.inflationAdjusted[i] = allowedSalary[inflationIndex.length-(ageFrom18-i)-1] * inflationIndex[inflationIndex.length-(ageFrom18-i)-1];
+                    }
+                    else {
+                        person.inflationAdjusted[i] = person.projectedSal[i] * inflationIndex[inflationIndex.length-(ageFrom18-i)-1];
+                    }
+                }
+
+                var lastYearAllowed = allowedSalary[allowedSalary.length-1];
+                for(var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+                    if(person.projectedSal[i] > allowedSalary[i]) { //Check allowed salary and calculate adjusted inflation accordingly
+                        person.inflationAdjusted[i] = lastYearAllowed * inflationIndex[inflationIndex.length-1];
+                        lastYearAllowed = lastYearAllowed * 1.021;
+                    }
+                    else {
+                        person.inflationAdjusted[i] = person.projectedSal[i] * inflationIndex[inflationIndex.length-1];
+                    }
+                }
+
+                //SORT AND GET TOP 35 ADJUSTED INFLATION SALARIES
+                person.inflationAdjusted = person.inflationAdjusted.sort((a, b) => a - b); 
+                person.topThirtyFive = person.inflationAdjusted.slice(person.inflationAdjusted.length - 35, person.inflationAdjusted.length); 
+
+                //PRIMARY INSURANCE AMOUNT
+                pia = person.topThirtyFive.reduce((a, b) => a + b, 0) / 420;
+                person.pia = pia; 
+                return pia;
+            }
+            else {
+                alert("Client must be older than 18.");
+                return null;
+            }
+        }
+
+        var maritalStatus = this.userData.client.maritalStatus;
+        //GET PIA CLIENT CALCULATIONS
+        if(calculatePIA(this.userData.client) == null) {
+            return;
+        } 
+        //GET PIA COCLIENT CALCULATIONS IF NECESSARY
+        if(maritalStatus == "Married") {
+            if(calculatePIA(this.userData.spouse) == null) {
+                return;
+            }
+        }
+
+        console.log(this.userData);
+        //GO TO BENEFITS
         this.router.navigate('#/benefits');
     }
 
-    attached()
-    {
-        if (this.userData.client.maritalStatus != "Married")
-            $('#spouse').hide();
+    checkCitizenship(value) {
+        if(value == "Dual Citizen") {
+            this.userData.client.dual26Countries = true;
+            this.userData.client.notCitizen = false;
+        }
+        else if(value == "Not a US Citizen") {
+            this.userData.client.notCitizen = true;
+            this.userData.client.dual26Countries = false;
+        }
+        else {
+            this.userData.client.dual26Countries = false;
+            this.userData.client.notCitizen = false;
+        }
+    }
 
-        $('#clientServed').hide();
-        $('#clientMilitaryService').change(function() {
-            console.log($(this).val());
-           $(this).is(':checked') ? $('#clientServed').show() : $('#clientServed').hide();
-        });
+    checkCitizenshipSpouse(value) {
+        if(value == "Dual Citizen") {
+            this.userData.spouse.dual26Countries = true;
+            this.userData.spouse.notCitizen = false;
+        }
+        else if(value == "Not a US Citizen") {
+            this.userData.spouse.notCitizen = true;
+            this.userData.spouse.dual26Countries = false;
+        }
+        else {
+            this.userData.spouse.dual26Countries = false;
+            this.userData.spouse.notCitizen = false;
+        }
+    }
 
-        $('#clientMadeFarmMoney').hide();
-        $('#clientWorkedOnAFarm').change(function() {
-            console.log($(this).val());
-           $(this).is(':checked') ? $('#clientMadeFarmMoney').show() : $('#clientMadeFarmMoney').hide();
-        });
+    checkCanadaItaly(value) {
+        if(value == false) alert("You are not eligible for Social Security");
+    }
 
-        $('#clientMadeHouseHoldMoney').hide();
-        $('#clientWorkedInAHousehold').change(function() {
-            console.log($(this).val());
-           $(this).is(':checked') ? $('#clientMadeHouseHoldMoney').show() : $('#clientMadeHouseHoldMoney').hide();
-        });
+    checkConditions(value) {
+        if(value == true) alert("You are not eligible for Social Security");
+    }
 
-        $('#clientRailroadBox').hide();
-        $('#clientWorkedOnARailroad').change(function() {
-            console.log($(this).val());
-           $(this).is(':checked') ? $('#clientRailroadBox').show() : $('#clientRailroadBox').hide();
-        });
-
-        $('#clientPensionBox').hide();
-        $('#clientRecievePension').change(function() {
-            console.log($(this).val());
-           $(this).is(':checked') ?  $('#clientPensionBox').show() : $('#clientPensionBox').hide();
-        });
-
-        //$('#clientCitizenship').hide();
-        $('#clientCitizenship').change(function() {
-            switch ($ (this).val() )
-            {
-                case "Not a US Citizen":
-                    $('#client26CountriesBox').hide();
-                    $('#clientCanadaItalyBox').hide();
-                    $('#clientInstrumentalityBox').show();
-                    break;
-                case "Dual Citizen":
-                    $('#clientInstrumentalityBox').hide();
-                    $('#clientOneOrTwoBox').hide();
-                    $('#client26CountriesBox').show();
-                    break;
-                default: 
-                    $('#clientInstrumentalityBox').hide();
-                    $('#client26CountriesBox').hide();
-                    $('#clientCanadaItalyBox').hide();
-                    $('#clientOneOrTwoBox').hide();
-
-            }
-        });
-
-        $('#clientInstrumentalityBox').hide();
-        $('#clientInstrumentality').change(function() {
-            $(this).is(':checked') ? $('#clientOneOrTwoBox').show() : $('#clientOneOrTwoBox').hide();
-        });
-
-        $('#clientOneOrTwoBox').hide();
-        $('#clientOneOrTwo').change(function() {
-            if ( $(this).is(':checked') )
-                alert("You are not eligible for US Social Security benefits.");
-        });
-
-        $('#client26CountriesBox').hide();
-        $('#client26Countries').change(function() {
-            $(this).is(':checked') ? $('#clientCanadaItalyBox').show() : $('#clientCanadaItalyBox').hide();
-
-        });
-
-        $('#clientCanadaItalyBox').hide();
-        $('#clientCanadaItaly').change(function() {
-            if ( ! $(this).is(':checked') )
-                alert("You are not eligible for Social Security benefits");
-        });
-
-        
-
-        
-
-
-
+    attached() {
 
     }
     
