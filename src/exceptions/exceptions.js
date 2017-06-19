@@ -25,7 +25,7 @@ export class exceptions {
         this.clientRecievePension = false;
         this.clientWorkedForeignGov = false;
 
-        this.clientCitizenship = true;
+        this.clientCanadaItaly = true;
 
         this.spouseMilitaryService = false;
         this.spouseWorkedOnAFarm = false;
@@ -80,19 +80,58 @@ export class exceptions {
            $(this).is(':checked') ?  $('#clientPensionBox').show() : $('#clientPensionBox').hide();
         });
 
-        $('#clientCitizenship').hide();
-        $('#clientWorkedForeignGov').change(function() {
+        //$('#clientCitizenship').hide();
+        $('#clientCitizenship').change(function() {
             switch ($ (this).val() )
             {
-                
+                case "Not a US Citizen":
+                    $('#client26CountriesBox').hide();
+                    $('#clientCanadaItalyBox').hide();
+                    $('#clientInstrumentalityBox').show();
+                    break;
+                case "Dual Citizen":
+                    $('#clientInstrumentalityBox').hide();
+                    $('#clientOneOrTwoBox').hide();
+                    $('#client26CountriesBox').show();
+                    break;
+                default: 
+                    $('#clientInstrumentalityBox').hide();
+                    $('#client26CountriesBox').hide();
+                    $('#clientCanadaItalyBox').hide();
+                    $('#clientOneOrTwoBox').hide();
+
             }
         });
 
-        $('#clientWorkInstrumentality').hide();
+        $('#clientInstrumentalityBox').hide();
         $('#clientInstrumentality').change(function() {
-            console.log($(this).val());
-           
+            $(this).is(':checked') ? $('#clientOneOrTwoBox').show() : $('#clientOneOrTwoBox').hide();
         });
+
+        $('#clientOneOrTwoBox').hide();
+        $('#clientOneOrTwo').change(function() {
+            if ( $(this).is(':checked') )
+                alert("You are not eligible for US Social Security benefits.");
+        });
+
+        $('#client26CountriesBox').hide();
+        $('#client26Countries').change(function() {
+            $(this).is(':checked') ? $('#clientCanadaItalyBox').show() : $('#clientCanadaItalyBox').hide();
+
+        });
+
+        $('#clientCanadaItalyBox').hide();
+        $('#clientCanadaItaly').change(function() {
+            if ( ! $(this).is(':checked') )
+                alert("You are not eligible for Social Security benefits");
+        });
+
+        
+
+        
+
+
+
 
     }
     
