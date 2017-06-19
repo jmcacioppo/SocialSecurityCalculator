@@ -102,16 +102,103 @@ export class exceptions {
                 case 1957: 
                     switch(client.retirementAge) {
                         case 60: client.survivorpia = deceased.pia * survivorFRA1957[0];
-                        case 60: client.survivorpia = deceased.pia * survivorFRA1957[0];
-                        case 60: client.survivorpia = deceased.pia * survivorFRA1957[0];
-                        case 60: client.survivorpia = deceased.pia * survivorFRA1957[0];
-                        case 60: client.survivorpia = deceased.pia * survivorFRA1957[0];
-                        case 60: client.survivorpia = deceased.pia * survivorFRA1957[0];
-                        case 60: client.survivorpia = deceased.pia * survivorFRA1957[0];
-                        case 60: client.survivorpia = deceased.pia * survivorFRA1957[0];
-                        case 60: client.survivorpia = deceased.pia * survivorFRA1957[0];
-                        case 60: client.survivorpia = deceased.pia * survivorFRA1957[0];
-                        case 60: client.survivorpia = deceased.pia * survivorFRA1957[0];
+                        case 61: client.survivorpia = deceased.pia * survivorFRA1957[1];
+                        case 62: client.survivorpia = deceased.pia * survivorFRA1957[2];
+                        case 63: client.survivorpia = deceased.pia * survivorFRA1957[3];
+                        case 64: client.survivorpia = deceased.pia * survivorFRA1957[4];
+                        case 65: client.survivorpia = deceased.pia * survivorFRA1957[5];
+                        case 66: client.survivorpia = deceased.pia * survivorFRA1957[6];
+                        case 67: client.survivorpia = deceased.pia * survivorFRA1957[7];
+                        case 68: client.survivorpia = deceased.pia * survivorFRA1957[8];
+                        case 69: client.survivorpia = deceased.pia * survivorFRA1957[9];
+                        default: client.survivorpia = deceased.pia * survivorFRA1957[10];
+                    }
+                case 1958: 
+                    switch(client.retirementAge) {
+                        case 60: client.survivorpia = deceased.pia * survivorFRA1958[0];
+                        case 61: client.survivorpia = deceased.pia * survivorFRA1958[1];
+                        case 62: client.survivorpia = deceased.pia * survivorFRA1958[2];
+                        case 63: client.survivorpia = deceased.pia * survivorFRA1958[3];
+                        case 64: client.survivorpia = deceased.pia * survivorFRA1958[4];
+                        case 65: client.survivorpia = deceased.pia * survivorFRA1958[5];
+                        case 66: client.survivorpia = deceased.pia * survivorFRA1958[6];
+                        case 67: client.survivorpia = deceased.pia * survivorFRA1958[7];
+                        case 68: client.survivorpia = deceased.pia * survivorFRA1958[8];
+                        case 69: client.survivorpia = deceased.pia * survivorFRA1958[9];
+                        default: client.survivorpia = deceased.pia * survivorFRA1958[10];
+                    }
+                case 1959: 
+                    switch(client.retirementAge) {
+                        case 60: client.survivorpia = deceased.pia * survivorFRA1959[0];
+                        case 61: client.survivorpia = deceased.pia * survivorFRA1959[1];
+                        case 62: client.survivorpia = deceased.pia * survivorFRA1959[2];
+                        case 63: client.survivorpia = deceased.pia * survivorFRA1959[3];
+                        case 64: client.survivorpia = deceased.pia * survivorFRA1959[4];
+                        case 65: client.survivorpia = deceased.pia * survivorFRA1959[5];
+                        case 66: client.survivorpia = deceased.pia * survivorFRA1959[6];
+                        case 67: client.survivorpia = deceased.pia * survivorFRA1959[7];
+                        case 68: client.survivorpia = deceased.pia * survivorFRA1959[8];
+                        case 69: client.survivorpia = deceased.pia * survivorFRA1959[9];
+                        default: client.survivorpia = deceased.pia * survivorFRA1959[10];
+                    }   
+                case 1960: 
+                    switch(client.retirementAge) {
+                        case 60: client.survivorpia = deceased.pia * survivorFRA1960[0];
+                        case 61: client.survivorpia = deceased.pia * survivorFRA1960[1];
+                        case 62: client.survivorpia = deceased.pia * survivorFRA1960[2];
+                        case 63: client.survivorpia = deceased.pia * survivorFRA1960[3];
+                        case 64: client.survivorpia = deceased.pia * survivorFRA1960[4];
+                        case 65: client.survivorpia = deceased.pia * survivorFRA1960[5];
+                        case 66: client.survivorpia = deceased.pia * survivorFRA1960[6];
+                        case 67: client.survivorpia = deceased.pia * survivorFRA1960[7];
+                        case 68: client.survivorpia = deceased.pia * survivorFRA1960[8];
+                        case 69: client.survivorpia = deceased.pia * survivorFRA1960[9];
+                        default: client.survivorpia = deceased.pia * survivorFRA1960[10];
+                    }     
+                case 1961: 
+                    switch(client.retirementAge) {
+                        case 60: client.survivorpia = deceased.pia * survivorFRA1961[0];
+                        case 61: client.survivorpia = deceased.pia * survivorFRA1961[1];
+                        case 62: client.survivorpia = deceased.pia * survivorFRA1961[2];
+                        case 63: client.survivorpia = deceased.pia * survivorFRA1961[3];
+                        case 64: client.survivorpia = deceased.pia * survivorFRA1961[4];
+                        case 65: client.survivorpia = deceased.pia * survivorFRA1961[5];
+                        case 66: client.survivorpia = deceased.pia * survivorFRA1961[6];
+                        case 67: client.survivorpia = deceased.pia * survivorFRA1961[7];
+                        case 68: client.survivorpia = deceased.pia * survivorFRA1961[8];
+                        case 69: client.survivorpia = deceased.pia * survivorFRA1961[9];
+                        default: client.survivorpia = deceased.pia * survivorFRA1961[10];
+                    } 
+                default:
+                    if(client.yearOfBirth <= 1956) {
+                        switch(client.retirementAge) {
+                            case 60: client.survivorpia = deceased.pia * survivorFRA1945to1956[0];
+                            case 61: client.survivorpia = deceased.pia * survivorFRA1945to1956[1];
+                            case 62: client.survivorpia = deceased.pia * survivorFRA1945to1956[2];
+                            case 63: client.survivorpia = deceased.pia * survivorFRA1945to1956[3];
+                            case 64: client.survivorpia = deceased.pia * survivorFRA1945to1956[4];
+                            case 65: client.survivorpia = deceased.pia * survivorFRA1945to1956[5];
+                            case 66: client.survivorpia = deceased.pia * survivorFRA1945to1956[6];
+                            case 67: client.survivorpia = deceased.pia * survivorFRA1945to1956[7];
+                            case 68: client.survivorpia = deceased.pia * survivorFRA1945to1956[8];
+                            case 69: client.survivorpia = deceased.pia * survivorFRA1945to1956[9];
+                            default: client.survivorpia = deceased.pia * survivorFRA1945to1956[10];
+                        } 
+                    }
+                    else {
+                        switch(client.retirementAge) {
+                            case 60: client.survivorpia = deceased.pia * survivorFRA1962to2000[0];
+                            case 61: client.survivorpia = deceased.pia * survivorFRA1962to2000[1];
+                            case 62: client.survivorpia = deceased.pia * survivorFRA1962to2000[2];
+                            case 63: client.survivorpia = deceased.pia * survivorFRA1962to2000[3];
+                            case 64: client.survivorpia = deceased.pia * survivorFRA1962to2000[4];
+                            case 65: client.survivorpia = deceased.pia * survivorFRA1962to2000[5];
+                            case 66: client.survivorpia = deceased.pia * survivorFRA1962to2000[6];
+                            case 67: client.survivorpia = deceased.pia * survivorFRA1962to2000[7];
+                            case 68: client.survivorpia = deceased.pia * survivorFRA1962to2000[8];
+                            case 69: client.survivorpia = deceased.pia * survivorFRA1962to2000[9];
+                            default: client.survivorpia = deceased.pia * survivorFRA1962to2000[10];
+                        } 
                     }
             }
         }
