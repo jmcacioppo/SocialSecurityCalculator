@@ -1,5 +1,5 @@
 <template>
-    <div id="spousewagehistory">
+    <div id="wagehistory">
         <h1>Co-Client's Wage History</h1>
 
         <div id="wage">
@@ -11,12 +11,14 @@
         <br> <br>
 
         <!--MANUALLY SUBMIT WAGE HISTORY-->
-        <form id="spousewageHist" submit.delegate="completeWages()">
+        <form show.bind="userData.spouse.showWages" submit.delegate="completeWages()">
             <div class="form-group">
                 <label for="spousewagehistory">Wages:</label>
                 <div class="input-group mb-2 mr-sm-2 mb-sm-0" id="spousewages">
-                    <!--<div class="input-group-addon">$</div>-->
-                    <!--<input type="text" value.bind="userData.client.wages[0]" class="form-control" id="inlineFormInputGroup" placeholder="0">-->
+                    <div repeat.for="age of userData.spouse.ageFrom18">
+                        <label for="year">${userData.spouse.yearOfBirth + 18 + age}</label>
+                        <input type="text" value.bind="userData.spouse.wages[age]" class="form-control" id="inlineFormInputGroup" placeholder="0">
+                    </div>
                 </div>
             </div>
             <button type="submit">Submit Wages</button>

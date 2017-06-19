@@ -174,7 +174,7 @@ export class benefits {
 
         var maritalStatus = this.userData.client.maritalStatus;
         calculateSSBase(this.userData.client);
-        
+
         //GET PIA COCLIENT CALCULATIONS IF NECESSARY
         if(maritalStatus == "Married") {
             calculateSSBase(this.userData.spouse);
