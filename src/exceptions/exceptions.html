@@ -7,7 +7,7 @@
 
             <!--MILITARY SERVICE-->
             <div class="form-group">
-                <label for="clientMilitaryService">Military Service?</label>
+                <label for="clientMilitaryService">Have you served in the military?</label>
                 <br>
                 <input type="checkbox" id="clientMilitaryService" checked.bind="userData.client.militaryService" data-toggle="toggle">
             </div>
@@ -26,25 +26,30 @@
 
             <!--RAILROAD-->
             <div class="form-group">
-                <label for="clientWorkedOnARailroad">Worked on a railroad?</label>
+                <label for="clientWorkedOnARailroad">Have you worked on a railroad?</label>
                 <br>
                 <input type="checkbox" id="clientWorkedOnARailroad" checked.bind="userData.client.workedOnARailroad" data-toggle="toggle">
             </div>
 
             <div show.bind="userData.client.workedOnARailroad" class="form-group">
-                <label for="yearsOnRailroad">Years worked on railroad?</label>
-                <input type="text" value.bind="userData.client.yearsWorkedOnRailroad" class="form-control" placeholder="0">
+                <label for="yearsOnRailroad">What year did you start working on the railroad?</label>
+                <input type="text" value.bind="userData.client.yearsStartedOnRailroad" class="form-control" placeholder="0">
+            </div>
+
+            <div show.bind="userData.client.workedOnARailroad" class="form-group">
+                <label for="yearsOnRailroad">What year did you stop working on the railroad?</label>
+                <input type="text" value.bind="userData.client.yearsEndedOnRailroad" class="form-control" placeholder="0">
             </div>
 
             <!--GOVERNMENT PENSION-->
             <div class="form-group">
-                <label for="clientRecievePension">Receive a government pension?</label>
+                <label for="clientRecievePension">Have you received a government pension?</label>
                 <br>
                 <input type="checkbox" id="clientRecievePension" checked.bind="userData.client.recievePension" data-toggle="toggle">
             </div>
 
             <div show.bind="userData.client.recievePension" class="form-group" id="clientPensionBox">
-                <label for="clientPensionAmount">How much pension a month?</label>
+                <label for="clientPensionAmount">How much government pension do you receive per month?</label>
                 <input type="text" value.bind="userData.client.pensionAmount" class="form-control" placeholder="2000">
             </div>
 
@@ -98,7 +103,7 @@
             <h3>Co-Client</h3>
 
             <div class="form-group">
-                <label for="spouseMilitaryService">Military Service?</label>
+                <label for="spouseMilitaryService">Have you served in the military?</label>
                 <br>
                 <input type="checkbox" checked.bind="userData.spouse.militaryService" data-toggle="toggle">
             </div>
@@ -116,53 +121,32 @@
                 </div>
             </div>
 
-            <!--FARM WORK-->
-            <div class="form-group">
-                <label for="spouseWorkedOnAFarm">Worked on a farm?</label>
-                <br>
-                <input type="checkbox" id="spouseWorkedOnAFarm" checked.bind="userData.spouse.workedOnAFarm" data-toggle="toggle">
-            </div>
-
-            <div show.bind="userData.spouse.workedOnAFarm" class="form-group" id="spouseMadeFarmMoney">
-                <label for="spouseFarmMoney">Made more than $150 on the farm?</label>
-                <br>
-                <input type="checkbox" id="spouseFarmMoney" checked.bind="userData.spouse.farmMoney" data-toggle="toggle">
-            </div>
-
-            <!--HOUSEHOLD-->
-            <div class="form-group">
-                <label for="spouseWorkedInAHousehold">Worked in a household?</label>
-                <br>
-                <input type="checkbox" id="spouseWorkedInAHousehold" checked.bind="userData.spouse.workedInAHousehold" data-toggle="toggle">
-            </div>
-
-            <div show.bind="userData.spouse.workedInAHousehold" class="form-group" id="spouseMadeHouseHoldMoney">
-                <label for="spouseHouseholdMoney">Made over $2000 in the household?</label>
-                <br>
-                <input type="checkbox" id="spouseHouseholdMoney" checked.bind="userData.spouse.householdMoney" data-toggle="toggle">
-            </div>
-
             <!--RAILROAD-->
             <div class="form-group">
-                <label for="spouseWorkedOnARailroad">Worked on a railroad?</label>
+                <label for="spouseWorkedOnARailroad">Have you worked on a railroad?</label>
                 <br>
                 <input type="checkbox" id="spouseWorkedOnARailroad" checked.bind="userData.spouse.workedOnARailroad" data-toggle="toggle">
             </div>
 
             <div show.bind="userData.spouse.workedOnARailroad" class="form-group">
-                <label for="yearsOnRailroad">Years worked on railroad?</label>
-                <input type="text" value.bind="userData.spouse.yearsWorkedOnRailroad" class="form-control" placeholder="0">
+                <label for="yearsOnRailroad">What year did you start working on the railroad?</label>
+                <input type="text" value.bind="userData.spouse.yearsStartedOnRailroad" class="form-control" placeholder="0">
+            </div>
+
+            <div show.bind="userData.spouse.workedOnARailroad" class="form-group">
+                <label for="yearsOnRailroad">What year did you stop working on the railroad?</label>
+                <input type="text" value.bind="userData.spouse.yearsEndedOnRailroad" class="form-control" placeholder="0">
             </div>
 
             <!--GOVERNMENT PENSION-->
             <div class="form-group">
-                <label for="spouseRecievePension">Receive a government pension?</label>
+                <label for="spouseRecievePension">Have you received a government pension?</label>
                 <br>
                 <input type="checkbox" id="spouseRecievePension" checked.bind="userData.spouse.recievePension" data-toggle="toggle">
             </div>
 
             <div show.bind="userData.spouse.recievePension" class="form-group" id="spousePensionBox">
-                <label for="spousePensionAmount">How much pension a month?</label>
+                <label for="spousePensionAmount">How much government pension do you receive per month?</label>
                 <input type="text" value.bind="userData.spouse.pensionAmount" class="form-control" placeholder="2000">
             </div>
 
@@ -208,6 +192,7 @@
             </div>
         </div>
 
+        <button click.delegate="back()" id="back">Back</button>
         <button type="submit" id="next">Next</button>
     </form>    
 

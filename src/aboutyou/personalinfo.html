@@ -111,15 +111,15 @@
             <!--NUMBER OF DEPENDENTS-->
             <div class="form-group">
                 <label for="numOfDeps">Number of Dependents</label>
-                <input type="text" value.bind="userData.client.numOfDeps" change.delegate="checkNumOfDeps(userData.client.numOfDeps)" class="form-control" id="numOfDeps">
+                <input type="text" value.bind="userData.client.numOfDeps" change.delegate="checkNumOfDeps(userData.client.numOfDeps)" class="form-control">
             </div>
 
             <!--AGE OF DEPENDENTS-->
-            <div show.bind="showAgeOfDeps" class="form-group">
+            <div show.bind="userData.client.showAgeOfDeps" class="form-group">
                 <label for="ageOfDeps">Age of Dependents:</label>
-                <div class="input-group mb-2 mr-sm-2 mb-sm-0" id="ageOfDep">
-                    <div repeat.for="num of userData.client.numOfDeps">
-                        <label for="ageOfDep">Age of Dependent ${num}</label>
+                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                    <div repeat.for="num of parseInt(userData.client.numOfDeps)">
+                        <label for="ageOfDep">Age of Dependent ${num + 1}</label>
                         <input type="text" value.bind="userData.client.ageOfDeps[num]" class="form-control" id="inlineFormInputGroup" placeholder="0">
                     </div>
                 </div>
@@ -141,8 +141,8 @@
 
             <!--SLIDER FOR RETIREMENT AGE AND LIFE EXPECTANCY-->
             <label for="retirementAge">Retirement Age and Life Expectancy</label>
-            <input type="text" id="slider" value="" style="position: relative; height: 80px">
-        </div>
+                <input type="text" id="slider" value="" style="position: relative; height: 80px">
+            </div>
 
 
         <!--CO-CLIENT INFORMATION-->
