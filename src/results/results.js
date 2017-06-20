@@ -7,6 +7,9 @@ import {UserData} from '../services/userdata';
 import {Router} from 'aurelia-router';
 import {projEarningsLimit} from 'src/services/constants.js';
 
+import * as HighCharts from "highcharts";
+
+
 @inject(UserData, Router)
 export class results {
     constructor(userData, router) {
@@ -83,53 +86,53 @@ export class results {
         results(this.userData.client);
         console.log(this.userData);
 
-    //     var context = document.getElementById("myChart").getContext('2d');
-    //     console.log(context);
+        // GENERATE CHART
+        var blah =  new Highcharts.chart('container', {
 
-    //     var myChart = new Chart(context, {
-    //         type: 'bar',
-    //         data: {
-    //             labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-    //             datasets: [{
-    //                 label: '# of Votes',
-    //                 data: [12, 19, 3, 5, 2, 3],
-    //                 backgroundColor: [
-    //                     'rgba(255, 99, 132, 0.2)',
-    //                     'rgba(54, 162, 235, 0.2)',
-    //                     'rgba(255, 206, 86, 0.2)',
-    //                     'rgba(75, 192, 192, 0.2)',
-    //                     'rgba(153, 102, 255, 0.2)',
-    //                     'rgba(255, 159, 64, 0.2)'
-    //                 ],
-    //                 borderColor: [
-    //                     'rgba(255,99,132,1)',
-    //                     'rgba(54, 162, 235, 1)',
-    //                     'rgba(255, 206, 86, 1)',
-    //                     'rgba(75, 192, 192, 1)',
-    //                     'rgba(153, 102, 255, 1)',
-    //                     'rgba(255, 159, 64, 1)'
-    //                 ],
-    //                 borderWidth: 1
-    //             }]
-    //         },
-    //         options: {
-    //             scales: {
-    //                 yAxes: [{
-    //                     ticks: {
-    //                         beginAtZero:true
-    //                     }
-    //                 }]
-    //             }
-    //         }
-    //     });
-    //     console.log(myChart);
-    //     $("#myChart").hide();
-    //     console.log($("#myChart"));
-    // }
+            title: {
+                text: 'Solar Employment Growth by Sector, 2010-2016'
+            },
 
-    // what() {
-    //     $("#myChart").show();
-    //     console.log($('#myChart'));
-    // }
-    }
-}
+            subtitle: {
+                text: 'Source: thesolarfoundation.com'
+            },
+
+            yAxis: {
+                title: {
+                    text: 'Number of Employees'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+
+            plotOptions: {
+                series: {
+                    pointStart: 2010
+                }
+            },
+
+            series: [{
+                name: 'Installation',
+                data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+            }, {
+                name: 'Manufacturing',
+                data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+            }, {
+                name: 'Sales & Distribution',
+                data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
+            }, {
+                name: 'Project Development',
+                data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
+            }, {
+                name: 'Other',
+                data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+            }]
+
+        }); //end of Highcharts.chart()
+
+
+    } // end of attached{}
+} //end of class
