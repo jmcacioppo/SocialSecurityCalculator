@@ -297,6 +297,19 @@ export class personalinfo {
         if(value > 0) this.userData.client.showAgeOfDeps = true;
         else this.userData.client.showAgeOfDeps = false;
         console.log(value);
+        this.userData.client.numOfDeps = parseInt(value);
+    }
+
+    addDep() {
+        this.userData.client.numOfDeps++;
+        this.userData.client.hasDeps = true;
+    }
+
+    removeDep() {
+        this.userData.client.numOfDeps--;
+        if(this.userData.client.numOfDeps == 0) {
+            this.userData.client.hasDeps = false;
+        }
     }
 
     //NAVIGATE TO WAGE HISTORY

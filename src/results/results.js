@@ -80,7 +80,13 @@ export class results {
 
         }
 
+        var maritalStatus = this.userData.client.maritalStatus;
         results(this.userData.client);
+
+        if(maritalStatus == "Married") {
+            results(this.userData.spouse);
+        }
+
         console.log(this.userData);
 
     //     var context = document.getElementById("myChart").getContext('2d');

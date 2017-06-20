@@ -108,23 +108,6 @@
                 </div>
             </div>
 
-            <!--NUMBER OF DEPENDENTS-->
-            <div class="form-group">
-                <label for="numOfDeps">Number of Dependents</label>
-                <input type="text" value.bind="userData.client.numOfDeps" change.delegate="checkNumOfDeps(userData.client.numOfDeps)" class="form-control">
-            </div>
-
-            <!--AGE OF DEPENDENTS-->
-            <div show.bind="userData.client.showAgeOfDeps" class="form-group">
-                <label for="ageOfDeps">Age of Dependents:</label>
-                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                    <div repeat.for="num of parseInt(userData.client.numOfDeps)">
-                        <label for="ageOfDep">Age of Dependent ${num + 1}</label>
-                        <input type="text" value.bind="userData.client.ageOfDeps[num]" class="form-control" id="inlineFormInputGroup" placeholder="8">
-                    </div>
-                </div>
-            </div>
-
             <hr />
             
             <!--RETIREMENT INFORMATION-->
@@ -144,6 +127,24 @@
                 <input type="text" id="slider" value="" style="position: relative; height: 80px">
             </div>
 
+            <hr />
+
+            <!--DEPENDENT INFORMATION-->
+            <h1>Dependent Information</h1>
+
+            <button type="button" click.delegate="addDep()">Add Dependent</button>
+
+            <div show.bind="userData.client.hasDeps" class="form-group">
+                <label for="ageOfDeps">Age of Dependents:</label>
+                <div class="input-group mb-2 mr-sm-2 mb-sm-0" id="ageOfDeps">
+                    <div repeat.for="num of userData.client.numOfDeps">
+                        <label for="year">Age of Dependent ${num}:</label>
+                        <input type="text" value.bind="userData.client.ageOfDeps[num]" class="form-control" id="inlineFormInputGroup" placeholder="0">
+                    </div>
+                </div>
+                <br>
+                <button type="button" click.delegate="removeDep()">Remove Dependent</button>
+            </div>
 
         <!--CO-CLIENT INFORMATION-->
         <div show.bind="userData.client.isMarried">
