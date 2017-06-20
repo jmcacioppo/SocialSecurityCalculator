@@ -80,6 +80,11 @@ export class exceptions {
                     person.projectedSal[i] = person.projectedSal[i+1] - (person.projectedSal[i+1] * wagePerc[wagePerc.length-i-3]); //Calculate projected salary
                 }
 
+                if(person.showWages) {
+                    person.projectedSal.forEach(function(value, i) {
+                        person.projectedSal[i] = parseFloat(person.wages[i]);
+                    }); 
+                }
                 if(!widowcheck) {
                     for(var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) { //Loop through each wage percentage backwards so we go from current salary
                         person.projectedSal[i] = parseFloat(person.projectedSal[i-1]) + (parseFloat(person.projectedSal[i-1]) * wagePerc[wagePerc.length-1]); //Calculate projected salary

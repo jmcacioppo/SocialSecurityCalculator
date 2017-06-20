@@ -12,15 +12,13 @@ export class wagehistory {
         this.userData = userData;
         this.router = router;
     }
-    
-    showWages() {
-        this.userData.client.showWages = true;
-    }
 
     completeWages() {
-        $('input').each(function() {
-            if(!$(this).val) alert("Input all salaries.");
-            else this.router.navigate('#/personalinfo');
-        });
+        this.userData.client.showWages = true;
+        this.router.navigate('#/personalinfo');
+    }
+
+    back() {
+        this.router.navigate('#/personalinfo');
     }
 }

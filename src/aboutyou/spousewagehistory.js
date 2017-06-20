@@ -13,7 +13,12 @@ export class spousewagehistory {
         this.router = router;
     }
     
-    showWages() {
+    completeWages() {
         this.userData.spouse.showWages = true;
+        this.router.navigate('#/personalinfo');
+    }
+
+    back() {
+        this.router.navigate('#/personalinfo');
     }
 }
