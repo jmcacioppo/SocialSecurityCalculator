@@ -139,30 +139,74 @@ export class results {
 
         // }); //end of Highcharts.chart()
 
-        var ages = [];
-        for (var age = 62; age <= this.userData.lifeExpectancy; age++)
-            ages.push(age);
         
-        console.log(ages);
+        
+        
 
         Highcharts.chart('container', {
             title: {
                 text: 'Benefits vs. Age'
             },
+            // xAxis: {
+            //     categories: (() => {
+            //                     var ages = [];
+            //                     for (var age = 62; age <= this.userData.client.lifeExpectancy; age++)
+            //                         ages.push(age);
+            //                     return ages;
+            //                 })()
+            // },
             xAxis: {
-                categories: ['Apples', 'Bananas', 'Oranges']
+                title: {
+                    text: 'Age'
+                }
+            },
+            plotOptions: {
+                series: {
+                    pointStart: 62
+                }
             },
             yAxis: {
                 title: {
-                    text: 'Fruit eaten'
+                    text: 'Yearly Benefits'
                 }
             },
             series: [{
-                name: 'Jane',
-                data: [1, 0, 4]
+                name: 'Receive at 62 (earliest)',
+                data: (() => {
+                        console.log(this.userData.client.earlyBenefits);
+                        while (this.userData.client.earlyBenefits.length < this.userData.client.lifeExpectancy - 62)
+                            this.userData.client.earlyBenefits.unshift(99);
+                        console.log(this.userData.client.earlyBenefits);
+                        return this.userData.client.earlyBenefits;
+                    })()
             }, {
-                name: 'John',
-                data: [5, 7, 3]
+                name: 'Receive at ' + this.userData.client.retirementAge + ' (user-selected)',
+                data: (() => {
+                        console.log(this.userData.client.userSelectedBenefits);
+                        while (this.userData.client.userSelectedBenefits.length < this.userData.client.lifeExpectancy - 62)
+                            this.userData.client.userSelectedBenefits.unshift(99);
+                        console.log(this.userData.client.userSelectedBenefits);
+                        return this.userData.client.userSelectedBenefits;
+                    })()
+            }, {
+                name: 'Receive at ' + this.userData.client.yearFRA + ' (FRA)',
+                data: (() => {
+                        console.log(this.userData.client.FRABenefits);
+                        while (this.userData.client.FRABenefits.length < this.userData.client.lifeExpectancy - 62)
+                            this.userData.client.FRABenefits.unshift(99);
+                        console.log(this.userData.client.FRABenefits);
+                        return this.userData.client.FRABenefits;
+                    })()
+            }, {
+                name: 'Receive at 70 (latest)',
+                data: (() => {
+                        console.log(this.userData.client.lateBenefits);
+                        while (this.userData.client.lateBenefits.length < this.userData.client.lifeExpectancy - 62) {
+                            this.userData.client.lateBenefits.unshift(99);
+                        }
+                        console.log(this.userData.client.lateBenefits);
+                        return this.userData.client.lateBenefits;
+                    })()
             }]
         });
 

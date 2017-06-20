@@ -1612,6 +1612,8 @@ define('results/results',['exports', 'jquery', 'ion-rangeslider', 'aurelia-frame
         }
 
         results.prototype.attached = function attached() {
+            var _this = this;
+
             function results(person) {
                 var early = 62;
                 var FRA = person.yearFRA;
@@ -1675,6 +1677,7 @@ define('results/results',['exports', 'jquery', 'ion-rangeslider', 'aurelia-frame
 
             console.log(this.userData);
 
+<<<<<<< HEAD
             var ages = [];
             for (var age = 62; age <= this.userData.lifeExpectancy; age++) {
                 ages.push(age);
@@ -1698,6 +1701,65 @@ define('results/results',['exports', 'jquery', 'ion-rangeslider', 'aurelia-frame
                 }, {
                     name: 'John',
                     data: [5, 7, 3]
+=======
+            Highcharts.chart('container', {
+                title: {
+                    text: 'Benefits vs. Age'
+                },
+
+                xAxis: {
+                    title: {
+                        text: 'Age'
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        pointStart: 62
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Yearly Benefits'
+                    }
+                },
+                series: [{
+                    name: 'Receive at 62 (earliest)',
+                    data: function () {
+                        console.log(_this.userData.client.earlyBenefits);
+                        while (_this.userData.client.earlyBenefits.length < _this.userData.client.lifeExpectancy - 62) {
+                            _this.userData.client.earlyBenefits.unshift(99);
+                        }console.log(_this.userData.client.earlyBenefits);
+                        return _this.userData.client.earlyBenefits;
+                    }()
+                }, {
+                    name: 'Receive at ' + this.userData.client.retirementAge + ' (user-selected)',
+                    data: function () {
+                        console.log(_this.userData.client.userSelectedBenefits);
+                        while (_this.userData.client.userSelectedBenefits.length < _this.userData.client.lifeExpectancy - 62) {
+                            _this.userData.client.userSelectedBenefits.unshift(99);
+                        }console.log(_this.userData.client.userSelectedBenefits);
+                        return _this.userData.client.userSelectedBenefits;
+                    }()
+                }, {
+                    name: 'Receive at ' + this.userData.client.yearFRA + ' (FRA)',
+                    data: function () {
+                        console.log(_this.userData.client.FRABenefits);
+                        while (_this.userData.client.FRABenefits.length < _this.userData.client.lifeExpectancy - 62) {
+                            _this.userData.client.FRABenefits.unshift(99);
+                        }console.log(_this.userData.client.FRABenefits);
+                        return _this.userData.client.FRABenefits;
+                    }()
+                }, {
+                    name: 'Receive at 70 (latest)',
+                    data: function () {
+                        console.log(_this.userData.client.lateBenefits);
+                        while (_this.userData.client.lateBenefits.length < _this.userData.client.lifeExpectancy - 62) {
+                            _this.userData.client.lateBenefits.unshift(99);
+                        }
+                        console.log(_this.userData.client.lateBenefits);
+                        return _this.userData.client.lateBenefits;
+                    }()
+>>>>>>> 6bf1ac0df34db1b095e07bd735c425ec87979975
                 }]
             });
         };
