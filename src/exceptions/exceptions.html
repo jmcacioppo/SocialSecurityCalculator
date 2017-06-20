@@ -1,4 +1,7 @@
 <template>    
+    <require from="bootstrap-toggle/css/bootstrap-toggle.css"></require>
+    <require from="bootstrap-toggle/css/bootstrap2-toggle.css"></require>
+    
     <form id="exceptions" submit.delegate="calculate()">
         <h1>Exceptions</h1>
 
@@ -9,7 +12,9 @@
             <div class="form-group">
                 <label for="clientMilitaryService">Have you served in the military?</label>
                 <br>
-                <input type="checkbox" id="clientMilitaryService" checked.bind="userData.client.militaryService" data-toggle="toggle">
+                <div click.delegate="toggleMilitary()">
+                    <input type="checkbox" id="military" data-toggle="toggle" data-on="Yes" data-off="No">                
+                </div>
             </div>
 
             <div show.bind="userData.client.militaryService">
@@ -28,7 +33,9 @@
             <div class="form-group">
                 <label for="clientWorkedOnARailroad">Have you worked on a railroad?</label>
                 <br>
-                <input type="checkbox" id="clientWorkedOnARailroad" checked.bind="userData.client.workedOnARailroad" data-toggle="toggle">
+                <div click.delegate="toggleRailroad()">
+                    <input type="checkbox" id="railroad" data-toggle="toggle" data-on="Yes" data-off="No">
+                </div>
             </div>
 
             <div show.bind="userData.client.workedOnARailroad" class="form-group">
@@ -45,9 +52,12 @@
             <div class="form-group">
                 <label for="clientRecievePension">Have you received a government pension?</label>
                 <br>
-                <input type="checkbox" id="clientRecievePension" checked.bind="userData.client.recievePension" data-toggle="toggle">
+                <div click.delegate="toggleGPO()">
+                    <input type="checkbox" id="gpo" data-toggle="toggle" data-on="Yes" data-off="No">
+                </div>
             </div>
 
+            <!--AMOUNT OF GPO-->
             <div show.bind="userData.client.recievePension" class="form-group" id="clientPensionBox">
                 <label for="clientPensionAmount">How much government pension do you receive per month?</label>
                 <input type="text" value.bind="userData.client.pensionAmount" class="form-control" placeholder="2000">
@@ -69,13 +79,17 @@
                 <div class="form-group">
                     <label for="client26Countries">Is your dual citizenship with one of these 26 coutnries?</label>
                     <br>
-                    <input type="checkbox" id="client26Countries" checked.bind="userData.client.isDual26Countries" data-toggle="toggle">
+                    <div click.delegate="toggle26Countries()">
+                        <input type="checkbox" id="26countries" data-toggle="toggle" data-on="Yes" data-off="No">
+                    </div>
                 </div>
 
                 <div show.bind="userData.client.isDual26Countries" class="form-group" id="clientCanadaItalyBox">
                     <label for="clientCanadaItaly">Is your dual citizenship with Italy or Canada (provided you were hired in the US by the Canadian government)?</label>
                     <br>
-                    <input type="checkbox" id="clientCanadaItaly" checked.bind="userData.client.dualCanadaItaly"  change.delegate="checkCanadaItaly(userData.client.dualCanadaItaly)" data-toggle="toggle">
+                    <div click.delegate="toggleCanadaItaly()">
+                        <input type="checkbox" checked id="canadaItaly" data-toggle="toggle" data-on="Yes" data-off="No">
+                    </div>
                 </div>
             </div>    
 
@@ -84,13 +98,17 @@
                 <div class="form-group" id="clientInstrumentalityBox">
                     <label for="clientInstrumentality">Do you work for an Instrumentality?</label>
                     <br>
-                    <input type="checkbox" id="clientInstrumentality" checked.bind="userData.client.checkInstrumentality" data-toggle="toggle">
+                    <div click.delegate="toggleInstrumentality()">
+                        <input type="checkbox" id="instrumentality" data-toggle="toggle" data-on="Yes" data-off="No">
+                    </div>
                 </div>
                 
                 <div show.bind="userData.client.checkInstrumentality" class="form-group" id="clientOneOrTwoBox">
                     <label for="clientOneOrTwo">Do all 3 of these conditions apply?</label>
                     <br>
-                    <input type="checkbox" id="clientOneOrTwo" checked.bind="userData.client.checkConditions" change.delegate="checkConditions(userData.client.checkConditions)" data-toggle="toggle">
+                    <div click.delegate="toggleConditions()">
+                        <input type="checkbox" id="conditions" data-toggle="toggle" data-on="Yes" data-off="No">
+                    </div>
                 </div>
             </div>
         </div>
@@ -105,7 +123,9 @@
             <div class="form-group">
                 <label for="spouseMilitaryService">Have you served in the military?</label>
                 <br>
-                <input type="checkbox" checked.bind="userData.spouse.militaryService" data-toggle="toggle">
+                <div click.delegate="toggleMilitarySpouse()">
+                    <input type="checkbox" id="militarySpouse" data-toggle="toggle" data-on="Yes" data-off="No">
+                </div>
             </div>
 
             <!--MILITARY SERVICE-->
@@ -125,7 +145,9 @@
             <div class="form-group">
                 <label for="spouseWorkedOnARailroad">Have you worked on a railroad?</label>
                 <br>
-                <input type="checkbox" id="spouseWorkedOnARailroad" checked.bind="userData.spouse.workedOnARailroad" data-toggle="toggle">
+                <div click.delegate="toggleRailroadSpouse()">
+                    <input type="checkbox" id="railroadSpouse" data-toggle="toggle" data-on="Yes" data-off="No">
+                </div>
             </div>
 
             <div show.bind="userData.spouse.workedOnARailroad" class="form-group">
@@ -142,7 +164,9 @@
             <div class="form-group">
                 <label for="spouseRecievePension">Have you received a government pension?</label>
                 <br>
-                <input type="checkbox" id="spouseRecievePension" checked.bind="userData.spouse.recievePension" data-toggle="toggle">
+                <div click.delegate="toggleGPOSpouse()">
+                    <input type="checkbox" id="gpoSpouse" data-toggle="toggle" data-on="Yes" data-off="No">
+                </div>
             </div>
 
             <div show.bind="userData.spouse.recievePension" class="form-group" id="spousePensionBox">
@@ -166,13 +190,17 @@
                 <div show.bind="userData.spouse.dual26Countries" class="form-group">
                     <label for="spouse26Countries">Is your dual citizenship with one of these 26 coutnries?</label>
                     <br>
-                    <input type="checkbox" id="spouse26Countries" checked.bind="userData.spouse.isDual26Countries" data-toggle="toggle">
+                    <div click.delegate="toggle26CountriesSpouse()">
+                        <input type="checkbox" id="26countriesSpouse" data-toggle="toggle" data-on="Yes" data-off="No">
+                    </div>
                 </div>
 
                 <div show.bind="userData.spouse.isDual26Countries" class="form-group" id="spouseCanadaItalyBox">
                     <label for="spouseCanadaItaly">Is your dual citizenship with Italy or Canada (provided you were hired in the US by the Canadian government)?</label>
                     <br>
-                    <input type="checkbox" id="spouseCanadaItaly" checked.bind="userData.spouse.dualCanadaItaly" change.delegate="checkCanadaItaly(userData.spouse.dualCanadaItaly)" data-toggle="toggle">
+                    <div click.delegate="toggleCanadaItalySpouse()">
+                        <input type="checkbox" checked id="canadaItalySpouse" data-toggle="toggle" data-on="Yes" data-off="No">
+                    </div>
                 </div>
             </div>
 
@@ -181,13 +209,17 @@
                 <div class="form-group" id="spouseInstrumentalityBox">
                     <label for="spouseInstrumentality">Do you work for an Instrumentality?</label>
                     <br>
-                    <input type="checkbox" id="spouseInstrumentality" checked.bind="userData.spouse.checkInstrumentality" data-toggle="toggle">
+                    <div click.delegate="toggleInstrumentalitySpouse()">
+                        <input type="checkbox" id="instrumentalitySpouse" data-toggle="toggle" data-on="Yes" data-off="No">
+                    </div>
                 </div>
                 
                 <div show.bind="userData.spouse.checkInstrumentality" class="form-group" id="spouseOneOrTwoBox">
                     <label for="spouseOneOrTwo">Do all 3 of these conditions apply?</label>
                     <br>
-                    <input type="checkbox" id="spouseOneOrTwo" checked.bind="userData.spouse.checkConditions" change.delegate="checkConditions(userData.spouse.checkConditions)" data-toggle="toggle">
+                    <div click.delegate="toggleConditionsSpouse()">
+                        <input type="checkbox" id="conditionsSpouse" data-toggle="toggle" data-on="Yes" data-off="No">
+                    </div>
                 </div>
             </div>
         </div>

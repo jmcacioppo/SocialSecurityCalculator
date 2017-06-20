@@ -170,6 +170,13 @@ export class benefits {
             var sumOfTiers = tier1 + tier2 + tier3; 
             ssBase = sumOfTiers * 12; 
 
+            //ADJUST FOR GPO
+            if(person.recievePension) {
+                var pension = parseFloat(person.pensionAmount) * 2/3; //per month
+                pension = pension * 12; //per year
+                ssBase = ssBase - pension; //adjusted for GPO
+            }
+
             person.pia = pia;
             person.ssBase = ssBase;
         }
@@ -313,6 +320,7 @@ export class benefits {
             postfix: "%",
             onFinish: (data) => {
                 this.userData.client.cola = data.from;
+                this.userData.spouse.cola = data.from;
             }
         });
    }

@@ -8,7 +8,8 @@
         <div class="form-group">
             <label for="wagehistory">Wages:</label>
             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                <div repeat.for="age of userData.client.ageFrom18" id="wages">
+                <!--START FROM AGE 18-->
+                <div repeat.for="age of userData.client.ageFrom18" id="wages"> 
                     <label for="year">${userData.client.yearOfBirth + 18 + age}</label>
                     <input id="wagesInput" type="text" value.bind="userData.client.wages[age]" class="form-control" id="inlineFormInputGroup" placeholder="0">
                 </div>
