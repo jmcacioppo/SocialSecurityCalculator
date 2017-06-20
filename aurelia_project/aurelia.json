@@ -188,9 +188,12 @@
             "main": "moment"
           },
           {
-            "name": "highcharts.js",
-            "path": "../node_modules/highcharts/js",
-            "main": "js/highcharts"
+            "name": "highcharts",
+            "path": "../node_modules/highcharts",
+            "main": "js/highcharts",
+            "resources": [
+              "css/highcharts.css"
+            ]
           }
         ]
       }
