@@ -30,23 +30,58 @@ export class results {
                 var retirementYear = age + yearOfBirth;
                 var limitYear = retirementYear - currentYear;
                 var overLimit = retirementIncome - projEarningsLimit[limitYear];
-                console.log(limitYear);
-                console.log(overLimit);
-                console.log(projEarningsLimit[limitYear]);
 
                 if(overLimit > 0 && age < FRA) { //Over Limit and Before FRA
                     var reduction = overLimit / 2;
                     person.ssBaseAdj[i] = person.ssBase - reduction;
+                    if(person.ssBaseAdj[i] < 0) person.ssBaseAdj[i] = 0;
                 }
                 else if(overLimit > 0 && age == FRA) { //Over Limit and At FRA
                     var reduction = overLimit / 3;
                     person.ssBaseAdj[i] = person.ssBase - reduction;
+                    if(person.ssBaseAdj[i] < 0) person.ssBaseAdj[i] = 0;
                 }
                 else person.ssBaseAdj[i] = person.ssBase; //Below Limit or After FRA
             }); 
+
+            person.ssBaseAdj.forEach(function(ssBase, i) {
+                var age = retirementAges[i];
+                var lifeExpectancy = person.lifeExpectancy;
+                var numOfYears = lifeExpectancy - age;
+
+                for(var j = 0; j < numOfYears; j++) {
+                    if(i == 0) {
+                        if(j==0) person.earlyBenefits[j] = ssBase;
+                        else {
+                            person.earlyBenefits[j] = person.earlyBenefits[j-1] + person.earlyBenefits[j-1] * person.cola / 100;
+                        }
+                    }
+                    else if(i == 1) {
+                        if(j==0) person.FRABenefits[j] = ssBase;
+                        else {
+                            person.FRABenefits[j] = person.FRABenefits[j-1] + person.FRABenefits[j-1] * person.cola / 100;
+                        }
+                    }
+                    else if(i == 2) {
+                        if(j==0) person.userSelectedBenefits[j] = ssBase;
+                        else {
+                            person.userSelectedBenefits[j] = person.userSelectedBenefits[j-1] + person.userSelectedBenefits[j-1] * person.cola / 100;
+                        }
+                    }
+                    else if(i == 3) {
+                        if(j==0) person.lateBenefits[j] = ssBase;
+                        else {
+                            person.lateBenefits[j] = person.lateBenefits[j-1] + person.lateBenefits[j-1] * person.cola / 100;
+                        }
+                    }
+                }
+
+            }); 
+
         }
 
         results(this.userData.client);
+        console.log(this.userData);
 
     //     var context = document.getElementById("myChart").getContext('2d');
     //     console.log(context);
