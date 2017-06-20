@@ -38,6 +38,7 @@ export class personalinfo {
             this.userData.client.monthOfBirth = parseInt(monthOfBirth);
             this.userData.client.currentYear = parseInt(currentYear);
             this.userData.client.ageFrom18 = this.userData.client.age - 18;
+            this.userData.client.retirementyear = this.userData.client.retirementAge + this.userData.client.yearOfBirth;
 
             if(yearOfBirth >= 1900 && yearOfBirth <= 1937) { //SET FRA
                 this.userData.client.yearFRA = 65; 
@@ -122,9 +123,6 @@ export class personalinfo {
                     this.userData.client.monthFRA = 0;
                 }
             }
-
-            console.log(this.userData.client.yearFRA);
-            console.log(this.userData.client.monthFRA);
         }
     }
 
@@ -147,6 +145,7 @@ export class personalinfo {
             this.userData.spouse.monthOfBirth = parseInt(monthOfBirth);
             this.userData.spouse.currentYear = parseInt(currentYear);
             this.userData.spouse.ageFrom18 = this.userData.spouse.age - 18;
+            this.userData.spouse.retirementyear = this.userData.spouse.retirementAge + this.userData.spouse.yearOfBirth;
 
             if(yearOfBirth >= 1900 && yearOfBirth <= 1937) {
                 this.userData.spouse.yearFRA = 65; 
@@ -297,6 +296,7 @@ export class personalinfo {
     checkNumOfDeps(value) {
         if(value > 0) this.userData.client.showAgeOfDeps = true;
         else this.userData.client.showAgeOfDeps = false;
+        console.log(value);
     }
 
     //NAVIGATE TO WAGE HISTORY
@@ -321,6 +321,7 @@ export class personalinfo {
             onFinish: (data) => {
                 this.userData.client.retirementAge = data.from;
                 this.userData.client.lifeExpectancy = data.to;
+                this.userData.client.retirementyear = this.userData.client.retirementAge + this.userData.client.yearOfBirth;
             }
         });
 
@@ -335,6 +336,7 @@ export class personalinfo {
             onFinish: (data) => {
                 this.userData.spouse.retirementAge = data.from;
                 this.userData.spouse.lifeExpectancy = data.to;
+                this.userData.spouse.retirementyear = this.userData.spouse.retirementAge + this.userData.spouse.yearOfBirth;
             }
         });
 
