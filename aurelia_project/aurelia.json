@@ -75,7 +75,14 @@
           ],
           "stub": true
         }
-      ]
+      ],
+      "config": {
+        "shim": {
+          "highcharts": {
+            "exports": "Highcharts"
+          }
+        }
+      }
     },
     "options": {
       "minify": "stage & prod",
@@ -179,6 +186,11 @@
             "name": "moment",
             "path": "../node_modules/moment",
             "main": "moment"
+          },
+          {
+            "name": "highcharts.js",
+            "path": "../node_modules/highcharts/js",
+            "main": "js/highcharts"
           }
         ]
       }
