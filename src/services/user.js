@@ -46,6 +46,7 @@ export class User {
         this.numOfDeps = 0;
         this.ageOfDeps = [];
         this.showAgeOfDeps = false;
+        this.hasDeps = false;
 
         // Retirement Info
         this.retirementIncome = 0;

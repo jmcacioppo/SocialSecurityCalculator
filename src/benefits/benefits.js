@@ -7,7 +7,9 @@ import {UserData} from '../services/userdata';
 import {Router} from 'aurelia-router';
 import {wagePerc, allowedSalary, inflationIndex, tier1perc, tier2perc, tier3perc, 
     tier1, consttier1, consttier2,subEarningsPerc, EL1943plus, EL1955, EL1956, EL1957,
-    EL1958, EL1959, EL1960plus, projEarningsLimit} from 'src/services/constants.js';
+    EL1958, EL1959, EL1960plus, projEarningsLimit, spousalBenefits1943to1954,
+    spousalBenefits1955, spousalBenefits1956, spousalBenefits1957, spousalBenefits1958,
+    spousalBenefits1959, spousalBenefits1960to2000} from 'src/services/constants.js';
 
 @inject(UserData, Router)
 export class benefits {
@@ -172,12 +174,124 @@ export class benefits {
             person.ssBase = ssBase;
         }
 
+        function spousalBenefit(client, spouse) {
+            var spousalBenefit;
+            var ssBaseClient = client.ssBase;
+            var ssBaseSpouse = spouse.ssBase;
+            var yearOfBirth = spouse.yearOfBirth;
+            var retirementAge = spouse.retirementAge;
+
+            switch(yearOfBirth) {
+                case 1955:
+                    switch(retirementAge) {
+                        case 62: spousalBenefit = ssBaseClient * spousalBenefits1955[0];
+                        case 63: spousalBenefit = ssBaseClient * spousalBenefits1955[1];
+                        case 64: spousalBenefit = ssBaseClient * spousalBenefits1955[2];
+                        case 65: spousalBenefit = ssBaseClient * spousalBenefits1955[3];
+                        case 66: spousalBenefit = ssBaseClient * spousalBenefits1955[4];
+                        case 67: spousalBenefit = ssBaseClient * spousalBenefits1955[5];
+                        case 68: spousalBenefit = ssBaseClient * spousalBenefits1955[6];
+                        case 69: spousalBenefit = ssBaseClient * spousalBenefits1955[7];
+                        default: spousalBenefit = ssBaseClient * spousalBenefits1955[8];
+                    }
+                case 1956:
+                    switch(retirementAge) {
+                        case 62: spousalBenefit = ssBaseClient * spousalBenefits1956[0];
+                        case 63: spousalBenefit = ssBaseClient * spousalBenefits1956[1];
+                        case 64: spousalBenefit = ssBaseClient * spousalBenefits1956[2];
+                        case 65: spousalBenefit = ssBaseClient * spousalBenefits1956[3];
+                        case 66: spousalBenefit = ssBaseClient * spousalBenefits1956[4];
+                        case 67: spousalBenefit = ssBaseClient * spousalBenefits1956[5];
+                        case 68: spousalBenefit = ssBaseClient * spousalBenefits1956[6];
+                        case 69: spousalBenefit = ssBaseClient * spousalBenefits1956[7];
+                        default: spousalBenefit = ssBaseClient * spousalBenefits1956[8];
+                    }
+                case 1957:
+                    switch(retirementAge) {
+                        case 62: spousalBenefit = ssBaseClient * spousalBenefits1957[0];
+                        case 63: spousalBenefit = ssBaseClient * spousalBenefits1957[1];
+                        case 64: spousalBenefit = ssBaseClient * spousalBenefits1957[2];
+                        case 65: spousalBenefit = ssBaseClient * spousalBenefits1957[3];
+                        case 66: spousalBenefit = ssBaseClient * spousalBenefits1957[4];
+                        case 67: spousalBenefit = ssBaseClient * spousalBenefits1957[5];
+                        case 68: spousalBenefit = ssBaseClient * spousalBenefits1957[6];
+                        case 69: spousalBenefit = ssBaseClient * spousalBenefits1957[7];
+                        default: spousalBenefit = ssBaseClient * spousalBenefits1957[8];
+                    }
+                case 1958:
+                    switch(retirementAge) {
+                        case 62: spousalBenefit = ssBaseClient * spousalBenefits1958[0];
+                        case 63: spousalBenefit = ssBaseClient * spousalBenefits1958[1];
+                        case 64: spousalBenefit = ssBaseClient * spousalBenefits1958[2];
+                        case 65: spousalBenefit = ssBaseClient * spousalBenefits1958[3];
+                        case 66: spousalBenefit = ssBaseClient * spousalBenefits1958[4];
+                        case 67: spousalBenefit = ssBaseClient * spousalBenefits1958[5];
+                        case 68: spousalBenefit = ssBaseClient * spousalBenefits1958[6];
+                        case 69: spousalBenefit = ssBaseClient * spousalBenefits1958[7];
+                        default: spousalBenefit = ssBaseClient * spousalBenefits1958[8];
+                    }
+                case 1959:
+                    switch(retirementAge) {
+                        case 62: spousalBenefit = ssBaseClient * spousalBenefits1959[0];
+                        case 63: spousalBenefit = ssBaseClient * spousalBenefits1959[1];
+                        case 64: spousalBenefit = ssBaseClient * spousalBenefits1959[2];
+                        case 65: spousalBenefit = ssBaseClient * spousalBenefits1959[3];
+                        case 66: spousalBenefit = ssBaseClient * spousalBenefits1959[4];
+                        case 67: spousalBenefit = ssBaseClient * spousalBenefits1959[5];
+                        case 68: spousalBenefit = ssBaseClient * spousalBenefits1959[6];
+                        case 69: spousalBenefit = ssBaseClient * spousalBenefits1959[7];
+                        default: spousalBenefit = ssBaseClient * spousalBenefits1959[8];
+                    }
+                default:
+                    if(yearOfBirth >= 1943 && yearOfBirth <= 1954) {
+                        switch(retirementAge) {
+                            case 62: spousalBenefit = ssBaseClient * spousalBenefits1943to1954[0];
+                            case 63: spousalBenefit = ssBaseClient * spousalBenefits1943to1954[1];
+                            case 64: spousalBenefit = ssBaseClient * spousalBenefits1943to1954[2];
+                            case 65: spousalBenefit = ssBaseClient * spousalBenefits1943to1954[3];
+                            case 66: spousalBenefit = ssBaseClient * spousalBenefits1943to1954[4];
+                            case 67: spousalBenefit = ssBaseClient * spousalBenefits1943to1954[5];
+                            case 68: spousalBenefit = ssBaseClient * spousalBenefits1943to1954[6];
+                            case 69: spousalBenefit = ssBaseClient * spousalBenefits1943to1954[7];
+                            default: spousalBenefit = ssBaseClient * spousalBenefits1943to1954[8];
+                        }
+                    }
+                    else if(yearOfBirth >= 1960 && yearOfBirth <= 2000) {
+                        switch(retirementAge) {
+                            case 62: spousalBenefit = ssBaseClient * spousalBenefits1960to2000[0];
+                            case 63: spousalBenefit = ssBaseClient * spousalBenefits1960to2000[1];
+                            case 64: spousalBenefit = ssBaseClient * spousalBenefits1960to2000[2];
+                            case 65: spousalBenefit = ssBaseClient * spousalBenefits1960to2000[3];
+                            case 66: spousalBenefit = ssBaseClient * spousalBenefits1960to2000[4];
+                            case 67: spousalBenefit = ssBaseClient * spousalBenefits1960to2000[5];
+                            case 68: spousalBenefit = ssBaseClient * spousalBenefits1960to2000[6];
+                            case 69: spousalBenefit = ssBaseClient * spousalBenefits1960to2000[7];
+                            default: spousalBenefit = ssBaseClient * spousalBenefits1960to2000[8];
+                        }
+                    }
+            }
+
+            if(parseInt(client.numOfDeps) > 0) {
+                var retirementDiff = retirementAge - spouse.age;
+                client.ageOfDeps.forEach(function(age, i) {
+                    if(parseInt(age) + retirementDiff < 18) {
+                        spousalBenefit = client.ssBase * 0.50;
+                    }
+                });
+            }
+
+            if(spousalBenefit > ssBaseSpouse) {
+                spouse.ssBase = spousalBenefit;
+            }
+        }
+
         var maritalStatus = this.userData.client.maritalStatus;
         calculateSSBase(this.userData.client);
 
         //GET PIA COCLIENT CALCULATIONS IF NECESSARY
         if(maritalStatus == "Married") {
             calculateSSBase(this.userData.spouse);
+            spousalBenefit(this.userData.client, this.userData.spouse);
         }
         
         console.log(this.userData);
