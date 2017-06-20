@@ -1,28 +1,20 @@
 <template>
-    <div id="wagehistory">
+    <!--MANUALLY SUBMIT WAGE HISTORY-->
+    <form id="wagehistory" submit.delegate="completeWages()">
         <h1>Co-Client's Wage History</h1>
-
-        <div id="wage">
-            <label for="spousewageCheck">Click if you would like to input your own wages</label>
-            <br>
-            <button id="spousewageCheck" click.delegate="showWages()">Input My Wages</button>        
-        </div>
-
-        <br> <br>
-
-        <!--MANUALLY SUBMIT WAGE HISTORY-->
-        <form show.bind="userData.spouse.showWages" submit.delegate="completeWages()">
-            <div class="form-group">
-                <label for="spousewagehistory">Wages:</label>
-                <div class="input-group mb-2 mr-sm-2 mb-sm-0" id="spousewages">
-                    <div repeat.for="age of userData.spouse.ageFrom18">
-                        <label for="year">${userData.spouse.yearOfBirth + 18 + age}</label>
-                        <input type="text" value.bind="userData.spouse.wages[age]" class="form-control" id="inlineFormInputGroup" placeholder="0">
-                    </div>
+        <p>If you would like to submit your own wages to ensure accuracy, input them here
+            and select "Submit Wages."
+        </p>
+        <div class="form-group">
+            <label for="wagehistory">Wages:</label>
+            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                <div repeat.for="age of userData.spouse.ageFrom18" id="wages">
+                    <label for="year">${userData.spouse.yearOfBirth + 18 + age}</label>
+                    <input id="wages" type="text" value.bind="userData.spouse.wages[age]" class="form-control" id="inlineFormInputGroup" placeholder="0">
                 </div>
             </div>
-            <button type="submit">Submit Wages</button>
-        </form>
-
-    </div>
+        </div>
+        <button type="button" click.delegate="back()">Back</button>
+        <button type="submit">Submit Wages</button>
+    </form>
 </template>
