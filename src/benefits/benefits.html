@@ -7,6 +7,7 @@
     <form id="benefits" submit.delegate="benefitsCalc()">
         <h1>Benefits</h1>
         <div class="form-group">
+            <!--ELIGIBLE FOR SOCIAL SECURITY BENEFITS-->
             <label for="eligible">Are you eligible for Social Security benefits?</label>
             <br>
             <input type="checkbox" id="eligible" checked.bind="userData.client.eligibleSS" data-toggle="toggle">
@@ -14,16 +15,19 @@
 
         <div show.bind="userData.client.eligibleSS">
             <div class="form-group">
+                <!--CHECK IF WEP APPLIES-->
                 <label for="wep">Does WEP apply to you?</label>
                 <br>
                 <input type="checkbox" id="wep" checked.bind="userData.client.wep" data-toggle="toggle">
             </div>
 
             <div show.bind="userData.client.wep" class="form-group">
+                <!--IF IT DOES, CHECK HOW MANY YEARS OF SUBSTANTIAL EARNINGS-->
                 <label for="dob">Years of Substantial Earnings</label>
                 <input type="text" value.bind="userData.client.yrsOfSubEarnings" class="form-control" id="yrsOfSubEarningsCheck">
             </div>
 
+            <!--ADJUST COLA IF NECESSARY-->
             <label for="cola">Cost of Living Adjustment</label>
             <input type="text" id="benefitslider" value="" style="position: relative; height: 80px">
         </div>

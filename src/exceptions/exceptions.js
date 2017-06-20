@@ -45,11 +45,6 @@ export class exceptions {
                 }
             }
         }
-
-        function GPO(person) {
-            var pension = person.pensionAmount * 2/3;
-
-        }
         
         function calculatePIA(person, widowcheck) {
             //GET ALL USER DATA            
@@ -275,6 +270,7 @@ export class exceptions {
         this.router.navigate('#/benefits');
     }
 
+    //CHECK EXCEPTIONS
     beganService(date) {
         var beganService = moment(date, 'M/D/YYYY');
         var currentYear = moment().format('YYYY');
@@ -373,12 +369,100 @@ export class exceptions {
         }
     }
 
-    checkCanadaItaly(value) {
-        if(value == false) alert("You are not eligible for Social Security");
+    //CLIENT TOGGLES
+    toggleMilitary() {
+         var check = $('#military').prop("checked");
+         this.userData.client.militaryService = check;
     }
 
-    checkConditions(value) {
-        if(value == true) alert("You are not eligible for Social Security");
+    toggleRailroad() {
+        var check = $('#railroad').prop("checked");
+        this.userData.client.workedOnARailroad = check;
+    }
+
+    toggleGPO() {
+        var check = $('#gpo').prop("checked");
+        this.userData.client.recievePension = check;
+    }
+    
+    toggle26Countries() {
+        var check = $('#26countries').prop("checked");
+        this.userData.client.isDual26Countries = check;
+    }
+
+    toggleCanadaItaly() {
+        var check = $('#canadaItaly').prop("checked");
+        this.userData.client.dualCanadaItaly = check;
+        if(check == false) alert("You are not eligible for Social Security");
+    }
+
+    toggleInstrumentality() {
+        var check = $('#instrumentality').prop("checked");
+        this.userData.client.checkInstrumentality = check;
+    }
+
+    toggleConditions() {
+        var check = $('#conditions').prop("checked");
+        this.userData.client.checkConditions = check;
+        if(check == true) alert("You are not eligible for Social Security");
+    }
+
+
+    //SPOUSE TOGGLES
+    toggleMilitarySpouse() {
+         var check = $('#militarySpouse').prop("checked");
+         this.userData.spouse.militaryService = check;
+    }
+
+    toggleRailroadSpouse() {
+        var check = $('#railroadSpouse').prop("checked");
+        this.userData.spouse.workedOnARailroad = check;
+    }
+
+    toggleGPOSpouse() {
+        var check = $('#gpoSpouse').prop("checked");
+        this.userData.spouse.recievePension = check;
+    }
+    
+    toggle26CountriesSpouse() {
+        var check = $('#26countriesSpouse').prop("checked");
+        this.userData.spouse.isDual26Countries = check;
+    }
+
+    toggleCanadaItalySpouse() {
+        var check = $('#canadaItalySpouse').prop("checked");
+        this.userData.spouse.dualCanadaItaly = check;
+        if(check == false) alert("You are not eligible for Social Security");
+    }
+
+    toggleInstrumentalitySpouse() {
+        var check = $('#instrumentalitySpouse').prop("checked");
+        this.userData.spouse.checkInstrumentality = check;
+    }
+
+    toggleConditionsSpouse() {
+        var check = $('#conditionsSpouse').prop("checked");
+        this.userData.spouse.checkConditions = check;
+        if(check == true) alert("You are not eligible for Social Security");
+    }
+
+    //Attach bootstrap toggles
+    attached() {
+        $('#military').bootstrapToggle();
+        $('#railroad').bootstrapToggle();
+        $('#gpo').bootstrapToggle();
+        $('#26countries').bootstrapToggle();
+        $('#canadaItaly').bootstrapToggle();
+        $('#instrumentality').bootstrapToggle();
+        $('#conditions').bootstrapToggle();
+
+        $('#militarySpouse').bootstrapToggle();
+        $('#railroadSpouse').bootstrapToggle();
+        $('#gpoSpouse').bootstrapToggle();
+        $('#26countriesSpouse').bootstrapToggle();
+        $('#canadaItalySpouse').bootstrapToggle();
+        $('#instrumentalitySpouse').bootstrapToggle();
+        $('#conditionsSpouse').bootstrapToggle();
     }
 
     back() {
