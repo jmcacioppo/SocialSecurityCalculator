@@ -83,7 +83,13 @@ export class results {
 
         }
 
+        var maritalStatus = this.userData.client.maritalStatus;
         results(this.userData.client);
+
+        if(maritalStatus == "Married") {
+            results(this.userData.spouse);
+        }
+
         console.log(this.userData);
 
         // GENERATE CHART
