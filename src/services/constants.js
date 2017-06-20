@@ -435,3 +435,31 @@ export var inflationIndex = [
         41158.4975419469,
         42187.4599804956, //2054
     ];
+
+    export var spousalBenefits1943to1954 = [
+        0,
+        0.375,
+        0.4167,
+        0.4584,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5
+    ];
+
+    export var spousalBenefits1955 = [
+        34.79,
+        37.09,
+        40.97,
+        45.14,
+        49.31,
+        50,
+        50,
+        50,
+        50,
+    ];
+
+    export var spousalBenefits1956 = [
+        
+    ];

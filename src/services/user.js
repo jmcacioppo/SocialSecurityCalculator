@@ -5,6 +5,11 @@ export class User {
         this.ssBaseAdj = [];
         this.pia = 0;
         this.survivorpia = 0;
+
+        this.earlyBenefits = [];
+        this.FRABenefits = [];
+        this.userSelectedBenefits = [];
+        this.lateBenefits = [];
        
         // Personal Info
         this.name = "";
