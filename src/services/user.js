@@ -2,6 +2,7 @@ export class User {
      constructor() {
         // Social Security Values
         this.ssBase = 0;
+        this.ssBaseAdj = [];
         this.pia = 0;
         this.survivorpia = 0;
        
@@ -45,6 +46,7 @@ export class User {
         this.retirementIncome = 0;
         this.retirementAge = 65;
         this.lifeExpectancy = 91;
+        this.retirementYear = 0;
 
         //EXCEPTIONS
         //Military Info

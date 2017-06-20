@@ -7,7 +7,7 @@ import {UserData} from '../services/userdata';
 import {Router} from 'aurelia-router';
 import {wagePerc, allowedSalary, inflationIndex, tier1perc, tier2perc, tier3perc, 
     tier1, consttier1, consttier2,subEarningsPerc, EL1943plus, EL1955, EL1956, EL1957,
-    EL1958, EL1959, EL1960plus} from 'src/services/constants.js';
+    EL1958, EL1959, EL1960plus, projEarningsLimit} from 'src/services/constants.js';
 
 @inject(UserData, Router)
 export class benefits {
@@ -181,6 +181,7 @@ export class benefits {
         }
         
         console.log(this.userData);
+        this.router.navigate('#/results');
     }
 
     back() {
