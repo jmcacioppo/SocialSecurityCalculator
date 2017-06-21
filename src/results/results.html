@@ -1,18 +1,31 @@
 <template>
-
     <require from="highcharts/css/highcharts.css"></require>
 
     <div id="results">
         <h1>Results</h1>
-        <div repeat.for="benefit of userData.client.ssBaseAdj">
-            <p>${benefit}</p>
+
+        <button class="btn btn-primary" click.delegate="results()">Get Results</button>
+
+        <div show.bind="userData.client.showChart">  
+            <p>Benefit at age 62: ${userData.client.ssBaseAdj[0]}</p>
+            <p>Benefit at age ${userData.client.yearFRA} (FRA): ${userData.client.ssBaseAdj[1]}</p>
+            <p>Benefit at age ${userData.client.retirementAge} (Your Selected Retirement Age): ${userData.client.ssBaseAdj[2]}</p>
+            <p>Benefit at age 70: ${userData.client.ssBaseAdj[3]}</p>
+            <div id="clientContainer" style="width: 750px; height: 600px; margin: 0 auto"></div>
         </div>
 
-        <button click.delegate="results()">Get Results</button>
+        <div show.bind="userData.spouse.showChart">  
+            <p>Benefit at age 62: ${userData.spouse.ssBaseAdj[0]}</p>
+            <p>Benefit at age ${userData.spouse.yearFRA}: ${userData.spouse.ssBaseAdj[1]}</p>
+            <p>Benefit at age ${userData.spouse.retirementAge}: ${userData.spouse.ssBaseAdj[2]}</p>
+            <p>Benefit at age 70: ${userData.spouse.ssBaseAdj[3]}</p>
+            <div id="spouseContainer" style="width: 750px; height: 600px; margin: 0 auto"></div>
+        </div>
 
-    <div id="clientContainer" style="width: 750px; height: 600px; margin: 0 auto"></div>
-    <div id="spouseContainer" style="width: 750px; height: 600px; margin: 0 auto"></div>
+        <br>
+        <br>
 
         <button class="btn btn-secondary" click.delegate="back()" id="back">Back</button>
     </div>
+
 </template>
