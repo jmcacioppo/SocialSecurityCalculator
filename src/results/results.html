@@ -4,13 +4,14 @@
 
     <div id="results">
         <h1>Results</h1>
-        <div repeat.for="benefit of userData.client.ssBaseAdj.length">
-            <p>Hello</p>
+        <div repeat.for="benefit of userData.client.ssBaseAdj">
+            <p>${benefit}</p>
         </div>
 
-    <div id="clientContainer" style="width: 550px; height: 400px; margin: 0 auto"></div>
+        <button click.delegate="results()">Get Results</button>
 
-    <div id="spouseContainer" style="width: 550px; height: 400px; margin: 0 auto"></div>
+    <div id="clientContainer" style="width: 750px; height: 600px; margin: 0 auto"></div>
+    <div id="spouseContainer" style="width: 750px; height: 600px; margin: 0 auto"></div>
 
         <button class="btn btn-secondary" click.delegate="back()" id="back">Back</button>
     </div>

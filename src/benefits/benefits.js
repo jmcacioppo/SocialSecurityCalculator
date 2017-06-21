@@ -293,6 +293,69 @@ export class benefits {
             }
         }
 
+        function results(person) {
+            var early = 62;
+            var FRA = person.yearFRA; //age at FRA
+            var userSelected = person.retirementAge;
+            var late = 70;
+            var retirementAges = [early, FRA, userSelected, late];            
+            var yearOfBirth = person.yearOfBirth;
+            var currentYear = person.currentYear;
+            var retirementIncome = person.retirementIncome;
+            
+            retirementAges.forEach(function(age, i) {
+                var retirementYear = age + yearOfBirth;
+                var limitYear = retirementYear - currentYear; //Amount of years until retire
+                var overLimit = retirementIncome - projEarningsLimit[limitYear];
+
+                if(overLimit > 0 && age < FRA) { //Over Limit and Before FRA
+                    var reduction = overLimit / 2;
+                    person.ssBaseAdj[i] = person.ssBase - reduction;
+                    if(person.ssBaseAdj[i] < 0) person.ssBaseAdj[i] = 0;
+                }
+                else if(overLimit > 0 && age == FRA) { //Over Limit and At FRA
+                    var reduction = overLimit / 3;
+                    person.ssBaseAdj[i] = person.ssBase - reduction;
+                    if(person.ssBaseAdj[i] < 0) person.ssBaseAdj[i] = 0;
+                }
+                else person.ssBaseAdj[i] = person.ssBase; //Below Limit or After FRA
+            }); 
+
+            person.ssBaseAdj.forEach(function(ssBase, i) {
+                var age = retirementAges[i];
+                var lifeExpectancy = person.lifeExpectancy;
+                var numOfYears = lifeExpectancy - age; //RNumber of years from retirement age until death
+
+                for(var j = 0; j < numOfYears; j++) {
+                    if(i == 0) { //At age 62
+                        if(j==0) person.earlyBenefits[j] = ssBase; 
+                        else {
+                            person.earlyBenefits[j] = person.earlyBenefits[j-1] + (person.earlyBenefits[j-1] * person.cola / 100);
+                        }
+                    }
+                    else if(i == 1) { //At FRA
+                        if(j==0) person.FRABenefits[j] = ssBase; 
+                        else {
+                            person.FRABenefits[j] = person.FRABenefits[j-1] + (person.FRABenefits[j-1] * person.cola / 100);
+                        }
+                    }
+                    else if(i == 2) {  //At selected age
+                        if(j==0) person.userSelectedBenefits[j] = ssBase; 
+                        else {
+                            person.userSelectedBenefits[j] = person.userSelectedBenefits[j-1] + (person.userSelectedBenefits[j-1] * person.cola / 100);
+                        }
+                    }
+                    else if(i == 3) { //At age 70
+                        if(j==0) person.lateBenefits[j] = ssBase; 
+                        else {
+                            person.lateBenefits[j] = person.lateBenefits[j-1] + (person.lateBenefits[j-1] * person.cola / 100);
+                        }
+                    }
+                }
+            }); 
+
+        } //end results(person)
+
         var maritalStatus = this.userData.client.maritalStatus;
         calculateSSBase(this.userData.client);
 
@@ -300,6 +363,11 @@ export class benefits {
         if(maritalStatus == "Married") {
             calculateSSBase(this.userData.spouse);
             spousalBenefit(this.userData.client, this.userData.spouse);
+        }
+
+        results(this.userData.client);
+        if(maritalStatus == "Married") {
+            results(this.userData.spouse);
         }
         
         console.log(this.userData);
