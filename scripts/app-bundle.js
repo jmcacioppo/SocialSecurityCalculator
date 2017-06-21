@@ -742,53 +742,58 @@ define('benefits/benefits',['exports', 'jquery', 'bootstrap-toggle', 'ion-ranges
 
                 var tier1, tier2, tier3;
                 var sum = _constants.consttier1 + _constants.consttier2;
-                if (pia > _constants.consttier1) {
-                    switch (yrsOfSubearnings) {
-                        case 29:
-                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[1];break;
-                        case 28:
-                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[2];break;
-                        case 27:
-                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[3];break;
-                        case 26:
-                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[4];break;
-                        case 25:
-                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[5];break;
-                        case 24:
-                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[6];break;
-                        case 23:
-                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[7];break;
-                        case 22:
-                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[8];break;
-                        case 21:
-                            tier1 = _constants.consttier1 * _constants.subEarningsPerc[9];break;
-                        default:
-                            if (yrsOfSubearnings >= 30) tier1 = _constants.consttier1 * _constants.subEarningsPerc[0];else tier1 = _constants.consttier1 * _constants.subEarningsPerc[10];
+
+                if (person.wep) {
+                    if (pia > _constants.consttier1) {
+                        switch (yrsOfSubearnings) {
+                            case 29:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[1];break;
+                            case 28:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[2];break;
+                            case 27:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[3];break;
+                            case 26:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[4];break;
+                            case 25:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[5];break;
+                            case 24:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[6];break;
+                            case 23:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[7];break;
+                            case 22:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[8];break;
+                            case 21:
+                                tier1 = _constants.consttier1 * _constants.subEarningsPerc[9];break;
+                            default:
+                                if (yrsOfSubearnings >= 30) tier1 = _constants.consttier1 * _constants.subEarningsPerc[0];else tier1 = _constants.consttier1 * _constants.subEarningsPerc[10];
+                        }
+                    } else {
+                        switch (yrsOfSubearnings) {
+                            case 29:
+                                tier1 = pia * _constants.subEarningsPerc[1];break;
+                            case 28:
+                                tier1 = pia * _constants.subEarningsPerc[2];break;
+                            case 27:
+                                tier1 = pia * _constants.subEarningsPerc[3];break;
+                            case 26:
+                                tier1 = pia * _constants.subEarningsPerc[4];break;
+                            case 25:
+                                tier1 = pia * _constants.subEarningsPerc[5];break;
+                            case 24:
+                                tier1 = pia * _constants.subEarningsPerc[6];break;
+                            case 23:
+                                tier1 = pia * _constants.subEarningsPerc[7];break;
+                            case 22:
+                                tier1 = pia * _constants.subEarningsPerc[8];break;
+                            case 21:
+                                tier1 = pia * _constants.subEarningsPerc[9];break;
+                            default:
+                                if (yrsOfSubearnings >= 30) tier1 = pia * _constants.subEarningsPerc[0];else tier1 = pia * _constants.subEarningsPerc[10];
+                        }
                     }
                 } else {
-                    switch (yrsOfSubearnings) {
-                        case 29:
-                            tier1 = pia * _constants.subEarningsPerc[1];break;
-                        case 28:
-                            tier1 = pia * _constants.subEarningsPerc[2];break;
-                        case 27:
-                            tier1 = pia * _constants.subEarningsPerc[3];break;
-                        case 26:
-                            tier1 = pia * _constants.subEarningsPerc[4];break;
-                        case 25:
-                            tier1 = pia * _constants.subEarningsPerc[5];break;
-                        case 24:
-                            tier1 = pia * _constants.subEarningsPerc[6];break;
-                        case 23:
-                            tier1 = pia * _constants.subEarningsPerc[7];break;
-                        case 22:
-                            tier1 = pia * _constants.subEarningsPerc[8];break;
-                        case 21:
-                            tier1 = pia * _constants.subEarningsPerc[9];break;
-                        default:
-                            if (yrsOfSubearnings >= 30) tier1 = pia * _constants.subEarningsPerc[0];else tier1 = pia * _constants.subEarningsPerc[10];
+                        if (pia > _constants.consttier1) tier1 = _constants.consttier1 * .90;else tier1 = pia * .90;
                     }
-                }
 
                 if (pia > sum) {
                     tier2 = _constants.consttier2 * _constants.tier2perc;
@@ -797,6 +802,10 @@ define('benefits/benefits',['exports', 'jquery', 'bootstrap-toggle', 'ion-ranges
                 if (pia > sum) {
                     tier3 = (pia - sum) * _constants.tier3perc;
                 } else tier3 = 0;
+
+                console.log("tier 1: " + tier1);
+                console.log("tier 2: " + tier2);
+                console.log("tier 3: " + tier3);
 
                 var sumOfTiers = tier1 + tier2 + tier3;
                 ssBase = sumOfTiers * 12;
@@ -1636,15 +1645,6 @@ define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
         return exceptions;
     }()) || _class);
 });
-define('resources/index',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.configure = configure;
-  function configure(config) {}
-});
 define('results/results',['exports', 'jquery', 'ion-rangeslider', 'aurelia-framework', '../services/userdata', 'aurelia-router', 'src/services/constants.js', 'highcharts', 'jquery-ui-dist'], function (exports, _jquery, _ionRangeslider, _aureliaFramework, _userdata, _aureliaRouter, _constants, _highcharts) {
     'use strict';
 
@@ -1704,6 +1704,15 @@ define('results/results',['exports', 'jquery', 'ion-rangeslider', 'aurelia-frame
 
         results.prototype.results = function results() {
             function makeChart(containerID, person) {
+
+                function generateTuples(array, startAge) {
+                    var tuples = [];
+                    for (var i = 0; i < array.length; i++) {
+                        tuples.push([startAge + i, array[i]]);
+                    }console.log(tuples);
+                    return tuples;
+                }
+
                 Highcharts.chart(containerID, {
                     title: {
                         text: person.name + ': Benefits vs. Age'
@@ -1725,32 +1734,16 @@ define('results/results',['exports', 'jquery', 'ion-rangeslider', 'aurelia-frame
                     },
                     series: [{
                         name: 'Receive at 62 (earliest)',
-                        data: function () {
-                            while (person.earlyBenefits.length < person.lifeExpectancy - 62) {
-                                person.earlyBenefits.unshift(0);
-                            }return person.earlyBenefits;
-                        }()
+                        data: generateTuples(person.earlyBenefits, 62)
                     }, {
                         name: 'Receive at ' + person.retirementAge + ' (user-selected)',
-                        data: function () {
-                            while (person.userSelectedBenefits.length < person.lifeExpectancy - 62) {
-                                person.userSelectedBenefits.unshift(0);
-                            }return person.userSelectedBenefits;
-                        }()
+                        data: generateTuples(person.userSelectedBenefits, person.retirementAge)
                     }, {
                         name: 'Receive at ' + person.yearFRA + ' (FRA)',
-                        data: function () {
-                            while (person.FRABenefits.length < person.lifeExpectancy - 62) {
-                                person.FRABenefits.unshift(0);
-                            }return person.FRABenefits;
-                        }()
+                        data: generateTuples(person.FRABenefits, person.yearFRA)
                     }, {
                         name: 'Receive at 70 (latest)',
-                        data: function () {
-                            while (person.lateBenefits.length < person.lifeExpectancy - 62) {
-                                person.lateBenefits.unshift(0);
-                            }return person.lateBenefits;
-                        }()
+                        data: generateTuples(person.lateBenefits, 70)
                     }]
                 });
             }
@@ -1768,6 +1761,15 @@ define('results/results',['exports', 'jquery', 'ion-rangeslider', 'aurelia-frame
 
         return results;
     }()) || _class);
+});
+define('resources/index',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+  function configure(config) {}
 });
 define('src/services/constants.js',["exports"], function (exports) {
     "use strict";

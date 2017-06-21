@@ -122,38 +122,48 @@ export class benefits {
             //Benefit Formula
             var tier1, tier2, tier3;
             var sum = consttier1 + consttier2; //Get sum of tier1 and tier2 constants
-            if(pia > consttier1) { //Tier1 for benefit formula - checking WEP and years of substantial earnings
-                switch(yrsOfSubearnings) {
-                    case 29: tier1 = consttier1 * subEarningsPerc[1]; break;
-                    case 28: tier1 = consttier1 * subEarningsPerc[2]; break;
-                    case 27: tier1 = consttier1 * subEarningsPerc[3]; break;
-                    case 26: tier1 = consttier1 * subEarningsPerc[4]; break;
-                    case 25: tier1 = consttier1 * subEarningsPerc[5]; break;
-                    case 24: tier1 = consttier1 * subEarningsPerc[6]; break;    
-                    case 23: tier1 = consttier1 * subEarningsPerc[7]; break;
-                    case 22: tier1 = consttier1 * subEarningsPerc[8]; break;
-                    case 21: tier1 = consttier1 * subEarningsPerc[9]; break;
-                    default: 
-                        if(yrsOfSubearnings >= 30) tier1 = consttier1 * subEarningsPerc[0];
-                        else tier1 = consttier1 * subEarningsPerc[10];
+
+            if (person.wep)
+            {
+                if(pia > consttier1) { //Tier1 for benefit formula - checking WEP and years of substantial earnings
+                    switch(yrsOfSubearnings) {
+                        case 29: tier1 = consttier1 * subEarningsPerc[1]; break;
+                        case 28: tier1 = consttier1 * subEarningsPerc[2]; break;
+                        case 27: tier1 = consttier1 * subEarningsPerc[3]; break;
+                        case 26: tier1 = consttier1 * subEarningsPerc[4]; break;
+                        case 25: tier1 = consttier1 * subEarningsPerc[5]; break;
+                        case 24: tier1 = consttier1 * subEarningsPerc[6]; break;    
+                        case 23: tier1 = consttier1 * subEarningsPerc[7]; break;
+                        case 22: tier1 = consttier1 * subEarningsPerc[8]; break;
+                        case 21: tier1 = consttier1 * subEarningsPerc[9]; break;
+                        default: 
+                            if(yrsOfSubearnings >= 30) tier1 = consttier1 * subEarningsPerc[0];
+                            else tier1 = consttier1 * subEarningsPerc[10];
+                    }
                 }
+                else {
+                    switch(yrsOfSubearnings) {
+                        case 29: tier1 = pia * subEarningsPerc[1]; break;
+                        case 28: tier1 = pia * subEarningsPerc[2]; break;
+                        case 27: tier1 = pia * subEarningsPerc[3]; break;
+                        case 26: tier1 = pia * subEarningsPerc[4]; break;
+                        case 25: tier1 = pia * subEarningsPerc[5]; break;
+                        case 24: tier1 = pia * subEarningsPerc[6]; break;    
+                        case 23: tier1 = pia * subEarningsPerc[7]; break;
+                        case 22: tier1 = pia * subEarningsPerc[8]; break;
+                        case 21: tier1 = pia * subEarningsPerc[9]; break;
+                        default: 
+                            if(yrsOfSubearnings >= 30) tier1 = pia * subEarningsPerc[0];
+                            else tier1 = pia * subEarningsPerc[10];
+                    }
+                } 
             }
-            else {
-                switch(yrsOfSubearnings) {
-                    case 29: tier1 = pia * subEarningsPerc[1]; break;
-                    case 28: tier1 = pia * subEarningsPerc[2]; break;
-                    case 27: tier1 = pia * subEarningsPerc[3]; break;
-                    case 26: tier1 = pia * subEarningsPerc[4]; break;
-                    case 25: tier1 = pia * subEarningsPerc[5]; break;
-                    case 24: tier1 = pia * subEarningsPerc[6]; break;    
-                    case 23: tier1 = pia * subEarningsPerc[7]; break;
-                    case 22: tier1 = pia * subEarningsPerc[8]; break;
-                    case 21: tier1 = pia * subEarningsPerc[9]; break;
-                    default: 
-                        if(yrsOfSubearnings >= 30) tier1 = pia * subEarningsPerc[0];
-                        else tier1 = pia * subEarningsPerc[10];
-                }
-            } 
+            else // no WEP
+            {
+                if(pia > consttier1) tier1 = consttier1 * .90;
+                else tier1 = pia * .90;
+                    
+            }
             
             //TIER2 FOR BENEFIT FORMULA
             if(pia > sum) { 
@@ -166,6 +176,10 @@ export class benefits {
                 tier3 = (pia - sum) * tier3perc; 
             }
             else tier3 = 0;
+
+            console.log("tier 1: " + tier1);
+            console.log("tier 2: " + tier2);
+            console.log("tier 3: " + tier3);
 
             //ADD TIERS AND GET YEARLY BASE VALUE FOR SOCIAL SECURITY
             var sumOfTiers = tier1 + tier2 + tier3; 
