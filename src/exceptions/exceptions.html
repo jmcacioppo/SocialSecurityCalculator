@@ -29,6 +29,7 @@
                 </div>
             </div>
 
+            <hr>
             <!--RAILROAD-->
             <div class="form-group">
                 <label for="clientWorkedOnARailroad">Have you worked on a railroad?</label>
@@ -48,6 +49,7 @@
                 <input type="text" value.bind="userData.client.yearsEndedOnRailroad" class="form-control" placeholder="0">
             </div>
 
+            <hr>
             <!--GOVERNMENT PENSION-->
             <div class="form-group">
                 <label for="clientRecievePension">Have you received a government pension?</label>
@@ -63,6 +65,7 @@
                 <input type="text" value.bind="userData.client.pensionAmount" class="form-control" placeholder="2000">
             </div>
 
+            <hr>
             <!--CITIZENSHIP-->
             <div class="form-group" id="clientCitizenshipBox">
                 <label for="clientCitizenship">Citizenship</label>
@@ -224,8 +227,8 @@
             </div>
         </div>
 
-        <button click.delegate="back()" id="back">Back</button>
-        <button type="submit" id="next">Next</button>
+        <button class="btn btn-secondary" click.delegate="back()" id="back">Back</button>
+        <button class="btn btn-primary" type="submit" id="next">Next</button>
     </form>    
 
 </template>

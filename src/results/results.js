@@ -17,6 +17,10 @@ export class results {
         this.router = router;
     }
     
+    back() {
+        this.router.navigate('#/benefits');
+    }
+
     attached() {
         function results(person) {
             var early = 62;
