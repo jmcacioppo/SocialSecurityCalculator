@@ -178,7 +178,7 @@
               "main": "js/ion.rangeSlider",
               "resources": [
                   "css/ion.rangeSlider.css",
-                  "css/ion.rangeSlider.skinModern.css",
+                  "css/ion.rangeSlider.skinHTML5.css",
                   "css/normalize.css"
               ]
           },

@@ -76,11 +76,12 @@ export class results {
 
         var maritalStatus = this.userData.client.maritalStatus;
         makeChart('clientContainer', this.userData.client);
+        this.userData.client.showChart = true;
+
         if(maritalStatus == "Married") {   
             makeChart('spouseContainer', this.userData.spouse);
             this.userData.spouse.showChart = true;
-        }
-        this.userData.client.showChart = true;
+        }        
     }
 
     attached() {

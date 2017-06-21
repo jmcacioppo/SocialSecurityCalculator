@@ -3,15 +3,11 @@
     <require from="jquery-ui-dist/jquery-ui.css"></require>
 
     <require from="ion-rangeslider/css/ion.rangeSlider.css"></require>
-    <require from="ion-rangeslider/css/ion.rangeSlider.skinModern.css"></require>
+    <require from="ion-rangeslider/css/ion.rangeSlider.skinHTML5.css"></require>
     <require from="ion-rangeslider/css/normalize.css"></require>
 
     <require from="bootstrap-toggle/css/bootstrap-toggle.css"></require>
     <require from="bootstrap-toggle/css/bootstrap2-toggle.css"></require>
-
-    <!--<require from="bootstrap/fonts/glyphicons-halflings-regular.woff2"></require>-->
-    <!--<require from="bootstrap/fonts/glyphicons-halflings-regular.woff"></require>
-    <require from="bootstrap/fonts/glyphicons-halflings-regular.ttf"></require>-->
 
     <!--PERSONAL INFORMATION HEADER-->
     <div id="persinfointro">
@@ -44,8 +40,9 @@
 
             <!--DATE OF BIRTH-->
             <div class="form-group">
-                <label for="dob">Date of Birth</label>
-                <input type="text" value.bind="userData.client.dateOfBirth" change.delegate="dob(userData.client.dateOfBirth)" class="form-control" id="dob" placeholder="01/01/1970">
+                <label for="dob">Date of Birth </label> 
+                <span id="dob" title="" class="glyphicon glyphicon-question-sign"></span>
+                <input type="text" value.bind="userData.client.dateOfBirth" change.delegate="dob(userData.client.dateOfBirth)" class="form-control" placeholder="01/01/1970">
             </div>
 
             <!--EMPLOYMENT STATUS-->
@@ -68,7 +65,8 @@
                     <input type="text" value.bind="userData.client.salary" class="form-control" id="inlineFormInputGroup" placeholder="0">
                 </div>
                 <br>
-                <button style="width: 200px;" class="btn btn-primary" type="button" id="wagehistory" click.delegate="wagehistory()">Input Your Own Wages <span class="glyphicon glyphicon-question-sign"></span></button>
+                <button style="width: 200px;" class="btn btn-primary" type="button" id="wagehistory" click.delegate="wagehistory()">Input Your Own Wages </button> 
+                <span id="salary" title="" class="glyphicon glyphicon-question-sign" ></span>
             </div>
 
             <!--MARITAL STATUS-->
@@ -88,11 +86,11 @@
                 <hr>
                 <label for="divorceCheck">Were you married for more than 10 years?</label>
                 <br>
-                <div click.delegate="divorce()">
-                    <input type="checkbox" id="divorceCheck" data-toggle="toggle" data-on="Yes" data-off="No">
-                </div>
             </div>
-
+            <div click.delegate="divorce()">
+                <input type="checkbox" id="divorceCheck" data-toggle="toggle" data-on="Yes" data-off="No">
+            </div>
+            
             <!--IF DIVORCED AFTER MARRIED FOR 10+ YEARS, GET DOB AND SALARY OF SPOUSE-->
             <div show.bind="userData.client.divorceCheck">
                 <label for="exSpouseDOB">Date of Birth of Ex-Spouse</label>
@@ -136,7 +134,8 @@
 
             <!--RETIREMENT INCOME -->
             <div class="form-group">
-                <label for="retirementIncome">Retirement Income <span class="glyphicon glyphicon-question-sign"></span></label>
+                <label for="retirementIncome">Retirement Income </label>
+                <span id="retirementIncome" title="" class="glyphicon glyphicon-question-sign"></span>
                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                 <div class="input-group-addon">$</div>
                     <input type="text" value.bind="userData.client.retirementIncome" class="form-control" id="retirementIncome" placeholder="0">
@@ -144,7 +143,8 @@
             </div>
 
             <!--SLIDER FOR RETIREMENT AGE AND LIFE EXPECTANCY-->
-            <label for="retirementAge">Retirement Age and Life Expectancy <span class="glyphicon glyphicon-question-sign"></span></label>
+            <label for="retirementAge">Retirement Age and Life Expectancy </label>
+                <span id="retirementAge" title="" class="glyphicon glyphicon-question-sign"></span>
                 <input type="text" id="slider" value="" style="position: relative; height: 80px">
             </div>
 
@@ -158,8 +158,9 @@
             <div show.bind="userData.client.hasDeps" class="form-group">
                 <div class="input-group mb-2 mr-sm-2 mb-sm-0" id="ageOfDeps">
                     <div repeat.for="num of userData.client.numOfDeps">
+                        <br>
                         <label for="year">Age of Dependent ${num}:</label>
-                        <input type="text" value.bind="userData.client.ageOfDeps[num]" class="form-control" id="inlineFormInputGroup" placeholder="0">
+                        <input type="text" value.bind="userData.client.ageOfDeps[num]" class="form-control" id="inlineFormInputGroup" placeholder="8">
                     </div>
                 </div>
                 <br>
@@ -189,7 +190,8 @@
         
             <!--DATE OF BIRTH -->
             <div class="form-group">
-                <label for="dob">Date of Birth</label>
+                <label for="dob">Date of Birth</label> 
+                <span id="spousedob" title="" class="glyphicon glyphicon-question-sign"></span>
                 <input type="text" value.bind="userData.spouse.dateOfBirth" change.delegate="spousedob(userData.spouse.dateOfBirth)" class="form-control" id="dob" placeholder="01/01/1970">
             </div>
 
@@ -212,7 +214,9 @@
                     <div class="input-group-addon">$</div>
                     <input type="text" value.bind="userData.spouse.salary" class="form-control" id="inlineFormInputGroup" placeholder="0">
                 </div>
-                <button type="button" id="spousewagehistory" click.delegate="spousewagehistory()">Input Your Own Wages</button>
+                <br>
+                <button style="width: 200px;" class="btn btn-primary" type="button" id="spousewagehistory" click.delegate="spousewagehistory()">Input Your Own Wages</button> 
+                <span id="spousesalary" title="" class="glyphicon glyphicon-question-sign"></span>
             </div>
 
             <hr />
@@ -222,7 +226,8 @@
 
             <!--RETIREMENT INCOME-->
             <div class="form-group">
-                <label for="retirementIncome">Retirement Income</label>
+                <label for="retirementIncome">Retirement Income </label>
+                <span id="spouseretirementIncome" title="" class="glyphicon glyphicon-question-sign"></span>
                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                 <div class="input-group-addon">$</div>
                     <input type="text" value.bind="userData.spouse.retirementIncome" class="form-control" id="retirementIncome" placeholder="0">
@@ -230,7 +235,8 @@
             </div>
 
             <!--SLIDER FOR RETIREMENT AGE AND LIFE EXPECTANCY-->
-            <label for="retirementAge">Retirement Age and Life Expectancy</label>         
+            <label for="retirementAge">Retirement Age and Life Expectancy </label>
+            <span id="spouseretirementAge" title="" class="glyphicon glyphicon-question-sign"></span>       
             <input type="text" id="sliderSpouse" value="" style="position: relative; height: 80px">
         </div>
 

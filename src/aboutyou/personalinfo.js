@@ -230,11 +230,13 @@ export class personalinfo {
             this.userData.client.isSurvivor = false;
             this.userData.client.divorceCheck = false;
             $('#divorceCheck').bootstrapToggle('off');
+            $('#divorceCheck').bootstrapToggle('destroy');
         }
         else if(value == "Divorced") {
             this.userData.client.isDivorced = true;
             this.userData.client.isMarried = false;
             this.userData.client.isSurvivor = false;
+            $('#divorceCheck').bootstrapToggle();
         }
         else if(value == "Widowed") {
             this.userData.client.isSurvivor = true;
@@ -242,6 +244,7 @@ export class personalinfo {
             this.userData.client.isDivorced = false;
             this.userData.client.divorceCheck = false;
              $('#divorceCheck').bootstrapToggle('off');
+             $('#divorceCheck').bootstrapToggle('destroy');
 
             if(this.userData.client.dateOfBirth) { //NEW FRA FOR SURVIVOR CLIENT
                 if(this.userData.client.yearOfBirth >= 1945 && this.userData.client.yearOfBirth <= 1956) {
@@ -279,7 +282,8 @@ export class personalinfo {
             this.userData.client.isDivorced = false;
             this.userData.client.isSurvivor = false;
             this.userData.client.divorceCheck = false;
-             $('#divorceCheck').bootstrapToggle('off');
+            $('#divorceCheck').bootstrapToggle('off');
+            $('#divorceCheck').bootstrapToggle('destroy');
         }
     }
 
@@ -318,11 +322,13 @@ export class personalinfo {
 
     //NAVIGATE TO WAGE HISTORY
     wagehistory() {
-        this.router.navigate('#/wagehistory');  
+        if(this.userData.client.age == 0 || this.userData.client.age < 18) alert('Enter valid Date of Birth');
+        else this.router.navigate('#/wagehistory');  
     }
 
     spousewagehistory() {
-        this.router.navigate('#/spousewagehistory');
+        if(this.userData.spouse.age == 0 || this.userData.spouse.age < 18) alert('Enter valid Date of Birth');
+        else this.router.navigate('#/spousewagehistory'); 
     }
 
     divorce() {
@@ -353,7 +359,7 @@ export class personalinfo {
             min: 0,
             max: 100,
             from: 65,
-            to: 93,
+            to: 91,
             step: 1,
             onFinish: (data) => {
                 this.userData.spouse.retirementAge = data.from;
@@ -362,21 +368,75 @@ export class personalinfo {
             }
         });
 
-        //TOGGLE SWITCH
-        $('#divorceCheck').bootstrapToggle();
+        //CLIENT TOOLTIPS
+        $('#dob').tooltip({
+            content: "You must be older than 18 to use this application."
+        });
+
+        $('#salary').tooltip({
+            content: "We estimate your previous wages. Input them manually for better accuracy here."
+        });
+
+        $('#retirementIncome').tooltip({
+            content: "Input the total amount of income you will receive after you retire."
+        });
+
+        $('#retirementAge').tooltip({
+            content: "Input the age you would like to retire and the age you expect to live until."
+        });
+
+        //SPOUSE TOOLTIPS
+        $('#spousedob').tooltip({
+            content: "You must be older than 18 to use this application."
+        });
+
+        $('#spousesalary').tooltip({
+            content: "We estimate your previous wages. Input them manually for better accuracy here."
+        });
+
+        $('#spouseretirementIncome').tooltip({
+            content: "Input the total amount of income you will receive after you retire."
+        });
+
+        $('#spouseretirementAge').tooltip({
+            content: "Input the age you would like to retire and the age you expect to live until."
+        });
     }
 
     next() {
-        //MAKE SURE EVERYTHING IS INPUTTED
-        // if(!name || !gender || !dob || !empStatus ||
-        //     empStatus == "Please Select" || !maritalStatus || 
-        //     maritalStatus == "Please Select" || !numOfDependents) {
-        //         alert("Fill in all information");
-        //         console.log(name + " " + gender + " " + sal + " " + dob);
-        //         return;
-        // }
+        function checkFields(person, clientmaritalStatus) {
+            if(!person.name) alert("Input a name");
+            else if(!person.gender) alert("Input a gender");
+            else if(!person.age || person.age < 18) alert("Input a valid date of birth");
+            else if(!person.employmentStatus || person.employmentStatus == "Please Select") alert("Input your employment status");
+            else if(person.employmentStatus == "Employed" || person.employmentStatus == "Business Owner") {
+                if(person.salary == 0) alert('Input a salary');
+            }
+            else if(!person.maritalStatus || person.maritalStatus == "Please Select") {
+                if(clientmaritalStatus != "Married") alert("Input your marital status");
+            }
+
+            else return true; //GO TO EXCEPTIONS PAGE
+        }
+
+        function checkDeceasedFields(person) {
+            if(!person.age || person.age < 18) alert("Input a valid date of birth");
+            else return true;
+        }
         
-        //GO TO EXCEPTIONS PAGE
-        this.router.navigate('#/exceptions');
+        var maritalStatus = this.userData.client.maritalStatus;
+        //MAKE SURE EVERYTHING IS INPUTTED
+        if(checkFields(this.userData.client, maritalStatus) == true) {
+            if(maritalStatus == "Married") {
+                if(checkFields(this.userData.spouse, maritalStatus) == true) this.router.navigate('#/exceptions');
+            }
+            else if(maritalStatus == "Widowed") {
+                if(checkDeceasedFields(this.userData.deceased) == true) this.router.navigate('#/exceptions');
+            }
+            else this.router.navigate('#/exceptions');
+        }
+        
+
+        //this.router.navigate('#/exceptions');
     }
 }

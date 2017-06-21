@@ -52,7 +52,7 @@
             <hr>
             <!--GOVERNMENT PENSION-->
             <div class="form-group">
-                <label for="clientRecievePension">Have you received a government pension?</label>
+                <label for="clientRecievePension">Do you receive a government pension?</label>
                 <br>
                 <div click.delegate="toggleGPO()">
                     <input type="checkbox" id="gpo" data-toggle="toggle" data-on="Yes" data-off="No">
@@ -80,40 +80,47 @@
             <!--DUAL CITIZENSHIP-->
             <div show.bind="userData.client.dual26Countries">
                 <div class="form-group">
-                    <label for="client26Countries">Is your dual citizenship with one of these 26 coutnries?</label>
+                    <label for="client26Countries">Is your dual citizenship with one of these 26 countries?</label> 
+                    <div>
+                        Country 1, 2, 3, 4, 5....26
+                    </div>
                     <br>
                     <div click.delegate="toggle26Countries()">
                         <input type="checkbox" id="26countries" data-toggle="toggle" data-on="Yes" data-off="No">
                     </div>
                 </div>
+                
 
-                <div show.bind="userData.client.isDual26Countries" class="form-group" id="clientCanadaItalyBox">
+                <div show.bind="userData.client.isDual26Countries" class="form-group">
                     <label for="clientCanadaItaly">Is your dual citizenship with Italy or Canada (provided you were hired in the US by the Canadian government)?</label>
                     <br>
                     <div click.delegate="toggleCanadaItaly()">
                         <input type="checkbox" checked id="canadaItaly" data-toggle="toggle" data-on="Yes" data-off="No">
                     </div>
-                </div>
-            </div>    
+                </div>     
+            </div>
 
             <!--NOT A CITZEN-->
             <div show.bind="userData.client.notCitizen">
-                <div class="form-group" id="clientInstrumentalityBox">
+                <div class="form-group">
                     <label for="clientInstrumentality">Do you work for an Instrumentality?</label>
                     <br>
                     <div click.delegate="toggleInstrumentality()">
                         <input type="checkbox" id="instrumentality" data-toggle="toggle" data-on="Yes" data-off="No">
                     </div>
-                </div>
+                </div>    
                 
                 <div show.bind="userData.client.checkInstrumentality" class="form-group" id="clientOneOrTwoBox">
                     <label for="clientOneOrTwo">Do all 3 of these conditions apply?</label>
+                    <p>Condition 1: </p>
+                    <p>Condition 2: </p>
+                    <p>Condition 3: </p>
                     <br>
                     <div click.delegate="toggleConditions()">
                         <input type="checkbox" id="conditions" data-toggle="toggle" data-on="Yes" data-off="No">
                     </div>
-                </div>
-            </div>
+                </div>    
+            </div>    
         </div>
 
         <div show.bind="userData.client.isMarried" id="spouse">
@@ -165,7 +172,7 @@
 
             <!--GOVERNMENT PENSION-->
             <div class="form-group">
-                <label for="spouseRecievePension">Have you received a government pension?</label>
+                <label for="spouseRecievePension">Do you receive a government pension?</label>
                 <br>
                 <div click.delegate="toggleGPOSpouse()">
                     <input type="checkbox" id="gpoSpouse" data-toggle="toggle" data-on="Yes" data-off="No">
@@ -192,6 +199,9 @@
             <div show.bind="userData.spouse.dual26Countries">
                 <div show.bind="userData.spouse.dual26Countries" class="form-group">
                     <label for="spouse26Countries">Is your dual citizenship with one of these 26 coutnries?</label>
+                    <div>
+                        Country 1, 2, 3, 4, 5....26
+                    </div>
                     <br>
                     <div click.delegate="toggle26CountriesSpouse()">
                         <input type="checkbox" id="26countriesSpouse" data-toggle="toggle" data-on="Yes" data-off="No">
@@ -219,6 +229,9 @@
                 
                 <div show.bind="userData.spouse.checkInstrumentality" class="form-group" id="spouseOneOrTwoBox">
                     <label for="spouseOneOrTwo">Do all 3 of these conditions apply?</label>
+                    <p>Condition 1: </p>
+                    <p>Condition 2: </p>
+                    <p>Condition 3: </p>
                     <br>
                     <div click.delegate="toggleConditionsSpouse()">
                         <input type="checkbox" id="conditionsSpouse" data-toggle="toggle" data-on="Yes" data-off="No">
