@@ -122,7 +122,7 @@ export class exceptions {
                         person.inflationAdjusted[i] = 0;
                     }
                 }
-
+                
                 //SORT AND GET TOP 35 ADJUSTED INFLATION SALARIES
                 person.inflationAdjusted = person.inflationAdjusted.sort((a, b) => a - b); 
                 person.topThirtyFive = person.inflationAdjusted.slice(person.inflationAdjusted.length - 35, person.inflationAdjusted.length); 
