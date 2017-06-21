@@ -20,14 +20,13 @@ export class benefits {
     }
 
     benefitsCalc() {
-        function calculateSSBase(person) {
+        function calculateSSBase(person, retirementAge) {
             var age = person.age;
             var yearOfBirth = person.yearOfBirth;
             var pia = person.pia;
-            var retirementAge = person.retirementAge;
             var yrsOfSubearnings = person.yrsOfSubearnings;
             var ssBase;
-            
+
             //FIX PIA BASED ON YEAR OF BIRTH AND WHEN THEY WANT TO RETIRE
             switch(yearOfBirth) {
                 case 1955:
@@ -122,38 +121,48 @@ export class benefits {
             //Benefit Formula
             var tier1, tier2, tier3;
             var sum = consttier1 + consttier2; //Get sum of tier1 and tier2 constants
-            if(pia > consttier1) { //Tier1 for benefit formula - checking WEP and years of substantial earnings
-                switch(yrsOfSubearnings) {
-                    case 29: tier1 = consttier1 * subEarningsPerc[1]; break;
-                    case 28: tier1 = consttier1 * subEarningsPerc[2]; break;
-                    case 27: tier1 = consttier1 * subEarningsPerc[3]; break;
-                    case 26: tier1 = consttier1 * subEarningsPerc[4]; break;
-                    case 25: tier1 = consttier1 * subEarningsPerc[5]; break;
-                    case 24: tier1 = consttier1 * subEarningsPerc[6]; break;    
-                    case 23: tier1 = consttier1 * subEarningsPerc[7]; break;
-                    case 22: tier1 = consttier1 * subEarningsPerc[8]; break;
-                    case 21: tier1 = consttier1 * subEarningsPerc[9]; break;
-                    default: 
-                        if(yrsOfSubearnings >= 30) tier1 = consttier1 * subEarningsPerc[0];
-                        else tier1 = consttier1 * subEarningsPerc[10];
+
+            if (person.wep)
+            {
+                if(pia > consttier1) { //Tier1 for benefit formula - checking WEP and years of substantial earnings
+                    switch(yrsOfSubearnings) {
+                        case 29: tier1 = consttier1 * subEarningsPerc[1]; break;
+                        case 28: tier1 = consttier1 * subEarningsPerc[2]; break;
+                        case 27: tier1 = consttier1 * subEarningsPerc[3]; break;
+                        case 26: tier1 = consttier1 * subEarningsPerc[4]; break;
+                        case 25: tier1 = consttier1 * subEarningsPerc[5]; break;
+                        case 24: tier1 = consttier1 * subEarningsPerc[6]; break;    
+                        case 23: tier1 = consttier1 * subEarningsPerc[7]; break;
+                        case 22: tier1 = consttier1 * subEarningsPerc[8]; break;
+                        case 21: tier1 = consttier1 * subEarningsPerc[9]; break;
+                        default: 
+                            if(yrsOfSubearnings >= 30) tier1 = consttier1 * subEarningsPerc[0];
+                            else tier1 = consttier1 * subEarningsPerc[10];
+                    }
                 }
+                else {
+                    switch(yrsOfSubearnings) {
+                        case 29: tier1 = pia * subEarningsPerc[1]; break;
+                        case 28: tier1 = pia * subEarningsPerc[2]; break;
+                        case 27: tier1 = pia * subEarningsPerc[3]; break;
+                        case 26: tier1 = pia * subEarningsPerc[4]; break;
+                        case 25: tier1 = pia * subEarningsPerc[5]; break;
+                        case 24: tier1 = pia * subEarningsPerc[6]; break;    
+                        case 23: tier1 = pia * subEarningsPerc[7]; break;
+                        case 22: tier1 = pia * subEarningsPerc[8]; break;
+                        case 21: tier1 = pia * subEarningsPerc[9]; break;
+                        default: 
+                            if(yrsOfSubearnings >= 30) tier1 = pia * subEarningsPerc[0];
+                            else tier1 = pia * subEarningsPerc[10];
+                    }
+                } 
             }
-            else {
-                switch(yrsOfSubearnings) {
-                    case 29: tier1 = pia * subEarningsPerc[1]; break;
-                    case 28: tier1 = pia * subEarningsPerc[2]; break;
-                    case 27: tier1 = pia * subEarningsPerc[3]; break;
-                    case 26: tier1 = pia * subEarningsPerc[4]; break;
-                    case 25: tier1 = pia * subEarningsPerc[5]; break;
-                    case 24: tier1 = pia * subEarningsPerc[6]; break;    
-                    case 23: tier1 = pia * subEarningsPerc[7]; break;
-                    case 22: tier1 = pia * subEarningsPerc[8]; break;
-                    case 21: tier1 = pia * subEarningsPerc[9]; break;
-                    default: 
-                        if(yrsOfSubearnings >= 30) tier1 = pia * subEarningsPerc[0];
-                        else tier1 = pia * subEarningsPerc[10];
-                }
-            } 
+            else // no WEP
+            {
+                if(pia > consttier1) tier1 = consttier1 * .90;
+                else tier1 = pia * .90;
+                    
+            }
             
             //TIER2 FOR BENEFIT FORMULA
             if(pia > sum) { 
@@ -178,16 +187,15 @@ export class benefits {
                 ssBase = ssBase - pension; //adjusted for GPO
             }
 
-            person.pia = pia;
-            person.ssBase = ssBase;
-        }
+            //person.pia = pia;
+            person.ssBase.push(parseFloat(ssBase));
+        } //end of calculateSSBase(person, retirementAge) 
 
-        function spousalBenefit(client, spouse) {
+        function spousalBenefit(client, spouse, retirementAge, i) {
             var spousalBenefit;
-            var ssBaseClient = client.ssBase;
-            var ssBaseSpouse = spouse.ssBase;
+            var ssBaseClient = client.ssBase[i];
+            var ssBaseSpouse = spouse.ssBase[i];
             var yearOfBirth = spouse.yearOfBirth;
-            var retirementAge = spouse.retirementAge;
 
             switch(yearOfBirth) {
                 case 1955:
@@ -283,15 +291,15 @@ export class benefits {
                 var retirementDiff = retirementAge - spouse.age;
                 client.ageOfDeps.forEach(function(age, i) {
                     if(parseInt(age) + retirementDiff < 18) {
-                        spousalBenefit = client.ssBase * 0.50;
+                        spousalBenefit = ssBaseClient * 0.50;
                     }
                 });
             }
 
             if(spousalBenefit > ssBaseSpouse) {
-                spouse.ssBase = spousalBenefit;
+                spouse.ssBase[i] = spousalBenefit;
             }
-        }
+        } // end of spousalBenefit(client, spouse)
 
         function results(person) {
             var early = 62;
@@ -310,15 +318,15 @@ export class benefits {
 
                 if(overLimit > 0 && age < FRA) { //Over Limit and Before FRA
                     var reduction = overLimit / 2;
-                    person.ssBaseAdj[i] = person.ssBase - reduction;
+                    person.ssBaseAdj[i] = person.ssBase[i] - reduction;
                     if(person.ssBaseAdj[i] < 0) person.ssBaseAdj[i] = 0;
                 }
                 else if(overLimit > 0 && age == FRA) { //Over Limit and At FRA
                     var reduction = overLimit / 3;
-                    person.ssBaseAdj[i] = person.ssBase - reduction;
+                    person.ssBaseAdj[i] = person.ssBase[i] - reduction;
                     if(person.ssBaseAdj[i] < 0) person.ssBaseAdj[i] = 0;
                 }
-                else person.ssBaseAdj[i] = person.ssBase; //Below Limit or After FRA
+                else person.ssBaseAdj[i] = person.ssBase[i]; //Below Limit or After FRA
             }); 
 
             person.ssBaseAdj.forEach(function(ssBase, i) {
@@ -333,16 +341,16 @@ export class benefits {
                             person.earlyBenefits[j] = person.earlyBenefits[j-1] + (person.earlyBenefits[j-1] * person.cola / 100);
                         }
                     }
-                    else if(i == 1) { //At FRA
-                        if(j==0) person.FRABenefits[j] = ssBase; 
-                        else {
-                            person.FRABenefits[j] = person.FRABenefits[j-1] + (person.FRABenefits[j-1] * person.cola / 100);
-                        }
-                    }
-                    else if(i == 2) {  //At selected age
+                    else if(i == 1) { //At selected age
                         if(j==0) person.userSelectedBenefits[j] = ssBase; 
                         else {
                             person.userSelectedBenefits[j] = person.userSelectedBenefits[j-1] + (person.userSelectedBenefits[j-1] * person.cola / 100);
+                        }
+                    }
+                    else if(i == 2) {  //At FRA
+                        if(j==0) person.FRABenefits[j] = ssBase; 
+                        else {
+                            person.FRABenefits[j] = person.FRABenefits[j-1] + (person.FRABenefits[j-1] * person.cola / 100);
                         }
                     }
                     else if(i == 3) { //At age 70
@@ -357,12 +365,27 @@ export class benefits {
         } //end results(person)
 
         var maritalStatus = this.userData.client.maritalStatus;
-        calculateSSBase(this.userData.client);
+        
+        calculateSSBase(this.userData.client, 62);
+        calculateSSBase(this.userData.client, this.userData.client.retirementAge);
+        calculateSSBase(this.userData.client, this.userData.client.yearFRA);
+        calculateSSBase(this.userData.client, 70);
 
         //GET PIA COCLIENT CALCULATIONS IF NECESSARY
         if(maritalStatus == "Married") {
-            calculateSSBase(this.userData.spouse);
-            spousalBenefit(this.userData.client, this.userData.spouse);
+            calculateSSBase(this.userData.spouse, 62);
+            calculateSSBase(this.userData.spouse, this.userData.spouse.retirementAge);
+            calculateSSBase(this.userData.spouse, this.userData.spouse.yearFRA);
+            calculateSSBase(this.userData.spouse, 70);
+
+            var i = 0;
+            spousalBenefit(this.userData.client, this.userData.spouse, 62, i);
+            i++;
+            spousalBenefit(this.userData.client, this.userData.spouse, this.userData.spouse.retirementAge, i);
+            i++;
+            spousalBenefit(this.userData.client, this.userData.spouse, this.userData.spouse.yearFRA, i);
+            i++;
+            spousalBenefit(this.userData.client, this.userData.spouse, 70, i);
         }
 
         results(this.userData.client);

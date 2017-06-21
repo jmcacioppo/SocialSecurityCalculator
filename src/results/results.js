@@ -23,6 +23,15 @@ export class results {
 
     results() {
         function makeChart(containerID, person) {
+
+            function generateTuples(array, startAge) {
+                var tuples = [];
+                for (var i = 0; i < array.length; i++)
+                    tuples.push( [ startAge + i, array[i] ] );
+                console.log(tuples);
+                return tuples;
+            }
+
             Highcharts.chart(containerID, {
                 title: {
                     text: person.name + ': Benefits vs. Age'
@@ -44,32 +53,16 @@ export class results {
                 },
                 series: [{
                     name: 'Receive at 62 (earliest)',
-                    data: (() => {
-                            while (person.earlyBenefits.length < person.lifeExpectancy - 62)
-                                person.earlyBenefits.unshift(0);
-                            return person.earlyBenefits;
-                        })()
+                    data: generateTuples(person.earlyBenefits, 62)
                 }, {
                     name: 'Receive at ' + person.retirementAge + ' (user-selected)',
-                    data: (() => {
-                            while (person.userSelectedBenefits.length < person.lifeExpectancy - 62)
-                                person.userSelectedBenefits.unshift(0);
-                            return person.userSelectedBenefits;
-                        })()
+                    data: generateTuples(person.userSelectedBenefits, person.retirementAge)
                 }, {
                     name: 'Receive at ' + person.yearFRA + ' (FRA)',
-                    data: (() => {
-                            while (person.FRABenefits.length < person.lifeExpectancy - 62)
-                                person.FRABenefits.unshift(0);
-                            return person.FRABenefits;
-                        })()
+                    data: generateTuples(person.FRABenefits, person.yearFRA)
                 }, {
                     name: 'Receive at 70 (latest)',
-                    data: (() => {
-                            while (person.lateBenefits.length < person.lifeExpectancy - 62)
-                                person.lateBenefits.unshift(0);
-                            return person.lateBenefits;
-                        })()
+                    data: generateTuples(person.lateBenefits, 70)
                 }]
             }); //end Highcharts.chart()
         } //end function makeChart()
