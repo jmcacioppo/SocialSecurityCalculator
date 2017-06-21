@@ -1,7 +1,7 @@
 export class User {
      constructor() {
         // Social Security Values
-        this.ssBase = 0;
+        this.ssBase = [];
         this.ssBaseAdj = [];
         this.pia = 0;
         this.survivorpia = 0;
