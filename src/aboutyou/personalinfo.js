@@ -228,6 +228,8 @@ export class personalinfo {
             this.userData.client.isMarried = true;
             this.userData.client.isDivorced = false;
             this.userData.client.isSurvivor = false;
+            this.userData.client.divorceCheck = false;
+            $('#divorceCheck').bootstrapToggle('off');
         }
         else if(value == "Divorced") {
             this.userData.client.isDivorced = true;
@@ -238,6 +240,8 @@ export class personalinfo {
             this.userData.client.isSurvivor = true;
             this.userData.client.isMarried = false;
             this.userData.client.isDivorced = false;
+            this.userData.client.divorceCheck = false;
+             $('#divorceCheck').bootstrapToggle('off');
 
             if(this.userData.client.dateOfBirth) { //NEW FRA FOR SURVIVOR CLIENT
                 if(this.userData.client.yearOfBirth >= 1945 && this.userData.client.yearOfBirth <= 1956) {
@@ -269,13 +273,13 @@ export class personalinfo {
                     this.userData.client.monthFRA = 0;
                 }
             }
-            console.log(this.userData.client.yearFRA);
-            console.log(this.userData.client.monthFRA);
         }
         else {
             this.userData.client.isMarried = false;
             this.userData.client.isDivorced = false;
             this.userData.client.isSurvivor = false;
+            this.userData.client.divorceCheck = false;
+             $('#divorceCheck').bootstrapToggle('off');
         }
     }
 
@@ -321,6 +325,11 @@ export class personalinfo {
         this.router.navigate('#/spousewagehistory');
     }
 
+    divorce() {
+        var check = $('#divorceCheck').prop("checked");
+        this.userData.client.divorceCheck = check;
+    }
+
     attached() {        
         //RETIREMENT AGE AND LIFE EXPECTANCY SLIDERS
         $("#slider").ionRangeSlider({
@@ -354,7 +363,7 @@ export class personalinfo {
         });
 
         //TOGGLE SWITCH
-        $('#toggle').bootstrapToggle();
+        $('#divorceCheck').bootstrapToggle();
     }
 
     next() {

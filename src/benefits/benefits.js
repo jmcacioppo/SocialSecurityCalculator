@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import 'jquery-ui-dist';
+import * as bootstrapToggle from 'bootstrap-toggle';
 import * as ionRangeSlider from "ion-rangeslider";
 
 import {inject} from 'aurelia-framework';
@@ -305,6 +306,16 @@ export class benefits {
         this.router.navigate('#/results');
     }
 
+    eligible() {
+        var check = $('#eligible').prop("checked");
+        this.userData.client.eligibleSS = check;
+    }
+
+    wep() {
+        var check = $('#wep').prop("checked");
+        this.userData.client.wep = check;
+    }
+
     back() {
         this.router.navigate('#/exceptions');
     }
@@ -323,5 +334,8 @@ export class benefits {
                 this.userData.spouse.cola = data.from;
             }
         });
+
+        $('#eligible').bootstrapToggle();
+        $('#wep').bootstrapToggle();
    }
 }

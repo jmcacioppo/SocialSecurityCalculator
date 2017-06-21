@@ -1,8 +1,12 @@
 <template>
     <require from="jquery-ui-dist/jquery-ui.css"></require>
+
     <require from="ion-rangeslider/css/ion.rangeSlider.css"></require>
     <require from="ion-rangeslider/css/ion.rangeSlider.skinModern.css"></require>
     <require from="ion-rangeslider/css/normalize.css"></require>
+
+    <require from="bootstrap-toggle/css/bootstrap-toggle.css"></require>
+    <require from="bootstrap-toggle/css/bootstrap2-toggle.css"></require>
     
     <form id="benefits" submit.delegate="benefitsCalc()">
         <h1>Benefits</h1>
@@ -10,7 +14,9 @@
             <!--ELIGIBLE FOR SOCIAL SECURITY BENEFITS-->
             <label for="eligible">Are you eligible for Social Security benefits?</label>
             <br>
-            <input type="checkbox" id="eligible" checked.bind="userData.client.eligibleSS" data-toggle="toggle">
+            <div click.delegate="eligible()">
+                <input type="checkbox" id="eligible" checked.bind="userData.client.eligibleSS" data-toggle="toggle" data-on="Yes" data-off="No">
+            </div>
         </div>
 
         <div show.bind="userData.client.eligibleSS">
@@ -18,7 +24,9 @@
                 <!--CHECK IF WEP APPLIES-->
                 <label for="wep">Does WEP apply to you?</label>
                 <br>
-                <input type="checkbox" id="wep" checked.bind="userData.client.wep" data-toggle="toggle">
+                <div click.delegate="wep()">
+                    <input type="checkbox" id="wep" checked.bind="userData.client.wep" data-toggle="toggle">
+                </div>
             </div>
 
             <div show.bind="userData.client.wep" class="form-group">
@@ -32,8 +40,8 @@
             <input type="text" id="benefitslider" value="" style="position: relative; height: 80px">
         </div>
 
-        <button click.delegate="back()" id="back">Back</button>
-        <button type="submit" id="next">Next</button>
+        <button class="btn btn-secondary" click.delegate="back()" id="back">Back</button>
+        <button class="btn btn-primary" type="submit" id="next">Next</button>
     </form>
 
 </template>

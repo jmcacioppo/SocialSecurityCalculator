@@ -6,8 +6,12 @@
     <require from="ion-rangeslider/css/ion.rangeSlider.skinModern.css"></require>
     <require from="ion-rangeslider/css/normalize.css"></require>
 
-    <!--<require from="bootstrap-toggle/css/bootstrap-toggle.css"></require>
-    <require from="bootstrap-toggle/css/bootstrap2-toggle.css"></require>-->
+    <require from="bootstrap-toggle/css/bootstrap-toggle.css"></require>
+    <require from="bootstrap-toggle/css/bootstrap2-toggle.css"></require>
+
+    <!--<require from="bootstrap/fonts/glyphicons-halflings-regular.woff2"></require>-->
+    <!--<require from="bootstrap/fonts/glyphicons-halflings-regular.woff"></require>
+    <require from="bootstrap/fonts/glyphicons-halflings-regular.ttf"></require>-->
 
     <!--PERSONAL INFORMATION HEADER-->
     <div id="persinfointro">
@@ -63,7 +67,8 @@
                     <div class="input-group-addon">$</div>
                     <input type="text" value.bind="userData.client.salary" class="form-control" id="inlineFormInputGroup" placeholder="0">
                 </div>
-                <button type="button" id="wagehistory" click.delegate="wagehistory()">Input Your Own Wages</button>
+                <br>
+                <button style="width: 200px;" class="btn btn-primary" type="button" id="wagehistory" click.delegate="wagehistory()">Input Your Own Wages <span class="glyphicon glyphicon-question-sign"></span></button>
             </div>
 
             <!--MARITAL STATUS-->
@@ -78,33 +83,49 @@
                 </select>
             </div>
 
-            <!--CHECK IF DIVORCED FOR 10+ YEARS-->
+            <!--CHECK IF DIVORCED AFTER MARRIED FOR 10+ YEARS-->
             <div show.bind="userData.client.isDivorced">
-                <label for="divorceCheck">Have you been divorced for more than 10 years?</label>
+                <hr>
+                <label for="divorceCheck">Were you married for more than 10 years?</label>
                 <br>
-                <input type="checkbox" checked.bind="userData.client.divorceCheck" data-toggle="toggle" id="divorceCheck">
+                <div click.delegate="divorce()">
+                    <input type="checkbox" id="divorceCheck" data-toggle="toggle" data-on="Yes" data-off="No">
+                </div>
+            </div>
+
+            <!--IF DIVORCED AFTER MARRIED FOR 10+ YEARS, GET DOB AND SALARY OF SPOUSE-->
+            <div show.bind="userData.client.divorceCheck">
+                <label for="exSpouseDOB">Date of Birth of Ex-Spouse</label>
+                <input type="text" value.bind="userData.spouse.dateOfBirth" change.delegate="dob(userData.spouse.dateOfBirth)" class="form-control" id="dob" placeholder="01/01/1970">
+                <br>
+                <label for="exSpouseSalary">Salary of Ex-Spouse</label>
+                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                    <div class="input-group-addon">$</div>
+                    <input type="text" value.bind="userData.spouse.salary" class="form-control" id="inlineFormInputGroup" placeholder="0">
+                </div>
             </div>
 
             <!--CHECK IF WIDOWED-->
             <div show.bind="userData.client.isSurvivor">
-               <div class="form-group">
-                    <label for="salary">Most Recent Salary of Deceased</label>
-                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                        <div class="input-group-addon">$</div>
-                        <input type="text" value.bind="userData.deceased.salary" class="form-control" id="inlineFormInputGroup" placeholder="0">
-                    </div>
-                    <button type="button" id="wagehistory" click.delegate="deceasedwagehistory()">Input Your Own Wages</button>
-                </div>
-
-                <!--DATE OF BIRTH-->
+               <hr>
+               <!--DATE OF BIRTH-->
                 <div class="form-group">
-                    <label for="deceaseddob">Date of Birth</label>
+                    <label for="deceaseddob">Date of Birth of Deceased</label>
                     <input type="text" value.bind="userData.deceased.dateOfBirth" change.delegate="deceaseddob(userData.deceased.dateOfBirth)" class="form-control" id="deceaseddob" placeholder="01/01/1970">
                 </div>
 
                 <div class="form-group">
                     <label for="dob">Year of Passing</label>
                     <input type="text" value.bind="userData.deceased.yearOfPassing" change.delegate="deceaseddob(userData.deceased.dateOfBirth)" class="form-control" id="deceasedPassing" placeholder="60">
+                </div>
+               
+               <!--SALARY-->
+               <div class="form-group">
+                    <label for="salary">Most Recent Salary of Deceased</label>
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <div class="input-group-addon">$</div>
+                        <input type="text" value.bind="userData.deceased.salary" class="form-control" id="inlineFormInputGroup" placeholder="0">
+                    </div>
                 </div>
             </div>
 
@@ -115,7 +136,7 @@
 
             <!--RETIREMENT INCOME -->
             <div class="form-group">
-                <label for="retirementIncome">Retirement Income</label>
+                <label for="retirementIncome">Retirement Income <span class="glyphicon glyphicon-question-sign"></span></label>
                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                 <div class="input-group-addon">$</div>
                     <input type="text" value.bind="userData.client.retirementIncome" class="form-control" id="retirementIncome" placeholder="0">
@@ -123,7 +144,7 @@
             </div>
 
             <!--SLIDER FOR RETIREMENT AGE AND LIFE EXPECTANCY-->
-            <label for="retirementAge">Retirement Age and Life Expectancy</label>
+            <label for="retirementAge">Retirement Age and Life Expectancy <span class="glyphicon glyphicon-question-sign"></span></label>
                 <input type="text" id="slider" value="" style="position: relative; height: 80px">
             </div>
 
@@ -132,10 +153,9 @@
             <!--DEPENDENT INFORMATION-->
             <h1>Dependent Information</h1>
 
-            <button type="button" click.delegate="addDep()">Add Dependent</button>
+            <button class="btn btn-primary" type="button" click.delegate="addDep()"><span class="glyphicon glyphicon-plus-sign"></span> Add Dependent</button>
 
             <div show.bind="userData.client.hasDeps" class="form-group">
-                <label for="ageOfDeps">Age of Dependents:</label>
                 <div class="input-group mb-2 mr-sm-2 mb-sm-0" id="ageOfDeps">
                     <div repeat.for="num of userData.client.numOfDeps">
                         <label for="year">Age of Dependent ${num}:</label>
@@ -143,7 +163,7 @@
                     </div>
                 </div>
                 <br>
-                <button type="button" click.delegate="removeDep()">Remove Dependent</button>
+                <button class="btn btn-danger" type="button" click.delegate="removeDep()"><span class="glyphicon glyphicon-minus"></span> Remove Dependent</button>
             </div>
 
         <!--CO-CLIENT INFORMATION-->
@@ -217,6 +237,6 @@
         <br> <br>
 
         <!--CLICK NEXT TO GO TO NEXT PAGE AND SUBMIT INFO-->
-        <button type="submit" id="next">Next</button>
+        <button class="btn btn-primary" type="submit" id="next">Next</button>
     </form>
 </template>
