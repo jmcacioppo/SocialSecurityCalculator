@@ -580,11 +580,10 @@ define('benefits/benefits',['exports', 'jquery', 'bootstrap-toggle', 'ion-ranges
         }
 
         benefits.prototype.benefitsCalc = function benefitsCalc() {
-            function calculateSSBase(person) {
+            function calculateSSBase(person, retirementAge) {
                 var age = person.age;
                 var yearOfBirth = person.yearOfBirth;
                 var pia = person.pia;
-                var retirementAge = person.retirementAge;
                 var yrsOfSubearnings = person.yrsOfSubearnings;
                 var ssBase;
 
@@ -803,10 +802,6 @@ define('benefits/benefits',['exports', 'jquery', 'bootstrap-toggle', 'ion-ranges
                     tier3 = (pia - sum) * _constants.tier3perc;
                 } else tier3 = 0;
 
-                console.log("tier 1: " + tier1);
-                console.log("tier 2: " + tier2);
-                console.log("tier 3: " + tier3);
-
                 var sumOfTiers = tier1 + tier2 + tier3;
                 ssBase = sumOfTiers * 12;
 
@@ -816,16 +811,14 @@ define('benefits/benefits',['exports', 'jquery', 'bootstrap-toggle', 'ion-ranges
                     ssBase = ssBase - pension;
                 }
 
-                person.pia = pia;
-                person.ssBase = ssBase;
+                person.ssBase.push(parseFloat(ssBase));
             }
 
-            function spousalBenefit(client, spouse) {
+            function spousalBenefit(client, spouse, retirementAge, i) {
                 var spousalBenefit;
-                var ssBaseClient = client.ssBase;
-                var ssBaseSpouse = spouse.ssBase;
+                var ssBaseClient = client.ssBase[i];
+                var ssBaseSpouse = spouse.ssBase[i];
                 var yearOfBirth = spouse.yearOfBirth;
-                var retirementAge = spouse.retirementAge;
 
                 switch (yearOfBirth) {
                     case 1955:
@@ -983,13 +976,13 @@ define('benefits/benefits',['exports', 'jquery', 'bootstrap-toggle', 'ion-ranges
                     var retirementDiff = retirementAge - spouse.age;
                     client.ageOfDeps.forEach(function (age, i) {
                         if (parseInt(age) + retirementDiff < 18) {
-                            spousalBenefit = client.ssBase * 0.50;
+                            spousalBenefit = ssBaseClient * 0.50;
                         }
                     });
                 }
 
                 if (spousalBenefit > ssBaseSpouse) {
-                    spouse.ssBase = spousalBenefit;
+                    spouse.ssBase[i] = spousalBenefit;
                 }
             }
 
@@ -1010,13 +1003,13 @@ define('benefits/benefits',['exports', 'jquery', 'bootstrap-toggle', 'ion-ranges
 
                     if (overLimit > 0 && age < FRA) {
                         var reduction = overLimit / 2;
-                        person.ssBaseAdj[i] = person.ssBase - reduction;
+                        person.ssBaseAdj[i] = person.ssBase[i] - reduction;
                         if (person.ssBaseAdj[i] < 0) person.ssBaseAdj[i] = 0;
                     } else if (overLimit > 0 && age == FRA) {
                         var reduction = overLimit / 3;
-                        person.ssBaseAdj[i] = person.ssBase - reduction;
+                        person.ssBaseAdj[i] = person.ssBase[i] - reduction;
                         if (person.ssBaseAdj[i] < 0) person.ssBaseAdj[i] = 0;
-                    } else person.ssBaseAdj[i] = person.ssBase;
+                    } else person.ssBaseAdj[i] = person.ssBase[i];
                 });
 
                 person.ssBaseAdj.forEach(function (ssBase, i) {
@@ -1030,12 +1023,12 @@ define('benefits/benefits',['exports', 'jquery', 'bootstrap-toggle', 'ion-ranges
                                 person.earlyBenefits[j] = person.earlyBenefits[j - 1] + person.earlyBenefits[j - 1] * person.cola / 100;
                             }
                         } else if (i == 1) {
-                            if (j == 0) person.FRABenefits[j] = ssBase;else {
-                                person.FRABenefits[j] = person.FRABenefits[j - 1] + person.FRABenefits[j - 1] * person.cola / 100;
-                            }
-                        } else if (i == 2) {
                             if (j == 0) person.userSelectedBenefits[j] = ssBase;else {
                                 person.userSelectedBenefits[j] = person.userSelectedBenefits[j - 1] + person.userSelectedBenefits[j - 1] * person.cola / 100;
+                            }
+                        } else if (i == 2) {
+                            if (j == 0) person.FRABenefits[j] = ssBase;else {
+                                person.FRABenefits[j] = person.FRABenefits[j - 1] + person.FRABenefits[j - 1] * person.cola / 100;
                             }
                         } else if (i == 3) {
                             if (j == 0) person.lateBenefits[j] = ssBase;else {
@@ -1047,11 +1040,26 @@ define('benefits/benefits',['exports', 'jquery', 'bootstrap-toggle', 'ion-ranges
             }
 
             var maritalStatus = this.userData.client.maritalStatus;
-            calculateSSBase(this.userData.client);
+
+            calculateSSBase(this.userData.client, 62);
+            calculateSSBase(this.userData.client, this.userData.client.retirementAge);
+            calculateSSBase(this.userData.client, this.userData.client.yearFRA);
+            calculateSSBase(this.userData.client, 70);
 
             if (maritalStatus == "Married") {
-                calculateSSBase(this.userData.spouse);
-                spousalBenefit(this.userData.client, this.userData.spouse);
+                calculateSSBase(this.userData.spouse, 62);
+                calculateSSBase(this.userData.spouse, this.userData.spouse.retirementAge);
+                calculateSSBase(this.userData.spouse, this.userData.spouse.yearFRA);
+                calculateSSBase(this.userData.spouse, 70);
+
+                var i = 0;
+                spousalBenefit(this.userData.client, this.userData.spouse, 62, i);
+                i++;
+                spousalBenefit(this.userData.client, this.userData.spouse, this.userData.spouse.retirementAge, i);
+                i++;
+                spousalBenefit(this.userData.client, this.userData.spouse, this.userData.spouse.yearFRA, i);
+                i++;
+                spousalBenefit(this.userData.client, this.userData.spouse, 70, i);
             }
 
             results(this.userData.client);
@@ -1645,6 +1653,15 @@ define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
         return exceptions;
     }()) || _class);
 });
+define('resources/index',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+  function configure(config) {}
+});
 define('results/results',['exports', 'jquery', 'ion-rangeslider', 'aurelia-framework', '../services/userdata', 'aurelia-router', 'src/services/constants.js', 'highcharts', 'jquery-ui-dist'], function (exports, _jquery, _ionRangeslider, _aureliaFramework, _userdata, _aureliaRouter, _constants, _highcharts) {
     'use strict';
 
@@ -1762,15 +1779,6 @@ define('results/results',['exports', 'jquery', 'ion-rangeslider', 'aurelia-frame
         return results;
     }()) || _class);
 });
-define('resources/index',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.configure = configure;
-  function configure(config) {}
-});
 define('src/services/constants.js',["exports"], function (exports) {
     "use strict";
 
@@ -1851,7 +1859,7 @@ define('services/user',["exports"], function (exports) {
         var User = exports.User = function User() {
                 _classCallCheck(this, User);
 
-                this.ssBase = 0;
+                this.ssBase = [];
                 this.ssBaseAdj = [];
                 this.pia = 0;
                 this.survivorpia = 0;
@@ -1959,12 +1967,12 @@ define('services/userdata',['exports', 'aurelia-framework', '../services/user'],
         this.deceased = new _user.User();
     }) || _class);
 });
-define('text!styles.css', ['module'], function(module) { module.exports = "#persinfointro {\r\n    text-align: center;\r\n    width: 1000px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#persinfo, #benefits, #results, #wagehistory, #exceptions, #spousewagehistory {\r\n    text-align: center;\r\n    width: 375px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#divorceCheck {\r\n    width: 5000px;\r\n}\r\n\r\n#wages {\r\n    display: inline-block;\r\n}\r\n\r\n#custom-handle {\r\n    width: 3em;\r\n    height: 1.6em;\r\n    top: 50%;\r\n    margin-top: -.8em;\r\n    text-align: center;\r\n    line-height: 1.6em;\r\n  }\r\n\r\n /*.toggle input[type=\"checkbox\"] {\r\n     display: none;\r\n     margin: 4px 0 0;\r\n     line-height: normal;\r\n }*/\r\n\r\n.range-slider {\r\n    position: relative;\r\n    height: 80px;\r\n}\r\n"; });
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\"><span class=\"sr-only\">Toggle navigation</span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span></button> <a class=\"navbar-brand\" href=\"#\">Social Security Calculator</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : ''}\"><a href.bind=\"row.href\">${row.title}</a></li></ul></div></div></nav><router-view></router-view></template>"; });
+define('text!styles.css', ['module'], function(module) { module.exports = "#persinfointro {\r\n    text-align: center;\r\n    width: 1000px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#persinfo, #benefits, #results, #wagehistory, #exceptions, #spousewagehistory {\r\n    text-align: center;\r\n    width: 375px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#divorceCheck {\r\n    width: 5000px;\r\n}\r\n\r\n#wages {\r\n    display: inline-block;\r\n}\r\n\r\n#custom-handle {\r\n    width: 3em;\r\n    height: 1.6em;\r\n    top: 50%;\r\n    margin-top: -.8em;\r\n    text-align: center;\r\n    line-height: 1.6em;\r\n  }\r\n\r\n /*.toggle input[type=\"checkbox\"] {\r\n     display: none;\r\n     margin: 4px 0 0;\r\n     line-height: normal;\r\n }*/\r\n\r\n.range-slider {\r\n    position: relative;\r\n    height: 80px;\r\n}\r\n"; });
 define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\".././styles.css\"></require><require from=\"jquery-ui-dist/jquery-ui.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinModern.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><require from=\"bootstrap-toggle/css/bootstrap-toggle.css\"></require><require from=\"bootstrap-toggle/css/bootstrap2-toggle.css\"></require><div id=\"persinfointro\"><h1>Personal Information</h1><p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p></div><form id=\"persinfo\" submit.delegate=\"next()\"><div id=\"client\"><h3>Client</h3><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.client.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.client.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><input type=\"text\" value.bind=\"userData.client.dateOfBirth\" change.delegate=\"dob(userData.client.dateOfBirth)\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.client.employmentStatus\" change.delegate=\"checkEmployment(userData.client.employmentStatus)\" id=\"empStatus\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div show.bind=\"userData.client.isEmployed\" class=\"form-group\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><br><button style=\"width:200px\" class=\"btn btn-primary\" type=\"button\" id=\"wagehistory\" click.delegate=\"wagehistory()\">Input Your Own Wages <span class=\"glyphicon glyphicon-question-sign\"></span></button></div><div class=\"form-group\"><label for=\"maritalStatus\">Marital Status</label><select class=\"form-control\" value.bind=\"userData.client.maritalStatus\" change.delegate=\"checkMarried(userData.client.maritalStatus)\" id=\"maritalStatus\"><option data-hidden=\"true\">Please Select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select></div><div show.bind=\"userData.client.isDivorced\"><hr><label for=\"divorceCheck\">Were you married for more than 10 years?</label><br><div click.delegate=\"divorce()\"><input type=\"checkbox\" id=\"divorceCheck\" data-toggle=\"toggle\" data-on=\"Yes\" data-off=\"No\"></div></div><div show.bind=\"userData.client.divorceCheck\"><label for=\"exSpouseDOB\">Date of Birth of Ex-Spouse</label><input type=\"text\" value.bind=\"userData.spouse.dateOfBirth\" change.delegate=\"dob(userData.spouse.dateOfBirth)\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"><br><label for=\"exSpouseSalary\">Salary of Ex-Spouse</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><div show.bind=\"userData.client.isSurvivor\"><hr><div class=\"form-group\"><label for=\"deceaseddob\">Date of Birth of Deceased</label><input type=\"text\" value.bind=\"userData.deceased.dateOfBirth\" change.delegate=\"deceaseddob(userData.deceased.dateOfBirth)\" class=\"form-control\" id=\"deceaseddob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"dob\">Year of Passing</label><input type=\"text\" value.bind=\"userData.deceased.yearOfPassing\" change.delegate=\"deceaseddob(userData.deceased.dateOfBirth)\" class=\"form-control\" id=\"deceasedPassing\" placeholder=\"60\"></div><div class=\"form-group\"><label for=\"salary\">Most Recent Salary of Deceased</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.deceased.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div></div><hr><h1>Retirement Information</h1><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income <span class=\"glyphicon glyphicon-question-sign\"></span></label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.retirementIncome\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><label for=\"retirementAge\">Retirement Age and Life Expectancy <span class=\"glyphicon glyphicon-question-sign\"></span></label><input type=\"text\" id=\"slider\" value=\"\" style=\"position:relative;height:80px\"></div><hr><h1>Dependent Information</h1><button class=\"btn btn-primary\" type=\"button\" click.delegate=\"addDep()\"><span class=\"glyphicon glyphicon-plus-sign\"></span> Add Dependent</button><div show.bind=\"userData.client.hasDeps\" class=\"form-group\"><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\" id=\"ageOfDeps\"><div repeat.for=\"num of userData.client.numOfDeps\"><label for=\"year\">Age of Dependent ${num}:</label><input type=\"text\" value.bind=\"userData.client.ageOfDeps[num]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><br><button class=\"btn btn-danger\" type=\"button\" click.delegate=\"removeDep()\"><span class=\"glyphicon glyphicon-minus\"></span> Remove Dependent</button></div><div show.bind=\"userData.client.isMarried\"><br><br><br><h3>Co-Client</h3><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.spouse.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.spouse.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><input type=\"text\" value.bind=\"userData.spouse.dateOfBirth\" change.delegate=\"spousedob(userData.spouse.dateOfBirth)\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.spouse.employmentStatus\" change.delegate=\"checkEmploymentSpouse(userData.spouse.employmentStatus)\" id=\"empStatusSpouse\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div show.bind=\"userData.spouse.isEmployed\" class=\"form-group\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><button type=\"button\" id=\"spousewagehistory\" click.delegate=\"spousewagehistory()\">Input Your Own Wages</button></div><hr><h1>Retirement Information</h1><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.retirementIncome\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><label for=\"retirementAge\">Retirement Age and Life Expectancy</label><input type=\"text\" id=\"sliderSpouse\" value=\"\" style=\"position:relative;height:80px\"></div><br><br><button class=\"btn btn-primary\" type=\"submit\" id=\"next\">Next</button></form></template>"; });
 define('text!aboutyou/spousewagehistory.html', ['module'], function(module) { module.exports = "<template><form id=\"wagehistory\" submit.delegate=\"completeWages()\"><h1>Co-Client's Wage History</h1><p>If you would like to submit your own wages to ensure accuracy, input them here and select \"Submit Wages.\"</p><div class=\"form-group\"><label for=\"wagehistory\">Wages:</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div repeat.for=\"age of userData.spouse.ageFrom18\" id=\"wages\"><label for=\"year\">${userData.spouse.yearOfBirth + 18 + age}</label><input id=\"wages\" type=\"text\" value.bind=\"userData.spouse.wages[age]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div></div><button type=\"button\" click.delegate=\"back()\">Back</button> <button type=\"submit\">Submit Wages</button></form></template>"; });
 define('text!aboutyou/wagehistory.html', ['module'], function(module) { module.exports = "<template><form id=\"wagehistory\" submit.delegate=\"completeWages()\"><h1>Client's Wage History</h1><p>If you would like to submit your own wages to ensure accuracy, input them here and select \"Submit Wages.\"</p><div class=\"form-group\"><label for=\"wagehistory\">Wages:</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div repeat.for=\"age of userData.client.ageFrom18\" id=\"wages\"><label for=\"year\">${userData.client.yearOfBirth + 18 + age}</label><input id=\"wagesInput\" type=\"text\" value.bind=\"userData.client.wages[age]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div></div><button type=\"button\" click.delegate=\"back()\">Back</button> <button type=\"submit\">Submit Wages</button></form></template>"; });
 define('text!benefits/benefits.html', ['module'], function(module) { module.exports = "<template><require from=\"jquery-ui-dist/jquery-ui.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinModern.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><require from=\"bootstrap-toggle/css/bootstrap-toggle.css\"></require><require from=\"bootstrap-toggle/css/bootstrap2-toggle.css\"></require><form id=\"benefits\" submit.delegate=\"benefitsCalc()\"><h1>Benefits</h1><div class=\"form-group\"><label for=\"eligible\">Are you eligible for Social Security benefits?</label><br><div click.delegate=\"eligible()\"><input type=\"checkbox\" id=\"eligible\" checked.bind=\"userData.client.eligibleSS\" data-toggle=\"toggle\" data-on=\"Yes\" data-off=\"No\"></div></div><div show.bind=\"userData.client.eligibleSS\"><div class=\"form-group\"><label for=\"wep\">Does WEP apply to you?</label><br><div click.delegate=\"wep()\"><input type=\"checkbox\" id=\"wep\" checked.bind=\"userData.client.wep\" data-toggle=\"toggle\"></div></div><div show.bind=\"userData.client.wep\" class=\"form-group\"><label for=\"dob\">Years of Substantial Earnings</label><input type=\"text\" value.bind=\"userData.client.yrsOfSubEarnings\" class=\"form-control\" id=\"yrsOfSubEarningsCheck\"></div><label for=\"cola\">Cost of Living Adjustment</label><input type=\"text\" id=\"benefitslider\" value=\"\" style=\"position:relative;height:80px\"></div><button class=\"btn btn-secondary\" click.delegate=\"back()\" id=\"back\">Back</button> <button class=\"btn btn-primary\" type=\"submit\" id=\"next\">Next</button></form></template>"; });
 define('text!exceptions/exceptions.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap-toggle/css/bootstrap-toggle.css\"></require><require from=\"bootstrap-toggle/css/bootstrap2-toggle.css\"></require><form id=\"exceptions\" submit.delegate=\"calculate()\"><h1>Exceptions</h1><div id=\"client\"><h3>Client</h3><div class=\"form-group\"><label for=\"clientMilitaryService\">Have you served in the military?</label><br><div click.delegate=\"toggleMilitary()\"><input type=\"checkbox\" id=\"military\" data-toggle=\"toggle\" data-on=\"Yes\" data-off=\"No\"></div></div><div show.bind=\"userData.client.militaryService\"><div class=\"form-group\"><label for=\"clientBeganService\">Began Service</label><input type=\"text\" value.bind=\"userData.client.beganService\" change.delegate=\"beganService(userData.client.beganService)\" class=\"form-control\" id=\"clientBeganService\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"clientEndService\">End Service</label><input type=\"text\" value.bind=\"userData.client.endService\" change.delegate=\"endService(userData.client.endService)\" class=\"form-control\" id=\"clientEndService\" placeholder=\"01/01/1990\"></div></div><hr><div class=\"form-group\"><label for=\"clientWorkedOnARailroad\">Have you worked on a railroad?</label><br><div click.delegate=\"toggleRailroad()\"><input type=\"checkbox\" id=\"railroad\" data-toggle=\"toggle\" data-on=\"Yes\" data-off=\"No\"></div></div><div show.bind=\"userData.client.workedOnARailroad\" class=\"form-group\"><label for=\"yearsOnRailroad\">What year did you start working on the railroad?</label><input type=\"text\" value.bind=\"userData.client.yearsStartedOnRailroad\" class=\"form-control\" placeholder=\"0\"></div><div show.bind=\"userData.client.workedOnARailroad\" class=\"form-group\"><label for=\"yearsOnRailroad\">What year did you stop working on the railroad?</label><input type=\"text\" value.bind=\"userData.client.yearsEndedOnRailroad\" class=\"form-control\" placeholder=\"0\"></div><hr><div class=\"form-group\"><label for=\"clientRecievePension\">Have you received a government pension?</label><br><div click.delegate=\"toggleGPO()\"><input type=\"checkbox\" id=\"gpo\" data-toggle=\"toggle\" data-on=\"Yes\" data-off=\"No\"></div></div><div show.bind=\"userData.client.recievePension\" class=\"form-group\" id=\"clientPensionBox\"><label for=\"clientPensionAmount\">How much government pension do you receive per month?</label><input type=\"text\" value.bind=\"userData.client.pensionAmount\" class=\"form-control\" placeholder=\"2000\"></div><hr><div class=\"form-group\" id=\"clientCitizenshipBox\"><label for=\"clientCitizenship\">Citizenship</label><select class=\"form-control\" value.bind=\"userData.client.citizenship\" change.delegate=\"checkCitizenship(userData.client.citizenship)\"><option data-hidden=\"true\">Please Select</option><option>US Citizen</option><option>Dual Citizen</option><option>Not a US Citizen</option></select></div><div show.bind=\"userData.client.dual26Countries\"><div class=\"form-group\"><label for=\"client26Countries\">Is your dual citizenship with one of these 26 coutnries?</label><br><div click.delegate=\"toggle26Countries()\"><input type=\"checkbox\" id=\"26countries\" data-toggle=\"toggle\" data-on=\"Yes\" data-off=\"No\"></div></div><div show.bind=\"userData.client.isDual26Countries\" class=\"form-group\" id=\"clientCanadaItalyBox\"><label for=\"clientCanadaItaly\">Is your dual citizenship with Italy or Canada (provided you were hired in the US by the Canadian government)?</label><br><div click.delegate=\"toggleCanadaItaly()\"><input type=\"checkbox\" checked=\"checked\" id=\"canadaItaly\" data-toggle=\"toggle\" data-on=\"Yes\" data-off=\"No\"></div></div></div><div show.bind=\"userData.client.notCitizen\"><div class=\"form-group\" id=\"clientInstrumentalityBox\"><label for=\"clientInstrumentality\">Do you work for an Instrumentality?</label><br><div click.delegate=\"toggleInstrumentality()\"><input type=\"checkbox\" id=\"instrumentality\" data-toggle=\"toggle\" data-on=\"Yes\" data-off=\"No\"></div></div><div show.bind=\"userData.client.checkInstrumentality\" class=\"form-group\" id=\"clientOneOrTwoBox\"><label for=\"clientOneOrTwo\">Do all 3 of these conditions apply?</label><br><div click.delegate=\"toggleConditions()\"><input type=\"checkbox\" id=\"conditions\" data-toggle=\"toggle\" data-on=\"Yes\" data-off=\"No\"></div></div></div></div><div show.bind=\"userData.client.isMarried\" id=\"spouse\"><br><hr><br><h3>Co-Client</h3><div class=\"form-group\"><label for=\"spouseMilitaryService\">Have you served in the military?</label><br><div click.delegate=\"toggleMilitarySpouse()\"><input type=\"checkbox\" id=\"militarySpouse\" data-toggle=\"toggle\" data-on=\"Yes\" data-off=\"No\"></div></div><div show.bind=\"userData.spouse.militaryService\"><div class=\"form-group\"><label for=\"spouseBeganService\">Began Service</label><input type=\"text\" value.bind=\"userData.spouse.beganService\" change.delegate=\"beganServiceSpouse(userData.spouse.beganService)\" class=\"form-control\" id=\"spouseBeganService\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"spouseEndService\">End Service</label><input type=\"text\" value.bind=\"userData.spouse.endService\" change.delegate=\"endServiceSpouse(userData.spouse.endService)\" class=\"form-control\" id=\"spouseEndService\" placeholder=\"01/01/1970\"></div></div><div class=\"form-group\"><label for=\"spouseWorkedOnARailroad\">Have you worked on a railroad?</label><br><div click.delegate=\"toggleRailroadSpouse()\"><input type=\"checkbox\" id=\"railroadSpouse\" data-toggle=\"toggle\" data-on=\"Yes\" data-off=\"No\"></div></div><div show.bind=\"userData.spouse.workedOnARailroad\" class=\"form-group\"><label for=\"yearsOnRailroad\">What year did you start working on the railroad?</label><input type=\"text\" value.bind=\"userData.spouse.yearsStartedOnRailroad\" class=\"form-control\" placeholder=\"0\"></div><div show.bind=\"userData.spouse.workedOnARailroad\" class=\"form-group\"><label for=\"yearsOnRailroad\">What year did you stop working on the railroad?</label><input type=\"text\" value.bind=\"userData.spouse.yearsEndedOnRailroad\" class=\"form-control\" placeholder=\"0\"></div><div class=\"form-group\"><label for=\"spouseRecievePension\">Have you received a government pension?</label><br><div click.delegate=\"toggleGPOSpouse()\"><input type=\"checkbox\" id=\"gpoSpouse\" data-toggle=\"toggle\" data-on=\"Yes\" data-off=\"No\"></div></div><div show.bind=\"userData.spouse.recievePension\" class=\"form-group\" id=\"spousePensionBox\"><label for=\"spousePensionAmount\">How much government pension do you receive per month?</label><input type=\"text\" value.bind=\"userData.spouse.pensionAmount\" class=\"form-control\" placeholder=\"2000\"></div><div class=\"form-group\" id=\"spouseCitizenshipBox\"><label for=\"spouseCitizenship\">Citizenship</label><select class=\"form-control\" value.bind=\"userData.spouse.citizenship\" change.delegate=\"checkCitizenshipSpouse(userData.spouse.citizenship)\"><option data-hidden=\"true\">Please Select</option><option>US Citizen</option><option>Dual Citizen</option><option>Not a US Citizen</option></select></div><div show.bind=\"userData.spouse.dual26Countries\"><div show.bind=\"userData.spouse.dual26Countries\" class=\"form-group\"><label for=\"spouse26Countries\">Is your dual citizenship with one of these 26 coutnries?</label><br><div click.delegate=\"toggle26CountriesSpouse()\"><input type=\"checkbox\" id=\"26countriesSpouse\" data-toggle=\"toggle\" data-on=\"Yes\" data-off=\"No\"></div></div><div show.bind=\"userData.spouse.isDual26Countries\" class=\"form-group\" id=\"spouseCanadaItalyBox\"><label for=\"spouseCanadaItaly\">Is your dual citizenship with Italy or Canada (provided you were hired in the US by the Canadian government)?</label><br><div click.delegate=\"toggleCanadaItalySpouse()\"><input type=\"checkbox\" checked=\"checked\" id=\"canadaItalySpouse\" data-toggle=\"toggle\" data-on=\"Yes\" data-off=\"No\"></div></div></div><div show.bind=\"userData.spouse.notCitizen\"><div class=\"form-group\" id=\"spouseInstrumentalityBox\"><label for=\"spouseInstrumentality\">Do you work for an Instrumentality?</label><br><div click.delegate=\"toggleInstrumentalitySpouse()\"><input type=\"checkbox\" id=\"instrumentalitySpouse\" data-toggle=\"toggle\" data-on=\"Yes\" data-off=\"No\"></div></div><div show.bind=\"userData.spouse.checkInstrumentality\" class=\"form-group\" id=\"spouseOneOrTwoBox\"><label for=\"spouseOneOrTwo\">Do all 3 of these conditions apply?</label><br><div click.delegate=\"toggleConditionsSpouse()\"><input type=\"checkbox\" id=\"conditionsSpouse\" data-toggle=\"toggle\" data-on=\"Yes\" data-off=\"No\"></div></div></div></div><button class=\"btn btn-secondary\" click.delegate=\"back()\" id=\"back\">Back</button> <button class=\"btn btn-primary\" type=\"submit\" id=\"next\">Next</button></form></template>"; });
-define('text!results/results.html', ['module'], function(module) { module.exports = "<template><require from=\"highcharts/css/highcharts.css\"></require><div id=\"results\"><h1>Results</h1><button class=\"btn btn-primary\" click.delegate=\"results()\">Get Results</button><div show.bind=\"userData.client.showChart\"><p>Benefit at age 62: ${userData.client.ssBaseAdj[0]}</p><p>Benefit at age ${userData.client.yearFRA} (FRA): ${userData.client.ssBaseAdj[1]}</p><p>Benefit at age ${userData.client.retirementAge} (Your Selected Retirement Age): ${userData.client.ssBaseAdj[2]}</p><p>Benefit at age 70: ${userData.client.ssBaseAdj[3]}</p><div id=\"clientContainer\" style=\"width:750px;height:600px;margin:0 auto\"></div></div><div show.bind=\"userData.spouse.showChart\"><p>Benefit at age 62: ${userData.spouse.ssBaseAdj[0]}</p><p>Benefit at age ${userData.spouse.yearFRA}: ${userData.spouse.ssBaseAdj[1]}</p><p>Benefit at age ${userData.spouse.retirementAge}: ${userData.spouse.ssBaseAdj[2]}</p><p>Benefit at age 70: ${userData.spouse.ssBaseAdj[3]}</p><div id=\"spouseContainer\" style=\"width:750px;height:600px;margin:0 auto\"></div></div><br><br><button class=\"btn btn-secondary\" click.delegate=\"back()\" id=\"back\">Back</button></div></template>"; });
+define('text!results/results.html', ['module'], function(module) { module.exports = "<template><require from=\"highcharts/css/highcharts.css\"></require><div id=\"results\"><h1>Results</h1><button class=\"btn btn-primary\" click.delegate=\"results()\">Get Results</button><div show.bind=\"userData.client.showChart\"><p>Benefit at age 62: ${userData.client.ssBaseAdj[0]}</p><p>Benefit at age ${userData.client.retirementAge} (Your Selected Retirement Age): ${userData.client.ssBaseAdj[1]}</p><p>Benefit at age ${userData.client.yearFRA} (FRA): ${userData.client.ssBaseAdj[2]}</p><p>Benefit at age 70: ${userData.client.ssBaseAdj[3]}</p><div id=\"clientContainer\" style=\"width:750px;height:600px;margin:0 auto\"></div></div><div show.bind=\"userData.spouse.showChart\"><p>Benefit at age 62: ${userData.spouse.ssBaseAdj[0]}</p><p>Benefit at age ${userData.spouse.yearFRA}: ${userData.spouse.ssBaseAdj[1]}</p><p>Benefit at age ${userData.spouse.retirementAge}: ${userData.spouse.ssBaseAdj[2]}</p><p>Benefit at age 70: ${userData.spouse.ssBaseAdj[3]}</p><div id=\"spouseContainer\" style=\"width:750px;height:600px;margin:0 auto\"></div></div><br><br><button class=\"btn btn-secondary\" click.delegate=\"back()\" id=\"back\">Back</button></div></template>"; });
 //# sourceMappingURL=app-bundle.js.map
