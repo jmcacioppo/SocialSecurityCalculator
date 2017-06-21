@@ -85,7 +85,7 @@ export class results {
 
             }); 
 
-        }
+        } //end results(person)
 
         var maritalStatus = this.userData.client.maritalStatus;
         results(this.userData.client);
@@ -96,123 +96,63 @@ export class results {
 
         console.log(this.userData);
 
-        // GENERATE CHART
-        // var blah =  Highcharts.chart('container', {
-
-        //     title: {
-        //         text: 'Solar Employment Growth by Sector, 2010-2016'
-        //     },
-
-        //     subtitle: {
-        //         text: 'Source: thesolarfoundation.com'
-        //     },
-
-        //     yAxis: {
-        //         title: {
-        //             text: 'Number of Employees'
-        //         }
-        //     },
-        //     legend: {
-        //         layout: 'vertical',
-        //         align: 'right',
-        //         verticalAlign: 'middle'
-        //     },
-
-        //     plotOptions: {
-        //         series: {
-        //             pointStart: 2010
-        //         }
-        //     },
-
-        //     series: [{
-        //         name: 'Installation',
-        //         data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
-        //     }, {
-        //         name: 'Manufacturing',
-        //         data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
-        //     }, {
-        //         name: 'Sales & Distribution',
-        //         data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
-        //     }, {
-        //         name: 'Project Development',
-        //         data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-        //     }, {
-        //         name: 'Other',
-        //         data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
-        //     }]
-
-        // }); //end of Highcharts.chart()
-
-        
-        
-        
-
-        Highcharts.chart('container', {
-            title: {
-                text: 'Benefits vs. Age'
-            },
-            // xAxis: {
-            //     categories: (() => {
-            //                     var ages = [];
-            //                     for (var age = 62; age <= this.userData.client.lifeExpectancy; age++)
-            //                         ages.push(age);
-            //                     return ages;
-            //                 })()
-            // },
-            xAxis: {
+        function makeChart(containerID, person)
+        {
+            Highcharts.chart(containerID, {
                 title: {
-                    text: 'Age'
-                }
-            },
-            plotOptions: {
-                series: {
-                    pointStart: 62
-                }
-            },
-            yAxis: {
-                title: {
-                    text: 'Yearly Benefits'
-                }
-            },
-            series: [{
-                name: 'Receive at 62 (earliest)',
-                data: (() => {
-                        console.log(this.userData.client.earlyBenefits);
-                        while (this.userData.client.earlyBenefits.length < this.userData.client.lifeExpectancy - 62)
-                            this.userData.client.earlyBenefits.unshift(99);
-                        console.log(this.userData.client.earlyBenefits);
-                        return this.userData.client.earlyBenefits;
-                    })()
-            }, {
-                name: 'Receive at ' + this.userData.client.retirementAge + ' (user-selected)',
-                data: (() => {
-                        console.log(this.userData.client.userSelectedBenefits);
-                        while (this.userData.client.userSelectedBenefits.length < this.userData.client.lifeExpectancy - 62)
-                            this.userData.client.userSelectedBenefits.unshift(99);
-                        console.log(this.userData.client.userSelectedBenefits);
-                        return this.userData.client.userSelectedBenefits;
-                    })()
-            }, {
-                name: 'Receive at ' + this.userData.client.yearFRA + ' (FRA)',
-                data: (() => {
-                        console.log(this.userData.client.FRABenefits);
-                        while (this.userData.client.FRABenefits.length < this.userData.client.lifeExpectancy - 62)
-                            this.userData.client.FRABenefits.unshift(99);
-                        console.log(this.userData.client.FRABenefits);
-                        return this.userData.client.FRABenefits;
-                    })()
-            }, {
-                name: 'Receive at 70 (latest)',
-                data: (() => {
-                        console.log(this.userData.client.lateBenefits);
-                        while (this.userData.client.lateBenefits.length < this.userData.client.lifeExpectancy - 62) {
-                            this.userData.client.lateBenefits.unshift(99);
-                        }
-                        console.log(this.userData.client.lateBenefits);
-                        return this.userData.client.lateBenefits;
-                    })()
-            }]
-        });
+                    text: person.name + ': Benefits vs. Age'
+                },
+                xAxis: {
+                    title: {
+                        text: 'Age'
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        pointStart: 62
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Yearly Benefits'
+                    }
+                },
+                series: [{
+                    name: 'Receive at 62 (earliest)',
+                    data: (() => {
+                            while (person.earlyBenefits.length < person.lifeExpectancy - 62)
+                                person.earlyBenefits.unshift(0);
+                            return person.earlyBenefits;
+                        })()
+                }, {
+                    name: 'Receive at ' + person.retirementAge + ' (user-selected)',
+                    data: (() => {
+                            while (person.userSelectedBenefits.length < person.lifeExpectancy - 62)
+                                person.userSelectedBenefits.unshift(0);
+                            return person.userSelectedBenefits;
+                        })()
+                }, {
+                    name: 'Receive at ' + person.yearFRA + ' (FRA)',
+                    data: (() => {
+                            while (person.FRABenefits.length < person.lifeExpectancy - 62)
+                                person.FRABenefits.unshift(0);
+                            return person.FRABenefits;
+                        })()
+                }, {
+                    name: 'Receive at 70 (latest)',
+                    data: (() => {
+                            while (person.lateBenefits.length < person.lifeExpectancy - 62)
+                                person.lateBenefits.unshift(0);
+                            return person.lateBenefits;
+                        })()
+                }]
+            }); //end Highcharts.chart()
+        } //end function makeChart()
+ 
+        makeChart('clientContainer', this.userData.client);
+
+        if (this.userData.client.maritalStatus == "Married")
+            makeChart('spouseContainer', this.userData.spouse);
 
 
     } // end of attached{}
