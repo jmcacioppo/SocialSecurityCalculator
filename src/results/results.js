@@ -21,83 +21,8 @@ export class results {
         this.router.navigate('#/benefits');
     }
 
-    attached() {
-        function results(person) {
-            var early = 62;
-            var FRA = person.yearFRA; //age at FRA
-            var userSelected = person.retirementAge;
-            var late = 70;
-            var retirementAges = [early, FRA, userSelected, late];
-            
-            var yearOfBirth = person.yearOfBirth;
-            var currentYear = person.currentYear;
-            var retirementIncome = person.retirementIncome;
-            
-            retirementAges.forEach(function(age, i) {
-                var retirementYear = age + yearOfBirth;
-                var limitYear = retirementYear - currentYear;
-                var overLimit = retirementIncome - projEarningsLimit[limitYear];
-
-                if(overLimit > 0 && age < FRA) { //Over Limit and Before FRA
-                    var reduction = overLimit / 2;
-                    person.ssBaseAdj[i] = person.ssBase - reduction;
-                    if(person.ssBaseAdj[i] < 0) person.ssBaseAdj[i] = 0;
-                }
-                else if(overLimit > 0 && age == FRA) { //Over Limit and At FRA
-                    var reduction = overLimit / 3;
-                    person.ssBaseAdj[i] = person.ssBase - reduction;
-                    if(person.ssBaseAdj[i] < 0) person.ssBaseAdj[i] = 0;
-                }
-                else person.ssBaseAdj[i] = person.ssBase; //Below Limit or After FRA
-            }); 
-
-            person.ssBaseAdj.forEach(function(ssBase, i) {
-                var age = retirementAges[i];
-                var lifeExpectancy = person.lifeExpectancy;
-                var numOfYears = lifeExpectancy - age;
-
-                for(var j = 0; j < numOfYears; j++) {
-                    if(i == 0) {
-                        if(j==0) person.earlyBenefits[j] = ssBase;
-                        else {
-                            person.earlyBenefits[j] = person.earlyBenefits[j-1] + person.earlyBenefits[j-1] * person.cola / 100;
-                        }
-                    }
-                    else if(i == 1) {
-                        if(j==0) person.FRABenefits[j] = ssBase;
-                        else {
-                            person.FRABenefits[j] = person.FRABenefits[j-1] + person.FRABenefits[j-1] * person.cola / 100;
-                        }
-                    }
-                    else if(i == 2) {
-                        if(j==0) person.userSelectedBenefits[j] = ssBase;
-                        else {
-                            person.userSelectedBenefits[j] = person.userSelectedBenefits[j-1] + person.userSelectedBenefits[j-1] * person.cola / 100;
-                        }
-                    }
-                    else if(i == 3) {
-                        if(j==0) person.lateBenefits[j] = ssBase;
-                        else {
-                            person.lateBenefits[j] = person.lateBenefits[j-1] + person.lateBenefits[j-1] * person.cola / 100;
-                        }
-                    }
-                }
-
-            }); 
-
-        } //end results(person)
-
-        var maritalStatus = this.userData.client.maritalStatus;
-        results(this.userData.client);
-
-        if(maritalStatus == "Married") {
-            results(this.userData.spouse);
-        }
-
-        console.log(this.userData);
-
-        function makeChart(containerID, person)
-        {
+    results() {
+        function makeChart(containerID, person) {
             Highcharts.chart(containerID, {
                 title: {
                     text: person.name + ': Benefits vs. Age'
@@ -148,12 +73,12 @@ export class results {
                 }]
             }); //end Highcharts.chart()
         } //end function makeChart()
- 
+        var maritalStatus = this.userData.client.maritalStatus;
         makeChart('clientContainer', this.userData.client);
+        if (this.userData.client.maritalStatus == "Married") makeChart('spouseContainer', this.userData.spouse);
+    }
 
-        if (this.userData.client.maritalStatus == "Married")
-            makeChart('spouseContainer', this.userData.spouse);
+    attached() {
 
-
-    } // end of attached{}
-} //end of class
+    } 
+}

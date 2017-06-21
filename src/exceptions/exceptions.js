@@ -70,9 +70,11 @@ export class exceptions {
 
             //COMPUTES PROJECTED SALARY 
             if(ageFrom18 >= 0) {
-                person.projectedSal[ageFrom18-1] = sal; //Current salary
-                for(var i = ageFrom18 - 2; i >= 0; i--) { //Loop through each wage percentage backwards so we go from current salary
-                    person.projectedSal[i] = person.projectedSal[i+1] - (person.projectedSal[i+1] * wagePerc[wagePerc.length-i-3]); //Calculate projected salary
+                person.projectedSal[ageFrom18] = sal; //Current salary
+                var count = 0;
+                for(var i = ageFrom18 - 1; i >= 0; i--) { //Loop through each wage percentage backwards so we go from current salary
+                    person.projectedSal[i] = person.projectedSal[i+1] - (person.projectedSal[i+1] * wagePerc[wagePerc.length-count-2]); //Calculate projected salary
+                    count++;
                 }
 
                 if(person.showWages) {
@@ -81,7 +83,7 @@ export class exceptions {
                     }); 
                 }
                 if(!widowcheck) {
-                    for(var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) { //Loop through each wage percentage backwards so we go from current salary
+                    for(var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) { //Loop through each wage percentage backwards so we go from current salary
                         person.projectedSal[i] = parseFloat(person.projectedSal[i-1]) + (parseFloat(person.projectedSal[i-1]) * wagePerc[wagePerc.length-1]); //Calculate projected salary
                     }
                 }
@@ -91,26 +93,28 @@ export class exceptions {
                     }
                 }
 
+                count = 0;
                 //COMPUTES SALARY ADJUSTED FOR INFLATION
                 for(var i = ageFrom18-1; i >= 0; i--) {
-                    if(person.projectedSal[i] > allowedSalary[inflationIndex.length-(ageFrom18-i)-1]) { //Check allowed salary and calculate adjusted inflation accordingly
-                        person.inflationAdjusted[i] = allowedSalary[inflationIndex.length-(ageFrom18-i)-1] * inflationIndex[inflationIndex.length-(ageFrom18-i)-1];
+                    if(person.projectedSal[i] > allowedSalary[allowedSalary.length-count-2]) { //Check allowed salary and calculate adjusted inflation accordingly
+                        person.inflationAdjusted[i] = allowedSalary[allowedSalary.length-count-2] * inflationIndex[inflationIndex.length-count-2];
                     }
                     else {
-                        person.inflationAdjusted[i] = person.projectedSal[i] * inflationIndex[inflationIndex.length-(ageFrom18-i)-1];
+                        person.inflationAdjusted[i] = person.projectedSal[i] * inflationIndex[inflationIndex.length-count-2];
                     }
+                    count++;
                 }
 
                 if(!widowcheck) {
                     var lastYearAllowed = allowedSalary[allowedSalary.length-1];
                     for(var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
-                        if(person.projectedSal[i] > allowedSalary[i]) { //Check allowed salary and calculate adjusted inflation accordingly
+                        if(person.projectedSal[i] > lastYearAllowed) { //Check allowed salary and calculate adjusted inflation accordingly
                             person.inflationAdjusted[i] = lastYearAllowed * inflationIndex[inflationIndex.length-1];
-                            lastYearAllowed = lastYearAllowed * 1.021;
                         }
                         else {
                             person.inflationAdjusted[i] = person.projectedSal[i] * inflationIndex[inflationIndex.length-1];
                         }
+                        lastYearAllowed = lastYearAllowed * 1.021;
                     }
                 }
                 else {
