@@ -94,6 +94,7 @@ export class User {
         this.yrsOfSubEarnings = 0;
 
         //Results
+        this.showChart = false;
      }
 
 }

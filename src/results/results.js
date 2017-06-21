@@ -73,9 +73,14 @@ export class results {
                 }]
             }); //end Highcharts.chart()
         } //end function makeChart()
+
         var maritalStatus = this.userData.client.maritalStatus;
         makeChart('clientContainer', this.userData.client);
-        if (this.userData.client.maritalStatus == "Married") makeChart('spouseContainer', this.userData.spouse);
+        if(maritalStatus == "Married") {   
+            makeChart('spouseContainer', this.userData.spouse);
+            this.userData.spouse.showChart = true;
+        }
+        this.userData.client.showChart = true;
     }
 
     attached() {
