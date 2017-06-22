@@ -15,6 +15,11 @@ export class results {
     constructor(userData, router) {
         this.userData = userData;
         this.router = router;
+        
+        this.netEarly = 0;
+        this.netUserSelected = 0;
+        this.netFRA = 0;
+        this.netLate = 0;
     }
     
     back() {
@@ -24,10 +29,28 @@ export class results {
     results() {
         function makeChart(containerID, person) {
 
-            function generateTuples(array, startAge) {
+            function generateTuples(array, startAge, person) {
+                console.log("before:");
+                console.log(array);
                 var tuples = [];
                 for (var i = 0; i < array.length; i++)
+                {
                     tuples.push( [ startAge + i, array[i] ] );
+                    switch (startAge)
+                    {
+                        case 62:
+                            person.netEarly += array[i];
+                            break;
+                        case person.retirementAge:
+                            person.netUserSelected += array[i];
+                            break;
+                        case person.yearFRA:
+                            person.netFRA += array[i];
+                            break;
+                        default:
+                            person.netLate += array[i];
+                    }
+                }
                 console.log(tuples);
                 return tuples;
             }
@@ -53,16 +76,16 @@ export class results {
                 },
                 series: [{
                     name: 'Receive at 62 (earliest)',
-                    data: generateTuples(person.earlyBenefits, 62)
+                    data: generateTuples(person.earlyBenefits, 62, person)
                 }, {
                     name: 'Receive at ' + person.retirementAge + ' (user-selected)',
-                    data: generateTuples(person.userSelectedBenefits, person.retirementAge)
+                    data: generateTuples(person.userSelectedBenefits, person.retirementAge, person)
                 }, {
                     name: 'Receive at ' + person.yearFRA + ' (FRA)',
-                    data: generateTuples(person.FRABenefits, person.yearFRA)
+                    data: generateTuples(person.FRABenefits, person.yearFRA, person)
                 }, {
                     name: 'Receive at 70 (latest)',
-                    data: generateTuples(person.lateBenefits, 70)
+                    data: generateTuples(person.lateBenefits, 70, person)
                 }]
             }); //end Highcharts.chart()
         } //end function makeChart()
