@@ -229,22 +229,17 @@ export class personalinfo {
             this.userData.client.isDivorced = false;
             this.userData.client.isSurvivor = false;
             this.userData.client.divorceCheck = false;
-            $('#divorceCheck').bootstrapToggle('off');
-            $('#divorceCheck').bootstrapToggle('destroy');
         }
         else if(value == "Divorced") {
             this.userData.client.isDivorced = true;
             this.userData.client.isMarried = false;
             this.userData.client.isSurvivor = false;
-            $('#divorceCheck').bootstrapToggle();
         }
         else if(value == "Widowed") {
             this.userData.client.isSurvivor = true;
             this.userData.client.isMarried = false;
             this.userData.client.isDivorced = false;
             this.userData.client.divorceCheck = false;
-             $('#divorceCheck').bootstrapToggle('off');
-             $('#divorceCheck').bootstrapToggle('destroy');
 
             if(this.userData.client.dateOfBirth) { //NEW FRA FOR SURVIVOR CLIENT
                 if(this.userData.client.yearOfBirth >= 1945 && this.userData.client.yearOfBirth <= 1956) {
@@ -282,8 +277,6 @@ export class personalinfo {
             this.userData.client.isDivorced = false;
             this.userData.client.isSurvivor = false;
             this.userData.client.divorceCheck = false;
-            $('#divorceCheck').bootstrapToggle('off');
-            $('#divorceCheck').bootstrapToggle('destroy');
         }
     }
 
@@ -362,8 +355,7 @@ export class personalinfo {
     }
 
     divorce() {
-        var check = $('#divorceCheck').prop("checked");
-        this.userData.client.divorceCheck = check;
+        this.userData.client.divorceCheck = !this.userData.client.divorceCheck;
     }
 
     attached() {        

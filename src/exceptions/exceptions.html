@@ -1,19 +1,26 @@
 <template>    
+    <require from="jquery-ui-dist/jquery-ui.css"></require>    
     <require from="bootstrap-toggle/css/bootstrap-toggle.css"></require>
     <require from="bootstrap-toggle/css/bootstrap2-toggle.css"></require>
     
     <form id="exceptions" submit.delegate="calculate()">
         <h1>Exceptions</h1>
+        <p>These special exceptions may impact your benefits. Input them if applicable.</p>
 
         <div id="client">
-            <h3>Client</h3>
+            <h1>Client</h1>
 
             <!--MILITARY SERVICE-->
             <div class="form-group">
-                <label for="clientMilitaryService">Have you served in the military?</label>
+                <label for="militaryService">Have you served in the military? </label>
                 <br>
-                <div click.delegate="toggleMilitary()">
-                    <input type="checkbox" id="military" data-toggle="toggle" data-on="Yes" data-off="No">                
+                <div click.delegate="militaryService()" class="btn-group" data-toggle="buttons">
+                    <label class="btn ${userData.client.militaryService ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">Yes
+                    </label>
+                    <label class="btn ${!userData.client.militaryService ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">No
+                    </label>
                 </div>
             </div>
 
@@ -34,8 +41,13 @@
             <div class="form-group">
                 <label for="clientWorkedOnARailroad">Have you worked on a railroad?</label>
                 <br>
-                <div click.delegate="toggleRailroad()">
-                    <input type="checkbox" id="railroad" data-toggle="toggle" data-on="Yes" data-off="No">
+                <div click.delegate="railroad()" class="btn-group" data-toggle="buttons">
+                    <label class="btn ${userData.client.workedOnARailroad ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">Yes
+                    </label>
+                    <label class="btn ${!userData.client.workedOnARailroad ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">No
+                    </label>
                 </div>
             </div>
 
@@ -54,8 +66,13 @@
             <div class="form-group">
                 <label for="clientRecievePension">Do you receive a government pension?</label>
                 <br>
-                <div click.delegate="toggleGPO()">
-                    <input type="checkbox" id="gpo" data-toggle="toggle" data-on="Yes" data-off="No">
+                <div click.delegate="gpo()" class="btn-group" data-toggle="buttons">
+                    <label class="btn ${userData.client.recievePension ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">Yes
+                    </label>
+                    <label class="btn ${!userData.client.recievePension ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">No
+                    </label>
                 </div>
             </div>
 
@@ -85,17 +102,26 @@
                         Country 1, 2, 3, 4, 5....26
                     </div>
                     <br>
-                    <div click.delegate="toggle26Countries()">
-                        <input type="checkbox" id="26countries" data-toggle="toggle" data-on="Yes" data-off="No">
+                    <div click.delegate="check26Countries()" class="btn-group" data-toggle="buttons">
+                        <label class="btn ${userData.client.isDual26Countries ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">Yes
+                        </label>
+                        <label class="btn ${!userData.client.isDual26Countries ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">No
+                        </label>
                     </div>
                 </div>
                 
-
                 <div show.bind="userData.client.isDual26Countries" class="form-group">
                     <label for="clientCanadaItaly">Is your dual citizenship with Italy or Canada (provided you were hired in the US by the Canadian government)?</label>
                     <br>
-                    <div click.delegate="toggleCanadaItaly()">
-                        <input type="checkbox" checked id="canadaItaly" data-toggle="toggle" data-on="Yes" data-off="No">
+                    <div click.delegate="canadaItaly()" class="btn-group" data-toggle="buttons">
+                        <label class="btn ${userData.client.dualCanadaItaly ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">Yes
+                        </label>
+                        <label class="btn ${!userData.client.dualCanadaItaly ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">No
+                        </label>
                     </div>
                 </div>     
             </div>
@@ -105,8 +131,13 @@
                 <div class="form-group">
                     <label for="clientInstrumentality">Do you work for an Instrumentality?</label>
                     <br>
-                    <div click.delegate="toggleInstrumentality()">
-                        <input type="checkbox" id="instrumentality" data-toggle="toggle" data-on="Yes" data-off="No">
+                    <div click.delegate="instrumentality()" class="btn-group" data-toggle="buttons">
+                        <label class="btn ${userData.client.checkInstrumentality ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">Yes
+                        </label>
+                        <label class="btn ${!userData.client.checkInstrumentality ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">No
+                        </label>
                     </div>
                 </div>    
                 
@@ -116,8 +147,13 @@
                     <p>Condition 2: </p>
                     <p>Condition 3: </p>
                     <br>
-                    <div click.delegate="toggleConditions()">
-                        <input type="checkbox" id="conditions" data-toggle="toggle" data-on="Yes" data-off="No">
+                    <div click.delegate="conditions()" class="btn-group" data-toggle="buttons">
+                        <label class="btn ${userData.client.checkConditions ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">Yes
+                        </label>
+                        <label class="btn ${!userData.client.checkConditions ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">No
+                        </label>
                     </div>
                 </div>    
             </div>    
@@ -128,17 +164,22 @@
             <hr />
             <br>
 
-            <h3>Co-Client</h3>
+            <h1>Co-Client</h1>
 
+            <!--MILITARY SERVICE-->
             <div class="form-group">
                 <label for="spouseMilitaryService">Have you served in the military?</label>
                 <br>
-                <div click.delegate="toggleMilitarySpouse()">
-                    <input type="checkbox" id="militarySpouse" data-toggle="toggle" data-on="Yes" data-off="No">
+                <div click.delegate="militaryServiceSpouse()" class="btn-group" data-toggle="buttons">
+                    <label class="btn ${userData.spouse.militaryService ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">Yes
+                    </label>
+                    <label class="btn ${!userData.spouse.militaryService ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">No
+                    </label>
                 </div>
             </div>
 
-            <!--MILITARY SERVICE-->
             <div show.bind="userData.spouse.militaryService">
                 <div class="form-group">
                     <label for="spouseBeganService">Began Service</label>
@@ -151,12 +192,19 @@
                 </div>
             </div>
 
+            <hr>
+
             <!--RAILROAD-->
             <div class="form-group">
                 <label for="spouseWorkedOnARailroad">Have you worked on a railroad?</label>
                 <br>
-                <div click.delegate="toggleRailroadSpouse()">
-                    <input type="checkbox" id="railroadSpouse" data-toggle="toggle" data-on="Yes" data-off="No">
+                <div click.delegate="railroadSpouse()" class="btn-group" data-toggle="buttons">
+                    <label class="btn ${userData.spouse.workedOnARailroad ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">Yes
+                    </label>
+                    <label class="btn ${!userData.spouse.workedOnARailroad ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">No
+                    </label>
                 </div>
             </div>
 
@@ -170,12 +218,19 @@
                 <input type="text" value.bind="userData.spouse.yearsEndedOnRailroad" class="form-control" placeholder="0">
             </div>
 
+            <hr>
+
             <!--GOVERNMENT PENSION-->
             <div class="form-group">
                 <label for="spouseRecievePension">Do you receive a government pension?</label>
                 <br>
-                <div click.delegate="toggleGPOSpouse()">
-                    <input type="checkbox" id="gpoSpouse" data-toggle="toggle" data-on="Yes" data-off="No">
+                <div click.delegate="gpoSpouse()" class="btn-group" data-toggle="buttons">
+                    <label class="btn ${userData.spouse.recievePension ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">Yes
+                    </label>
+                    <label class="btn ${!userData.spouse.recievePension ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">No
+                    </label>
                 </div>
             </div>
 
@@ -183,6 +238,8 @@
                 <label for="spousePensionAmount">How much government pension do you receive per month?</label>
                 <input type="text" value.bind="userData.spouse.pensionAmount" class="form-control" placeholder="2000">
             </div>
+
+            <hr>
 
             <!--CITIZENSHIP-->
             <div class="form-group" id="spouseCitizenshipBox">
@@ -203,16 +260,26 @@
                         Country 1, 2, 3, 4, 5....26
                     </div>
                     <br>
-                    <div click.delegate="toggle26CountriesSpouse()">
-                        <input type="checkbox" id="26countriesSpouse" data-toggle="toggle" data-on="Yes" data-off="No">
+                    <div click.delegate="check26CountriesSpouse()" class="btn-group" data-toggle="buttons">
+                        <label class="btn ${userData.spouse.isDual26Countries ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">Yes
+                        </label>
+                        <label class="btn ${!userData.spouse.isDual26Countries ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">No
+                        </label>
                     </div>
                 </div>
 
                 <div show.bind="userData.spouse.isDual26Countries" class="form-group" id="spouseCanadaItalyBox">
                     <label for="spouseCanadaItaly">Is your dual citizenship with Italy or Canada (provided you were hired in the US by the Canadian government)?</label>
                     <br>
-                    <div click.delegate="toggleCanadaItalySpouse()">
-                        <input type="checkbox" checked id="canadaItalySpouse" data-toggle="toggle" data-on="Yes" data-off="No">
+                    <div click.delegate="canadaItalySpouse()" class="btn-group" data-toggle="buttons">
+                        <label class="btn ${userData.spouse.dualCanadaItaly ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">Yes
+                        </label>
+                        <label class="btn ${!userData.spouse.dualCanadaItaly ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">No
+                        </label>
                     </div>
                 </div>
             </div>
@@ -222,8 +289,13 @@
                 <div class="form-group" id="spouseInstrumentalityBox">
                     <label for="spouseInstrumentality">Do you work for an Instrumentality?</label>
                     <br>
-                    <div click.delegate="toggleInstrumentalitySpouse()">
-                        <input type="checkbox" id="instrumentalitySpouse" data-toggle="toggle" data-on="Yes" data-off="No">
+                    <div click.delegate="instrumentalitySpouse()" class="btn-group" data-toggle="buttons">
+                        <label class="btn ${userData.spouse.checkInstrumentality ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">Yes
+                        </label>
+                        <label class="btn ${!userData.spouse.checkInstrumentality ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">No
+                        </label>
                     </div>
                 </div>
                 
@@ -233,8 +305,13 @@
                     <p>Condition 2: </p>
                     <p>Condition 3: </p>
                     <br>
-                    <div click.delegate="toggleConditionsSpouse()">
-                        <input type="checkbox" id="conditionsSpouse" data-toggle="toggle" data-on="Yes" data-off="No">
+                    <div click.delegate="conditionsSpouse()" class="btn-group" data-toggle="buttons">
+                        <label class="btn ${userData.spouse.checkConditions ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">Yes
+                        </label>
+                        <label class="btn ${!userData.spouse.checkConditions ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">No
+                        </label>
                     </div>
                 </div>
             </div>
