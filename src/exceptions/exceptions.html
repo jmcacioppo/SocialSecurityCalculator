@@ -99,7 +99,8 @@
                 <div class="form-group">
                     <label for="client26Countries">Is your dual citizenship with one of these 26 countries?</label> 
                     <div>
-                        Country 1, 2, 3, 4, 5....26
+                        Italy, Germany, Switzerland, Belgium, Norway, Canada, United Kingdom, Sweden, Spain, France, Portugal, Netherlands, Austria,
+                        Finland, Ireland, Luxembourg, Greece, South Korea, Chile, Australia, Japan, Denmark, Czech Republic, Poland, Slovak Republic, Hungary
                     </div>
                     <br>
                     <div click.delegate="check26Countries()" class="btn-group" data-toggle="buttons">
@@ -143,9 +144,9 @@
                 
                 <div show.bind="userData.client.checkInstrumentality" class="form-group" id="clientOneOrTwoBox">
                     <label for="clientOneOrTwo">Do all 3 of these conditions apply?</label>
-                    <p>Condition 1: </p>
-                    <p>Condition 2: </p>
-                    <p>Condition 3: </p>
+                    <p>Condition 1: The organization for which you work is completely owned by a foreign government.</p>
+                    <p>Condition 2: Your work is like work performed in foreign countries by employees of the U.S. government of an instrumentality</p>
+                    <p>Condition 3: The Secretary of State certifies to the Secretary of the Treasury that the foreign government grants an equivalent exemption for similar work in the foreign country by employees of the U.S. government or its instrumentalities.</p>
                     <br>
                     <div click.delegate="conditions()" class="btn-group" data-toggle="buttons">
                         <label class="btn ${userData.client.checkConditions ? 'active btn-primary' : 'btn-secondary'}">
@@ -255,9 +256,10 @@
             <!--DUAL CITIZENSHIP-->
             <div show.bind="userData.spouse.dual26Countries">
                 <div show.bind="userData.spouse.dual26Countries" class="form-group">
-                    <label for="spouse26Countries">Is your dual citizenship with one of these 26 coutnries?</label>
+                    <label for="spouse26Countries">Is your dual citizenship with one of these 26 countries?</label>
                     <div>
-                        Country 1, 2, 3, 4, 5....26
+                        Italy, Germany, Switzerland, Belgium, Norway, Canada, United Kingdom, Sweden, Spain, France, Portugal,
+                        Netherlands, Austria, Finland, Ireland, Luxembourg, Greece, South Korea, Chile, Australia, Japan, Denmark, Czech Republic, Poland, Slovak Republic, Hungary
                     </div>
                     <br>
                     <div click.delegate="check26CountriesSpouse()" class="btn-group" data-toggle="buttons">
@@ -301,9 +303,9 @@
                 
                 <div show.bind="userData.spouse.checkInstrumentality" class="form-group" id="spouseOneOrTwoBox">
                     <label for="spouseOneOrTwo">Do all 3 of these conditions apply?</label>
-                    <p>Condition 1: </p>
-                    <p>Condition 2: </p>
-                    <p>Condition 3: </p>
+                    <p>Condition 1: The organization for which you work is completely owned by a foreign government.</p>
+                    <p>Condition 2: Your work is like work performed in foreign countries by employees of the U.S. government of an instrumentality</p>
+                    <p>Condition 3: The Secretary of State certifies to the Secretary of the Treasury that the foreign government grants an equivalent exemption for similar work in the foreign country by employees of the U.S. government or its instrumentalities.</p>
                     <br>
                     <div click.delegate="conditionsSpouse()" class="btn-group" data-toggle="buttons">
                         <label class="btn ${userData.spouse.checkConditions ? 'active btn-primary' : 'btn-secondary'}">
