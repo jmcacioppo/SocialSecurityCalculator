@@ -404,39 +404,39 @@ export class personalinfo {
     }
 
     next() {
-        function checkFields(person, clientmaritalStatus) {
-            if(!person.name) alert("Input a name");
-            else if(!person.gender) alert("Input a gender");
-            else if(!person.age || person.age < 18) alert("Input a valid date of birth");
-            else if(!person.employmentStatus || person.employmentStatus == "Please Select") alert("Input your employment status");
-            else if(person.employmentStatus == "Employed" || person.employmentStatus == "Business Owner") {
-                if(person.salary == 0) alert('Input a salary');
-            }
-            else if(!person.maritalStatus || person.maritalStatus == "Please Select") {
-                if(clientmaritalStatus != "Married") alert("Input your marital status");
-            }
+        // function checkFields(person, clientmaritalStatus) {
+        //     if(!person.name) alert("Input a name");
+        //     else if(!person.gender) alert("Input a gender");
+        //     else if(!person.age || person.age < 18) alert("Input a valid date of birth");
+        //     else if(!person.employmentStatus || person.employmentStatus == "Please Select") alert("Input your employment status");
+        //     else if(person.employmentStatus == "Employed" || person.employmentStatus == "Business Owner") {
+        //         if(person.salary == 0) alert('Input a salary');
+        //     }
+        //     else if(!person.maritalStatus || person.maritalStatus == "Please Select") {
+        //         if(clientmaritalStatus != "Married") alert("Input your marital status");
+        //     }
 
-            else return true; //GO TO EXCEPTIONS PAGE
-        }
+        //     else return true; //GO TO EXCEPTIONS PAGE
+        // }
 
-        function checkDeceasedFields(person) {
-            if(!person.age || person.age < 18) alert("Input a valid date of birth");
-            else return true;
-        }
+        // function checkDeceasedFields(person) {
+        //     if(!person.age || person.age < 18) alert("Input a valid date of birth");
+        //     else return true;
+        // }
         
-        var maritalStatus = this.userData.client.maritalStatus;
-        //MAKE SURE EVERYTHING IS INPUTTED
-        if(checkFields(this.userData.client, maritalStatus) == true) {
-            if(maritalStatus == "Married") {
-                if(checkFields(this.userData.spouse, maritalStatus) == true) this.router.navigate('#/exceptions');
-            }
-            else if(maritalStatus == "Widowed") {
-                if(checkDeceasedFields(this.userData.deceased) == true) this.router.navigate('#/exceptions');
-            }
-            else this.router.navigate('#/exceptions');
-        }
+        // var maritalStatus = this.userData.client.maritalStatus;
+        // //MAKE SURE EVERYTHING IS INPUTTED
+        // if(checkFields(this.userData.client, maritalStatus) == true) {
+        //     if(maritalStatus == "Married") {
+        //         if(checkFields(this.userData.spouse, maritalStatus) == true) this.router.navigate('#/exceptions');
+        //     }
+        //     else if(maritalStatus == "Widowed") {
+        //         if(checkDeceasedFields(this.userData.deceased) == true) this.router.navigate('#/exceptions');
+        //     }
+        //     else this.router.navigate('#/exceptions');
+        // }
         
 
-        //this.router.navigate('#/exceptions');
+        this.router.navigate('#/exceptions');
     }
 }
