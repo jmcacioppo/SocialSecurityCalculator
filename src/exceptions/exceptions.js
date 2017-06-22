@@ -23,23 +23,31 @@ export class exceptions {
     }
 
     calculate() {
-        function militarySalary(person, sal) {
-            var split = str.split("//");
-            person.beginYear = split[2];
-            person.beginMonth = split[0];
-
-            var bonus = 0;
-
-            if(person.beginYear >= 1940 && person.endYear <= 1967) {
-                bonus += 12 - parseInt(beginMonth)
-
-                //add to projected sal
-
-                
-
+        function militarySalary(person) {
+            if(person.beginYear <= 1967 && person.endYear >= 1940) {
+                for (var year = person.beginYear; year <= Math.min(person.endYear, 1967); year++)
+                {
+                    console.log("Year: "+year+" | Index: "+(person.ageFrom18 - (person.currentYear - year))+" | Before Sal: "+person.projectedSal[person.ageFrom18 - (person.currentYear - year)]);
+                    var monthsWorked = 0;
+                    if (year == person.beginYear)
+                        monthsWorked = 12 - person.beginMonth - 1;
+                    else if (year == person.endYear)
+                        monthsWorked = 12 - person.endMonth - 1;
+                    else
+                        monthsWorked = 12;
+                    person.projectedSal[person.ageFrom18 - (person.currentYear - year)] += monthsWorked / 3 * 300;
+                    console.log("Year: "+year+" | Index: "+(person.ageFrom18 - (person.currentYear - year))+" | New Sal: "+person.projectedSal[person.ageFrom18 - (person.currentYear - year)]);
+                }
             }
-            else if(person.beginYear >= 1967 && person.endYear <= 2001) {
-
+            
+            if(person.beginYear <= 2001 && person.endYear >= 1967) {
+                for (var year = Math.max(person.beginYear, 1967); year <= person.endYear && year <= 2001; year++)
+                {
+                    console.log("Year: "+year+" | Index: "+(person.ageFrom18 - (person.currentYear - year))+" | New Sal: "+person.projectedSal[person.ageFrom18 - (person.currentYear - year)]);
+                    var bonus = (1/3) * person.projectedSal[person.ageFrom18 - (person.currentYear - year)];
+                    person.projectedSal[person.ageFrom18 - (person.currentYear - year)] += Math.min(bonus, 1200);
+                    console.log("Year: "+year+" | Index: "+(person.ageFrom18 - (person.currentYear - year))+" | New Sal: "+person.projectedSal[person.ageFrom18 - (person.currentYear - year)]);
+                }
             }
         }
 
@@ -131,11 +139,9 @@ export class exceptions {
                         person.inflationAdjusted[i] = 0;
                     }
                 }
-<<<<<<< HEAD
-=======
                 
                 if(railroadCheck) railroadSalary(person);
->>>>>>> fceeda59e76618b150c6d4fb221b42afc8473024
+                if (person.militaryService) militarySalary(person);
 
                 //SORT AND GET TOP 35 ADJUSTED INFLATION SALARIES
                 person.inflationAdjusted = person.inflationAdjusted.sort((a, b) => a - b); 
