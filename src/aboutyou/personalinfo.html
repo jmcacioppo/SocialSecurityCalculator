@@ -100,13 +100,19 @@
                 <hr>
                 <label for="divorceCheck">Were you married for more than 10 years?</label>
                 <br>
-            </div>
-            <div click.delegate="divorce()">
-                <input type="checkbox" id="divorceCheck" data-toggle="toggle" data-on="Yes" data-off="No">
+                <div click.delegate="divorce()" class="btn-group" data-toggle="buttons">
+                    <label class="btn ${userData.client.divorceCheck ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">Yes
+                    </label>
+                    <label class="btn ${!userData.client.divorceCheck ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">No
+                    </label>
+                </div>
             </div>
             
             <!--IF DIVORCED AFTER MARRIED FOR 10+ YEARS, GET DOB AND SALARY OF SPOUSE-->
             <div show.bind="userData.client.divorceCheck">
+                <br>
                 <label for="exSpouseDOB">Date of Birth of Ex-Spouse</label>
                 <input type="text" value.bind="userData.spouse.dateOfBirth" change.delegate="dob(userData.spouse.dateOfBirth)" class="form-control" id="dob" placeholder="01/01/1970">
                 <br>

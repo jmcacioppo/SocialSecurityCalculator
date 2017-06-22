@@ -362,16 +362,6 @@ export class benefits {
                     }
                 }
             }); 
-
-            console.log("Early Benefits:");
-            console.log(person.earlyBenefits);
-            console.log("User Selected: ");
-            console.log(person.userSelectedBenefits);
-            console.log("FRA: ");
-            console.log(person.FRABenefits);
-            console.log("Late: ");
-            console.log( person.lateBenefits);
-
         } //end results(person)
 
         var maritalStatus = this.userData.client.maritalStatus;
