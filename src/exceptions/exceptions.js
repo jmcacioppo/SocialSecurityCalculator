@@ -25,9 +25,7 @@ export class exceptions {
     calculate() {
         function militarySalary(person) {
             if(person.beginYear <= 1967 && person.endYear >= 1940) {
-                for (var year = person.beginYear; year <= Math.min(person.endYear, 1967); year++)
-                {
-                    console.log("Year: "+year+" | Index: "+(person.ageFrom18 - (person.currentYear - year))+" | Before Sal: "+person.projectedSal[person.ageFrom18 - (person.currentYear - year)]);
+                for (var year = person.beginYear; year <= Math.min(person.endYear, 1967); year++) {
                     var monthsWorked = 0;
                     if (year == person.beginYear)
                         monthsWorked = 12 - person.beginMonth - 1;
@@ -36,17 +34,13 @@ export class exceptions {
                     else
                         monthsWorked = 12;
                     person.projectedSal[person.ageFrom18 - (person.currentYear - year)] += monthsWorked / 3 * 300;
-                    console.log("Year: "+year+" | Index: "+(person.ageFrom18 - (person.currentYear - year))+" | New Sal: "+person.projectedSal[person.ageFrom18 - (person.currentYear - year)]);
                 }
             }
             
             if(person.beginYear <= 2001 && person.endYear >= 1967) {
-                for (var year = Math.max(person.beginYear, 1967); year <= person.endYear && year <= 2001; year++)
-                {
-                    console.log("Year: "+year+" | Index: "+(person.ageFrom18 - (person.currentYear - year))+" | New Sal: "+person.projectedSal[person.ageFrom18 - (person.currentYear - year)]);
+                for (var year = Math.max(person.beginYear, 1967); year <= person.endYear && year <= 2001; year++) {
                     var bonus = (1/3) * person.projectedSal[person.ageFrom18 - (person.currentYear - year)];
                     person.projectedSal[person.ageFrom18 - (person.currentYear - year)] += Math.min(bonus, 1200);
-                    console.log("Year: "+year+" | Index: "+(person.ageFrom18 - (person.currentYear - year))+" | New Sal: "+person.projectedSal[person.ageFrom18 - (person.currentYear - year)]);
                 }
             }
         }
@@ -76,11 +70,6 @@ export class exceptions {
             //GET AGE OF PERSON
             ageFrom18 = person.ageFrom18;
             yrsUntilRetire = person.retirementAge - person.age;
-
-            //INCLUDE EXCEPTIONS
-            // if(person.militaryService) {
-            //     militarySalary(person, sal);
-            // }
 
             sal = parseInt(person.salary);
 
@@ -119,6 +108,8 @@ export class exceptions {
                     }
                 }
 
+                if(person.militaryService) militarySalary(person);
+
                 count = 0;
                 //COMPUTES SALARY ADJUSTED FOR INFLATION
                 for(var i = ageFrom18-1; i >= 0; i--) {
@@ -150,7 +141,6 @@ export class exceptions {
                 }
                 
                 if(railroadCheck) railroadSalary(person);
-                if (person.militaryService) militarySalary(person);
 
                 //SORT AND GET TOP 35 ADJUSTED INFLATION SALARIES
                 person.inflationAdjusted = person.inflationAdjusted.sort((a, b) => a - b); 
@@ -300,7 +290,7 @@ export class exceptions {
         this.router.navigate('#/benefits');
     }
 
-    //CHECK EXCEPTIONS
+    //===============CHECK MILITARY SERVICE==================
     beganService(date) {
         var beganService = moment(date, 'M/D/YYYY');
         var currentYear = moment().format('YYYY');
@@ -369,6 +359,7 @@ export class exceptions {
         }
     }
 
+    //================CHECK CITIZENSHIP===================
     checkCitizenship(value) {
         if(value == "Dual Citizen") {
             this.userData.client.dual26Countries = true;
@@ -399,100 +390,71 @@ export class exceptions {
         }
     }
 
-    //CLIENT TOGGLES
-    toggleMilitary() {
-         var check = $('#military').prop("checked");
-         this.userData.client.militaryService = check;
+    //=================CLIENT TOGGLES====================
+    militaryService() {
+         this.userData.client.militaryService = !this.userData.client.militaryService;
     }
 
-    toggleRailroad() {
-        var check = $('#railroad').prop("checked");
-        this.userData.client.workedOnARailroad = check;
+    railroad() {
+        this.userData.client.workedOnARailroad = !this.userData.client.workedOnARailroad;
     }
 
-    toggleGPO() {
-        var check = $('#gpo').prop("checked");
-        this.userData.client.recievePension = check;
+    gpo() {
+        this.userData.client.recievePension = !this.userData.client.recievePension;
     }
     
-    toggle26Countries() {
-        var check = $('#26countries').prop("checked");
-        this.userData.client.isDual26Countries = check;
+    check26Countries() {
+        this.userData.client.isDual26Countries = !this.userData.client.isDual26Countries;
     }
 
-    toggleCanadaItaly() {
-        var check = $('#canadaItaly').prop("checked");
-        this.userData.client.dualCanadaItaly = check;
-        if(check == false) alert("You are not eligible for Social Security");
+    canadaItaly() {
+        this.userData.client.dualCanadaItaly = !this.userData.client.dualCanadaItaly;
+        if(!this.userData.client.dualCanadaItaly) alert("You are not eligible for Social Security");
     }
 
-    toggleInstrumentality() {
-        var check = $('#instrumentality').prop("checked");
-        this.userData.client.checkInstrumentality = check;
+    instrumentality() {
+        this.userData.client.checkInstrumentality = !this.userData.client.checkInstrumentality;
     }
 
-    toggleConditions() {
-        var check = $('#conditions').prop("checked");
-        this.userData.client.checkConditions = check;
-        if(check == true) alert("You are not eligible for Social Security");
+    conditions() {
+        this.userData.client.checkConditions = !this.userData.client.checkConditions;
+        if(this.userData.client.checkConditions) alert("You are not eligible for Social Security");
     }
 
-
-    //SPOUSE TOGGLES
-    toggleMilitarySpouse() {
-         var check = $('#militarySpouse').prop("checked");
-         this.userData.spouse.militaryService = check;
+    //=================SPOUSE TOGGLES===================
+    militaryServiceSpouse() {
+         this.userData.spouse.militaryService = !this.userData.spouse.militaryService;
     }
 
-    toggleRailroadSpouse() {
-        var check = $('#railroadSpouse').prop("checked");
-        this.userData.spouse.workedOnARailroad = check;
+    railroadSpouse() {
+        this.userData.spouse.workedOnARailroad = !this.userData.spouse.workedOnARailroad;
     }
 
-    toggleGPOSpouse() {
-        var check = $('#gpoSpouse').prop("checked");
-        this.userData.spouse.recievePension = check;
+    gpoSpouse() {
+        this.userData.spouse.recievePension = !this.userData.spouse.recievePension;
     }
     
-    toggle26CountriesSpouse() {
-        var check = $('#26countriesSpouse').prop("checked");
-        this.userData.spouse.isDual26Countries = check;
+    check26CountriesSpouse() {
+        this.userData.spouse.isDual26Countries = !this.userData.spouse.isDual26Countries;
     }
 
-    toggleCanadaItalySpouse() {
-        var check = $('#canadaItalySpouse').prop("checked");
-        this.userData.spouse.dualCanadaItaly = check;
-        if(check == false) alert("You are not eligible for Social Security");
+    canadaItalySpouse() {
+        this.userData.spouse.dualCanadaItaly = !this.userData.spouse.dualCanadaItaly;
+        if(!this.userData.spouse.dualCanadaItaly) alert("You are not eligible for Social Security");
     }
 
-    toggleInstrumentalitySpouse() {
-        var check = $('#instrumentalitySpouse').prop("checked");
-        this.userData.spouse.checkInstrumentality = check;
+    instrumentalitySpouse() {
+        this.userData.spouse.checkInstrumentality = !this.userData.spouse.checkInstrumentality;
     }
 
-    toggleConditionsSpouse() {
-        var check = $('#conditionsSpouse').prop("checked");
-        this.userData.spouse.checkConditions = check;
-        if(check == true) alert("You are not eligible for Social Security");
+    conditionsSpouse() {
+        this.userData.spouse.checkConditions = !this.userData.spouse.checkConditions;
+        if(this.userData.spouse.checkConditions) alert("You are not eligible for Social Security");
     }
 
-    //Attach bootstrap toggles
+
     attached() {
-        $('#military').bootstrapToggle();
-        $('#railroad').bootstrapToggle();
-        $('#gpo').bootstrapToggle();
-        $('#26countries').bootstrapToggle();
-        $('#canadaItaly').bootstrapToggle();
-        $('#instrumentality').bootstrapToggle();
-        $('#conditions').bootstrapToggle();
-
-        $('#militarySpouse').bootstrapToggle();
-        $('#railroadSpouse').bootstrapToggle();
-        $('#gpoSpouse').bootstrapToggle();
-        $('#26countriesSpouse').bootstrapToggle();
-        $('#canadaItalySpouse').bootstrapToggle();
-        $('#instrumentalitySpouse').bootstrapToggle();
-        $('#conditionsSpouse').bootstrapToggle();
+        
     }
 
     back() {
