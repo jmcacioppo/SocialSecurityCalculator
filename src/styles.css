@@ -61,10 +61,3 @@ html, body {
     color: #006dcc;
 }
 
-.hovering p{
-    visibility: hidden;
-}
-
-.hovering:hover p{
-    visibility: visible;
-}

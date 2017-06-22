@@ -20,15 +20,15 @@
     <form id="persinfo" submit.delegate="next()"> 
     <!--CLIENT INFORMATION    -->
         <div id="client">
-            <h3>Client</h3>
+            <h1>Client</h1>
 
-            <!--NAME-->
+            <!--======================NAME==========================-->
             <div class="form-group">
                 <label for="firstName">First Name</label>
                 <input type="text" value.bind="userData.client.name" class="form-control" id="name" placeholder="John">
             </div>
 
-            <!--GENDER-->
+            <!--=====================GENDER========================-->
             <div class="form-group">
                 <label for="gender">Gender</label>
                 <select class="form-control" value.bind="userData.client.gender" id="gender">
@@ -38,14 +38,14 @@
                 </select>
             </div>
 
-            <!--DATE OF BIRTH-->
+            <!--===================DATE OF BIRTH====================-->
             <div class="form-group">
                 <label for="dob">Date of Birth </label> 
                 <span id="dob" title="" class="glyphicon glyphicon-question-sign"></span>
                 <input type="text" value.bind="userData.client.dateOfBirth" change.delegate="dob(userData.client.dateOfBirth)" class="form-control" placeholder="01/01/1970">
             </div>
 
-            <!--EMPLOYMENT STATUS-->
+            <!--=================EMPLOYMENT STATUS=================-->
             <div class="form-group">
                 <label for="empStatus">Employment Status</label>
                 <select class="form-control" value.bind="userData.client.employmentStatus" change.delegate="checkEmployment(userData.client.employmentStatus)" id="empStatus">
@@ -57,7 +57,7 @@
                 </select>
             </div>
 
-            <!--SALARY-->
+            <!--IF EMPLOYED, SALARY-->
             <div show.bind="userData.client.isEmployed" class="form-group">
                 <label for="salary">Salary</label>
                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
@@ -69,7 +69,21 @@
                 <span id="salary" title="" class="glyphicon glyphicon-question-sign" ></span>
             </div>
 
-            <!--MARITAL STATUS-->
+            <!--IF RETIRED-->
+            <div show.bind="userData.client.isRetired">
+                <button style="width: 200px;" class="btn btn-primary" type="button" id="wagehistory" click.delegate="wagehistory()">Input Your Own Wages </button> 
+                <span id="retiredSalary" title="" class="glyphicon glyphicon-question-sign" ></span>
+            </div>    
+
+            <!--IF NOT CURRENTLY EMPLOYED-->
+            <div show.bind="userData.client.notCurrentlyEmployed">
+                <button style="width: 200px;" class="btn btn-primary" type="button" id="wagehistory" click.delegate="wagehistory()">Input Your Own Wages </button> 
+                <span id="notCurrentlyEmployedSalary" title="" class="glyphicon glyphicon-question-sign" ></span>
+            </div>   
+
+            <br>
+
+            <!--========================MARITAL STATUS===================-->
             <div class="form-group">
                 <label for="maritalStatus">Marital Status</label>
                 <select class="form-control" value.bind="userData.client.maritalStatus" change.delegate="checkMarried(userData.client.maritalStatus)" id="maritalStatus">
@@ -129,8 +143,8 @@
 
             <hr />
             
-            <!--RETIREMENT INFORMATION-->
-            <h1>Retirement Information</h1>
+            <!--======================RETIREMENT INFORMATION==================-->
+            <h3>Retirement Information</h3>
 
             <!--RETIREMENT INCOME -->
             <div class="form-group">
@@ -150,11 +164,9 @@
 
             <hr />
 
-            <!--DEPENDENT INFORMATION-->
-            <h1>Dependent Information</h1>
-
+            <!--======================DEPENDENT INFORMATION==================-->
+            <h3>Dependent Information</h3>
             <button class="btn btn-primary" type="button" click.delegate="addDep()"><span class="glyphicon glyphicon-plus-sign"></span> Add Dependent</button>
-
             <div show.bind="userData.client.hasDeps" class="form-group">
                 <div class="input-group mb-2 mr-sm-2 mb-sm-0" id="ageOfDeps">
                     <div repeat.for="num of userData.client.numOfDeps">
@@ -165,20 +177,21 @@
                 </div>
                 <br>
                 <button class="btn btn-danger" type="button" click.delegate="removeDep()"><span class="glyphicon glyphicon-minus"></span> Remove Dependent</button>
-            </div>
+        </div>
 
         <!--CO-CLIENT INFORMATION-->
         <div show.bind="userData.client.isMarried">
+            <hr>
             <br> <br> <br>
-            <h3>Co-Client</h3>
+            <h1>Co-Client</h1>
 
-            <!--NAME-->
+            <!--======================NAME===================-->
             <div class="form-group">
                 <label for="firstName">First Name</label>
                 <input type="text" value.bind="userData.spouse.name" class="form-control" id="name" placeholder="John">
             </div>
 
-            <!--GENDER-->
+            <!--======================GENDER=====================-->
             <div class="form-group">
                 <label for="gender">Gender</label>
                 <select class="form-control" value.bind="userData.spouse.gender" id="gender">
@@ -188,14 +201,14 @@
                 </select>
             </div>
         
-            <!--DATE OF BIRTH -->
+            <!--====================DATE OF BIRTH==================-->
             <div class="form-group">
                 <label for="dob">Date of Birth</label> 
                 <span id="spousedob" title="" class="glyphicon glyphicon-question-sign"></span>
                 <input type="text" value.bind="userData.spouse.dateOfBirth" change.delegate="spousedob(userData.spouse.dateOfBirth)" class="form-control" id="dob" placeholder="01/01/1970">
             </div>
 
-            <!--EMPLOYMENT STATUS-->
+            <!--=================EMPLOYMENT STATUS===================-->
             <div class="form-group">
                 <label for="empStatus">Employment Status</label>
                 <select class="form-control" value.bind="userData.spouse.employmentStatus" change.delegate="checkEmploymentSpouse(userData.spouse.employmentStatus)" id="empStatusSpouse">
@@ -219,10 +232,22 @@
                 <span id="spousesalary" title="" class="glyphicon glyphicon-question-sign"></span>
             </div>
 
+            <!--IF RETIRED-->
+            <div show.bind="userData.spouse.isRetired">
+                <button style="width: 200px;" class="btn btn-primary" type="button" id="wagehistory" click.delegate="spousewagehistory()">Input Your Own Wages </button> 
+                <span id="spouseretiredSalary" title="" class="glyphicon glyphicon-question-sign" ></span>
+            </div>    
+
+            <!--IF NOT CURRENTLY EMPLOYED-->
+            <div show.bind="userData.spouse.notCurrentlyEmployed">
+                <button style="width: 200px;" class="btn btn-primary" type="button" id="wagehistory" click.delegate="spousewagehistory()">Input Your Own Wages </button> 
+                <span id="spousenotCurrentlyEmployedSalary" title="" class="glyphicon glyphicon-question-sign" ></span>
+            </div>   
+
             <hr />
             
-            <!--RETIREMENT INFORMATION-->
-            <h1>Retirement Information</h1>
+            <!--=================RETIREMENT INFORMATION============-->
+            <h3>Retirement Information</h3>
 
             <!--RETIREMENT INCOME-->
             <div class="form-group">

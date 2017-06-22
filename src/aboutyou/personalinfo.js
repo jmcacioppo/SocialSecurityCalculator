@@ -290,15 +290,45 @@ export class personalinfo {
     checkEmployment(value) {
         if(value == "Employed" || value == "Business Owner") {
             this.userData.client.isEmployed = true;
+            this.userData.client.isRetired = false;
+            this.userData.client.notCurrentlyEmployed = false; 
         }
-        else this.userData.client.isEmployed = false;
+        else if(value == "Retired") {
+            this.userData.client.isRetired = true;
+            this.userData.client.isEmployed = false;
+            this.userData.client.notCurrentlyEmployed = false; 
+        }
+        else if(value == "Not Currently Employed") {
+            this.userData.client.notCurrentlyEmployed = true;
+            this.userData.client.isEmployed = false;
+            this.userData.client.isRetired = false;
+        }
+        else {
+            this.userData.client.isEmployed = false;
+            this.userData.client.isRetired = false;
+        }
     }
 
     checkEmploymentSpouse(value) {
         if(value == "Employed" || value == "Business Owner") {
             this.userData.spouse.isEmployed = true;
+            this.userData.spouse.isRetired = false;
+            this.userData.spouse.notCurrentlyEmployed = false; 
         }
-        else this.userData.spouse.isEmployed = false;
+        else if(value == "Retired") {
+            this.userData.spouse.isRetired = true;
+            this.userData.spouse.isEmployed = false;
+            this.userData.spouse.notCurrentlyEmployed = false; 
+        }
+        else if(value == "Not Currently Employed") {
+            this.userData.spouse.notCurrentlyEmployed = true;
+            this.userData.spouse.isEmployed = false;
+            this.userData.spouse.isRetired = false;
+        }
+        else {
+            this.userData.spouse.isEmployed = false;
+            this.userData.spouse.isRetired = false;
+        }
     }
 
     checkNumOfDeps(value) {
@@ -368,15 +398,25 @@ export class personalinfo {
             }
         });
 
-        //CLIENT TOOLTIPS
+        //==========================CLIENT TOOLTIPS=======================
         $('#dob').tooltip({
             content: "You must be older than 18 to use this application."
         });
 
+        //========================SALARY TOOLTIPS=========================
         $('#salary').tooltip({
-            content: "We estimate your previous wages. Input them manually for better accuracy here."
+            content: "We estimate your previous and future wages. Input them manually for better accuracy here."
         });
 
+        $('#retiredSalary').tooltip({
+            content: "Input your wages before retirement here."
+        });
+
+        $('#notCurrentlyEmployedSalary').tooltip({
+            content: "Input any previous or future wages here."
+        });
+
+        //=========================RETIREMENT TOOLTIPS==========================
         $('#retirementIncome').tooltip({
             content: "Input the total amount of income you will receive after you retire."
         });
@@ -385,13 +425,23 @@ export class personalinfo {
             content: "Input the age you would like to retire and the age you expect to live until."
         });
 
-        //SPOUSE TOOLTIPS
+
+
+        //==========================SPOUSE TOOLTIPS==============================
         $('#spousedob').tooltip({
             content: "You must be older than 18 to use this application."
         });
 
         $('#spousesalary').tooltip({
-            content: "We estimate your previous wages. Input them manually for better accuracy here."
+            content: "We estimate your previous and future wages. Input them manually for better accuracy here."
+        });
+
+        $('#spouseretiredSalary').tooltip({
+            content: "Input your wages before retirement here."
+        });
+
+        $('#spousenotCurrentlyEmployedSalary').tooltip({
+            content: "Input any previous or future wages here."
         });
 
         $('#spouseretirementIncome').tooltip({

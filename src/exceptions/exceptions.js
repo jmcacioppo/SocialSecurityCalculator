@@ -49,7 +49,6 @@ export class exceptions {
         
         function calculatePIA(person, widowcheck, railroadCheck) {
             //GET ALL USER DATA            
-            var empStatus = person.employmentStatus;
             var sal = parseInt(person.salary);
             var retirementAge = person.retirementAge;
             //NEW VARIABLES
@@ -70,19 +69,29 @@ export class exceptions {
             if(ageFrom18 >= 0) {
                 person.projectedSal[ageFrom18] = sal; //Current salary
                 var count = 0;
-                for(var i = ageFrom18 - 1; i >= 0; i--) { //Loop through each wage percentage backwards so we go from current salary
-                    person.projectedSal[i] = person.projectedSal[i+1] - (person.projectedSal[i+1] * wagePerc[wagePerc.length-count-2]); //Calculate projected salary
-                    count++;
+
+                if(!person.showWages) {
+                    for(var i = ageFrom18 - 1; i >= 0; i--) { //Loop through each wage percentage backwards so we go from current salary
+                        person.projectedSal[i] = person.projectedSal[i+1] - (person.projectedSal[i+1] * wagePerc[wagePerc.length-count-2]); //Calculate projected salary
+                        count++;
+                    }
+                }
+                else {
+                    for(var i = ageFrom18 - 1; i >= 0; i--) { //Loop through each wage percentage backwards so we go from current salary
+                        person.projectedSal[i] = parseFloat(person.wages[i]);
+                    }
                 }
 
-                if(person.showWages) {
-                    person.projectedSal.forEach(function(value, i) {
-                        person.projectedSal[i] = parseFloat(person.wages[i]);
-                    }); 
-                }
                 if(!widowcheck) {
-                    for(var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) { //Loop through each wage percentage backwards so we go from current salary
-                        person.projectedSal[i] = parseFloat(person.projectedSal[i-1]) + (parseFloat(person.projectedSal[i-1]) * wagePerc[wagePerc.length-1]); //Calculate projected salary
+                    if(!person.futureWages) {
+                        for(var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) { //Loop through each wage percentage backwards so we go from current salary
+                            person.projectedSal[i] = parseFloat(person.projectedSal[i-1]) + (parseFloat(person.projectedSal[i-1]) * wagePerc[wagePerc.length-1]); //Calculate projected salary
+                        }
+                    }
+                    else {
+                        for(var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) { //Loop through each wage percentage backwards so we go from current salary
+                            person.projectedSal[i] = parseFloat(person.wages[i]); //Calculate projected salary
+                        }
                     }
                 }
                 else {
