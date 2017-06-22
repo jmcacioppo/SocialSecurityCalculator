@@ -31,9 +31,25 @@ export class results {
 
             function generateTuples(array, startAge, person) {
                 var tuples = [];
+
+                switch (startAge)
+                {
+                    case 62:
+                        person.netEarly = 0;
+                        break;
+                    case person.retirementAge:
+                        person.netUserSelected = 0;
+                        break;
+                    case person.yearFRA:
+                        person.netFRA = 0;
+                        break;
+                    default:
+                        person.netLate = 0;
+                }
+
                 for (var i = 0; i < array.length; i++)
                 {
-                    tuples.push( [ startAge + i, array[i] ] );
+                    tuples.push( [ startAge + i, parseFloat(array[i].toFixed(2)) ] );
                     switch (startAge)
                     {
                         case 62:
@@ -49,6 +65,22 @@ export class results {
                             person.netLate += array[i];
                     }
                 }
+
+                switch (startAge)
+                {
+                    case 62:
+                        person.netEarly = "$" + parseFloat(person.netEarly).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                        break;
+                    case person.retirementAge:
+                        person.netUserSelected = "$" + parseFloat(person.netUserSelected).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                        break;
+                    case person.yearFRA:
+                        person.netFRA = "$" + parseFloat(person.netFRA).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                        break;
+                    default:
+                        person.netLate = "$" + parseFloat(person.netLate).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                }
+
                 return tuples;
             }
 
@@ -86,6 +118,10 @@ export class results {
                 }]
             }); //end Highcharts.chart()
         } //end function makeChart()
+
+        function currencyFormat (num) {
+            return "$" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+        }
 
         var maritalStatus = this.userData.client.maritalStatus;
         makeChart('clientContainer', this.userData.client);
