@@ -24,7 +24,18 @@ export class exceptions {
 
     calculate() {
         function militarySalary(person, sal) {
+            var split = str.split("//");
+            person.beginYear = split[2];
+            person.beginMonth = split[0];
+
+            var bonus = 0;
+
             if(person.beginYear >= 1940 && person.endYear <= 1967) {
+                bonus += 12 - parseInt(beginMonth)
+
+                //add to projected sal
+
+                
 
             }
             else if(person.beginYear >= 1967 && person.endYear <= 2001) {
@@ -122,7 +133,7 @@ export class exceptions {
                         person.inflationAdjusted[i] = 0;
                     }
                 }
-                
+
                 //SORT AND GET TOP 35 ADJUSTED INFLATION SALARIES
                 person.inflationAdjusted = person.inflationAdjusted.sort((a, b) => a - b); 
                 person.topThirtyFive = person.inflationAdjusted.slice(person.inflationAdjusted.length - 35, person.inflationAdjusted.length); 
