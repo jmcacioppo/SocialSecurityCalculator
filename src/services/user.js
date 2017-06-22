@@ -99,6 +99,10 @@ export class User {
 
         //Results
         this.showChart = false;
+        this.netEarly = 0;
+        this.netUserSelected = 0;
+        this.netFRA = 0;
+        this.netLate = 0;
      }
 
 }
