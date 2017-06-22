@@ -30,8 +30,6 @@ export class results {
         function makeChart(containerID, person) {
 
             function generateTuples(array, startAge, person) {
-                console.log("before:");
-                console.log(array);
                 var tuples = [];
                 for (var i = 0; i < array.length; i++)
                 {
@@ -51,7 +49,6 @@ export class results {
                             person.netLate += array[i];
                     }
                 }
-                console.log(tuples);
                 return tuples;
             }
 
