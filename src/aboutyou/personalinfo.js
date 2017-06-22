@@ -426,17 +426,17 @@ export class personalinfo {
         
         var maritalStatus = this.userData.client.maritalStatus;
         //MAKE SURE EVERYTHING IS INPUTTED
-        if(checkFields(this.userData.client, maritalStatus) == true) {
-            if(maritalStatus == "Married") {
-                if(checkFields(this.userData.spouse, maritalStatus) == true) this.router.navigate('#/exceptions');
-            }
-            else if(maritalStatus == "Widowed") {
-                if(checkDeceasedFields(this.userData.deceased) == true) this.router.navigate('#/exceptions');
-            }
-            else this.router.navigate('#/exceptions');
-        }
+        // if(checkFields(this.userData.client, maritalStatus) == true) {
+        //     if(maritalStatus == "Married") {
+        //         if(checkFields(this.userData.spouse, maritalStatus) == true) this.router.navigate('#/exceptions');
+        //     }
+        //     else if(maritalStatus == "Widowed") {
+        //         if(checkDeceasedFields(this.userData.deceased) == true) this.router.navigate('#/exceptions');
+        //     }
+        //     else this.router.navigate('#/exceptions');
+        // }
         
 
-        //this.router.navigate('#/exceptions');
+        this.router.navigate('#/exceptions');
     }
 }
