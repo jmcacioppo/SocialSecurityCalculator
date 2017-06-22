@@ -9,13 +9,33 @@
             <label for="wagehistory">Wages:</label>
             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                 <!--START FROM AGE 18-->
-                <div repeat.for="age of userData.client.ageFrom18" id="wages"> 
+                <div repeat.for="age of userData.client.ageFrom18 + 1" id="wages"> 
                     <label for="year">${userData.client.yearOfBirth + 18 + age}</label>
                     <input id="wagesInput" type="text" value.bind="userData.client.wages[age]" class="form-control" id="inlineFormInputGroup" placeholder="0">
+                    <br>
+                </div>
+                <br> <br>
+                <!--INPUT FUTURE WAGES IF YOU WANT-->
+                <button show.bind="!userData.client.futureWages" class="btn btn-primary" click.delegate="futureWages()">Input future wages</button>
+            </div>
+
+            <!--TAKE AWAY FUTURE INPUTS-->
+            <button show.bind="userData.client.futureWages" click.delegate="noFutureWages()" class="btn btn-danger">Do not input future wages</button>
+
+            <br> <br>
+
+            <!--FUTURE WAGES-->
+            <div show.bind="userData.client.futureWages" class="input-group mb-2 mr-sm-2 mb-sm-0">
+                <!--START FROM CURRENT-->
+                <div repeat.for="age of userData.client.yearFRA - (userData.client.age)" id="wages"> 
+                    <label for="year">${userData.client.currentYear + age + 1}</label>
+                    <input id="wagesInput" type="text" value.bind="userData.client.wages[age + userData.client.ageFrom18 + 1]" class="form-control" id="inlineFormInputGroup" placeholder="0">
+                    <br>
                 </div>
             </div>
+
         </div>
-        <button type="button" click.delegate="back()">Back</button>
-        <button type="submit">Submit Wages</button>
+        <button class="btn btn-secondary" type="button" click.delegate="back()">Back</button>
+        <button class="btn btn-primary" type="submit">Submit Wages</button>
     </form>
 </template>

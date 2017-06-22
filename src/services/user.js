@@ -33,7 +33,9 @@ export class User {
         this.projectedSal = [];
         this.inflationAdjusted = [];
         this.topThirtyFive = [];
-        this.wages = [];
+
+        this.isRetired = false;
+        this.notCurrentlyEmployed = false;
 
         // Marital Status Info
         this.maritalStatus = "";
@@ -86,6 +88,8 @@ export class User {
         
         //Wage History
         this.showWages = false;
+        this.wages = new Array(65).join('0').split('').map(parseFloat);
+        this.futureWages = false;
 
         //Benefits
         this.eligibleSS = false;

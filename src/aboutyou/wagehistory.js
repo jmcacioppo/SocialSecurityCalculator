@@ -15,7 +15,21 @@ export class wagehistory {
 
     completeWages() {
         this.userData.client.showWages = true;
+        this.userData.client.salary = this.userData.client.wages[this.userData.client.ageFrom18];
         this.router.navigate('#/personalinfo');
+    }
+
+    futureWages() {
+        if(this.userData.client.employmentStatus == "Retired" || 
+            this.userData.client.age > this.userData.client.yearFRA) {
+            alert("You have exceeded your retirement age or you are retired. If you " + 
+                "still receive income, input it in the 'Retirement Income' field on the Personal Info page.");
+        }
+        else this.userData.client.futureWages = true;
+    }
+
+    noFutureWages() {
+        this.userData.client.futureWages = false;
     }
 
     back() {
