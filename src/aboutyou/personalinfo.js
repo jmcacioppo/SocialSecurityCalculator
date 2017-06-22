@@ -19,6 +19,7 @@ export class personalinfo {
         this.router = router;
     }
 
+    //========================DATE OF BIRTHS==============================
     dob(value) {
         var dob = value;
         var date = moment(dob, 'M/D/YYYY');
@@ -208,10 +209,14 @@ export class personalinfo {
         var yearOfBirth = date.format('YYYY');
         var monthOfBirth = date.month();
         var currentYear = moment().format('YYYY');
+        var yearOfPassing = parseInt(this.userData.deceased.yearOfPassing);
+        var yearFrom18toPassing = yearOfPassing - yearOfBirth - 18 + 1;
         
         if(!((dob.indexOf(date.format('MM/DD/YYYY')) >= 0) || (dob.indexOf(date.format('M/DD/YYYY')) >= 0)
             || (dob.indexOf(date.format('MM/D/YYYY')) >= 0) || (dob.indexOf(date.format('M/D/YYYY')) >= 0))
-            || !date.isValid() || yearOfBirth > currentYear) {
+            || !date.isValid() || yearOfBirth > currentYear
+            || this.userData.deceased.yearOfPassing < yearOfBirth
+            || this.userData.deceased.yearOfPassing - yearOfBirth < 18) {
                 alert('Invalid Date of Birth');
                 return;
             }
@@ -220,9 +225,20 @@ export class personalinfo {
             this.userData.deceased.yearOfBirth = parseInt(yearOfBirth);
             this.userData.deceased.monthOfBirth = parseInt(monthOfBirth);
             this.userData.deceased.ageFrom18 = this.userData.deceased.age - 18;
+            this.userData.deceased.yearFrom18toPassing = yearFrom18toPassing;
         }
     }
 
+    checkPassingYear(value) {
+        var currentYear = moment().format('YYYY');
+        if(value > currentYear || value < 1900) {
+            alert('Enter a valid Year of Passing');
+            this.userData.deceased.isPassed = false;
+        }
+        else this.userData.deceased.isPassed = true;
+    }
+
+    //======================CHECK MARRIAGE AND EMPLOYMENT=================
     checkMarried(value) {
         if(value == "Married") {
             this.userData.client.isMarried = true;
@@ -324,6 +340,7 @@ export class personalinfo {
         }
     }
 
+    //============================DEPENDENTS=============================
     checkNumOfDeps(value) {
         if(value > 0) this.userData.client.showAgeOfDeps = true;
         else this.userData.client.showAgeOfDeps = false;
@@ -352,6 +369,11 @@ export class personalinfo {
     spousewagehistory() {
         if(this.userData.spouse.age == 0 || this.userData.spouse.age < 18) alert('Enter valid Date of Birth');
         else this.router.navigate('#/spousewagehistory'); 
+    }
+
+    deceasedwagehistory() {
+        if(this.userData.deceased.age == 0 || this.userData.deceased.age < 18) alert('Enter valid Date of Birth');
+        else this.router.navigate('#/deceasedwagehistory'); 
     }
 
     divorce() {
@@ -442,6 +464,15 @@ export class personalinfo {
 
         $('#spouseretirementAge').tooltip({
             content: "Input the age you would like to retire and the age you expect to live until."
+        });
+
+        //======================DECEASED TOOLTIPS========================
+        $('#deceasedsalary').tooltip({
+            content: "We estimate previous and future wages. Input them manually for better accuracy here."
+        });
+
+        $('#deceaseddob').tooltip({
+            content: "Deceased must be older than 18 for you to recieve survivor benefits."
         });
     }
 

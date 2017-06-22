@@ -1,0 +1,24 @@
+<template>
+    <!--MANUALLY SUBMIT WAGE HISTORY-->
+    <form id="wagehistory" submit.delegate="completeWages()">
+        <h1>Deceased's Wage History</h1>
+        <p>If you would like to submit your own wages to ensure accuracy, input them here
+            and select "Submit Wages."
+        </p>
+        <div class="form-group">
+            <label for="wagehistory">Wages:</label>
+            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                <!--START FROM AGE 18-->
+                <div repeat.for="age of userData.deceased.yearFrom18toPassing" id="wages"> 
+                    <label for="year">${userData.deceased.yearOfBirth + 18 + age}</label>
+                    <input id="wagesInput" type="text" value.bind="userData.deceased.wages[age]" class="form-control" id="inlineFormInputGroup" placeholder="0">
+                    <br>
+                </div>
+                <br>
+            </div>
+
+        </div>
+        <button class="btn btn-secondary" type="button" click.delegate="back()">Back</button>
+        <button class="btn btn-primary" type="submit">Submit Wages</button>
+    </form>
+</template>

@@ -22,7 +22,9 @@ export class User {
         this.yearOfBirth = 0;
         this.monthOfBirth = 0;
         this.currentYear = 0;
+        this.isPassed = false;
         this.yearOfPassing = 0;
+        this.yearFrom18toPassing = 0;
         this.yearFRA = 0;
         this.monthFRA = 0;
 
@@ -88,7 +90,7 @@ export class User {
         
         //Wage History
         this.showWages = false;
-        this.wages = new Array(65).join('0').split('').map(parseFloat);
+        this.wages = new Array(55).join('0').split('').map(parseFloat);
         this.futureWages = false;
 
         //Benefits

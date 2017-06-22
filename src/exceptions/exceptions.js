@@ -60,18 +60,19 @@ export class exceptions {
             }
         }
         
-        function calculatePIA(person, widowcheck, railroadCheck) {
+        function calculatePIA(person, widowcheck) {
             //GET ALL USER DATA            
             var sal = parseInt(person.salary);
-            var retirementAge = person.retirementAge;
             //NEW VARIABLES
             var pia, ageFrom18, yrsUntilRetire;
 
             //GET AGE OF PERSON
             ageFrom18 = person.ageFrom18;
-            yrsUntilRetire = person.retirementAge - person.age;
-
+            yrsUntilRetire = person.yearFRA - person.age;
             sal = parseInt(person.salary);
+
+            person.projectedSal = new Array(55).join('0').split('').map(parseFloat);
+            person.inflationAdjusted = new Array(55).join('0').split('').map(parseFloat);
 
             //COMPUTES PROJECTED SALARY 
             if(ageFrom18 >= 0) {
@@ -140,7 +141,7 @@ export class exceptions {
                     }
                 }
                 
-                if(railroadCheck) railroadSalary(person);
+                if(person.workedOnARailroad) railroadSalary(person);
 
                 //SORT AND GET TOP 35 ADJUSTED INFLATION SALARIES
                 person.inflationAdjusted = person.inflationAdjusted.sort((a, b) => a - b); 
@@ -161,7 +162,7 @@ export class exceptions {
         function adjustSurvivorPIA(client, deceased) {
             switch(client.yearOfBirth) {
                 case 1957: 
-                    switch(client.retirementAge) {
+                    switch(client.yearFRA) {
                         case 60: client.survivorpia = deceased.pia * survivorFRA1957[0];
                         case 61: client.survivorpia = deceased.pia * survivorFRA1957[1];
                         case 62: client.survivorpia = deceased.pia * survivorFRA1957[2];
@@ -175,7 +176,7 @@ export class exceptions {
                         default: client.survivorpia = deceased.pia * survivorFRA1957[10];
                     }
                 case 1958: 
-                    switch(client.retirementAge) {
+                    switch(client.yearFRA) {
                         case 60: client.survivorpia = deceased.pia * survivorFRA1958[0];
                         case 61: client.survivorpia = deceased.pia * survivorFRA1958[1];
                         case 62: client.survivorpia = deceased.pia * survivorFRA1958[2];
@@ -189,7 +190,7 @@ export class exceptions {
                         default: client.survivorpia = deceased.pia * survivorFRA1958[10];
                     }
                 case 1959: 
-                    switch(client.retirementAge) {
+                    switch(client.yearFRA) {
                         case 60: client.survivorpia = deceased.pia * survivorFRA1959[0];
                         case 61: client.survivorpia = deceased.pia * survivorFRA1959[1];
                         case 62: client.survivorpia = deceased.pia * survivorFRA1959[2];
@@ -203,7 +204,7 @@ export class exceptions {
                         default: client.survivorpia = deceased.pia * survivorFRA1959[10];
                     }   
                 case 1960: 
-                    switch(client.retirementAge) {
+                    switch(client.yearFRA) {
                         case 60: client.survivorpia = deceased.pia * survivorFRA1960[0];
                         case 61: client.survivorpia = deceased.pia * survivorFRA1960[1];
                         case 62: client.survivorpia = deceased.pia * survivorFRA1960[2];
@@ -217,7 +218,7 @@ export class exceptions {
                         default: client.survivorpia = deceased.pia * survivorFRA1960[10];
                     }     
                 case 1961: 
-                    switch(client.retirementAge) {
+                    switch(client.yearFRA) {
                         case 60: client.survivorpia = deceased.pia * survivorFRA1961[0];
                         case 61: client.survivorpia = deceased.pia * survivorFRA1961[1];
                         case 62: client.survivorpia = deceased.pia * survivorFRA1961[2];
@@ -232,7 +233,7 @@ export class exceptions {
                     } 
                 default:
                     if(client.yearOfBirth <= 1956) {
-                        switch(client.retirementAge) {
+                        switch(client.yearFRA) {
                             case 60: client.survivorpia = deceased.pia * survivorFRA1945to1956[0];
                             case 61: client.survivorpia = deceased.pia * survivorFRA1945to1956[1];
                             case 62: client.survivorpia = deceased.pia * survivorFRA1945to1956[2];
@@ -247,7 +248,7 @@ export class exceptions {
                         } 
                     }
                     else {
-                        switch(client.retirementAge) {
+                        switch(client.yearFRA) {
                             case 60: client.survivorpia = deceased.pia * survivorFRA1962to2000[0];
                             case 61: client.survivorpia = deceased.pia * survivorFRA1962to2000[1];
                             case 62: client.survivorpia = deceased.pia * survivorFRA1962to2000[2];
@@ -266,15 +267,11 @@ export class exceptions {
 
         var maritalStatus = this.userData.client.maritalStatus;
         var widowcheck = false;
-        var railroadCheck = this.userData.client.workedOnARailroad;
         //GET PIA CLIENT CALCULATIONS
-        calculatePIA(this.userData.client, widowcheck, railroadCheck);
+        calculatePIA(this.userData.client, widowcheck);
             
         //GET PIA COCLIENT CALCULATIONS IF NECESSARY
-        if(maritalStatus == "Married") {
-            railroadCheck = this.userData.spouse.workedOnARailroad;
-            calculatePIA(this.userData.spouse, widowcheck, railroadCheck);
-        }
+        if(maritalStatus == "Married") calculatePIA(this.userData.spouse, widowcheck);
         else if(maritalStatus = "Widowed") {
             widowcheck = true;
             calculatePIA(this.userData.deceased, widowcheck);

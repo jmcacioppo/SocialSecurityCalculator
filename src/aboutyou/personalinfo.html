@@ -126,24 +126,29 @@
             <!--CHECK IF WIDOWED-->
             <div show.bind="userData.client.isSurvivor">
                <hr>
-               <!--DATE OF BIRTH-->
-                <div class="form-group">
-                    <label for="deceaseddob">Date of Birth of Deceased</label>
-                    <input type="text" value.bind="userData.deceased.dateOfBirth" change.delegate="deceaseddob(userData.deceased.dateOfBirth)" class="form-control" id="deceaseddob" placeholder="01/01/1970">
+               <!--YEAR OF PASSING-->
+               <div class="form-group">
+                    <label for="dob">Year of Passing</label>
+                    <input type="text" value.bind="userData.deceased.yearOfPassing" change.delegate="checkPassingYear(userData.deceased.yearOfPassing)" class="form-control" id="deceasedPassing" placeholder="60">
                 </div>
 
-                <div class="form-group">
-                    <label for="dob">Year of Passing</label>
-                    <input type="text" value.bind="userData.deceased.yearOfPassing" change.delegate="deceaseddob(userData.deceased.dateOfBirth)" class="form-control" id="deceasedPassing" placeholder="60">
+               <!--DATE OF BIRTH-->
+                <div show.bind="userData.deceased.isPassed" class="form-group">
+                    <label for="deceaseddob">Date of Birth of Deceased</label>
+                    <span id="deceaseddob" title="" class="glyphicon glyphicon-question-sign"></span>
+                    <input type="text" value.bind="userData.deceased.dateOfBirth" change.delegate="deceaseddob(userData.deceased.dateOfBirth)" class="form-control" id="deceaseddob" placeholder="01/01/1970">
                 </div>
                
                <!--SALARY-->
-               <div class="form-group">
+               <div show.bind="userData.deceased.isPassed" class="form-group">
                     <label for="salary">Most Recent Salary of Deceased</label>
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                         <div class="input-group-addon">$</div>
                         <input type="text" value.bind="userData.deceased.salary" class="form-control" id="inlineFormInputGroup" placeholder="0">
                     </div>
+                    <br>
+                    <button style="width: 200px;" class="btn btn-primary" type="button" click.delegate="deceasedwagehistory()">Input Your Own Wages </button> 
+                    <span id="deceasedsalary" title="" class="glyphicon glyphicon-question-sign" ></span>
                 </div>
             </div>
 
