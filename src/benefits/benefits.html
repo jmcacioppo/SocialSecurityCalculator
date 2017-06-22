@@ -10,34 +10,92 @@
     
     <form id="benefits" submit.delegate="benefitsCalc()">
         <h1>Benefits</h1>
-        <div class="form-group">
-            <!--ELIGIBLE FOR SOCIAL SECURITY BENEFITS-->
-            <label for="eligible">Are you eligible for Social Security benefits?</label>
-            <br>
-            <div click.delegate="eligible()">
-                <input type="checkbox" id="eligible" checked.bind="userData.client.eligibleSS" data-toggle="toggle" data-on="Yes" data-off="No">
-            </div>
-        </div>
-
-        <div show.bind="userData.client.eligibleSS">
+        <p>Verify your benefits.</p>
+        
+        <div id="client">
+            <h1>Client</h1>
             <div class="form-group">
-                <!--CHECK IF WEP APPLIES-->
-                <label for="wep">Does WEP apply to you?</label>
+                <!--ELIGIBLE FOR SOCIAL SECURITY BENEFITS-->
+                <label for="eligible">Are you eligible for Social Security benefits?</label>
                 <br>
-                <div click.delegate="wep()">
-                    <input type="checkbox" id="wep" checked.bind="userData.client.wep" data-toggle="toggle">
+                <div click.delegate="eligible()" class="btn-group" data-toggle="buttons">
+                    <label class="btn ${userData.client.eligibleSS ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">Yes
+                    </label>
+                    <label class="btn ${!userData.client.eligibleSS ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">No
+                    </label>
                 </div>
             </div>
 
-            <div show.bind="userData.client.wep" class="form-group">
-                <!--IF IT DOES, CHECK HOW MANY YEARS OF SUBSTANTIAL EARNINGS-->
-                <label for="dob">Years of Substantial Earnings</label>
-                <input type="text" value.bind="userData.client.yrsOfSubEarnings" class="form-control" id="yrsOfSubEarningsCheck">
+            <div show.bind="userData.client.eligibleSS">
+                <div class="form-group">
+                    <!--CHECK IF WEP APPLIES-->
+                    <label for="wep">Does WEP apply to you?</label>
+                    <br>
+                    <div click.delegate="wep()" class="btn-group" data-toggle="buttons">
+                        <label class="btn ${userData.client.wep ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">Yes
+                        </label>
+                        <label class="btn ${!userData.client.wep ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">No
+                        </label>
+                    </div>
+                </div>
+
+                <div show.bind="userData.client.wep" class="form-group">
+                    <!--IF IT DOES, CHECK HOW MANY YEARS OF SUBSTANTIAL EARNINGS-->
+                    <label for="dob">Years of Substantial Earnings</label>
+                    <input type="text" value.bind="userData.client.yrsOfSubEarnings" class="form-control" id="yrsOfSubEarningsCheck">
+                </div>
+
+                <!--ADJUST COLA IF NECESSARY-->
+                <label for="cola">Cost of Living Adjustment</label>
+                <input type="text" id="benefitslider" value="" style="position: relative; height: 80px">
+            </div>
+        </div>
+
+        <div show.bind="userData.client.isMarried">
+            <h1>Co-Client</h1>
+            <div class="form-group">
+                <!--ELIGIBLE FOR SOCIAL SECURITY BENEFITS-->
+                <label for="eligible">Are you eligible for Social Security benefits?</label>
+                <br>
+                <div click.delegate="eligibleSpouse()" class="btn-group" data-toggle="buttons">
+                    <label class="btn ${userData.spouse.eligibleSS ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">Yes
+                    </label>
+                    <label class="btn ${!userData.spouse.eligibleSS ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">No
+                    </label>
+                </div>
             </div>
 
-            <!--ADJUST COLA IF NECESSARY-->
-            <label for="cola">Cost of Living Adjustment</label>
-            <input type="text" id="benefitslider" value="" style="position: relative; height: 80px">
+            <div show.bind="userData.spouse.eligibleSS">
+                <div class="form-group">
+                    <!--CHECK IF WEP APPLIES-->
+                    <label for="wep">Does WEP apply to you?</label>
+                    <br>
+                    <div click.delegate="wepSpouse()" class="btn-group" data-toggle="buttons">
+                        <label class="btn ${userData.spouse.wep ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">Yes
+                        </label>
+                        <label class="btn ${!userData.spouse.wep ? 'active btn-primary' : 'btn-secondary'}">
+                            <input type="radio">No
+                        </label>
+                    </div>
+                </div>
+
+                <div show.bind="userData.spouse.wep" class="form-group">
+                    <!--IF IT DOES, CHECK HOW MANY YEARS OF SUBSTANTIAL EARNINGS-->
+                    <label for="dob">Years of Substantial Earnings</label>
+                    <input type="text" value.bind="userData.spouse.yrsOfSubEarnings" class="form-control" id="yrsOfSubEarningsCheck">
+                </div>
+
+                <!--ADJUST COLA IF NECESSARY-->
+                <label for="cola">Cost of Living Adjustment</label>
+                <input type="text" id="spousebenefitslider" value="" style="position: relative; height: 80px">
+            </div>
         </div>
 
         <button class="btn btn-secondary" click.delegate="back()" id="back">Back</button>

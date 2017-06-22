@@ -7,7 +7,7 @@ import {inject} from 'aurelia-framework';
 import {UserData} from '../services/userdata';
 import {Router} from 'aurelia-router';
 import {wagePerc, allowedSalary, inflationIndex, tier1perc, tier2perc, tier3perc, 
-    tier1, consttier1, consttier2,subEarningsPerc, EL1943plus, EL1955, EL1956, EL1957,
+    bendtier1, bendtier2,subEarningsPerc, EL1943plus, EL1955, EL1956, EL1957,
     EL1958, EL1959, EL1960plus, projEarningsLimit, spousalBenefits1943to1954,
     spousalBenefits1955, spousalBenefits1956, spousalBenefits1957, spousalBenefits1958,
     spousalBenefits1959, spousalBenefits1960to2000} from 'src/services/constants.js';
@@ -25,15 +25,19 @@ export class benefits {
             var yearOfBirth = person.yearOfBirth;
             var pia = person.pia;
             var yrsOfSubearnings = person.yrsOfSubearnings;
-            var ssBase;
+            var ssBase, consttier1, consttier2;
+
+            var ageFrom62 = 62 - age; //get tiers based on when client turns 62
+            consttier1 = bendtier1[8 + ageFrom62]; //8 is index of 2017 in bend point constants
+            consttier2 = bendtier2[8 + ageFrom62];
 
             //Benefit Formula
             var tier1, tier2, tier3;
             var sum = consttier1 + consttier2; //Get sum of tier1 and tier2 constants
 
-            if (person.wep)
-            {
-                if(pia > consttier1) { //Tier1 for benefit formula - checking WEP and years of substantial earnings
+            //Tier1 for benefit formula - accounting for WEP and years of substantial earnings
+            if (person.wep) {
+                if(pia > consttier1) { 
                     switch(yrsOfSubearnings) {
                         case 29: tier1 = consttier1 * subEarningsPerc[1]; break;
                         case 28: tier1 = consttier1 * subEarningsPerc[2]; break;
@@ -66,11 +70,9 @@ export class benefits {
                     }
                 } 
             }
-            else // no WEP
-            {
-                if(pia > consttier1) tier1 = consttier1 * .90;
-                else tier1 = pia * .90;
-                    
+            else { // Tier 1 with no WEP 
+                if(pia > consttier1) tier1 = consttier1 * tier1perc;
+                else tier1 = pia * tier1perc;
             }
             
             //TIER2 FOR BENEFIT FORMULA
@@ -88,7 +90,7 @@ export class benefits {
             //ADD TIERS AND GET YEARLY BASE VALUE FOR SOCIAL SECURITY
             var sumOfTiers = tier1 + tier2 + tier3; 
 
-            //FIX PIA BASED ON YEAR OF BIRTH AND WHEN THEY WANT TO RETIRE
+            //FIX SUMOFTIERS BASED ON EARLY/LATE ANALYSIS
             switch(yearOfBirth) {
                 case 1955:
                     switch(retirementAge) {
@@ -198,6 +200,7 @@ export class benefits {
             var ssBaseSpouse = spouse.ssBase[i];
             var yearOfBirth = spouse.yearOfBirth;
 
+            //GET SPOUSAL BENEFIT BASED ON YEAR OF RETIREMENT
             switch(yearOfBirth) {
                 case 1955:
                     switch(retirementAge) {
@@ -288,6 +291,7 @@ export class benefits {
                     }
             }
 
+            //SPOUSAL BENEFIT IS 50% OF CLIENT IF DEPENDENT < 18 AT TIME OF RETIREMENT
             if(parseInt(client.numOfDeps) > 0) {
                 var retirementDiff = retirementAge - spouse.age;
                 client.ageOfDeps.forEach(function(age, i) {
@@ -398,13 +402,19 @@ export class benefits {
     }
 
     eligible() {
-        var check = $('#eligible').prop("checked");
-        this.userData.client.eligibleSS = check;
+        this.userData.client.eligibleSS = !this.userData.client.eligibleSS;
     }
 
     wep() {
-        var check = $('#wep').prop("checked");
-        this.userData.client.wep = check;
+        this.userData.client.wep = !this.userData.client.wep;
+    }
+
+    eligibleSpouse() {
+        this.userData.spouse.eligibleSS = !this.userData.spouse.eligibleSS;
+    }
+
+    wepSpouse() {
+        this.userData.spouse.wep = !this.userData.spouse.wep;
     }
 
     back() {
@@ -422,11 +432,20 @@ export class benefits {
             postfix: "%",
             onFinish: (data) => {
                 this.userData.client.cola = data.from;
-                this.userData.spouse.cola = data.from;
             }
         });
 
-        $('#eligible').bootstrapToggle();
-        $('#wep').bootstrapToggle();
+        $("#spousebenefitslider").ionRangeSlider({
+            grid: true,
+            type: "single",
+            min: 0,
+            max: 10,
+            from: 2.5,
+            step: 0.1,
+            postfix: "%",
+            onFinish: (data) => {
+                this.userData.spouse.cola = data.from;
+            }
+        });
    }
 }

@@ -15,6 +15,8 @@ export class App {
         name: 'wagehistory', title: 'Wage History', nav: false}, 
       { route: 'spousewagehistory', moduleId: 'aboutyou/spousewagehistory',
         name: 'spousewagehistory', title: 'Spouse Wage History', nav: false}, 
+      { route: 'deceasedwagehistory', moduleId: 'aboutyou/deceasedwagehistory',
+        name: 'deceasedwagehistory', title: 'Deceased Wage History', nav: false},   
 
       { route: 'exceptions', moduleId: 'exceptions/exceptions',
         name: 'exceptions', title: 'Exceptions', nav: true},

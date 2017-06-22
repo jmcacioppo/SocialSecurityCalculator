@@ -7,7 +7,7 @@ import {UserData} from '../services/userdata';
 import {Router} from 'aurelia-router';
 
 @inject(UserData, Router)
-export class wagehistory {
+export class spousewagehistory {
     constructor(userData, router) {
         this.userData = userData;
         this.router = router;
