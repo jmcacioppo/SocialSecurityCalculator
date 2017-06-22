@@ -27,97 +27,6 @@ export class benefits {
             var yrsOfSubearnings = person.yrsOfSubearnings;
             var ssBase;
 
-            //FIX PIA BASED ON YEAR OF BIRTH AND WHEN THEY WANT TO RETIRE
-            switch(yearOfBirth) {
-                case 1955:
-                    switch(retirementAge) {
-                        case 62: pia = pia * EL1955[0]; break;
-                        case 63: pia = pia * EL1955[1]; break;
-                        case 64: pia = pia * EL1955[2]; break;
-                        case 65: pia = pia * EL1955[3]; break;
-                        case 66: pia = pia * EL1955[4]; break;
-                        case 67: pia = pia * EL1955[5]; break;
-                        case 68: pia = pia * EL1955[6]; break;
-                        case 69: pia = pia * EL1955[7]; break;
-                        case 70: pia = pia * EL1955[8]; break;
-                    }
-                case 1956:
-                    switch(retirementAge) {
-                        case 62: pia = pia * EL1956[0]; break;
-                        case 63: pia = pia * EL1956[1]; break;
-                        case 64: pia = pia * EL1956[2]; break;
-                        case 65: pia = pia * EL1956[3]; break;
-                        case 66: pia = pia * EL1956[4]; break;
-                        case 67: pia = pia * EL1956[5]; break;
-                        case 68: pia = pia * EL1956[6]; break;
-                        case 69: pia = pia * EL1956[7]; break;
-                        case 70: pia = pia * EL1956[8]; break;
-                    }    
-                case 1957:
-                    switch(retirementAge) {
-                        case 62: pia = pia * EL1957[0]; break;
-                        case 63: pia = pia * EL1957[1]; break;
-                        case 64: pia = pia * EL1957[2]; break;
-                        case 65: pia = pia * EL1957[3]; break;
-                        case 66: pia = pia * EL1957[4]; break;
-                        case 67: pia = pia * EL1957[5]; break;
-                        case 68: pia = pia * EL1957[6]; break;
-                        case 69: pia = pia * EL1957[7]; break;
-                        case 70: pia = pia * EL1957[8]; break;
-                    }
-                case 1958:
-                    switch(retirementAge) {
-                        case 62: pia = pia * EL1958[0]; break;
-                        case 63: pia = pia * EL1958[1]; break;
-                        case 64: pia = pia * EL1958[2]; break;
-                        case 65: pia = pia * EL1958[3]; break;
-                        case 66: pia = pia * EL1958[4]; break;
-                        case 67: pia = pia * EL1958[5]; break;
-                        case 68: pia = pia * EL1958[6]; break;
-                        case 69: pia = pia * EL1958[7]; break;
-                        case 70: pia = pia * EL1958[8]; break;
-                    }
-                case 1959:
-                    switch(retirementAge) {
-                        case 62: pia = pia * EL1959[0]; break;
-                        case 63: pia = pia * EL1959[1]; break;
-                        case 64: pia = pia * EL1959[2]; break;
-                        case 65: pia = pia * EL1959[3]; break;
-                        case 66: pia = pia * EL1959[4]; break;
-                        case 67: pia = pia * EL1959[5]; break;
-                        case 68: pia = pia * EL1959[6]; break;
-                        case 69: pia = pia * EL1959[7]; break;
-                        case 70: pia = pia * EL1959[8]; break;
-                    }     
-                default:
-                    if(yearOfBirth <= 1954) {
-                        switch(retirementAge) {
-                            case 62: pia = pia * EL1943plus[0]; break;
-                            case 63: pia = pia * EL1943plus[1]; break;
-                            case 64: pia = pia * EL1943plus[2]; break;
-                            case 65: pia = pia * EL1943plus[3]; break;
-                            case 66: pia = pia * EL1943plus[4]; break;
-                            case 67: pia = pia * EL1943plus[5]; break;
-                            case 68: pia = pia * EL1943plus[6]; break;
-                            case 69: pia = pia * EL1943plus[7]; break;
-                            case 70: pia = pia * EL1943plus[8]; break;
-                        }   
-                    }  
-                    else {
-                        switch(retirementAge) {
-                            case 62: pia = pia * EL1960plus[0]; break;
-                            case 63: pia = pia * EL1960plus[1]; break;
-                            case 64: pia = pia * EL1960plus[2]; break;
-                            case 65: pia = pia * EL1960plus[3]; break;
-                            case 66: pia = pia * EL1960plus[4]; break;
-                            case 67: pia = pia * EL1960plus[5]; break;
-                            case 68: pia = pia * EL1960plus[6]; break;
-                            case 69: pia = pia * EL1960plus[7]; break;
-                            case 70: pia = pia * EL1960plus[8]; break;
-                        }   
-                    }     
-            }
-
             //Benefit Formula
             var tier1, tier2, tier3;
             var sum = consttier1 + consttier2; //Get sum of tier1 and tier2 constants
@@ -178,6 +87,98 @@ export class benefits {
 
             //ADD TIERS AND GET YEARLY BASE VALUE FOR SOCIAL SECURITY
             var sumOfTiers = tier1 + tier2 + tier3; 
+
+            //FIX PIA BASED ON YEAR OF BIRTH AND WHEN THEY WANT TO RETIRE
+            switch(yearOfBirth) {
+                case 1955:
+                    switch(retirementAge) {
+                        case 62: sumOfTiers = sumOfTiers * EL1955[0]; break;
+                        case 63: sumOfTiers = sumOfTiers * EL1955[1]; break;
+                        case 64: sumOfTiers = sumOfTiers * EL1955[2]; break;
+                        case 65: sumOfTiers = sumOfTiers * EL1955[3]; break;
+                        case 66: sumOfTiers = sumOfTiers * EL1955[4]; break;
+                        case 67: sumOfTiers = sumOfTiers * EL1955[5]; break;
+                        case 68: sumOfTiers = sumOfTiers * EL1955[6]; break;
+                        case 69: sumOfTiers = sumOfTiers * EL1955[7]; break;
+                        case 70: sumOfTiers = sumOfTiers * EL1955[8]; break;
+                    }
+                case 1956:
+                    switch(retirementAge) {
+                        case 62: sumOfTiers = sumOfTiers * EL1956[0]; break;
+                        case 63: sumOfTiers = sumOfTiers * EL1956[1]; break;
+                        case 64: sumOfTiers = sumOfTiers * EL1956[2]; break;
+                        case 65: sumOfTiers = sumOfTiers * EL1956[3]; break;
+                        case 66: sumOfTiers = sumOfTiers * EL1956[4]; break;
+                        case 67: sumOfTiers = sumOfTiers * EL1956[5]; break;
+                        case 68: sumOfTiers = sumOfTiers * EL1956[6]; break;
+                        case 69: sumOfTiers = sumOfTiers * EL1956[7]; break;
+                        case 70: sumOfTiers = sumOfTiers * EL1956[8]; break;
+                    }    
+                case 1957:
+                    switch(retirementAge) {
+                        case 62: sumOfTiers = sumOfTiers * EL1957[0]; break;
+                        case 63: sumOfTiers = sumOfTiers * EL1957[1]; break;
+                        case 64: sumOfTiers = sumOfTiers * EL1957[2]; break;
+                        case 65: sumOfTiers = sumOfTiers * EL1957[3]; break;
+                        case 66: sumOfTiers = sumOfTiers * EL1957[4]; break;
+                        case 67: sumOfTiers = sumOfTiers * EL1957[5]; break;
+                        case 68: sumOfTiers = sumOfTiers * EL1957[6]; break;
+                        case 69: sumOfTiers = sumOfTiers * EL1957[7]; break;
+                        case 70: sumOfTiers = sumOfTiers * EL1957[8]; break;
+                    }
+                case 1958:
+                    switch(retirementAge) {
+                        case 62: sumOfTiers = sumOfTiers * EL1958[0]; break;
+                        case 63: sumOfTiers = sumOfTiers * EL1958[1]; break;
+                        case 64: sumOfTiers = sumOfTiers * EL1958[2]; break;
+                        case 65: sumOfTiers = sumOfTiers * EL1958[3]; break;
+                        case 66: sumOfTiers = sumOfTiers * EL1958[4]; break;
+                        case 67: sumOfTiers = sumOfTiers * EL1958[5]; break;
+                        case 68: sumOfTiers = sumOfTiers * EL1958[6]; break;
+                        case 69: sumOfTiers = sumOfTiers * EL1958[7]; break;
+                        case 70: sumOfTiers = sumOfTiers * EL1958[8]; break;
+                    }
+                case 1959:
+                    switch(retirementAge) {
+                        case 62: sumOfTiers = sumOfTiers * EL1959[0]; break;
+                        case 63: sumOfTiers = sumOfTiers * EL1959[1]; break;
+                        case 64: sumOfTiers = sumOfTiers * EL1959[2]; break;
+                        case 65: sumOfTiers = sumOfTiers * EL1959[3]; break;
+                        case 66: sumOfTiers = sumOfTiers * EL1959[4]; break;
+                        case 67: sumOfTiers = sumOfTiers * EL1959[5]; break;
+                        case 68: sumOfTiers = sumOfTiers * EL1959[6]; break;
+                        case 69: sumOfTiers = sumOfTiers * EL1959[7]; break;
+                        case 70: sumOfTiers = sumOfTiers * EL1959[8]; break;
+                    }     
+                default:
+                    if(yearOfBirth <= 1954) {
+                        switch(retirementAge) {
+                            case 62: sumOfTiers = sumOfTiers * EL1943plus[0]; break;
+                            case 63: sumOfTiers = sumOfTiers * EL1943plus[1]; break;
+                            case 64: sumOfTiers = sumOfTiers * EL1943plus[2]; break;
+                            case 65: sumOfTiers = sumOfTiers * EL1943plus[3]; break;
+                            case 66: sumOfTiers = sumOfTiers * EL1943plus[4]; break;
+                            case 67: sumOfTiers = sumOfTiers * EL1943plus[5]; break;
+                            case 68: sumOfTiers = sumOfTiers * EL1943plus[6]; break;
+                            case 69: sumOfTiers = sumOfTiers * EL1943plus[7]; break;
+                            case 70: sumOfTiers = sumOfTiers * EL1943plus[8]; break;
+                        }   
+                    }  
+                    else {
+                        switch(retirementAge) {
+                            case 62: sumOfTiers = sumOfTiers * EL1960plus[0]; break;
+                            case 63: sumOfTiers = sumOfTiers * EL1960plus[1]; break;
+                            case 64: sumOfTiers = sumOfTiers * EL1960plus[2]; break;
+                            case 65: sumOfTiers = sumOfTiers * EL1960plus[3]; break;
+                            case 66: sumOfTiers = sumOfTiers * EL1960plus[4]; break;
+                            case 67: sumOfTiers = sumOfTiers * EL1960plus[5]; break;
+                            case 68: sumOfTiers = sumOfTiers * EL1960plus[6]; break;
+                            case 69: sumOfTiers = sumOfTiers * EL1960plus[7]; break;
+                            case 70: sumOfTiers = sumOfTiers * EL1960plus[8]; break;
+                        }   
+                    }     
+            }
+
             ssBase = sumOfTiers * 12; 
 
             //ADJUST FOR GPO
@@ -306,7 +307,7 @@ export class benefits {
             var FRA = person.yearFRA; //age at FRA
             var userSelected = person.retirementAge;
             var late = 70;
-            var retirementAges = [early, FRA, userSelected, late];            
+            var retirementAges = [early, userSelected, FRA, late];            
             var yearOfBirth = person.yearOfBirth;
             var currentYear = person.currentYear;
             var retirementIncome = person.retirementIncome;
@@ -361,6 +362,15 @@ export class benefits {
                     }
                 }
             }); 
+
+            console.log("Early Benefits:");
+            console.log(person.earlyBenefits);
+            console.log("User Selected: ");
+            console.log(person.userSelectedBenefits);
+            console.log("FRA: ");
+            console.log(person.FRABenefits);
+            console.log("Late: ");
+            console.log( person.lateBenefits);
 
         } //end results(person)
 
