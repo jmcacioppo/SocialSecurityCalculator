@@ -424,8 +424,8 @@ export class personalinfo {
         //     else return true;
         // }
         
-        // var maritalStatus = this.userData.client.maritalStatus;
-        // //MAKE SURE EVERYTHING IS INPUTTED
+        var maritalStatus = this.userData.client.maritalStatus;
+        //MAKE SURE EVERYTHING IS INPUTTED
         // if(checkFields(this.userData.client, maritalStatus) == true) {
         //     if(maritalStatus == "Married") {
         //         if(checkFields(this.userData.spouse, maritalStatus) == true) this.router.navigate('#/exceptions');

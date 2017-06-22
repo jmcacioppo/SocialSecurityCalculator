@@ -43,21 +43,22 @@ export class exceptions {
             }
         }
 
-        function railroadSalary(person, sal) {
-            var start = person.yearsStartedOnRailroad;
-            var end = person.yearsEndedOnRailroad;
-            var difference = end - start;
+        function railroadSalary(person) {
+            var start = person.yearsStartedOnRailroad; //Year started on railroad
+            var end = person.yearsEndedOnRailroad; //Year ended on railroad
+            var difference = end - start; //Difference between ended and started
+            var yearsSinceStarted = person.currentYear - start; //Years since they started working
+            var yearsSinceEnded = person.currentYear - end; //Years since they stopped working
+
             if(difference >= 10 || (difference >= 5 && start >= 1995)) {
-                var i = 0;
-                while(start < end) {
-                    person.yearsOnRailroad[i] = start;
-                    i++;
-                    start++;
+                //IF WORKED ON A RAILROAD FOR THIS LONG, TAKE AWAY THOSE INCOMES
+                for(var i = person.ageFrom18-yearsSinceStarted; i <= person.ageFrom18-yearsSinceEnded; i++) {
+                    person.inflationAdjusted[i] = 0;
                 }
             }
         }
         
-        function calculatePIA(person, widowcheck) {
+        function calculatePIA(person, widowcheck, railroadCheck) {
             //GET ALL USER DATA            
             var empStatus = person.employmentStatus;
             var sal = parseInt(person.salary);
@@ -72,9 +73,6 @@ export class exceptions {
             //INCLUDE EXCEPTIONS
             // if(person.militaryService) {
             //     militarySalary(person, sal);
-            // }
-            // if(person.workedOnARailroad) {
-            //     railroadSalary(person, sal);
             // }
 
             sal = parseInt(person.salary);
@@ -133,6 +131,11 @@ export class exceptions {
                         person.inflationAdjusted[i] = 0;
                     }
                 }
+<<<<<<< HEAD
+=======
+                
+                if(railroadCheck) railroadSalary(person);
+>>>>>>> fceeda59e76618b150c6d4fb221b42afc8473024
 
                 //SORT AND GET TOP 35 ADJUSTED INFLATION SALARIES
                 person.inflationAdjusted = person.inflationAdjusted.sort((a, b) => a - b); 
@@ -258,21 +261,18 @@ export class exceptions {
 
         var maritalStatus = this.userData.client.maritalStatus;
         var widowcheck = false;
+        var railroadCheck = this.userData.client.workedOnARailroad;
         //GET PIA CLIENT CALCULATIONS
-        if(calculatePIA(this.userData.client, widowcheck) == null) {
-            return;
-        } 
+        calculatePIA(this.userData.client, widowcheck, railroadCheck);
+            
         //GET PIA COCLIENT CALCULATIONS IF NECESSARY
         if(maritalStatus == "Married") {
-            if(calculatePIA(this.userData.spouse, widowcheck) == null) {
-                return;
-            }
+            railroadCheck = this.userData.spouse.workedOnARailroad;
+            calculatePIA(this.userData.spouse, widowcheck, railroadCheck);
         }
         else if(maritalStatus = "Widowed") {
             widowcheck = true;
-            if(calculatePIA(this.userData.deceased, widowcheck) == null) {
-                return;
-            }
+            calculatePIA(this.userData.deceased, widowcheck);
             adjustSurvivorPIA(this.userData.client, this.userData.deceased);
         }
 
