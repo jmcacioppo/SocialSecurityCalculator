@@ -7,18 +7,18 @@
         <button class="btn btn-primary" click.delegate="results()">Get Results</button>
 
         <div show.bind="userData.client.showChart">  
-            <p>Net Benefit at age 62: ${userData.client.netEarly}</p>
-            <p>Net Benefit at age ${userData.client.retirementAge} (Your Selected Retirement Age): ${userData.client.netUserSelected}</p>
-            <p>Net Benefit at age ${userData.client.yearFRA} (FRA): ${userData.client.netFRA}</p>
-            <p>Net Benefit at age 70: ${userData.client.netLate}</p>
-            <div id="clientContainer" style="width: 750px; height: 600px; margin: 0 auto"></div>\
+            <p>Net Benefit at age 62: ${userData.client.netEarly.toFixed(2)}</p>
+            <p>Net Benefit at age ${userData.client.retirementAge} (Your Selected Retirement Age): ${userData.client.netUserSelected.toFixed(2)}</p>
+            <p>Net Benefit at age ${userData.client.yearFRA} (FRA): ${userData.client.netFRA.toFixed(2)}</p>
+            <p>Net Benefit at age 70: ${userData.client.netLate.toFixed(2)}</p>
+            <div id="clientContainer" style="width: 750px; height: 600px; margin: 0 auto"></div>
         </div>
 
         <div show.bind="userData.spouse.showChart">  
-            <p>Net Benefit at age 62: ${userData.spouse.ssBaseAdj[0]}</p>
-            <p>Net Benefit at age ${userData.spouse.yearFRA}: ${userData.spouse.ssBaseAdj[1]}</p>
-            <p>Net Benefit at age ${userData.spouse.retirementAge}: ${userData.spouse.ssBaseAdj[2]}</p>
-            <p>Net Benefit at age 70: ${userData.spouse.ssBaseAdj[3]}</p>
+            <p>Net Benefit at age 62: ${userData.spouse.netEarly.toFixed(2)}</p>
+            <p>Net Benefit at age ${userData.spouse.retirementAge} (Your Selected Retirement Age): ${userData.spouse.netUserSelected.toFixed(2)}</p>
+            <p>Net Benefit at age ${userData.spouse.yearFRA} (FRA): ${userData.spouse.netFRA.toFixed(2)}</p>
+            <p>Net Benefit at age 70: ${userData.spouse.netLate.toFixed(2)}</p>
             <div id="spouseContainer" style="width: 750px; height: 600px; margin: 0 auto"></div>
         </div>
 
