@@ -94,11 +94,8 @@ td {
 .highcharts-title {
     font-weight: bold;
 }
-<<<<<<< HEAD
-=======
 
 .disabled {
     pointer-events: none;
     cursor: default;
 }
->>>>>>> c11c4a2687fb3fa45a005078cc33ea195d138aaf
