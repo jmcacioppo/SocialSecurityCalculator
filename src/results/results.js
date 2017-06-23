@@ -33,17 +33,17 @@ export class results {
             person.FRATuples = [];
             person.lateTuples = [];
 
-            function generateTuples(array, startAge, person) {
+            function generateTuples(array, startAge, person, j) {
                 var tuples = [];
 
-                switch (startAge) {
-                    case 62:
+                switch (j) {
+                    case 0:
                         person.netEarly = 0;
                         break;
-                    case person.retirementAge:
+                    case 1:
                         person.netUserSelected = 0;
                         break;
-                    case person.yearFRA:
+                    case 2:
                         person.netFRA = 0;
                         break;
                     default:
@@ -52,19 +52,19 @@ export class results {
 
                 for (var i = 0; i < array.length; i++) {
                     tuples.push( [ startAge + i, parseFloat(array[i].toFixed(2)) ] );
-                    switch (startAge)
+                    switch (j)
                     {
-                        case 62:
+                        case 0:
                             person.netEarly += array[i];
                             person.earlyTuples.push(parseFloat(array[i].toFixed(2)));
                             person.earlyTuples[i] = "$" + parseFloat(person.earlyTuples[i]).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
                             break;
-                        case person.retirementAge:
+                        case 1:
                             person.netUserSelected += array[i];
                             person.userSelectedTuples.push(parseFloat(array[i].toFixed(2)));
                             person.userSelectedTuples[i] = "$" + parseFloat(person.userSelectedTuples[i]).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
                             break;
-                        case person.yearFRA:
+                        case 2:
                             person.netFRA += array[i];
                             person.FRATuples.push(parseFloat(array[i].toFixed(2)));
                             person.FRATuples[i] = "$" + parseFloat(person.FRATuples[i]).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");                 
@@ -76,14 +76,14 @@ export class results {
                     }
                 }
 
-                switch (startAge) {
-                    case 62:
+                switch (j) {
+                    case 0:
                         person.netEarly = "$" + parseFloat(person.netEarly).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
                         break;
-                    case person.retirementAge:
+                    case 1:
                         person.netUserSelected = "$" + parseFloat(person.netUserSelected).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
                         break;
-                    case person.yearFRA:
+                    case 2:
                         person.netFRA = "$" + parseFloat(person.netFRA).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
                         break;
                     default:
@@ -91,7 +91,7 @@ export class results {
                 }
 
                 return tuples;
-            }
+            } //end generateTuples()
 
             Highcharts.chart(containerID, {
                 title: {
@@ -114,16 +114,16 @@ export class results {
                 },
                 series: [{
                     name: 'Receive at 62 (earliest)',
-                    data:  generateTuples(person.earlyBenefits, 62, person)
+                    data:  generateTuples(person.earlyBenefits, 62, person, 0)
                 }, {
                     name: 'Receive at ' + person.retirementAge + ' (user-selected)',
-                    data: generateTuples(person.userSelectedBenefits, person.retirementAge, person)
+                    data: generateTuples(person.userSelectedBenefits, person.retirementAge, person, 1)
                 }, {
                     name: 'Receive at ' + person.yearFRA + ' (FRA)',
-                    data: generateTuples(person.FRABenefits, person.yearFRA, person)
+                    data: generateTuples(person.FRABenefits, person.yearFRA, person, 2)
                 }, {
                     name: 'Receive at 70 (latest)',
-                    data: generateTuples(person.lateBenefits, 70, person)
+                    data: generateTuples(person.lateBenefits, 70, person, 3)
                 }]
             }); //end Highcharts.chart()
         } //end function makeChart()
