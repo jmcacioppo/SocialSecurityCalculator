@@ -427,9 +427,10 @@ export class benefits {
             type: "single",
             min: 0,
             max: 10,
-            from: 2.5,
+            from: 2.6,
             step: 0.1,
             postfix: "%",
+            disable: true,
             onFinish: (data) => {
                 this.userData.client.cola = data.from;
             }
@@ -440,9 +441,10 @@ export class benefits {
             type: "single",
             min: 0,
             max: 10,
-            from: 2.5,
+            from: 2.6,
             step: 0.1,
             postfix: "%",
+            disable: true,
             onFinish: (data) => {
                 this.userData.spouse.cola = data.from;
             }
