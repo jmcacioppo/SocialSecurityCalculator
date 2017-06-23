@@ -242,6 +242,7 @@ export class personalinfo {
     checkMarried(value) {
         if(value == "Married") {
             this.userData.client.isMarried = true;
+            this.userData.client.spouseRecieving = true;
             this.userData.client.isDivorced = false;
             this.userData.client.isSurvivor = false;
             this.userData.client.divorceCheck = false;
@@ -250,12 +251,14 @@ export class personalinfo {
             this.userData.client.isDivorced = true;
             this.userData.client.isMarried = false;
             this.userData.client.isSurvivor = false;
+            this.userData.client.spouseRecieving = false;
         }
         else if(value == "Widowed") {
             this.userData.client.isSurvivor = true;
             this.userData.client.isMarried = false;
             this.userData.client.isDivorced = false;
             this.userData.client.divorceCheck = false;
+            this.userData.client.spouseRecieving = false;
 
             if(this.userData.client.dateOfBirth) { //NEW FRA FOR SURVIVOR CLIENT
                 if(this.userData.client.yearOfBirth >= 1945 && this.userData.client.yearOfBirth <= 1956) {
@@ -293,6 +296,7 @@ export class personalinfo {
             this.userData.client.isDivorced = false;
             this.userData.client.isSurvivor = false;
             this.userData.client.divorceCheck = false;
+            this.userData.client.spouseRecieving = false;
         }
     }
 
@@ -378,6 +382,10 @@ export class personalinfo {
 
     divorce() {
         this.userData.client.divorceCheck = !this.userData.client.divorceCheck;
+    }
+
+    isRecieving() {
+        this.userData.client.isRecieving = !this.userData.client.isRecieving;
     }
 
     attached() {        
@@ -501,7 +509,7 @@ export class personalinfo {
         
         //MAKE SURE EVERYTHING IS INPUTTED
         if(checkFields(this.userData.client, maritalStatus)) {
-            if(maritalStatus == "Married") {
+            if(maritalStatus == "Married" && !this.userData.client.isRecieving) {
                 if(checkFields(this.userData.spouse, maritalStatus)) this.router.navigate('#/exceptions');
             }
             else if(maritalStatus == "Widowed") {

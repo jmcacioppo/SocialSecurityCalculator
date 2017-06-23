@@ -377,23 +377,47 @@ export class benefits {
 
         //GET PIA COCLIENT CALCULATIONS IF NECESSARY
         if(maritalStatus == "Married") {
-            calculateSSBase(this.userData.spouse, 62);
-            calculateSSBase(this.userData.spouse, this.userData.spouse.retirementAge);
-            calculateSSBase(this.userData.spouse, this.userData.spouse.yearFRA);
-            calculateSSBase(this.userData.spouse, 70);
+           if(!this.userData.client.isRecieving) {
+                calculateSSBase(this.userData.spouse, 62);
+                calculateSSBase(this.userData.spouse, this.userData.spouse.retirementAge);
+                calculateSSBase(this.userData.spouse, this.userData.spouse.yearFRA);
+                calculateSSBase(this.userData.spouse, 70);
+           }
+           else {
+               var ssBase = this.userData.spouse.spouseRecievingBenfit * 12;
+               for(var i = 0; i < 4; i++) {
+                   this.userData.spouse.ssBase.push(parseFloat(ssBase));
+               }
+           }
 
-            var i = 0;
-            spousalBenefit(this.userData.client, this.userData.spouse, 62, i);
-            i++;
-            spousalBenefit(this.userData.client, this.userData.spouse, this.userData.spouse.retirementAge, i);
-            i++;
-            spousalBenefit(this.userData.client, this.userData.spouse, this.userData.spouse.yearFRA, i);
-            i++;
-            spousalBenefit(this.userData.client, this.userData.spouse, 70, i);
+           if(!this.userData.client.isRecieving) { //If spouse not already recieving, compare and change both client's ssBase and spouse's if applicable
+                var i = 0;
+                spousalBenefit(this.userData.client, this.userData.spouse, 62, i);
+                spousalBenefit(this.userData.spouse, this.userData.client, 62, i);
+                i++;
+                spousalBenefit(this.userData.client, this.userData.spouse, this.userData.spouse.retirementAge, i);
+                spousalBenefit(this.userData.spouse, this.userData.client, this.userData.spouse.retirementAge, i);            
+                i++;
+                spousalBenefit(this.userData.client, this.userData.spouse, this.userData.spouse.yearFRA, i);
+                spousalBenefit(this.userData.spouse, this.userData.client, this.userData.spouse.yearFRA, i);
+                i++;
+                spousalBenefit(this.userData.client, this.userData.spouse, 70, i);
+                spousalBenefit(this.userData.spouse, this.userData.client, 70, i);
+            }
+            else { //If spouse already recieving, only change client's ssBase to spouse's if applicable
+                 var i = 0;
+                spousalBenefit(this.userData.spouse, this.userData.client, 62, i);
+                i++;
+                spousalBenefit(this.userData.spouse, this.userData.client, this.userData.spouse.retirementAge, i);            
+                i++;
+                spousalBenefit(this.userData.spouse, this.userData.client, this.userData.spouse.yearFRA, i);
+                i++;
+                spousalBenefit(this.userData.spouse, this.userData.client, 70, i);
+            }
         }
 
         results(this.userData.client);
-        if(maritalStatus == "Married") {
+        if(maritalStatus == "Married" && !this.userData.client.isRecieving) {
             results(this.userData.spouse);
         }
         
@@ -401,16 +425,9 @@ export class benefits {
         this.router.navigate('#/results');
     }
 
-    eligible() {
-        this.userData.client.eligibleSS = !this.userData.client.eligibleSS;
-    }
 
     wep() {
         this.userData.client.wep = !this.userData.client.wep;
-    }
-
-    eligibleSpouse() {
-        this.userData.spouse.eligibleSS = !this.userData.spouse.eligibleSS;
     }
 
     wepSpouse() {
