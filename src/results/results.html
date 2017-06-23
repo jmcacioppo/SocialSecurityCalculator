@@ -5,21 +5,238 @@
         <h1>Results</h1>
 
         <button class="btn btn-primary" click.delegate="results()">Get Results</button>
+        
+        <br> <br> <br> 
 
-        <div show.bind="userData.client.showChart">  
-            <p>Net Benefit at age 62: ${userData.client.netEarly}</p>
-            <p>Net Benefit at age ${userData.client.retirementAge} (Your Selected Retirement Age): ${userData.client.netUserSelected}</p>
-            <p>Net Benefit at age ${userData.client.yearFRA} (FRA): ${userData.client.netFRA}</p>
-            <p>Net Benefit at age 70: ${userData.client.netLate}</p>
+        <div id="client" show.bind="userData.client.showChart">  
             <div id="clientContainer" style="width: 750px; height: 600px; margin: 0 auto"></div>
+
+            <div style="width:300px; margin: 0 auto;" class="form-group">
+                <label for="empStatus">Select Benefit Age</label>
+                <select class="form-control" value.bind="userData.client.benefitAge" change.delegate="checkAge(userData.client.benefitAge)">
+                    <option data-hidden="true">Please Select</option>
+                    <option>Early (62)</option>
+                    <option>Your Selected Age (${userData.client.retirementAge})</option>
+                    <option>Your FRA (${userData.client.yearFRA})</option>
+                    <option>Late (70)</option>
+                </select>
+            </div>
+
+            <!--=======================EARLY TABLE=====================-->
+            <div show.bind="userData.client.checkEarly" class="table-outter">
+                <table class="table table-hover table-bordered search-table">
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th repeat.for="year of userData.client.earlyTuples.length+1">${userData.client.currentYear + (62-userData.client.age) + year}</th>
+                            <th>Net Benefit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Ages</th>
+                            <td repeat.for="tuple of userData.client.earlyTuples.length+1">${tuple + 62}</th>
+                            <td>End of Plan</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Benefit</th>
+                            <td repeat.for="tuple of userData.client.earlyTuples.length+1">${userData.client.earlyTuples[tuple]}</td>
+                            <td>${userData.client.netEarly}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>  
+
+            <!--====================USER SELECTED TABLE=====================-->
+            <div show.bind="userData.client.checkUserSelected" class="table-outter">
+                <table class="table table-hover table-bordered search-table">
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th repeat.for="year of userData.client.userSelectedTuples.length+1">${userData.client.currentYear + (userData.client.retirementAge-userData.client.age) + year}</th>
+                            <th>Net Benefit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Ages</th>
+                            <td repeat.for="tuple of userData.client.userSelectedTuples.length+1">${tuple + userData.client.retirementAge}</th>
+                            <td>End of Plan</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Benefit</th>
+                            <td repeat.for="tuple of userData.client.userSelectedTuples.length+1">${userData.client.userSelectedTuples[tuple]}</td>
+                            <td>${userData.client.netUserSelected}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>  
+
+            <!--============================FRA TABLE=====================-->
+            <div show.bind="userData.client.checkFRA" class="table-outter">
+                <table class="table table-hover table-bordered search-table">
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th repeat.for="year of userData.client.FRATuples.length+1">${userData.client.currentYear + (userData.client.yearFRA-userData.client.age) + year}</th>
+                            <th>Net Benefit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Ages</th>
+                            <td repeat.for="tuple of userData.client.FRATuples.length+1">${tuple + userData.client.yearFRA}</th>
+                            <td>End of Plan</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Benefit</th>
+                            <td repeat.for="tuple of userData.client.FRATuples.length+1">${userData.client.FRATuples[tuple]}</td>
+                            <td>${userData.client.netFRA}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>  
+
+            <!--=========================LATE TABLE=====================-->
+            <div show.bind="userData.client.checkLate" class="table-outter">
+                <table class="table table-hover table-bordered search-table">
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th repeat.for="year of userData.client.lateTuples.length+1">${userData.client.currentYear + (70-userData.client.age) + year}</th>
+                            <th>Net Benefit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Ages</th>
+                            <td repeat.for="tuple of userData.client.lateTuples.length+1">${tuple + 70}</th>
+                            <td>End of Plan</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Benefit</th>
+                            <td repeat.for="tuple of userData.client.lateTuples.length+1">${userData.client.lateTuples[tuple]}</td>
+                            <td>${userData.client.netLate}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>  
         </div>
 
-        <div show.bind="userData.spouse.showChart">  
-            <p>Net Benefit at age 62: ${userData.spouse.netEarly.toFixed(2)}</p>
-            <p>Net Benefit at age ${userData.spouse.retirementAge} (Your Selected Retirement Age): ${userData.spouse.netUserSelected.toFixed(2)}</p>
-            <p>Net Benefit at age ${userData.spouse.yearFRA} (FRA): ${userData.spouse.netFRA.toFixed(2)}</p>
-            <p>Net Benefit at age 70: ${userData.spouse.netLate.toFixed(2)}</p>
+        <div id="spouse" show.bind="userData.spouse.showChart">  
+            <hr>
             <div id="spouseContainer" style="width: 750px; height: 600px; margin: 0 auto"></div>
+
+            <div style="width:300px; margin: 0 auto;" class="form-group">
+                <label for="empStatus">Select Benefit Age</label>
+                <select class="form-control" value.bind="userData.spouse.benefitAge" change.delegate="checkAgeSpouse(userData.spouse.benefitAge)">
+                    <option data-hidden="true">Please Select</option>
+                    <option>Early (62)</option>
+                    <option>Your Selected Age (${userData.spouse.retirementAge})</option>
+                    <option>Your FRA (${userData.spouse.yearFRA})</option>
+                    <option>Late (70)</option>
+                </select>
+            </div>
+
+            <!--=======================EARLY TABLE=====================-->
+            <div show.bind="userData.spouse.checkEarly" class="table-outter">
+                <table class="table table-hover table-bordered search-table">
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th repeat.for="year of userData.spouse.earlyTuples.length+1">${userData.spouse.currentYear + (62-userData.spouse.age) + year}</th>
+                            <th>Net Benefit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Ages</th>
+                            <td repeat.for="tuple of userData.spouse.earlyTuples.length+1">${tuple + 62}</th>
+                            <td>End of Plan</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Benefit</th>
+                            <td repeat.for="tuple of userData.spouse.earlyTuples.length+1">${userData.spouse.earlyTuples[tuple]}</td>
+                            <td>${userData.spouse.netEarly}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>  
+
+            <!--====================USER SELECTED TABLE=====================-->
+            <div show.bind="userData.spouse.checkUserSelected" class="table-outter">
+                <table class="table table-hover table-bordered search-table">
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th repeat.for="year of userData.spouse.userSelectedTuples.length+1">${userData.spouse.currentYear + (userData.spouse.retirementAge-userData.spouse.age) + year}</th>
+                            <th>Net Benefit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Ages</th>
+                            <td repeat.for="tuple of userData.spouse.userSelectedTuples.length+1">${tuple + userData.spouse.retirementAge}</th>
+                            <td>End of Plan</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Benefit</th>
+                            <td repeat.for="tuple of userData.spouse.userSelectedTuples.length+1">${userData.spouse.userSelectedTuples[tuple]}</td>
+                            <td>${userData.spouse.netUserSelected}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>  
+
+            <!--============================FRA TABLE=====================-->
+            <div show.bind="userData.spouse.checkFRA" class="table-outter">
+                <table class="table table-hover table-bordered search-table">
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th repeat.for="year of userData.spouse.FRATuples.length+1">${userData.spouse.currentYear + (userData.spouse.yearFRA-userData.spouse.age) + year}</th>
+                            <th>Net Benefit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Ages</th>
+                            <td repeat.for="tuple of userData.spouse.FRATuples.length+1">${tuple + userData.spouse.yearFRA}</th>
+                            <td>End of Plan</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Benefit</th>
+                            <td repeat.for="tuple of userData.spouse.FRATuples.length+1">${userData.spouse.FRATuples[tuple]}</td>
+                            <td>${userData.spouse.netFRA}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>  
+
+            <!--=========================LATE TABLE=====================-->
+            <div show.bind="userData.spouse.checkLate" class="table-outter">
+                <table class="table table-hover table-bordered search-table">
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th repeat.for="year of userData.spouse.lateTuples.length+1">${userData.spouse.currentYear + (70-userData.spouse.age) + year}</th>
+                            <th>Net Benefit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Ages</th>
+                            <td repeat.for="tuple of userData.spouse.lateTuples.length+1">${tuple + 70}</th>
+                            <td>End of Plan</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Benefit</th>
+                            <td repeat.for="tuple of userData.spouse.lateTuples.length+1">${userData.spouse.lateTuples[tuple]}</td>
+                            <td>${userData.spouse.netLate}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>  
         </div>
 
         <br>

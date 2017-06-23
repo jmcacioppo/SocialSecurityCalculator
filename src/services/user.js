@@ -105,6 +105,17 @@ export class User {
         this.netUserSelected = 0;
         this.netFRA = 0;
         this.netLate = 0;
+
+        this.earlyTuples = [];
+        this.userSelectedTuples = [];
+        this.FRATuples = [];
+        this.lateTuples = [];
+
+        this.benefitAge = 0;
+        this.checkEarly = false;
+        this.checkUserSelected = false;
+        this.checkFRA = false;
+        this.checkLate = false;
      }
 
 }
