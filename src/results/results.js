@@ -138,7 +138,7 @@ export class results {
             makeChart('clientContainer', this.userData.client);
             this.userData.client.showChart = true;
 
-            if(maritalStatus == "Married") {   
+            if(maritalStatus == "Married" && !this.userData.client.isRecieving) {   
                 makeChart('spouseContainer', this.userData.spouse);
                 this.userData.spouse.showChart = true;
             } 
