@@ -339,7 +339,7 @@ export class benefits {
                 var lifeExpectancy = person.lifeExpectancy;
                 var numOfYears = lifeExpectancy - age; //RNumber of years from retirement age until death
 
-                for(var j = 0; j < numOfYears; j++) {
+                for(var j = 0; j <= numOfYears; j++) {
                     if(i == 0) { //At age 62
                         if(j==0) person.earlyBenefits[j] = ssBase; 
                         else {
