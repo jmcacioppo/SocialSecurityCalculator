@@ -3,8 +3,8 @@ export class User {
         // Social Security Values
         this.ssBase = [];
         this.ssBaseAdj = [];
-        this.pia = 0;
-        this.survivorpia = 0;
+        this.pia = [];
+        this.survivorpia = [];
 
         this.earlyBenefits = [];
         this.FRABenefits = [];

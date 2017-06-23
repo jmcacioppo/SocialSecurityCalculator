@@ -11,6 +11,7 @@ export class App {
     config.map([
       { route: ['', 'personalinfo'], moduleId: 'aboutyou/personalinfo',
         name: 'personalinfo', title: 'Personal Info', nav: true},
+        
       { route: 'wagehistory', moduleId: 'aboutyou/wagehistory',
         name: 'wagehistory', title: 'Wage History', nav: false}, 
       { route: 'spousewagehistory', moduleId: 'aboutyou/spousewagehistory',

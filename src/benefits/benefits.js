@@ -20,10 +20,10 @@ export class benefits {
     }
 
     benefitsCalc() {
-        function calculateSSBase(person, retirementAge) {
+        function calculateSSBase(person, retirementAge, i) {
             var age = person.age;
             var yearOfBirth = person.yearOfBirth;
-            var pia = person.pia;
+            var pia = person.pia[i];
             var yrsOfSubearnings = person.yrsOfSubearnings;
             var ssBase, consttier1, consttier2;
 
@@ -79,7 +79,7 @@ export class benefits {
             if(pia > sum) { 
                 tier2 = consttier2 * tier2perc
             } 
-            else tier2 = pia * tier2perc; 
+            else tier2 = (pia-consttier1) * tier2perc; 
 
             //TIER3 FOR BENEFIT FORMULA
             if(pia > sum) {
@@ -89,6 +89,8 @@ export class benefits {
 
             //ADD TIERS AND GET YEARLY BASE VALUE FOR SOCIAL SECURITY
             var sumOfTiers = tier1 + tier2 + tier3; 
+            console.log("===============");
+            console.log(sumOfTiers);
 
             //FIX SUMOFTIERS BASED ON EARLY/LATE ANALYSIS
             switch(yearOfBirth) {
@@ -104,6 +106,7 @@ export class benefits {
                         case 69: sumOfTiers = sumOfTiers * EL1955[7]; break;
                         case 70: sumOfTiers = sumOfTiers * EL1955[8]; break;
                     }
+                    break;
                 case 1956:
                     switch(retirementAge) {
                         case 62: sumOfTiers = sumOfTiers * EL1956[0]; break;
@@ -116,6 +119,7 @@ export class benefits {
                         case 69: sumOfTiers = sumOfTiers * EL1956[7]; break;
                         case 70: sumOfTiers = sumOfTiers * EL1956[8]; break;
                     }    
+                    break;
                 case 1957:
                     switch(retirementAge) {
                         case 62: sumOfTiers = sumOfTiers * EL1957[0]; break;
@@ -128,6 +132,7 @@ export class benefits {
                         case 69: sumOfTiers = sumOfTiers * EL1957[7]; break;
                         case 70: sumOfTiers = sumOfTiers * EL1957[8]; break;
                     }
+                    break;
                 case 1958:
                     switch(retirementAge) {
                         case 62: sumOfTiers = sumOfTiers * EL1958[0]; break;
@@ -140,6 +145,7 @@ export class benefits {
                         case 69: sumOfTiers = sumOfTiers * EL1958[7]; break;
                         case 70: sumOfTiers = sumOfTiers * EL1958[8]; break;
                     }
+                    break;
                 case 1959:
                     switch(retirementAge) {
                         case 62: sumOfTiers = sumOfTiers * EL1959[0]; break;
@@ -152,6 +158,7 @@ export class benefits {
                         case 69: sumOfTiers = sumOfTiers * EL1959[7]; break;
                         case 70: sumOfTiers = sumOfTiers * EL1959[8]; break;
                     }     
+                    break;
                 default:
                     if(yearOfBirth <= 1954) {
                         switch(retirementAge) {
@@ -180,6 +187,11 @@ export class benefits {
                         }   
                     }     
             }
+
+            console.log(tier1);
+            console.log(tier2);
+            console.log(tier3);
+            console.log(sumOfTiers);
 
             ssBase = sumOfTiers * 12; 
 
@@ -214,6 +226,7 @@ export class benefits {
                         case 69: spousalBenefit = ssBaseClient * spousalBenefits1955[7];
                         default: spousalBenefit = ssBaseClient * spousalBenefits1955[8];
                     }
+                    break;
                 case 1956:
                     switch(retirementAge) {
                         case 62: spousalBenefit = ssBaseClient * spousalBenefits1956[0];
@@ -226,6 +239,7 @@ export class benefits {
                         case 69: spousalBenefit = ssBaseClient * spousalBenefits1956[7];
                         default: spousalBenefit = ssBaseClient * spousalBenefits1956[8];
                     }
+                    break;
                 case 1957:
                     switch(retirementAge) {
                         case 62: spousalBenefit = ssBaseClient * spousalBenefits1957[0];
@@ -238,6 +252,7 @@ export class benefits {
                         case 69: spousalBenefit = ssBaseClient * spousalBenefits1957[7];
                         default: spousalBenefit = ssBaseClient * spousalBenefits1957[8];
                     }
+                    break;
                 case 1958:
                     switch(retirementAge) {
                         case 62: spousalBenefit = ssBaseClient * spousalBenefits1958[0];
@@ -250,6 +265,7 @@ export class benefits {
                         case 69: spousalBenefit = ssBaseClient * spousalBenefits1958[7];
                         default: spousalBenefit = ssBaseClient * spousalBenefits1958[8];
                     }
+                    break;
                 case 1959:
                     switch(retirementAge) {
                         case 62: spousalBenefit = ssBaseClient * spousalBenefits1959[0];
@@ -262,6 +278,7 @@ export class benefits {
                         case 69: spousalBenefit = ssBaseClient * spousalBenefits1959[7];
                         default: spousalBenefit = ssBaseClient * spousalBenefits1959[8];
                     }
+                    break;
                 default:
                     if(yearOfBirth >= 1943 && yearOfBirth <= 1954) {
                         switch(retirementAge) {
@@ -370,21 +387,32 @@ export class benefits {
 
         var maritalStatus = this.userData.client.maritalStatus;
         
-        calculateSSBase(this.userData.client, 62);
-        calculateSSBase(this.userData.client, this.userData.client.retirementAge);
-        calculateSSBase(this.userData.client, this.userData.client.yearFRA);
-        calculateSSBase(this.userData.client, 70);
+        this.userData.client.ssBase = [];
+        var i = 0;
+        calculateSSBase(this.userData.client, 62, i);
+        i++;
+        calculateSSBase(this.userData.client, this.userData.client.retirementAge, i);
+        i++;
+        calculateSSBase(this.userData.client, this.userData.client.yearFRA, i);
+        i++;
+        calculateSSBase(this.userData.client, 70, i);
 
+        i = 0;
         //GET PIA COCLIENT CALCULATIONS IF NECESSARY
         if(maritalStatus == "Married") {
            if(!this.userData.client.isRecieving) {
-                calculateSSBase(this.userData.spouse, 62);
-                calculateSSBase(this.userData.spouse, this.userData.spouse.retirementAge);
-                calculateSSBase(this.userData.spouse, this.userData.spouse.yearFRA);
-                calculateSSBase(this.userData.spouse, 70);
+                this.userData.spouse.ssBase = [];
+                calculateSSBase(this.userData.spouse, 62, i);
+                i++;
+                calculateSSBase(this.userData.spouse, this.userData.spouse.retirementAge, i);
+                i++;
+                calculateSSBase(this.userData.spouse, this.userData.spouse.yearFRA, i);
+                i++;
+                calculateSSBase(this.userData.spouse, 70, i);
            }
            else {
                var ssBase = this.userData.spouse.spouseRecievingBenfit * 12;
+               this.userData.spouse.ssBase = [];
                for(var i = 0; i < 4; i++) {
                    this.userData.spouse.ssBase.push(parseFloat(ssBase));
                }
@@ -404,7 +432,7 @@ export class benefits {
                 spousalBenefit(this.userData.client, this.userData.spouse, 70, i);
                 spousalBenefit(this.userData.spouse, this.userData.client, 70, i);
             }
-            else { //If spouse already recieving, only change client's ssBase to spouse's if applicable
+            else if (this.userData.client.isRecieving) { //If spouse already recieving, only change client's ssBase to spouse's if applicable
                  var i = 0;
                 spousalBenefit(this.userData.spouse, this.userData.client, 62, i);
                 i++;

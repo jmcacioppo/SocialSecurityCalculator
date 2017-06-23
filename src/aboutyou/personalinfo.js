@@ -517,8 +517,5 @@ export class personalinfo {
             }
             else this.router.navigate('#/exceptions');
         }
-        
-
-        //this.router.navigate('#/exceptions');
     }
 }
