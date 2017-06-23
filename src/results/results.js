@@ -28,6 +28,10 @@ export class results {
 
     results() {
         function makeChart(containerID, person) {
+            person.earlyTuples = [];
+            person.userSelectedTuples = [];
+            person.FRATuples = [];
+            person.lateTuples = [];
 
             function generateTuples(array, startAge, person) {
                 var tuples = [];
@@ -214,6 +218,7 @@ export class results {
     }
 
     attached() {
-        
+        this.userData.client.showChart = false;
+        this.userData.spouse.showChart = false;
     } 
 }

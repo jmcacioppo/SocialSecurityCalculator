@@ -90,3 +90,7 @@ td {
     padding: 50px 100px; 
     height: 35px;
 }
+
+.highcharts-title {
+    font-weight: bold;
+}
