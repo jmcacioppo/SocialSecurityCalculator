@@ -87,10 +87,12 @@ export class benefits {
             }
             else tier3 = 0;
 
+            //console.log("Before sumOfTiers " + sumOfTiers);
+
             //ADD TIERS AND GET YEARLY BASE VALUE FOR SOCIAL SECURITY
             var sumOfTiers = tier1 + tier2 + tier3; 
-            console.log("===============");
-            console.log(sumOfTiers);
+            
+            //console.log("Tier 1 " + tier1 + " tier 2 " + tier2 + " tier3 " + tier3 + " sumOfTiers" + sumOfTiers);
 
             //FIX SUMOFTIERS BASED ON EARLY/LATE ANALYSIS
             switch(yearOfBirth) {
@@ -187,11 +189,6 @@ export class benefits {
                         }   
                     }     
             }
-
-            console.log(tier1);
-            console.log(tier2);
-            console.log(tier3);
-            console.log(sumOfTiers);
 
             ssBase = sumOfTiers * 12; 
 
