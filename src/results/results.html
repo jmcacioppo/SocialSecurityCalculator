@@ -123,7 +123,7 @@
             </div>  
         </div>
 
-        <div id="spouse" show.bind="userData.spouse.showChart">  
+        <div id="spouse" show.bind="userData.spouse.showChart && !userData.client.isRecieving">  
             <hr>
             <div id="spouseContainer" style="width: 750px; height: 600px; margin: 0 auto"></div>
 
