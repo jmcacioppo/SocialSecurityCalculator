@@ -480,9 +480,9 @@ export class personalinfo {
         function checkFields(person, clientmaritalStatus) {
             if(!person.name) alert("Input a name");
             else if(!person.gender || person.gender == "Please Select") alert("Input a gender");
-            else if(!person.age || person.age < 18) alert("Input a valid date of birth");
+            else if(!person.age || person.age < 18 || person.yearOfBirth < 1938 ) alert("Input a valid date of birth");
             else if(!person.employmentStatus || person.employmentStatus == "Please Select") alert("Input your employment status");
-            else if( (person.employmentStatus == "Employed" || person.employmentStatus == "Business Owner") && person.salary == 0) {
+            else if( (person.employmentStatus == "Employed" || person.employmentStatus == "Business Owner") && ( person.salary == 0 || isNaN(person.salary)) ) {
                 alert('Input a salary');
             }
             else if(!clientmaritalStatus || clientmaritalStatus == "Please Select") {
