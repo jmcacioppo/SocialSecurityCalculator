@@ -515,7 +515,9 @@ export class personalinfo {
             else if(maritalStatus == "Widowed") {
                 if(checkDeceasedFields(this.userData.deceased)) this.router.navigate('#/exceptions');
             }
-            else this.router.navigate('#/exceptions');
+            else {
+                this.router.navigate('#/exceptions');
+            }
         }
     }
 }

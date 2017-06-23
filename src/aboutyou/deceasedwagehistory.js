@@ -14,6 +14,14 @@ export class deceasedwagehistory {
     }
 
     completeWages() {
+        for (var i = 0; i < this.userData.deceased.wages.length; i++) {
+            if (isNaN(this.userData.deceased.wages[i]))
+            {
+                alert("Enter valid wages.");
+                return;
+            }
+        }
+
         this.userData.deceased.showWages = true;
         this.userData.deceased.salary = this.userData.deceased.wages[this.userData.deceased.ageFrom18];
         this.router.navigate('#/personalinfo');
