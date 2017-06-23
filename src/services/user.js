@@ -45,6 +45,9 @@ export class User {
         this.isDivorced = false;
         this.divorceCheck = false;
         this.isSurvivor = false;
+        this.spouseRecieving = false;
+        this.isRecieving = false;
+        this.spouseRecievingBenfit = 0;
 
         // Dependent Info
         this.numOfDeps = 0;
