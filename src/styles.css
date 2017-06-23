@@ -29,9 +29,15 @@ html, body {
     margin: 0 auto;
 }
 
-#persinfo, #benefits, #results, #wagehistory, #exceptions, #spousewagehistory {
+#persinfo, #benefits, #wagehistory, #exceptions, #spousewagehistory {
     text-align: center;
     width: 500px;
+    margin: 0 auto;
+}
+
+#results {
+    text-align: center;
+    width: 750px;
     margin: 0 auto;
 }
 
@@ -61,3 +67,26 @@ html, body {
     color: #006dcc;
 }
 
+
+.table-outter {
+    overflow-x: scroll;
+}
+
+.search-table {
+    margin:40px auto 0px auto; 
+}
+
+.search-table, td, th {
+    border-collapse: collapse; 
+    text-align: center;
+}
+
+th {
+    padding: 50 100px; 
+    font-size: 15px; 
+}
+
+td {
+    padding: 50px 100px; 
+    height: 35px;
+}
