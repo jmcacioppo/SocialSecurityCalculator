@@ -468,206 +468,6 @@ define('aboutyou/personalinfo',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
             this.userData.client.numOfDeps--;
             if (this.userData.client.numOfDeps == 0) {
                 this.userData.client.hasDeps = false;
-<<<<<<< HEAD
-            }
-        };
-
-        personalinfo.prototype.wagehistory = function wagehistory() {
-            if (this.userData.client.age == 0 || this.userData.client.age < 18) alert('Enter valid Date of Birth');else this.router.navigate('#/wagehistory');
-        };
-
-        personalinfo.prototype.spousewagehistory = function spousewagehistory() {
-            if (this.userData.spouse.age == 0 || this.userData.spouse.age < 18) alert('Enter valid Date of Birth');else this.router.navigate('#/spousewagehistory');
-        };
-
-        personalinfo.prototype.deceasedwagehistory = function deceasedwagehistory() {
-            if (this.userData.deceased.age == 0 || this.userData.deceased.age < 18) alert('Enter valid Date of Birth');else this.router.navigate('#/deceasedwagehistory');
-        };
-
-        personalinfo.prototype.divorce = function divorce() {
-            this.userData.client.divorceCheck = !this.userData.client.divorceCheck;
-        };
-
-        personalinfo.prototype.isRecieving = function isRecieving() {
-            this.userData.client.isRecieving = !this.userData.client.isRecieving;
-        };
-
-        personalinfo.prototype.attached = function attached() {
-            var _this = this;
-
-            (0, _jquery2.default)("#slider").ionRangeSlider({
-                grid: true,
-                type: "double",
-                min: 0,
-                max: 100,
-                from: 65,
-                to: 91,
-                step: 1,
-                onFinish: function onFinish(data) {
-                    _this.userData.client.retirementAge = data.from;
-                    _this.userData.client.lifeExpectancy = data.to;
-                    _this.userData.client.retirementyear = _this.userData.client.retirementAge + _this.userData.client.yearOfBirth;
-                }
-            });
-
-            (0, _jquery2.default)("#sliderSpouse").ionRangeSlider({
-                grid: true,
-                type: "double",
-                min: 0,
-                max: 100,
-                from: 65,
-                to: 91,
-                step: 1,
-                onFinish: function onFinish(data) {
-                    _this.userData.spouse.retirementAge = data.from;
-                    _this.userData.spouse.lifeExpectancy = data.to;
-                    _this.userData.spouse.retirementyear = _this.userData.spouse.retirementAge + _this.userData.spouse.yearOfBirth;
-                }
-            });
-
-            (0, _jquery2.default)('#dob').tooltip({
-                content: "You must be older than 18 to use this application."
-            });
-
-            (0, _jquery2.default)('#salary').tooltip({
-                content: "We estimate your previous and future wages. Input them manually for better accuracy here."
-            });
-
-            (0, _jquery2.default)('#retiredSalary').tooltip({
-                content: "Input your wages before retirement here."
-            });
-
-            (0, _jquery2.default)('#notCurrentlyEmployedSalary').tooltip({
-                content: "Input any previous or future wages here."
-            });
-
-            (0, _jquery2.default)('#retirementIncome').tooltip({
-                content: "Input the total amount of income you will receive after you retire."
-            });
-
-            (0, _jquery2.default)('#retirementAge').tooltip({
-                content: "Input the age you would like to retire and the age you expect to live until."
-            });
-
-            (0, _jquery2.default)('#spousedob').tooltip({
-                content: "You must be older than 18 to use this application."
-            });
-
-            (0, _jquery2.default)('#spousesalary').tooltip({
-                content: "We estimate your previous and future wages. Input them manually for better accuracy here."
-            });
-
-            (0, _jquery2.default)('#spouseretiredSalary').tooltip({
-                content: "Input your wages before retirement here."
-            });
-
-            (0, _jquery2.default)('#spousenotCurrentlyEmployedSalary').tooltip({
-                content: "Input any previous or future wages here."
-            });
-
-            (0, _jquery2.default)('#spouseretirementIncome').tooltip({
-                content: "Input the total amount of income you will receive after you retire."
-            });
-
-            (0, _jquery2.default)('#spouseretirementAge').tooltip({
-                content: "Input the age you would like to retire and the age you expect to live until."
-            });
-
-            (0, _jquery2.default)('#deceasedsalary').tooltip({
-                content: "We estimate previous and future wages. Input them manually for better accuracy here."
-            });
-
-            (0, _jquery2.default)('#deceaseddob').tooltip({
-                content: "Deceased must be older than 18 for you to recieve survivor benefits."
-            });
-        };
-
-        personalinfo.prototype.next = function next() {
-            function checkFields(person, clientmaritalStatus) {
-                if (!person.name) alert("Input a name");else if (!person.gender || person.gender == "Please Select") alert("Input a gender");else if (!person.age || person.age < 18 || person.yearOfBirth < 1938) alert("Input a valid date of birth");else if (!person.employmentStatus || person.employmentStatus == "Please Select") alert("Input your employment status");else if ((person.employmentStatus == "Employed" || person.employmentStatus == "Business Owner") && (person.salary == 0 || isNaN(person.salary))) {
-                    alert('Input a salary');
-                } else if (!clientmaritalStatus || clientmaritalStatus == "Please Select") {
-                    alert("Input your marital status");
-                } else return true;
-            }
-
-            function checkDeceasedFields(person) {
-                if (!person.age || person.age < 18) alert("Input a valid date of birth");else return true;
-            }
-
-            var maritalStatus = this.userData.client.maritalStatus;
-
-            if (checkFields(this.userData.client, maritalStatus)) {
-                if (maritalStatus == "Married" && !this.userData.client.isRecieving) {
-                    if (checkFields(this.userData.spouse, maritalStatus)) this.router.navigate('#/exceptions');
-                } else if (maritalStatus == "Widowed") {
-                    if (checkDeceasedFields(this.userData.deceased)) this.router.navigate('#/exceptions');
-                } else this.router.navigate('#/exceptions');
-            }
-        };
-
-        return personalinfo;
-    }()) || _class);
-});
-define('aboutyou/spousewagehistory',['exports', 'jquery', 'moment', 'aurelia-framework', '../services/userdata', 'aurelia-router', 'src/services/constants.js'], function (exports, _jquery, _moment, _aureliaFramework, _userdata, _aureliaRouter) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.spousewagehistory = undefined;
-
-    var _jquery2 = _interopRequireDefault(_jquery);
-
-    var _moment2 = _interopRequireDefault(_moment);
-
-    function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : {
-            default: obj
-        };
-    }
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var spousewagehistory = exports.spousewagehistory = (_dec = (0, _aureliaFramework.inject)(_userdata.UserData, _aureliaRouter.Router), _dec(_class = function () {
-        function spousewagehistory(userData, router) {
-            _classCallCheck(this, spousewagehistory);
-
-            this.userData = userData;
-            this.router = router;
-        }
-
-        spousewagehistory.prototype.completeWages = function completeWages() {
-            this.userData.spouse.showWages = true;
-            this.userData.spouse.salary = this.userData.spouse.wages[this.userData.spouse.ageFrom18];
-            this.router.navigate('#/personalinfo');
-        };
-
-        spousewagehistory.prototype.futureWages = function futureWages() {
-            if (this.userData.spouse.employmentStatus == "Retired" || this.userData.spouse.age > this.userData.spouse.yearFRA) {
-                alert("You have exceeded your retirement age or you are retired. If you " + "still receive income, input it in the 'Retirement Income' field on the Personal Info page.");
-            } else this.userData.spouse.futureWages = true;
-        };
-
-        spousewagehistory.prototype.noFutureWages = function noFutureWages() {
-            this.userData.spouse.futureWages = false;
-        };
-
-        spousewagehistory.prototype.back = function back() {
-            this.router.navigate('#/personalinfo');
-        };
-
-        return spousewagehistory;
-    }()) || _class);
-});
-define('aboutyou/wagehistory',['exports', 'jquery', 'moment', 'aurelia-framework', '../services/userdata', 'aurelia-router', 'src/services/constants.js'], function (exports, _jquery, _moment, _aureliaFramework, _userdata, _aureliaRouter) {
-=======
             }
         };
 
@@ -811,17 +611,12 @@ define('aboutyou/wagehistory',['exports', 'jquery', 'moment', 'aurelia-framework
     }()) || _class);
 });
 define('aboutyou/spousewagehistory',['exports', 'jquery', 'moment', 'aurelia-framework', '../services/userdata', 'aurelia-router', 'src/services/constants.js'], function (exports, _jquery, _moment, _aureliaFramework, _userdata, _aureliaRouter) {
->>>>>>> c11c4a2687fb3fa45a005078cc33ea195d138aaf
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-<<<<<<< HEAD
-    exports.wagehistory = undefined;
-=======
     exports.spousewagehistory = undefined;
->>>>>>> c11c4a2687fb3fa45a005078cc33ea195d138aaf
 
     var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -841,8 +636,6 @@ define('aboutyou/spousewagehistory',['exports', 'jquery', 'moment', 'aurelia-fra
 
     var _dec, _class;
 
-<<<<<<< HEAD
-=======
     var spousewagehistory = exports.spousewagehistory = (_dec = (0, _aureliaFramework.inject)(_userdata.UserData, _aureliaRouter.Router), _dec(_class = function () {
         function spousewagehistory(userData, router) {
             _classCallCheck(this, spousewagehistory);
@@ -907,7 +700,6 @@ define('aboutyou/wagehistory',['exports', 'jquery', 'moment', 'aurelia-framework
 
     var _dec, _class;
 
->>>>>>> c11c4a2687fb3fa45a005078cc33ea195d138aaf
     var wagehistory = exports.wagehistory = (_dec = (0, _aureliaFramework.inject)(_userdata.UserData, _aureliaRouter.Router), _dec(_class = function () {
         function wagehistory(userData, router) {
             _classCallCheck(this, wagehistory);
@@ -917,8 +709,6 @@ define('aboutyou/wagehistory',['exports', 'jquery', 'moment', 'aurelia-framework
         }
 
         wagehistory.prototype.completeWages = function completeWages() {
-<<<<<<< HEAD
-=======
             for (var i = 0; i < this.userData.client.wages.length; i++) {
                 if (isNaN(this.userData.client.wages[i])) {
                     alert("Enter valid wages.");
@@ -926,7 +716,6 @@ define('aboutyou/wagehistory',['exports', 'jquery', 'moment', 'aurelia-framework
                 }
             }
 
->>>>>>> c11c4a2687fb3fa45a005078cc33ea195d138aaf
             this.userData.client.showWages = true;
             this.userData.client.salary = this.userData.client.wages[this.userData.client.ageFrom18];
             this.router.navigate('#/personalinfo');
@@ -947,1005 +736,6 @@ define('aboutyou/wagehistory',['exports', 'jquery', 'moment', 'aurelia-framework
         };
 
         return wagehistory;
-    }()) || _class);
-});
-<<<<<<< HEAD
-define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-rangeslider', 'moment', 'src/services/constants.js', 'aurelia-framework', '../services/userdata', 'aurelia-router', 'jquery-ui-dist'], function (exports, _jquery, _bootstrapToggle, _ionRangeslider, _moment, _constants, _aureliaFramework, _userdata, _aureliaRouter) {
-=======
-define('benefits/benefits',['exports', 'jquery', 'bootstrap-toggle', 'ion-rangeslider', 'aurelia-framework', '../services/userdata', 'aurelia-router', 'src/services/constants.js', 'jquery-ui-dist'], function (exports, _jquery, _bootstrapToggle, _ionRangeslider, _aureliaFramework, _userdata, _aureliaRouter, _constants) {
->>>>>>> c11c4a2687fb3fa45a005078cc33ea195d138aaf
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-<<<<<<< HEAD
-    exports.exceptions = undefined;
-=======
-    exports.benefits = undefined;
->>>>>>> c11c4a2687fb3fa45a005078cc33ea195d138aaf
-
-    var _jquery2 = _interopRequireDefault(_jquery);
-
-    var bootstrapToggle = _interopRequireWildcard(_bootstrapToggle);
-
-    var ionRangeSlider = _interopRequireWildcard(_ionRangeslider);
-
-<<<<<<< HEAD
-    var _moment2 = _interopRequireDefault(_moment);
-
-=======
->>>>>>> c11c4a2687fb3fa45a005078cc33ea195d138aaf
-    function _interopRequireWildcard(obj) {
-        if (obj && obj.__esModule) {
-            return obj;
-        } else {
-            var newObj = {};
-
-            if (obj != null) {
-                for (var key in obj) {
-                    if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
-                }
-            }
-
-            newObj.default = obj;
-            return newObj;
-        }
-    }
-
-    function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : {
-            default: obj
-        };
-    }
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-<<<<<<< HEAD
-    var exceptions = exports.exceptions = (_dec = (0, _aureliaFramework.inject)(_userdata.UserData, _aureliaRouter.Router), _dec(_class = function () {
-        function exceptions(userData, router) {
-            _classCallCheck(this, exceptions);
-
-            this.router = router;
-            this.userData = userData;
-        }
-
-        exceptions.prototype.calculate = function calculate() {
-            function militarySalary(person) {
-                if (person.beginYear <= 1967 && person.endYear >= 1940) {
-                    for (var year = person.beginYear; year <= Math.min(person.endYear, 1967); year++) {
-                        var monthsWorked = 0;
-                        if (year == person.beginYear) monthsWorked = 12 - person.beginMonth - 1;else if (year == person.endYear) monthsWorked = 12 - person.endMonth - 1;else monthsWorked = 12;
-                        person.projectedSal[person.ageFrom18 - (person.currentYear - year)] += monthsWorked / 3 * 300;
-                    }
-                }
-
-                if (person.beginYear <= 2001 && person.endYear >= 1967) {
-                    for (var year = Math.max(person.beginYear, 1967); year <= person.endYear && year <= 2001; year++) {
-                        var bonus = 1 / 3 * person.projectedSal[person.ageFrom18 - (person.currentYear - year)];
-                        person.projectedSal[person.ageFrom18 - (person.currentYear - year)] += Math.min(bonus, 1200);
-                    }
-                }
-            }
-
-            function railroadSalary(person) {
-                var start = person.yearsStartedOnRailroad;
-                var end = person.yearsEndedOnRailroad;
-                var difference = end - start;
-                var yearsSinceStarted = person.currentYear - start;
-                var yearsSinceEnded = person.currentYear - end;
-
-                if (difference >= 10 || difference >= 5 && start >= 1995) {
-                    for (var i = person.ageFrom18 - yearsSinceStarted; i <= person.ageFrom18 - yearsSinceEnded; i++) {
-                        person.inflationAdjusted[i] = 0;
-                    }
-                }
-            }
-
-            function calculatePIA(person, widowcheck, retirementAge) {
-                var sal = parseInt(person.salary);
-
-                var pia, ageFrom18, yrsUntilRetire;
-
-                ageFrom18 = person.ageFrom18;
-                yrsUntilRetire = retirementAge - person.age;
-                sal = parseInt(person.salary);
-
-                person.projectedSal = new Array(55).join('0').split('').map(parseFloat);
-                person.inflationAdjusted = new Array(55).join('0').split('').map(parseFloat);
-
-                if (ageFrom18 >= 0) {
-                    person.projectedSal[ageFrom18] = sal;
-                    var count = 0;
-
-                    if (!person.showWages) {
-                        for (var i = ageFrom18 - 1; i >= 0; i--) {
-                            person.projectedSal[i] = person.projectedSal[i + 1] - person.projectedSal[i + 1] * _constants.wagePerc[_constants.wagePerc.length - count - 2];
-                            count++;
-                        }
-                    } else {
-                        for (var i = ageFrom18 - 1; i >= 0; i--) {
-                            person.projectedSal[i] = parseFloat(person.wages[i]);
-                        }
-                    }
-
-                    if (!widowcheck) {
-                        if (!person.futureWages) {
-                            for (var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) {
-                                person.projectedSal[i] = parseFloat(person.projectedSal[i - 1]) + parseFloat(person.projectedSal[i - 1]) * _constants.wagePerc[_constants.wagePerc.length - 1];
-                            }
-                        } else {
-                            for (var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) {
-                                person.projectedSal[i] = parseFloat(person.wages[i]);
-                            }
-                        }
-                    } else {
-                        for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
-                            person.projectedSal[i] = 0;
-                        }
-                    }
-
-                    if (person.militaryService) militarySalary(person);
-
-                    count = 0;
-
-                    for (var i = ageFrom18 - 1; i >= 0; i--) {
-                        if (person.projectedSal[i] > _constants.allowedSalary[_constants.allowedSalary.length - count - 2]) {
-                            person.inflationAdjusted[i] = _constants.allowedSalary[_constants.allowedSalary.length - count - 2] * _constants.inflationIndex[_constants.inflationIndex.length - count - 2];
-                        } else {
-                            person.inflationAdjusted[i] = person.projectedSal[i] * _constants.inflationIndex[_constants.inflationIndex.length - count - 2];
-                        }
-                        count++;
-                    }
-
-                    if (!widowcheck) {
-                        var lastYearAllowed = _constants.allowedSalary[_constants.allowedSalary.length - 1];
-                        for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
-                            if (person.projectedSal[i] > lastYearAllowed) {
-                                person.inflationAdjusted[i] = lastYearAllowed * _constants.inflationIndex[_constants.inflationIndex.length - 1];
-                            } else {
-                                person.inflationAdjusted[i] = person.projectedSal[i] * _constants.inflationIndex[_constants.inflationIndex.length - 1];
-                            }
-                            lastYearAllowed = lastYearAllowed * 1.021;
-                        }
-                    } else {
-                        for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
-                            person.inflationAdjusted[i] = 0;
-                        }
-                    }
-
-                    if (person.workedOnARailroad) railroadSalary(person);
-
-                    person.inflationAdjusted = person.inflationAdjusted.sort(function (a, b) {
-                        return a - b;
-                    });
-                    person.topThirtyFive = person.inflationAdjusted.slice(person.inflationAdjusted.length - 35, person.inflationAdjusted.length);
-
-                    pia = person.topThirtyFive.reduce(function (a, b) {
-                        return a + b;
-                    }, 0) / 420;
-                    person.pia.push(parseFloat(pia));
-
-                    return pia;
-                } else {
-                    alert("Client must be older than 18.");
-                    return null;
-                }
-            }
-
-            function adjustSurvivorPIA(client, deceased, i) {
-                switch (client.yearOfBirth) {
-                    case 1957:
-                        switch (client.yearFRA) {
-                            case 60:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[0];break;
-                            case 61:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[1];break;
-                            case 62:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[2];break;
-                            case 63:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[3];break;
-                            case 64:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[4];break;
-                            case 65:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[5];break;
-                            case 66:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[6];break;
-                            case 67:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[7];break;
-                            case 68:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[8];break;
-                            case 69:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[9];break;
-                            default:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[10];break;
-                        }
-                        break;
-                    case 1958:
-                        switch (client.yearFRA) {
-                            case 60:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[0];break;
-                            case 61:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[1];break;
-                            case 62:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[2];break;
-                            case 63:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[3];break;
-                            case 64:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[4];break;
-                            case 65:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[5];break;
-                            case 66:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[6];break;
-                            case 67:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[7];break;
-                            case 68:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[8];break;
-                            case 69:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[9];break;
-                            default:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[10];break;
-                        }
-                        break;
-                    case 1959:
-                        switch (client.yearFRA) {
-                            case 60:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[0];break;
-                            case 61:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[1];break;
-                            case 62:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[2];break;
-                            case 63:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[3];break;
-                            case 64:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[4];break;
-                            case 65:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[5];break;
-                            case 66:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[6];break;
-                            case 67:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[7];break;
-                            case 68:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[8];break;
-                            case 69:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[9];break;
-                            default:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[10];break;
-                        }
-                        break;
-                    case 1960:
-                        switch (client.yearFRA) {
-                            case 60:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[0];break;
-                            case 61:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[1];break;
-                            case 62:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[2];break;
-                            case 63:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[3];break;
-                            case 64:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[4];break;
-                            case 65:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[5];break;
-                            case 66:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[6];break;
-                            case 67:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[7];break;
-                            case 68:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[8];break;
-                            case 69:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[9];break;
-                            default:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[10];break;
-                        }
-                        break;
-                    case 1961:
-                        switch (client.yearFRA) {
-                            case 60:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[0];break;
-                            case 61:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[1];break;
-                            case 62:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[2];break;
-                            case 63:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[3];break;
-                            case 64:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[4];break;
-                            case 65:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[5];break;
-                            case 66:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[6];break;
-                            case 67:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[7];break;
-                            case 68:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[8];break;
-                            case 69:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[9];break;
-                            default:
-                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[10];break;
-                        }
-                        break;
-                    default:
-                        if (client.yearOfBirth <= 1956) {
-                            switch (client.yearFRA) {
-                                case 60:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[0];break;
-                                case 61:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[1];break;
-                                case 62:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[2];break;
-                                case 63:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[3];break;
-                                case 64:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[4];break;
-                                case 65:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[5];break;
-                                case 66:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[6];break;
-                                case 67:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[7];break;
-                                case 68:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[8];break;
-                                case 69:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[9];break;
-                                default:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[10];break;
-                            }
-                        } else {
-                            switch (client.yearFRA) {
-                                case 60:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[0];break;
-                                case 61:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[1];break;
-=======
-    var benefits = exports.benefits = (_dec = (0, _aureliaFramework.inject)(_userdata.UserData, _aureliaRouter.Router), _dec(_class = function () {
-        function benefits(userData, router) {
-            _classCallCheck(this, benefits);
-
-            this.userData = userData;
-            this.router = router;
-        }
-
-        benefits.prototype.benefitsCalc = function benefitsCalc() {
-            function calculateSSBase(person, retirementAge) {
-                var age = person.age;
-                var yearOfBirth = person.yearOfBirth;
-                var pia = person.pia;
-                var yrsOfSubearnings = person.yrsOfSubearnings;
-                var ssBase, consttier1, consttier2;
-
-                var ageFrom62 = 62 - age;
-                consttier1 = _constants.bendtier1[8 + ageFrom62];
-                consttier2 = _constants.bendtier2[8 + ageFrom62];
-
-                var tier1, tier2, tier3;
-                var sum = consttier1 + consttier2;
-                if (person.wep) {
-                    if (pia > consttier1) {
-                        switch (yrsOfSubearnings) {
-                            case 29:
-                                tier1 = consttier1 * _constants.subEarningsPerc[1];break;
-                            case 28:
-                                tier1 = consttier1 * _constants.subEarningsPerc[2];break;
-                            case 27:
-                                tier1 = consttier1 * _constants.subEarningsPerc[3];break;
-                            case 26:
-                                tier1 = consttier1 * _constants.subEarningsPerc[4];break;
-                            case 25:
-                                tier1 = consttier1 * _constants.subEarningsPerc[5];break;
-                            case 24:
-                                tier1 = consttier1 * _constants.subEarningsPerc[6];break;
-                            case 23:
-                                tier1 = consttier1 * _constants.subEarningsPerc[7];break;
-                            case 22:
-                                tier1 = consttier1 * _constants.subEarningsPerc[8];break;
-                            case 21:
-                                tier1 = consttier1 * _constants.subEarningsPerc[9];break;
-                            default:
-                                if (yrsOfSubearnings >= 30) tier1 = consttier1 * _constants.subEarningsPerc[0];else tier1 = consttier1 * _constants.subEarningsPerc[10];
-                        }
-                    } else {
-                        switch (yrsOfSubearnings) {
-                            case 29:
-                                tier1 = pia * _constants.subEarningsPerc[1];break;
-                            case 28:
-                                tier1 = pia * _constants.subEarningsPerc[2];break;
-                            case 27:
-                                tier1 = pia * _constants.subEarningsPerc[3];break;
-                            case 26:
-                                tier1 = pia * _constants.subEarningsPerc[4];break;
-                            case 25:
-                                tier1 = pia * _constants.subEarningsPerc[5];break;
-                            case 24:
-                                tier1 = pia * _constants.subEarningsPerc[6];break;
-                            case 23:
-                                tier1 = pia * _constants.subEarningsPerc[7];break;
-                            case 22:
-                                tier1 = pia * _constants.subEarningsPerc[8];break;
-                            case 21:
-                                tier1 = pia * _constants.subEarningsPerc[9];break;
-                            default:
-                                if (yrsOfSubearnings >= 30) tier1 = pia * _constants.subEarningsPerc[0];else tier1 = pia * _constants.subEarningsPerc[10];
-                        }
-                    }
-                } else {
-                    if (pia > consttier1) tier1 = consttier1 * _constants.tier1perc;else tier1 = pia * _constants.tier1perc;
-                }
-
-                if (pia > sum) {
-                    tier2 = consttier2 * _constants.tier2perc;
-                } else tier2 = pia * _constants.tier2perc;
-
-                if (pia > sum) {
-                    tier3 = (pia - sum) * _constants.tier3perc;
-                } else tier3 = 0;
-
-                var sumOfTiers = tier1 + tier2 + tier3;
-
-                switch (yearOfBirth) {
-                    case 1955:
-                        switch (retirementAge) {
-                            case 62:
-                                sumOfTiers = sumOfTiers * _constants.EL1955[0];break;
-                            case 63:
-                                sumOfTiers = sumOfTiers * _constants.EL1955[1];break;
-                            case 64:
-                                sumOfTiers = sumOfTiers * _constants.EL1955[2];break;
-                            case 65:
-                                sumOfTiers = sumOfTiers * _constants.EL1955[3];break;
-                            case 66:
-                                sumOfTiers = sumOfTiers * _constants.EL1955[4];break;
-                            case 67:
-                                sumOfTiers = sumOfTiers * _constants.EL1955[5];break;
-                            case 68:
-                                sumOfTiers = sumOfTiers * _constants.EL1955[6];break;
-                            case 69:
-                                sumOfTiers = sumOfTiers * _constants.EL1955[7];break;
-                            case 70:
-                                sumOfTiers = sumOfTiers * _constants.EL1955[8];break;
-                        }
-                    case 1956:
-                        switch (retirementAge) {
-                            case 62:
-                                sumOfTiers = sumOfTiers * _constants.EL1956[0];break;
-                            case 63:
-                                sumOfTiers = sumOfTiers * _constants.EL1956[1];break;
-                            case 64:
-                                sumOfTiers = sumOfTiers * _constants.EL1956[2];break;
-                            case 65:
-                                sumOfTiers = sumOfTiers * _constants.EL1956[3];break;
-                            case 66:
-                                sumOfTiers = sumOfTiers * _constants.EL1956[4];break;
-                            case 67:
-                                sumOfTiers = sumOfTiers * _constants.EL1956[5];break;
-                            case 68:
-                                sumOfTiers = sumOfTiers * _constants.EL1956[6];break;
-                            case 69:
-                                sumOfTiers = sumOfTiers * _constants.EL1956[7];break;
-                            case 70:
-                                sumOfTiers = sumOfTiers * _constants.EL1956[8];break;
-                        }
-                    case 1957:
-                        switch (retirementAge) {
-                            case 62:
-                                sumOfTiers = sumOfTiers * _constants.EL1957[0];break;
-                            case 63:
-                                sumOfTiers = sumOfTiers * _constants.EL1957[1];break;
-                            case 64:
-                                sumOfTiers = sumOfTiers * _constants.EL1957[2];break;
-                            case 65:
-                                sumOfTiers = sumOfTiers * _constants.EL1957[3];break;
-                            case 66:
-                                sumOfTiers = sumOfTiers * _constants.EL1957[4];break;
-                            case 67:
-                                sumOfTiers = sumOfTiers * _constants.EL1957[5];break;
-                            case 68:
-                                sumOfTiers = sumOfTiers * _constants.EL1957[6];break;
-                            case 69:
-                                sumOfTiers = sumOfTiers * _constants.EL1957[7];break;
-                            case 70:
-                                sumOfTiers = sumOfTiers * _constants.EL1957[8];break;
-                        }
-                    case 1958:
-                        switch (retirementAge) {
-                            case 62:
-                                sumOfTiers = sumOfTiers * _constants.EL1958[0];break;
-                            case 63:
-                                sumOfTiers = sumOfTiers * _constants.EL1958[1];break;
-                            case 64:
-                                sumOfTiers = sumOfTiers * _constants.EL1958[2];break;
-                            case 65:
-                                sumOfTiers = sumOfTiers * _constants.EL1958[3];break;
-                            case 66:
-                                sumOfTiers = sumOfTiers * _constants.EL1958[4];break;
-                            case 67:
-                                sumOfTiers = sumOfTiers * _constants.EL1958[5];break;
-                            case 68:
-                                sumOfTiers = sumOfTiers * _constants.EL1958[6];break;
-                            case 69:
-                                sumOfTiers = sumOfTiers * _constants.EL1958[7];break;
-                            case 70:
-                                sumOfTiers = sumOfTiers * _constants.EL1958[8];break;
-                        }
-                    case 1959:
-                        switch (retirementAge) {
-                            case 62:
-                                sumOfTiers = sumOfTiers * _constants.EL1959[0];break;
-                            case 63:
-                                sumOfTiers = sumOfTiers * _constants.EL1959[1];break;
-                            case 64:
-                                sumOfTiers = sumOfTiers * _constants.EL1959[2];break;
-                            case 65:
-                                sumOfTiers = sumOfTiers * _constants.EL1959[3];break;
-                            case 66:
-                                sumOfTiers = sumOfTiers * _constants.EL1959[4];break;
-                            case 67:
-                                sumOfTiers = sumOfTiers * _constants.EL1959[5];break;
-                            case 68:
-                                sumOfTiers = sumOfTiers * _constants.EL1959[6];break;
-                            case 69:
-                                sumOfTiers = sumOfTiers * _constants.EL1959[7];break;
-                            case 70:
-                                sumOfTiers = sumOfTiers * _constants.EL1959[8];break;
-                        }
-                    default:
-                        if (yearOfBirth <= 1954) {
-                            switch (retirementAge) {
-                                case 62:
-                                    sumOfTiers = sumOfTiers * _constants.EL1943plus[0];break;
-                                case 63:
-                                    sumOfTiers = sumOfTiers * _constants.EL1943plus[1];break;
-                                case 64:
-                                    sumOfTiers = sumOfTiers * _constants.EL1943plus[2];break;
-                                case 65:
-                                    sumOfTiers = sumOfTiers * _constants.EL1943plus[3];break;
-                                case 66:
-                                    sumOfTiers = sumOfTiers * _constants.EL1943plus[4];break;
-                                case 67:
-                                    sumOfTiers = sumOfTiers * _constants.EL1943plus[5];break;
-                                case 68:
-                                    sumOfTiers = sumOfTiers * _constants.EL1943plus[6];break;
-                                case 69:
-                                    sumOfTiers = sumOfTiers * _constants.EL1943plus[7];break;
-                                case 70:
-                                    sumOfTiers = sumOfTiers * _constants.EL1943plus[8];break;
-                            }
-                        } else {
-                            switch (retirementAge) {
-                                case 62:
-                                    sumOfTiers = sumOfTiers * _constants.EL1960plus[0];break;
-                                case 63:
-                                    sumOfTiers = sumOfTiers * _constants.EL1960plus[1];break;
-                                case 64:
-                                    sumOfTiers = sumOfTiers * _constants.EL1960plus[2];break;
-                                case 65:
-                                    sumOfTiers = sumOfTiers * _constants.EL1960plus[3];break;
-                                case 66:
-                                    sumOfTiers = sumOfTiers * _constants.EL1960plus[4];break;
-                                case 67:
-                                    sumOfTiers = sumOfTiers * _constants.EL1960plus[5];break;
-                                case 68:
-                                    sumOfTiers = sumOfTiers * _constants.EL1960plus[6];break;
-                                case 69:
-                                    sumOfTiers = sumOfTiers * _constants.EL1960plus[7];break;
-                                case 70:
-                                    sumOfTiers = sumOfTiers * _constants.EL1960plus[8];break;
-                            }
-                        }
-                }
-
-                ssBase = sumOfTiers * 12;
-
-                if (person.recievePension) {
-                    var pension = parseFloat(person.pensionAmount) * 2 / 3;
-                    pension = pension * 12;
-                    ssBase = ssBase - pension;
-                }
-
-                person.ssBase.push(parseFloat(ssBase));
-            }
-
-            function spousalBenefit(client, spouse, retirementAge, i) {
-                var spousalBenefit;
-                var ssBaseClient = client.ssBase[i];
-                var ssBaseSpouse = spouse.ssBase[i];
-                var yearOfBirth = spouse.yearOfBirth;
-
-                switch (yearOfBirth) {
-                    case 1955:
-                        switch (retirementAge) {
-                            case 62:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1955[0];
-                            case 63:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1955[1];
-                            case 64:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1955[2];
-                            case 65:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1955[3];
-                            case 66:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1955[4];
-                            case 67:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1955[5];
-                            case 68:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1955[6];
-                            case 69:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1955[7];
-                            default:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1955[8];
-                        }
-                    case 1956:
-                        switch (retirementAge) {
-                            case 62:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1956[0];
-                            case 63:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1956[1];
-                            case 64:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1956[2];
-                            case 65:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1956[3];
-                            case 66:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1956[4];
-                            case 67:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1956[5];
-                            case 68:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1956[6];
-                            case 69:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1956[7];
-                            default:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1956[8];
-                        }
-                    case 1957:
-                        switch (retirementAge) {
-                            case 62:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1957[0];
-                            case 63:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1957[1];
-                            case 64:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1957[2];
-                            case 65:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1957[3];
-                            case 66:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1957[4];
-                            case 67:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1957[5];
-                            case 68:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1957[6];
-                            case 69:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1957[7];
-                            default:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1957[8];
-                        }
-                    case 1958:
-                        switch (retirementAge) {
-                            case 62:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1958[0];
-                            case 63:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1958[1];
-                            case 64:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1958[2];
-                            case 65:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1958[3];
-                            case 66:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1958[4];
-                            case 67:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1958[5];
-                            case 68:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1958[6];
-                            case 69:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1958[7];
-                            default:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1958[8];
-                        }
-                    case 1959:
-                        switch (retirementAge) {
-                            case 62:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1959[0];
-                            case 63:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1959[1];
-                            case 64:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1959[2];
-                            case 65:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1959[3];
-                            case 66:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1959[4];
-                            case 67:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1959[5];
-                            case 68:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1959[6];
-                            case 69:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1959[7];
-                            default:
-                                spousalBenefit = ssBaseClient * _constants.spousalBenefits1959[8];
-                        }
-                    default:
-                        if (yearOfBirth >= 1943 && yearOfBirth <= 1954) {
-                            switch (retirementAge) {
-                                case 62:
-                                    spousalBenefit = ssBaseClient * _constants.spousalBenefits1943to1954[0];
-                                case 63:
-                                    spousalBenefit = ssBaseClient * _constants.spousalBenefits1943to1954[1];
-                                case 64:
-                                    spousalBenefit = ssBaseClient * _constants.spousalBenefits1943to1954[2];
-                                case 65:
-                                    spousalBenefit = ssBaseClient * _constants.spousalBenefits1943to1954[3];
-                                case 66:
-                                    spousalBenefit = ssBaseClient * _constants.spousalBenefits1943to1954[4];
-                                case 67:
-                                    spousalBenefit = ssBaseClient * _constants.spousalBenefits1943to1954[5];
-                                case 68:
-                                    spousalBenefit = ssBaseClient * _constants.spousalBenefits1943to1954[6];
-                                case 69:
-                                    spousalBenefit = ssBaseClient * _constants.spousalBenefits1943to1954[7];
-                                default:
-                                    spousalBenefit = ssBaseClient * _constants.spousalBenefits1943to1954[8];
-                            }
-                        } else if (yearOfBirth >= 1960 && yearOfBirth <= 2000) {
-                            switch (retirementAge) {
->>>>>>> c11c4a2687fb3fa45a005078cc33ea195d138aaf
-                                case 62:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[2];break;
-                                case 63:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[3];break;
-                                case 64:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[4];break;
-                                case 65:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[5];break;
-                                case 66:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[6];break;
-                                case 67:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[7];break;
-                                case 68:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[8];break;
-                                case 69:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[9];break;
-                                default:
-                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[10];break;
-                            }
-                        }
-                }
-            }
-
-            var maritalStatus = this.userData.client.maritalStatus;
-            var widowcheck = false;
-
-            this.userData.client.pia = [];
-            calculatePIA(this.userData.client, widowcheck, 62);
-            calculatePIA(this.userData.client, widowcheck, this.userData.client.retirementAge);
-            calculatePIA(this.userData.client, widowcheck, this.userData.client.yearFRA);
-            calculatePIA(this.userData.client, widowcheck, 70);
-
-            if (maritalStatus == "Married" && !this.userData.client.isRecieving) {
-                this.userData.spouse.pia = [];
-                calculatePIA(this.userData.spouse, widowcheck, 62);
-                calculatePIA(this.userData.spouse, widowcheck, this.userData.spouse.retirementAge);
-                calculatePIA(this.userData.spouse, widowcheck, this.userData.spouse.yearFRA);
-                calculatePIA(this.userData.spouse, widowcheck, 70);
-            } else if (maritalStatus = "Widowed") {
-                widowcheck = true;
-                calculatePIA(this.userData.deceased, widowcheck);
-                var i = 0;
-                adjustSurvivorPIA(this.userData.client, this.userData.deceased, i);
-                i++;
-                adjustSurvivorPIA(this.userData.client, this.userData.deceased, i);
-                i++;
-                adjustSurvivorPIA(this.userData.client, this.userData.deceased, i);
-                i++;
-                adjustSurvivorPIA(this.userData.client, this.userData.deceased, i);
-            }
-
-            if (this.userData.client.pia[0] < this.userData.client.survivorpia[0]) {
-                this.userData.client.pia[0] = this.userData.client.survivorpia[0];
-            } else if (this.userData.client.pia[1] < this.userData.client.survivorpia[1]) {
-                this.userData.client.pia[1] = this.userData.client.survivorpia[1];
-            } else if (this.userData.client.pia[2] < this.userData.client.survivorpia[2]) {
-                this.userData.client.pia[2] = this.userData.client.survivorpia[2];
-            } else if (this.userData.client.pia[3] < this.userData.client.survivorpia[3]) {
-                this.userData.client.pia[3] = this.userData.client.survivorpia[3];
-            }
-
-            console.log(this.userData);
-
-            this.router.navigate('#/benefits');
-        };
-
-        exceptions.prototype.beganService = function beganService(date) {
-            var beganService = (0, _moment2.default)(date, 'M/D/YYYY');
-            var currentYear = (0, _moment2.default)().format('YYYY');
-            var beginYear = beganService.format('YYYY');
-
-            if (!(date.indexOf(beganService.format('MM/DD/YYYY')) >= 0 || date.indexOf(beganService.format('M/DD/YYYY')) >= 0 || date.indexOf(beganService.format('MM/D/YYYY')) >= 0 || date.indexOf(beganService.format('M/D/YYYY')) >= 0) || !beganService.isValid() || beginYear > currentYear) {
-                alert('Invalid Year');
-                return;
-            } else {
-                this.userData.client.beginYear = beginYear;
-                this.userData.client.beginMonth = beganService.month();
-            }
-        };
-
-        exceptions.prototype.endService = function endService(date) {
-            var endService = (0, _moment2.default)(date, 'M/D/YYYY');
-            var currentYear = (0, _moment2.default)().format('YYYY');
-            var endYear = endService.format('YYYY');
-
-            if (!(date.indexOf(endService.format('MM/DD/YYYY')) >= 0 || date.indexOf(endService.format('M/DD/YYYY')) >= 0 || date.indexOf(endService.format('MM/D/YYYY')) >= 0 || date.indexOf(endService.format('M/D/YYYY')) >= 0) || !endService.isValid() || endYear > currentYear) {
-                alert('Invalid Year');
-                return;
-            } else {
-                this.userData.client.endYear = endYear;
-                this.userData.client.endMonth = endService.month();
-            }
-        };
-
-        exceptions.prototype.beganServiceSpouse = function beganServiceSpouse(date) {
-            var beganService = (0, _moment2.default)(date, 'M/D/YYYY');
-            var currentYear = (0, _moment2.default)().format('YYYY');
-            var beginYear = beganService.format('YYYY');
-
-            if (!(date.indexOf(beganService.format('MM/DD/YYYY')) >= 0 || date.indexOf(beganService.format('M/DD/YYYY')) >= 0 || date.indexOf(beganService.format('MM/D/YYYY')) >= 0 || date.indexOf(beganService.format('M/D/YYYY')) >= 0) || !beganService.isValid() || beginYear > currentYear) {
-                alert('Invalid Year');
-                return;
-            } else {
-                this.userData.spouse.beginYear = beginYear;
-                this.userData.spouse.beginMonth = beganService.month();
-            }
-        };
-
-        exceptions.prototype.endServiceSpouse = function endServiceSpouse(date) {
-            var endService = (0, _moment2.default)(date, 'M/D/YYYY');
-            var currentYear = (0, _moment2.default)().format('YYYY');
-            var endYear = endService.format('YYYY');
-
-            if (!(date.indexOf(endService.format('MM/DD/YYYY')) >= 0 || date.indexOf(endService.format('M/DD/YYYY')) >= 0 || date.indexOf(endService.format('MM/D/YYYY')) >= 0 || date.indexOf(endService.format('M/D/YYYY')) >= 0) || !endService.isValid() || endYear > currentYear) {
-                alert('Invalid Year');
-                return;
-            } else {
-                this.userData.spouse.endYear = endYear;
-                this.userData.spouse.endMonth = endService.month();
-            }
-        };
-
-        exceptions.prototype.checkCitizenship = function checkCitizenship(value) {
-            if (value == "Dual Citizen") {
-                this.userData.client.dual26Countries = true;
-                this.userData.client.notCitizen = false;
-            } else if (value == "Not a US Citizen") {
-                this.userData.client.notCitizen = true;
-                this.userData.client.dual26Countries = false;
-            } else {
-                this.userData.client.dual26Countries = false;
-                this.userData.client.notCitizen = false;
-            }
-        };
-
-        exceptions.prototype.checkCitizenshipSpouse = function checkCitizenshipSpouse(value) {
-            if (value == "Dual Citizen") {
-                this.userData.spouse.dual26Countries = true;
-                this.userData.spouse.notCitizen = false;
-            } else if (value == "Not a US Citizen") {
-                this.userData.spouse.notCitizen = true;
-                this.userData.spouse.dual26Countries = false;
-            } else {
-                this.userData.spouse.dual26Countries = false;
-                this.userData.spouse.notCitizen = false;
-            }
-        };
-
-        exceptions.prototype.militaryService = function militaryService() {
-            this.userData.client.militaryService = !this.userData.client.militaryService;
-        };
-
-        exceptions.prototype.railroad = function railroad() {
-            this.userData.client.workedOnARailroad = !this.userData.client.workedOnARailroad;
-        };
-
-        exceptions.prototype.gpo = function gpo() {
-            this.userData.client.recievePension = !this.userData.client.recievePension;
-        };
-
-        exceptions.prototype.check26Countries = function check26Countries() {
-            this.userData.client.isDual26Countries = !this.userData.client.isDual26Countries;
-        };
-
-        exceptions.prototype.canadaItaly = function canadaItaly() {
-            this.userData.client.dualCanadaItaly = !this.userData.client.dualCanadaItaly;
-            if (!this.userData.client.dualCanadaItaly) alert("You are not eligible for Social Security");
-        };
-
-        exceptions.prototype.instrumentality = function instrumentality() {
-            this.userData.client.checkInstrumentality = !this.userData.client.checkInstrumentality;
-        };
-
-        exceptions.prototype.conditions = function conditions() {
-            this.userData.client.checkConditions = !this.userData.client.checkConditions;
-            if (this.userData.client.checkConditions) alert("You are not eligible for Social Security");
-        };
-
-        exceptions.prototype.militaryServiceSpouse = function militaryServiceSpouse() {
-            this.userData.spouse.militaryService = !this.userData.spouse.militaryService;
-        };
-
-        exceptions.prototype.railroadSpouse = function railroadSpouse() {
-            this.userData.spouse.workedOnARailroad = !this.userData.spouse.workedOnARailroad;
-        };
-
-        exceptions.prototype.gpoSpouse = function gpoSpouse() {
-            this.userData.spouse.recievePension = !this.userData.spouse.recievePension;
-        };
-
-        exceptions.prototype.check26CountriesSpouse = function check26CountriesSpouse() {
-            this.userData.spouse.isDual26Countries = !this.userData.spouse.isDual26Countries;
-        };
-
-        exceptions.prototype.canadaItalySpouse = function canadaItalySpouse() {
-            this.userData.spouse.dualCanadaItaly = !this.userData.spouse.dualCanadaItaly;
-            if (!this.userData.spouse.dualCanadaItaly) alert("You are not eligible for Social Security");
-        };
-
-        exceptions.prototype.instrumentalitySpouse = function instrumentalitySpouse() {
-            this.userData.spouse.checkInstrumentality = !this.userData.spouse.checkInstrumentality;
-        };
-
-        exceptions.prototype.conditionsSpouse = function conditionsSpouse() {
-            this.userData.spouse.checkConditions = !this.userData.spouse.checkConditions;
-            if (this.userData.spouse.checkConditions) alert("You are not eligible for Social Security");
-        };
-
-        exceptions.prototype.attached = function attached() {};
-
-<<<<<<< HEAD
-        exceptions.prototype.back = function back() {
-            this.router.navigate('#/personalinfo');
-        };
-
-        return exceptions;
-=======
-            (0, _jquery2.default)("#spousebenefitslider").ionRangeSlider({
-                grid: true,
-                type: "single",
-                min: 0,
-                max: 10,
-                from: 2.6,
-                step: 0.1,
-                postfix: "%",
-                disable: true,
-                onFinish: function onFinish(data) {
-                    _this.userData.spouse.cola = data.from;
-                }
-            });
-
-            (0, _jquery2.default)('#wep').tooltip({
-                content: "<b>Windfall Elimination Provision:</b> If you work for a: federal, state, or local government; nonprofit organizations; or work in another country," + " you may qualify to be eligible for a pension based on earnings that are not covered by Social Security. This pension can affect your Social Security benefits."
-            });
-
-            (0, _jquery2.default)('#wepYears').tooltip({
-                content: "If you've paid Social Security taxes on 30 or more years on substantial earnings, WEP does <i>not</i> affect your Social Security benefits."
-            });
-
-            (0, _jquery2.default)('#spousewep').tooltip({
-                content: "<b>Windfall Elimination Provision:</b> If you work for a: federal, state, or local government; nonprofit organizations; or work in another country," + " you may qualify to be eligible for a pension based on earnings that are not covered by Social Security. This pension can affect your Social Security benefits."
-            });
-
-            (0, _jquery2.default)('#spousewepYears').tooltip({
-                content: "If you've paid Social Security taxes on 30 or more years on substantial earnings, WEP does <i>not</i> affect your Social Security benefits."
-            });
-
-            (0, _jquery2.default)('#cola').tooltip({
-                content: "<b>Cost Of Living Adjustment:</b> COLA is used to ensure that the purchasing power of both Social Security and Supplemental Security Income (SSI) benefits is not eroded by inflation."
-            });
-
-            (0, _jquery2.default)('#spousecola').tooltip({
-                content: "<b>Cost Of Living Adjustment:</b> COLA is used to ensure that the purchasing power of both Social Security and Supplemental Security Income (SSI) benefits is not eroded by inflation."
-            });
-        };
-
-        return benefits;
->>>>>>> c11c4a2687fb3fa45a005078cc33ea195d138aaf
     }()) || _class);
 });
 define('benefits/benefits',['exports', 'jquery', 'bootstrap-toggle', 'ion-rangeslider', 'aurelia-framework', '../services/userdata', 'aurelia-router', 'src/services/constants.js', 'jquery-ui-dist'], function (exports, _jquery, _bootstrapToggle, _ionRangeslider, _aureliaFramework, _userdata, _aureliaRouter, _constants) {
@@ -2619,6 +1409,565 @@ define('benefits/benefits',['exports', 'jquery', 'bootstrap-toggle', 'ion-ranges
         return benefits;
     }()) || _class);
 });
+define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-rangeslider', 'moment', 'src/services/constants.js', 'aurelia-framework', '../services/userdata', 'aurelia-router', 'jquery-ui-dist'], function (exports, _jquery, _bootstrapToggle, _ionRangeslider, _moment, _constants, _aureliaFramework, _userdata, _aureliaRouter) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.exceptions = undefined;
+
+    var _jquery2 = _interopRequireDefault(_jquery);
+
+    var bootstrapToggle = _interopRequireWildcard(_bootstrapToggle);
+
+    var ionRangeSlider = _interopRequireWildcard(_ionRangeslider);
+
+    var _moment2 = _interopRequireDefault(_moment);
+
+    function _interopRequireWildcard(obj) {
+        if (obj && obj.__esModule) {
+            return obj;
+        } else {
+            var newObj = {};
+
+            if (obj != null) {
+                for (var key in obj) {
+                    if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+                }
+            }
+
+            newObj.default = obj;
+            return newObj;
+        }
+    }
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var exceptions = exports.exceptions = (_dec = (0, _aureliaFramework.inject)(_userdata.UserData, _aureliaRouter.Router), _dec(_class = function () {
+        function exceptions(userData, router) {
+            _classCallCheck(this, exceptions);
+
+            this.router = router;
+            this.userData = userData;
+        }
+
+        exceptions.prototype.calculate = function calculate() {
+            function militarySalary(person) {
+                if (person.beginYear <= 1967 && person.endYear >= 1940) {
+                    for (var year = person.beginYear; year <= Math.min(person.endYear, 1967); year++) {
+                        var monthsWorked = 0;
+                        if (year == person.beginYear) monthsWorked = 12 - person.beginMonth - 1;else if (year == person.endYear) monthsWorked = 12 - person.endMonth - 1;else monthsWorked = 12;
+                        person.projectedSal[person.ageFrom18 - (person.currentYear - year)] += monthsWorked / 3 * 300;
+                    }
+                }
+
+                if (person.beginYear <= 2001 && person.endYear >= 1967) {
+                    for (var year = Math.max(person.beginYear, 1967); year <= person.endYear && year <= 2001; year++) {
+                        var bonus = 1 / 3 * person.projectedSal[person.ageFrom18 - (person.currentYear - year)];
+                        person.projectedSal[person.ageFrom18 - (person.currentYear - year)] += Math.min(bonus, 1200);
+                    }
+                }
+            }
+
+            function railroadSalary(person) {
+                var start = person.yearsStartedOnRailroad;
+                var end = person.yearsEndedOnRailroad;
+                var difference = end - start;
+                var yearsSinceStarted = person.currentYear - start;
+                var yearsSinceEnded = person.currentYear - end;
+
+                if (difference >= 10 || difference >= 5 && start >= 1995) {
+                    for (var i = person.ageFrom18 - yearsSinceStarted; i <= person.ageFrom18 - yearsSinceEnded; i++) {
+                        person.inflationAdjusted[i] = 0;
+                    }
+                }
+            }
+
+            function calculatePIA(person, widowcheck, retirementAge) {
+                var sal = parseInt(person.salary);
+
+                var pia, ageFrom18, yrsUntilRetire;
+
+                ageFrom18 = person.ageFrom18;
+                yrsUntilRetire = retirementAge - person.age;
+                sal = parseInt(person.salary);
+
+                person.projectedSal = new Array(55).join('0').split('').map(parseFloat);
+                person.inflationAdjusted = new Array(55).join('0').split('').map(parseFloat);
+
+                if (ageFrom18 >= 0) {
+                    person.projectedSal[ageFrom18] = sal;
+                    var count = 0;
+
+                    if (!person.showWages) {
+                        for (var i = ageFrom18 - 1; i >= 0; i--) {
+                            person.projectedSal[i] = person.projectedSal[i + 1] - person.projectedSal[i + 1] * _constants.wagePerc[_constants.wagePerc.length - count - 2];
+                            count++;
+                        }
+                    } else {
+                        for (var i = ageFrom18 - 1; i >= 0; i--) {
+                            person.projectedSal[i] = parseFloat(person.wages[i]);
+                        }
+                    }
+
+                    if (!widowcheck) {
+                        if (!person.futureWages) {
+                            for (var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) {
+                                person.projectedSal[i] = parseFloat(person.projectedSal[i - 1]) + parseFloat(person.projectedSal[i - 1]) * _constants.wagePerc[_constants.wagePerc.length - 1];
+                            }
+                        } else {
+                            for (var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) {
+                                person.projectedSal[i] = parseFloat(person.wages[i]);
+                            }
+                        }
+                    } else {
+                        for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+                            person.projectedSal[i] = 0;
+                        }
+                    }
+
+                    if (person.militaryService) militarySalary(person);
+
+                    count = 0;
+
+                    for (var i = ageFrom18 - 1; i >= 0; i--) {
+                        if (person.projectedSal[i] > _constants.allowedSalary[_constants.allowedSalary.length - count - 2]) {
+                            person.inflationAdjusted[i] = _constants.allowedSalary[_constants.allowedSalary.length - count - 2] * _constants.inflationIndex[_constants.inflationIndex.length - count - 2];
+                        } else {
+                            person.inflationAdjusted[i] = person.projectedSal[i] * _constants.inflationIndex[_constants.inflationIndex.length - count - 2];
+                        }
+                        count++;
+                    }
+
+                    if (!widowcheck) {
+                        var lastYearAllowed = _constants.allowedSalary[_constants.allowedSalary.length - 1];
+                        for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+                            if (person.projectedSal[i] > lastYearAllowed) {
+                                person.inflationAdjusted[i] = lastYearAllowed * _constants.inflationIndex[_constants.inflationIndex.length - 1];
+                            } else {
+                                person.inflationAdjusted[i] = person.projectedSal[i] * _constants.inflationIndex[_constants.inflationIndex.length - 1];
+                            }
+                            lastYearAllowed = lastYearAllowed * 1.021;
+                        }
+                    } else {
+                        for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+                            person.inflationAdjusted[i] = 0;
+                        }
+                    }
+
+                    if (person.workedOnARailroad) railroadSalary(person);
+
+                    person.inflationAdjusted = person.inflationAdjusted.sort(function (a, b) {
+                        return a - b;
+                    });
+                    person.topThirtyFive = person.inflationAdjusted.slice(person.inflationAdjusted.length - 35, person.inflationAdjusted.length);
+
+                    pia = person.topThirtyFive.reduce(function (a, b) {
+                        return a + b;
+                    }, 0) / 420;
+                    person.pia.push(parseFloat(pia));
+
+                    return pia;
+                } else {
+                    alert("Client must be older than 18.");
+                    return null;
+                }
+            }
+
+            function adjustSurvivorPIA(client, deceased, i) {
+                switch (client.yearOfBirth) {
+                    case 1957:
+                        switch (client.yearFRA) {
+                            case 60:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[0];break;
+                            case 61:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[1];break;
+                            case 62:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[2];break;
+                            case 63:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[3];break;
+                            case 64:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[4];break;
+                            case 65:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[5];break;
+                            case 66:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[6];break;
+                            case 67:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[7];break;
+                            case 68:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[8];break;
+                            case 69:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[9];break;
+                            default:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1957[10];break;
+                        }
+                        break;
+                    case 1958:
+                        switch (client.yearFRA) {
+                            case 60:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[0];break;
+                            case 61:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[1];break;
+                            case 62:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[2];break;
+                            case 63:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[3];break;
+                            case 64:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[4];break;
+                            case 65:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[5];break;
+                            case 66:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[6];break;
+                            case 67:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[7];break;
+                            case 68:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[8];break;
+                            case 69:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[9];break;
+                            default:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1958[10];break;
+                        }
+                        break;
+                    case 1959:
+                        switch (client.yearFRA) {
+                            case 60:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[0];break;
+                            case 61:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[1];break;
+                            case 62:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[2];break;
+                            case 63:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[3];break;
+                            case 64:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[4];break;
+                            case 65:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[5];break;
+                            case 66:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[6];break;
+                            case 67:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[7];break;
+                            case 68:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[8];break;
+                            case 69:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[9];break;
+                            default:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1959[10];break;
+                        }
+                        break;
+                    case 1960:
+                        switch (client.yearFRA) {
+                            case 60:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[0];break;
+                            case 61:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[1];break;
+                            case 62:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[2];break;
+                            case 63:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[3];break;
+                            case 64:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[4];break;
+                            case 65:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[5];break;
+                            case 66:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[6];break;
+                            case 67:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[7];break;
+                            case 68:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[8];break;
+                            case 69:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[9];break;
+                            default:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1960[10];break;
+                        }
+                        break;
+                    case 1961:
+                        switch (client.yearFRA) {
+                            case 60:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[0];break;
+                            case 61:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[1];break;
+                            case 62:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[2];break;
+                            case 63:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[3];break;
+                            case 64:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[4];break;
+                            case 65:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[5];break;
+                            case 66:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[6];break;
+                            case 67:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[7];break;
+                            case 68:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[8];break;
+                            case 69:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[9];break;
+                            default:
+                                client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1961[10];break;
+                        }
+                        break;
+                    default:
+                        if (client.yearOfBirth <= 1956) {
+                            switch (client.yearFRA) {
+                                case 60:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[0];break;
+                                case 61:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[1];break;
+                                case 62:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[2];break;
+                                case 63:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[3];break;
+                                case 64:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[4];break;
+                                case 65:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[5];break;
+                                case 66:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[6];break;
+                                case 67:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[7];break;
+                                case 68:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[8];break;
+                                case 69:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[9];break;
+                                default:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1945to1956[10];break;
+                            }
+                        } else {
+                            switch (client.yearFRA) {
+                                case 60:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[0];break;
+                                case 61:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[1];break;
+                                case 62:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[2];break;
+                                case 63:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[3];break;
+                                case 64:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[4];break;
+                                case 65:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[5];break;
+                                case 66:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[6];break;
+                                case 67:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[7];break;
+                                case 68:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[8];break;
+                                case 69:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[9];break;
+                                default:
+                                    client.survivorpia[i] = deceased.pia[0] * _constants.survivorFRA1962to2000[10];break;
+                            }
+                        }
+                }
+            }
+
+            var maritalStatus = this.userData.client.maritalStatus;
+            var widowcheck = false;
+
+            this.userData.client.pia = [];
+            calculatePIA(this.userData.client, widowcheck, 62);
+            calculatePIA(this.userData.client, widowcheck, this.userData.client.retirementAge);
+            calculatePIA(this.userData.client, widowcheck, this.userData.client.yearFRA);
+            calculatePIA(this.userData.client, widowcheck, 70);
+
+            if (maritalStatus == "Married" && !this.userData.client.isRecieving) {
+                this.userData.spouse.pia = [];
+                calculatePIA(this.userData.spouse, widowcheck, 62);
+                calculatePIA(this.userData.spouse, widowcheck, this.userData.spouse.retirementAge);
+                calculatePIA(this.userData.spouse, widowcheck, this.userData.spouse.yearFRA);
+                calculatePIA(this.userData.spouse, widowcheck, 70);
+            } else if (maritalStatus = "Widowed") {
+                widowcheck = true;
+                calculatePIA(this.userData.deceased, widowcheck);
+                var i = 0;
+                adjustSurvivorPIA(this.userData.client, this.userData.deceased, i);
+                i++;
+                adjustSurvivorPIA(this.userData.client, this.userData.deceased, i);
+                i++;
+                adjustSurvivorPIA(this.userData.client, this.userData.deceased, i);
+                i++;
+                adjustSurvivorPIA(this.userData.client, this.userData.deceased, i);
+            }
+
+            if (this.userData.client.pia[0] < this.userData.client.survivorpia[0]) {
+                this.userData.client.pia[0] = this.userData.client.survivorpia[0];
+            } else if (this.userData.client.pia[1] < this.userData.client.survivorpia[1]) {
+                this.userData.client.pia[1] = this.userData.client.survivorpia[1];
+            } else if (this.userData.client.pia[2] < this.userData.client.survivorpia[2]) {
+                this.userData.client.pia[2] = this.userData.client.survivorpia[2];
+            } else if (this.userData.client.pia[3] < this.userData.client.survivorpia[3]) {
+                this.userData.client.pia[3] = this.userData.client.survivorpia[3];
+            }
+
+            console.log(this.userData);
+
+            this.router.navigate('#/benefits');
+        };
+
+        exceptions.prototype.beganService = function beganService(date) {
+            var beganService = (0, _moment2.default)(date, 'M/D/YYYY');
+            var currentYear = (0, _moment2.default)().format('YYYY');
+            var beginYear = beganService.format('YYYY');
+
+            if (!(date.indexOf(beganService.format('MM/DD/YYYY')) >= 0 || date.indexOf(beganService.format('M/DD/YYYY')) >= 0 || date.indexOf(beganService.format('MM/D/YYYY')) >= 0 || date.indexOf(beganService.format('M/D/YYYY')) >= 0) || !beganService.isValid() || beginYear > currentYear) {
+                alert('Invalid Year');
+                return;
+            } else {
+                this.userData.client.beginYear = beginYear;
+                this.userData.client.beginMonth = beganService.month();
+            }
+        };
+
+        exceptions.prototype.endService = function endService(date) {
+            var endService = (0, _moment2.default)(date, 'M/D/YYYY');
+            var currentYear = (0, _moment2.default)().format('YYYY');
+            var endYear = endService.format('YYYY');
+
+            if (!(date.indexOf(endService.format('MM/DD/YYYY')) >= 0 || date.indexOf(endService.format('M/DD/YYYY')) >= 0 || date.indexOf(endService.format('MM/D/YYYY')) >= 0 || date.indexOf(endService.format('M/D/YYYY')) >= 0) || !endService.isValid() || endYear > currentYear) {
+                alert('Invalid Year');
+                return;
+            } else {
+                this.userData.client.endYear = endYear;
+                this.userData.client.endMonth = endService.month();
+            }
+        };
+
+        exceptions.prototype.beganServiceSpouse = function beganServiceSpouse(date) {
+            var beganService = (0, _moment2.default)(date, 'M/D/YYYY');
+            var currentYear = (0, _moment2.default)().format('YYYY');
+            var beginYear = beganService.format('YYYY');
+
+            if (!(date.indexOf(beganService.format('MM/DD/YYYY')) >= 0 || date.indexOf(beganService.format('M/DD/YYYY')) >= 0 || date.indexOf(beganService.format('MM/D/YYYY')) >= 0 || date.indexOf(beganService.format('M/D/YYYY')) >= 0) || !beganService.isValid() || beginYear > currentYear) {
+                alert('Invalid Year');
+                return;
+            } else {
+                this.userData.spouse.beginYear = beginYear;
+                this.userData.spouse.beginMonth = beganService.month();
+            }
+        };
+
+        exceptions.prototype.endServiceSpouse = function endServiceSpouse(date) {
+            var endService = (0, _moment2.default)(date, 'M/D/YYYY');
+            var currentYear = (0, _moment2.default)().format('YYYY');
+            var endYear = endService.format('YYYY');
+
+            if (!(date.indexOf(endService.format('MM/DD/YYYY')) >= 0 || date.indexOf(endService.format('M/DD/YYYY')) >= 0 || date.indexOf(endService.format('MM/D/YYYY')) >= 0 || date.indexOf(endService.format('M/D/YYYY')) >= 0) || !endService.isValid() || endYear > currentYear) {
+                alert('Invalid Year');
+                return;
+            } else {
+                this.userData.spouse.endYear = endYear;
+                this.userData.spouse.endMonth = endService.month();
+            }
+        };
+
+        exceptions.prototype.checkCitizenship = function checkCitizenship(value) {
+            if (value == "Dual Citizen") {
+                this.userData.client.dual26Countries = true;
+                this.userData.client.notCitizen = false;
+            } else if (value == "Not a US Citizen") {
+                this.userData.client.notCitizen = true;
+                this.userData.client.dual26Countries = false;
+            } else {
+                this.userData.client.dual26Countries = false;
+                this.userData.client.notCitizen = false;
+            }
+        };
+
+        exceptions.prototype.checkCitizenshipSpouse = function checkCitizenshipSpouse(value) {
+            if (value == "Dual Citizen") {
+                this.userData.spouse.dual26Countries = true;
+                this.userData.spouse.notCitizen = false;
+            } else if (value == "Not a US Citizen") {
+                this.userData.spouse.notCitizen = true;
+                this.userData.spouse.dual26Countries = false;
+            } else {
+                this.userData.spouse.dual26Countries = false;
+                this.userData.spouse.notCitizen = false;
+            }
+        };
+
+        exceptions.prototype.militaryService = function militaryService() {
+            this.userData.client.militaryService = !this.userData.client.militaryService;
+        };
+
+        exceptions.prototype.railroad = function railroad() {
+            this.userData.client.workedOnARailroad = !this.userData.client.workedOnARailroad;
+        };
+
+        exceptions.prototype.gpo = function gpo() {
+            this.userData.client.recievePension = !this.userData.client.recievePension;
+        };
+
+        exceptions.prototype.check26Countries = function check26Countries() {
+            this.userData.client.isDual26Countries = !this.userData.client.isDual26Countries;
+        };
+
+        exceptions.prototype.canadaItaly = function canadaItaly() {
+            this.userData.client.dualCanadaItaly = !this.userData.client.dualCanadaItaly;
+            if (!this.userData.client.dualCanadaItaly) alert("You are not eligible for Social Security");
+        };
+
+        exceptions.prototype.instrumentality = function instrumentality() {
+            this.userData.client.checkInstrumentality = !this.userData.client.checkInstrumentality;
+        };
+
+        exceptions.prototype.conditions = function conditions() {
+            this.userData.client.checkConditions = !this.userData.client.checkConditions;
+            if (this.userData.client.checkConditions) alert("You are not eligible for Social Security");
+        };
+
+        exceptions.prototype.militaryServiceSpouse = function militaryServiceSpouse() {
+            this.userData.spouse.militaryService = !this.userData.spouse.militaryService;
+        };
+
+        exceptions.prototype.railroadSpouse = function railroadSpouse() {
+            this.userData.spouse.workedOnARailroad = !this.userData.spouse.workedOnARailroad;
+        };
+
+        exceptions.prototype.gpoSpouse = function gpoSpouse() {
+            this.userData.spouse.recievePension = !this.userData.spouse.recievePension;
+        };
+
+        exceptions.prototype.check26CountriesSpouse = function check26CountriesSpouse() {
+            this.userData.spouse.isDual26Countries = !this.userData.spouse.isDual26Countries;
+        };
+
+        exceptions.prototype.canadaItalySpouse = function canadaItalySpouse() {
+            this.userData.spouse.dualCanadaItaly = !this.userData.spouse.dualCanadaItaly;
+            if (!this.userData.spouse.dualCanadaItaly) alert("You are not eligible for Social Security");
+        };
+
+        exceptions.prototype.instrumentalitySpouse = function instrumentalitySpouse() {
+            this.userData.spouse.checkInstrumentality = !this.userData.spouse.checkInstrumentality;
+        };
+
+        exceptions.prototype.conditionsSpouse = function conditionsSpouse() {
+            this.userData.spouse.checkConditions = !this.userData.spouse.checkConditions;
+            if (this.userData.spouse.checkConditions) alert("You are not eligible for Social Security");
+        };
+
+        exceptions.prototype.attached = function attached() {};
+
+        exceptions.prototype.back = function back() {
+            this.router.navigate('#/personalinfo');
+        };
+
+        return exceptions;
+    }()) || _class);
+});
 define('resources/index',["exports"], function (exports) {
   "use strict";
 
@@ -3093,13 +2442,8 @@ define('services/userdata',['exports', 'aurelia-framework', '../services/user'],
         this.deceased = new _user.User();
     }) || _class);
 });
-<<<<<<< HEAD
-define('text!styles.css', ['module'], function(module) { module.exports = "html, body {\r\n\tmargin:0;\r\n\tpadding:0;\r\n\theight:100%;\r\n}\r\n\r\n#app {\r\n\tmin-height:100%;\r\n\tposition:relative;\r\n}\r\n\r\n#content {\r\n\tpadding-bottom:100px; /* Height of the footer element */\r\n}\r\n\r\n#footer {\r\n\tbackground:#ededed;\r\n\twidth:100%;\r\n\theight:60px;\r\n\tposition:absolute;\r\n\tbottom:0;\r\n\tleft:0;\r\n    text-align: center;\r\n}\r\n\r\n#persinfointro {\r\n    text-align: center;\r\n    width: 500px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#persinfo, #benefits, #wagehistory, #exceptions, #spousewagehistory {\r\n    text-align: center;\r\n    width: 500px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#results {\r\n    text-align: center;\r\n    width: 750px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#divorceCheck {\r\n    width: 5000px;\r\n}\r\n\r\n#wages {\r\n    display: inline-block;\r\n}\r\n\r\n#custom-handle {\r\n    width: 3em;\r\n    height: 1.6em;\r\n    top: 50%;\r\n    margin-top: -.8em;\r\n    text-align: center;\r\n    line-height: 1.6em;\r\n  }\r\n\r\n.range-slider {\r\n    position: relative;\r\n    height: 80px;\r\n}\r\n\r\n.glyphicon-question-sign {\r\n    color: #006dcc;\r\n}\r\n\r\n\r\n.table-outter {\r\n    overflow-x: scroll;\r\n}\r\n\r\n.search-table {\r\n    margin:40px auto 0px auto; \r\n}\r\n\r\n.search-table, td, th {\r\n    border-collapse: collapse; \r\n    text-align: center;\r\n}\r\n\r\nth {\r\n    padding: 50 100px; \r\n    font-size: 15px; \r\n}\r\n\r\ntd {\r\n    padding: 50px 100px; \r\n    height: 35px;\r\n}\r\n\r\n.highcharts-title {\r\n    font-weight: bold;\r\n}\r\n"; });
+define('text!styles.css', ['module'], function(module) { module.exports = "html, body {\r\n\tmargin:0;\r\n\tpadding:0;\r\n\theight:100%;\r\n}\r\n\r\n#app {\r\n\tmin-height:100%;\r\n\tposition:relative;\r\n}\r\n\r\n#content {\r\n\tpadding-bottom:100px; /* Height of the footer element */\r\n}\r\n\r\n#footer {\r\n\tbackground:#ededed;\r\n\twidth:100%;\r\n\theight:60px;\r\n\tposition:absolute;\r\n\tbottom:0;\r\n\tleft:0;\r\n    text-align: center;\r\n}\r\n\r\n#persinfointro {\r\n    text-align: center;\r\n    width: 500px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#persinfo, #benefits, #wagehistory, #exceptions, #spousewagehistory {\r\n    text-align: center;\r\n    width: 500px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#results {\r\n    text-align: center;\r\n    width: 750px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#divorceCheck {\r\n    width: 5000px;\r\n}\r\n\r\n#wages {\r\n    display: inline-block;\r\n}\r\n\r\n#custom-handle {\r\n    width: 3em;\r\n    height: 1.6em;\r\n    top: 50%;\r\n    margin-top: -.8em;\r\n    text-align: center;\r\n    line-height: 1.6em;\r\n  }\r\n\r\n.range-slider {\r\n    position: relative;\r\n    height: 80px;\r\n}\r\n\r\n.glyphicon-question-sign {\r\n    color: #006dcc;\r\n}\r\n\r\n\r\n.table-outter {\r\n    overflow-x: scroll;\r\n}\r\n\r\n.search-table {\r\n    margin:40px auto 0px auto; \r\n}\r\n\r\n.search-table, td, th {\r\n    border-collapse: collapse; \r\n    text-align: center;\r\n}\r\n\r\nth {\r\n    padding: 50 100px; \r\n    font-size: 15px; \r\n}\r\n\r\ntd {\r\n    padding: 50px 100px; \r\n    height: 35px;\r\n}\r\n\r\n.highcharts-title {\r\n    font-weight: bold;\r\n}\r\n\r\n.disabled {\r\n    pointer-events: none;\r\n    cursor: default;\r\n}\r\n"; });
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><div id=\"app\"><div id=\"content\"><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><a class=\"navbar-brand\" href=\"#\">Social Security Calculator</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav disabled\"><li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : 'disabled'}\"><a href.bind=\"row.href\">${row.title}</a></li></ul></div></div></nav><router-view></router-view><br><br><br><br><br></div><footer id=\"footer\"><div class=\"footer-copyright\"><div class=\"container-fluid\"><br>©2017, PIEtech, Inc. All rights reserved.</div></div></footer></div></template>"; });
-=======
-define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><div id=\"app\"><div id=\"content\"><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\"><span class=\"sr-only\">Toggle navigation</span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span></button> <a class=\"navbar-brand\" href=\"#\">Social Security Calculator</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : 'disabled'}\"><a href.bind=\"row.href\">${row.title}</a></li></ul></div></div></nav><router-view></router-view><br><br><br><br><br></div><footer id=\"footer\"><div class=\"footer-copyright\"><div class=\"container-fluid\"><br>©2017, PIEtech, Inc. All rights reserved.</div></div></footer></div></template>"; });
-define('text!styles.css', ['module'], function(module) { module.exports = "html, body {\r\n\tmargin:0;\r\n\tpadding:0;\r\n\theight:100%;\r\n}\r\n\r\n#app {\r\n\tmin-height:100%;\r\n\tposition:relative;\r\n}\r\n\r\n#content {\r\n\tpadding-bottom:100px; /* Height of the footer element */\r\n}\r\n\r\n#footer {\r\n\tbackground:#ededed;\r\n\twidth:100%;\r\n\theight:60px;\r\n\tposition:absolute;\r\n\tbottom:0;\r\n\tleft:0;\r\n    text-align: center;\r\n}\r\n\r\n#persinfointro {\r\n    text-align: center;\r\n    width: 500px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#persinfo, #benefits, #wagehistory, #exceptions, #spousewagehistory {\r\n    text-align: center;\r\n    width: 500px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#results {\r\n    text-align: center;\r\n    width: 750px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#divorceCheck {\r\n    width: 5000px;\r\n}\r\n\r\n#wages {\r\n    display: inline-block;\r\n}\r\n\r\n#custom-handle {\r\n    width: 3em;\r\n    height: 1.6em;\r\n    top: 50%;\r\n    margin-top: -.8em;\r\n    text-align: center;\r\n    line-height: 1.6em;\r\n  }\r\n\r\n.range-slider {\r\n    position: relative;\r\n    height: 80px;\r\n}\r\n\r\n.glyphicon-question-sign {\r\n    color: #006dcc;\r\n}\r\n\r\n\r\n.table-outter {\r\n    overflow-x: scroll;\r\n}\r\n\r\n.search-table {\r\n    margin:40px auto 0px auto; \r\n}\r\n\r\n.search-table, td, th {\r\n    border-collapse: collapse; \r\n    text-align: center;\r\n}\r\n\r\nth {\r\n    padding: 50 100px; \r\n    font-size: 15px; \r\n}\r\n\r\ntd {\r\n    padding: 50px 100px; \r\n    height: 35px;\r\n}\r\n\r\n.highcharts-title {\r\n    font-weight: bold;\r\n}\r\n\r\n.disabled {\r\n    pointer-events: none;\r\n    cursor: default;\r\n}"; });
->>>>>>> c11c4a2687fb3fa45a005078cc33ea195d138aaf
 define('text!aboutyou/deceasedwagehistory.html', ['module'], function(module) { module.exports = "<template><form id=\"wagehistory\" submit.delegate=\"completeWages()\"><h1>Deceased's Wage History</h1><p>If you would like to submit your own wages to ensure accuracy, input them here and select \"Submit Wages.\"</p><div class=\"form-group\"><label for=\"wagehistory\">Wages:</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div repeat.for=\"age of userData.deceased.yearFrom18toPassing\" id=\"wages\"><label for=\"year\">${userData.deceased.yearOfBirth + 18 + age}</label><input id=\"wagesInput\" type=\"text\" value.bind=\"userData.deceased.wages[age]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"><br></div><br></div></div><button class=\"btn btn-secondary\" type=\"button\" click.delegate=\"back()\">Back</button> <button class=\"btn btn-primary\" type=\"submit\">Submit Wages</button></form></template>"; });
 define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\".././styles.css\"></require><require from=\"jquery-ui-dist/jquery-ui.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinHTML5.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><require from=\"bootstrap-toggle/css/bootstrap-toggle.css\"></require><require from=\"bootstrap-toggle/css/bootstrap2-toggle.css\"></require><div id=\"persinfointro\"><h1>Personal Information</h1><p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p></div><form id=\"persinfo\" submit.delegate=\"next()\"><div id=\"client\"><h1>Client</h1><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.client.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.client.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><span id=\"dob\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" value.bind=\"userData.client.dateOfBirth\" change.delegate=\"dob(userData.client.dateOfBirth)\" class=\"form-control\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.client.employmentStatus\" change.delegate=\"checkEmployment(userData.client.employmentStatus)\" id=\"empStatus\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div show.bind=\"userData.client.isEmployed\" class=\"form-group\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><br><button style=\"width:200px\" class=\"btn btn-primary\" type=\"button\" id=\"wagehistory\" click.delegate=\"wagehistory()\">Input Your Own Wages</button> <span id=\"salary\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span></div><div show.bind=\"userData.client.isRetired\"><button style=\"width:200px\" class=\"btn btn-primary\" type=\"button\" id=\"wagehistory\" click.delegate=\"wagehistory()\">Input Your Own Wages</button> <span id=\"retiredSalary\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span></div><div show.bind=\"userData.client.notCurrentlyEmployed\"><button style=\"width:200px\" class=\"btn btn-primary\" type=\"button\" id=\"wagehistory\" click.delegate=\"wagehistory()\">Input Your Own Wages</button> <span id=\"notCurrentlyEmployedSalary\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span></div><br><div class=\"form-group\"><label for=\"maritalStatus\">Marital Status</label><select class=\"form-control\" value.bind=\"userData.client.maritalStatus\" change.delegate=\"checkMarried(userData.client.maritalStatus)\" id=\"maritalStatus\"><option data-hidden=\"true\">Please Select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select></div><div show.bind=\"userData.client.spouseRecieving\"><hr><label for=\"isRecieving\">Is your spouse already recieving benefits?</label><br><div click.delegate=\"isRecieving()\" class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn ${userData.client.isRecieving ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!userData.client.isRecieving ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div></div><div show.bind=\"userData.client.isRecieving\"><br><label for=\"exSpouseSalary\">Monthly Benefit of Spouse</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.spouseRecievingBenfit\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><div show.bind=\"userData.client.isDivorced\"><hr><label for=\"divorceCheck\">Were you married for more than 10 years?</label><br><div click.delegate=\"divorce()\" class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn ${userData.client.divorceCheck ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!userData.client.divorceCheck ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div></div><div show.bind=\"userData.client.divorceCheck\"><br><label for=\"exSpouseDOB\">Date of Birth of Ex-Spouse</label><input type=\"text\" value.bind=\"userData.spouse.dateOfBirth\" change.delegate=\"dob(userData.spouse.dateOfBirth)\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"><br><label for=\"exSpouseSalary\">Salary of Ex-Spouse</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><div show.bind=\"userData.client.isSurvivor\"><hr><div class=\"form-group\"><label for=\"dob\">Year of Passing of Deceased</label><input type=\"text\" value.bind=\"userData.deceased.yearOfPassing\" change.delegate=\"checkPassingYear(userData.deceased.yearOfPassing)\" class=\"form-control\" id=\"deceasedPassing\" placeholder=\"60\"></div><div show.bind=\"userData.deceased.isPassed\" class=\"form-group\"><label for=\"deceaseddob\">Date of Birth of Deceased</label><span id=\"deceaseddob\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" value.bind=\"userData.deceased.dateOfBirth\" change.delegate=\"deceaseddob(userData.deceased.dateOfBirth)\" class=\"form-control\" id=\"deceaseddob\" placeholder=\"01/01/1970\"></div><div show.bind=\"userData.deceased.isPassed\" class=\"form-group\"><label for=\"salary\">Most Recent Salary of Deceased</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.deceased.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><br><button style=\"width:200px\" class=\"btn btn-primary\" type=\"button\" click.delegate=\"deceasedwagehistory()\">Input Your Own Wages</button> <span id=\"deceasedsalary\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span></div></div><hr><h3>Retirement Information</h3><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><span id=\"retirementIncome\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.retirementIncome\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><label for=\"retirementAge\">Retirement Age and Life Expectancy</label><span id=\"retirementAge\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" id=\"slider\" value=\"\" style=\"position:relative;height:80px\"></div><hr><h3>Dependent Information</h3><button class=\"btn btn-primary\" type=\"button\" click.delegate=\"addDep()\"><span class=\"glyphicon glyphicon-plus-sign\"></span> Add Dependent</button><div show.bind=\"userData.client.hasDeps\" class=\"form-group\"><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\" id=\"ageOfDeps\"><div repeat.for=\"num of userData.client.numOfDeps\"><br><label for=\"year\">Age of Dependent ${num}:</label><input type=\"text\" value.bind=\"userData.client.ageOfDeps[num]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"8\"></div></div><br><button class=\"btn btn-danger\" type=\"button\" click.delegate=\"removeDep()\"><span class=\"glyphicon glyphicon-minus\"></span> Remove Dependent</button></div><div show.bind=\"userData.client.isMarried && !userData.client.isRecieving\"><hr><br><br><br><h1>Co-Client</h1><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.spouse.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.spouse.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><span id=\"spousedob\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" value.bind=\"userData.spouse.dateOfBirth\" change.delegate=\"spousedob(userData.spouse.dateOfBirth)\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.spouse.employmentStatus\" change.delegate=\"checkEmploymentSpouse(userData.spouse.employmentStatus)\" id=\"empStatusSpouse\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div show.bind=\"userData.spouse.isEmployed\" class=\"form-group\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><br><button style=\"width:200px\" class=\"btn btn-primary\" type=\"button\" id=\"spousewagehistory\" click.delegate=\"spousewagehistory()\">Input Your Own Wages</button> <span id=\"spousesalary\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span></div><div show.bind=\"userData.spouse.isRetired\"><button style=\"width:200px\" class=\"btn btn-primary\" type=\"button\" id=\"wagehistory\" click.delegate=\"spousewagehistory()\">Input Your Own Wages</button> <span id=\"spouseretiredSalary\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span></div><div show.bind=\"userData.spouse.notCurrentlyEmployed\"><button style=\"width:200px\" class=\"btn btn-primary\" type=\"button\" id=\"wagehistory\" click.delegate=\"spousewagehistory()\">Input Your Own Wages</button> <span id=\"spousenotCurrentlyEmployedSalary\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span></div><hr><h3>Retirement Information</h3><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><span id=\"spouseretirementIncome\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.retirementIncome\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><label for=\"retirementAge\">Retirement Age and Life Expectancy</label><span id=\"spouseretirementAge\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" id=\"sliderSpouse\" value=\"\" style=\"position:relative;height:80px\"></div><br><br><button class=\"btn btn-primary\" type=\"submit\" id=\"next\">Next</button></form></template>"; });
 define('text!aboutyou/spousewagehistory.html', ['module'], function(module) { module.exports = "<template><form id=\"wagehistory\" submit.delegate=\"completeWages()\"><h1>Co-Client's Wage History</h1><p>If you would like to submit your own wages to ensure accuracy, input them here and select \"Submit Wages.\"</p><div class=\"form-group\"><label for=\"wagehistory\">Wages:</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div repeat.for=\"age of userData.spouse.ageFrom18 + 1\" id=\"wages\"><label for=\"year\">${userData.spouse.yearOfBirth + 18 + age}</label><input id=\"wagesInput\" type=\"text\" value.bind=\"userData.spouse.wages[age]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"><br></div><br><br><button show.bind=\"!userData.spouse.futureWages\" class=\"btn btn-primary\" click.delegate=\"futureWages()\">Input future wages</button></div><button show.bind=\"userData.spouse.futureWages\" click.delegate=\"noFutureWages()\" class=\"btn btn-danger\">Do not input future wages</button><br><br><div show.bind=\"userData.spouse.futureWages\" class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div repeat.for=\"age of userData.spouse.yearFRA - (userData.spouse.age)\" id=\"wages\"><label for=\"year\">${userData.spouse.currentYear + age + 1}</label><input id=\"wagesInput\" type=\"text\" value.bind=\"userData.spouse.wages[age + userData.spouse.ageFrom18 + 1]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"><br></div></div></div><button class=\"btn btn-secondary\" type=\"button\" click.delegate=\"back()\">Back</button> <button class=\"btn btn-primary\" type=\"submit\">Submit Wages</button></form></template>"; });
