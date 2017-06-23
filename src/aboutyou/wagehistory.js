@@ -14,6 +14,14 @@ export class wagehistory {
     }
 
     completeWages() {
+        for (var i = 0; i < this.userData.client.wages.length; i++) {
+            if (isNaN(this.userData.client.wages[i]))
+            {
+                alert("Enter valid wages.");
+                return;
+            }
+        }
+
         this.userData.client.showWages = true;
         this.userData.client.salary = this.userData.client.wages[this.userData.client.ageFrom18];
         this.router.navigate('#/personalinfo');
