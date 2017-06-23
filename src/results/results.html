@@ -28,19 +28,19 @@
                     <thead>
                         <tr>
                             <th>Year</th>
-                            <th repeat.for="year of userData.client.earlyTuples.length+1">${userData.client.currentYear + (62-userData.client.age) + year}</th>
+                            <th repeat.for="year of userData.client.earlyTuples.length">${userData.client.currentYear + (62-userData.client.age) + year}</th>
                             <th>Net Benefit</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th>Ages</th>
-                            <td repeat.for="tuple of userData.client.earlyTuples.length+1">${tuple + 62}</th>
+                            <td repeat.for="tuple of userData.client.earlyTuples.length">${tuple + 62}</th>
                             <td>End of Plan</td>
                         </tr>
                         <tr>
                             <th scope="row">Benefit</th>
-                            <td repeat.for="tuple of userData.client.earlyTuples.length+1">${userData.client.earlyTuples[tuple]}</td>
+                            <td repeat.for="tuple of userData.client.earlyTuples.length">${userData.client.earlyTuples[tuple]}</td>
                             <td>${userData.client.netEarly}</td>
                         </tr>
                     </tbody>
@@ -53,19 +53,19 @@
                     <thead>
                         <tr>
                             <th>Year</th>
-                            <th repeat.for="year of userData.client.userSelectedTuples.length+1">${userData.client.currentYear + (userData.client.retirementAge-userData.client.age) + year}</th>
+                            <th repeat.for="year of userData.client.userSelectedTuples.length">${userData.client.currentYear + (userData.client.retirementAge-userData.client.age) + year}</th>
                             <th>Net Benefit</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th>Ages</th>
-                            <td repeat.for="tuple of userData.client.userSelectedTuples.length+1">${tuple + userData.client.retirementAge}</th>
+                            <td repeat.for="tuple of userData.client.userSelectedTuples.length">${tuple + userData.client.retirementAge}</th>
                             <td>End of Plan</td>
                         </tr>
                         <tr>
                             <th scope="row">Benefit</th>
-                            <td repeat.for="tuple of userData.client.userSelectedTuples.length+1">${userData.client.userSelectedTuples[tuple]}</td>
+                            <td repeat.for="tuple of userData.client.userSelectedTuples.length">${userData.client.userSelectedTuples[tuple]}</td>
                             <td>${userData.client.netUserSelected}</td>
                         </tr>
                     </tbody>
@@ -78,19 +78,19 @@
                     <thead>
                         <tr>
                             <th>Year</th>
-                            <th repeat.for="year of userData.client.FRATuples.length+1">${userData.client.currentYear + (userData.client.yearFRA-userData.client.age) + year}</th>
+                            <th repeat.for="year of userData.client.FRATuples.length">${userData.client.currentYear + (userData.client.yearFRA-userData.client.age) + year}</th>
                             <th>Net Benefit</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th>Ages</th>
-                            <td repeat.for="tuple of userData.client.FRATuples.length+1">${tuple + userData.client.yearFRA}</th>
+                            <td repeat.for="tuple of userData.client.FRATuples.length">${tuple + userData.client.yearFRA}</th>
                             <td>End of Plan</td>
                         </tr>
                         <tr>
                             <th scope="row">Benefit</th>
-                            <td repeat.for="tuple of userData.client.FRATuples.length+1">${userData.client.FRATuples[tuple]}</td>
+                            <td repeat.for="tuple of userData.client.FRATuples.length">${userData.client.FRATuples[tuple]}</td>
                             <td>${userData.client.netFRA}</td>
                         </tr>
                     </tbody>
@@ -103,19 +103,19 @@
                     <thead>
                         <tr>
                             <th>Year</th>
-                            <th repeat.for="year of userData.client.lateTuples.length+1">${userData.client.currentYear + (70-userData.client.age) + year}</th>
+                            <th repeat.for="year of userData.client.lateTuples.length">${userData.client.currentYear + (70-userData.client.age) + year}</th>
                             <th>Net Benefit</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th>Ages</th>
-                            <td repeat.for="tuple of userData.client.lateTuples.length+1">${tuple + 70}</th>
+                            <td repeat.for="tuple of userData.client.lateTuples.length">${tuple + 70}</th>
                             <td>End of Plan</td>
                         </tr>
                         <tr>
                             <th scope="row">Benefit</th>
-                            <td repeat.for="tuple of userData.client.lateTuples.length+1">${userData.client.lateTuples[tuple]}</td>
+                            <td repeat.for="tuple of userData.client.lateTuples.length">${userData.client.lateTuples[tuple]}</td>
                             <td>${userData.client.netLate}</td>
                         </tr>
                     </tbody>
@@ -144,19 +144,19 @@
                     <thead>
                         <tr>
                             <th>Year</th>
-                            <th repeat.for="year of userData.spouse.earlyTuples.length+1">${userData.spouse.currentYear + (62-userData.spouse.age) + year}</th>
+                            <th repeat.for="year of userData.spouse.earlyTuples.length">${userData.spouse.currentYear + (62-userData.spouse.age) + year}</th>
                             <th>Net Benefit</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th>Ages</th>
-                            <td repeat.for="tuple of userData.spouse.earlyTuples.length+1">${tuple + 62}</th>
+                            <td repeat.for="tuple of userData.spouse.earlyTuples.length">${tuple + 62}</th>
                             <td>End of Plan</td>
                         </tr>
                         <tr>
                             <th scope="row">Benefit</th>
-                            <td repeat.for="tuple of userData.spouse.earlyTuples.length+1">${userData.spouse.earlyTuples[tuple]}</td>
+                            <td repeat.for="tuple of userData.spouse.earlyTuples.length">${userData.spouse.earlyTuples[tuple]}</td>
                             <td>${userData.spouse.netEarly}</td>
                         </tr>
                     </tbody>
@@ -169,19 +169,19 @@
                     <thead>
                         <tr>
                             <th>Year</th>
-                            <th repeat.for="year of userData.spouse.userSelectedTuples.length+1">${userData.spouse.currentYear + (userData.spouse.retirementAge-userData.spouse.age) + year}</th>
+                            <th repeat.for="year of userData.spouse.userSelectedTuples.length">${userData.spouse.currentYear + (userData.spouse.retirementAge-userData.spouse.age) + year}</th>
                             <th>Net Benefit</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th>Ages</th>
-                            <td repeat.for="tuple of userData.spouse.userSelectedTuples.length+1">${tuple + userData.spouse.retirementAge}</th>
+                            <td repeat.for="tuple of userData.spouse.userSelectedTuples.length">${tuple + userData.spouse.retirementAge}</th>
                             <td>End of Plan</td>
                         </tr>
                         <tr>
                             <th scope="row">Benefit</th>
-                            <td repeat.for="tuple of userData.spouse.userSelectedTuples.length+1">${userData.spouse.userSelectedTuples[tuple]}</td>
+                            <td repeat.for="tuple of userData.spouse.userSelectedTuples.length">${userData.spouse.userSelectedTuples[tuple]}</td>
                             <td>${userData.spouse.netUserSelected}</td>
                         </tr>
                     </tbody>
@@ -194,19 +194,19 @@
                     <thead>
                         <tr>
                             <th>Year</th>
-                            <th repeat.for="year of userData.spouse.FRATuples.length+1">${userData.spouse.currentYear + (userData.spouse.yearFRA-userData.spouse.age) + year}</th>
+                            <th repeat.for="year of userData.spouse.FRATuples.length">${userData.spouse.currentYear + (userData.spouse.yearFRA-userData.spouse.age) + year}</th>
                             <th>Net Benefit</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th>Ages</th>
-                            <td repeat.for="tuple of userData.spouse.FRATuples.length+1">${tuple + userData.spouse.yearFRA}</th>
+                            <td repeat.for="tuple of userData.spouse.FRATuples.length">${tuple + userData.spouse.yearFRA}</th>
                             <td>End of Plan</td>
                         </tr>
                         <tr>
                             <th scope="row">Benefit</th>
-                            <td repeat.for="tuple of userData.spouse.FRATuples.length+1">${userData.spouse.FRATuples[tuple]}</td>
+                            <td repeat.for="tuple of userData.spouse.FRATuples.length">${userData.spouse.FRATuples[tuple]}</td>
                             <td>${userData.spouse.netFRA}</td>
                         </tr>
                     </tbody>
@@ -219,19 +219,19 @@
                     <thead>
                         <tr>
                             <th>Year</th>
-                            <th repeat.for="year of userData.spouse.lateTuples.length+1">${userData.spouse.currentYear + (70-userData.spouse.age) + year}</th>
+                            <th repeat.for="year of userData.spouse.lateTuples.length">${userData.spouse.currentYear + (70-userData.spouse.age) + year}</th>
                             <th>Net Benefit</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th>Ages</th>
-                            <td repeat.for="tuple of userData.spouse.lateTuples.length+1">${tuple + 70}</th>
+                            <td repeat.for="tuple of userData.spouse.lateTuples.length">${tuple + 70}</th>
                             <td>End of Plan</td>
                         </tr>
                         <tr>
                             <th scope="row">Benefit</th>
-                            <td repeat.for="tuple of userData.spouse.lateTuples.length+1">${userData.spouse.lateTuples[tuple]}</td>
+                            <td repeat.for="tuple of userData.spouse.lateTuples.length">${userData.spouse.lateTuples[tuple]}</td>
                             <td>${userData.spouse.netLate}</td>
                         </tr>
                     </tbody>
