@@ -95,6 +95,31 @@
                 </select>
             </div>
 
+            <!--CHECK IF SPOUSE ALREADY RECIEVING-->
+            <div show.bind="userData.client.spouseRecieving">
+                <hr>
+                <label for="isRecieving">Is your spouse already recieving benefits?</label>
+                <br>
+                <div click.delegate="isRecieving()" class="btn-group" data-toggle="buttons">
+                    <label class="btn ${userData.client.isRecieving ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">Yes
+                    </label>
+                    <label class="btn ${!userData.client.isRecieving ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">No
+                    </label>
+                </div>
+            </div>
+
+            <!--IF ALREADY RECIEVING, GET MONTHLY BENEFIT-->
+            <div show.bind="userData.client.isRecieving">
+                <br>
+                <label for="exSpouseSalary">Monthly Benefit of Spouse</label>
+                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                    <div class="input-group-addon">$</div>
+                    <input type="text" value.bind="userData.spouse.spouseRecievingBenfit" class="form-control" id="inlineFormInputGroup" placeholder="0">
+                </div>
+            </div>
+
             <!--CHECK IF DIVORCED AFTER MARRIED FOR 10+ YEARS-->
             <div show.bind="userData.client.isDivorced">
                 <hr>
@@ -191,7 +216,7 @@
         </div>
 
         <!--CO-CLIENT INFORMATION-->
-        <div show.bind="userData.client.isMarried">
+        <div show.bind="userData.client.isMarried && !userData.client.isRecieving">
             <hr>
             <br> <br> <br>
             <h1>Co-Client</h1>

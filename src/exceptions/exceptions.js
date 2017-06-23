@@ -271,7 +271,7 @@ export class exceptions {
         calculatePIA(this.userData.client, widowcheck);
             
         //GET PIA COCLIENT CALCULATIONS IF NECESSARY
-        if(maritalStatus == "Married") calculatePIA(this.userData.spouse, widowcheck);
+        if(maritalStatus == "Married" && !this.userData.client.isRecieving) calculatePIA(this.userData.spouse, widowcheck);
         else if(maritalStatus = "Widowed") {
             widowcheck = true;
             calculatePIA(this.userData.deceased, widowcheck);
