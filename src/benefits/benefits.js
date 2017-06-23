@@ -449,5 +449,32 @@ export class benefits {
                 this.userData.spouse.cola = data.from;
             }
         });
+
+        $('#wep').tooltip({
+            content: "<b>Windfall Elimination Provision:</b> If you work for a: federal, state, or local government; nonprofit organizations; or work in another country," + 
+            " you may qualify to be eligible for a pension based on earnings that are not covered by Social Security. This pension can affect your Social Security benefits."
+        });
+
+        $('#wepYears').tooltip({
+            content: "If you've paid Social Security taxes on 30 or more years on substantial earnings, WEP does <i>not</i> affect your Social Security benefits."
+        });
+
+        $('#spousewep').tooltip({
+            content: "<b>Windfall Elimination Provision:</b> If you work for a: federal, state, or local government; nonprofit organizations; or work in another country," + 
+            " you may qualify to be eligible for a pension based on earnings that are not covered by Social Security. This pension can affect your Social Security benefits."
+        });
+
+        $('#spousewepYears').tooltip({
+            content: "If you've paid Social Security taxes on 30 or more years on substantial earnings, WEP does <i>not</i> affect your Social Security benefits."
+        });
+
+        $('#cola').tooltip({
+            content: "<b>Cost Of Living Adjustment:</b> COLA is used to ensure that the purchasing power of both Social Security and Supplemental Security Income (SSI) benefits is not eroded by inflation."
+        });
+
+        $('#spousecola').tooltip({
+            content: "<b>Cost Of Living Adjustment:</b> COLA is used to ensure that the purchasing power of both Social Security and Supplemental Security Income (SSI) benefits is not eroded by inflation."
+        });
+
    }
 }
