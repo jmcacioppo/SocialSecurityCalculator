@@ -74,37 +74,32 @@ export class exceptions {
             person.inflationAdjusted = [];
 
             //COMPUTES PROJECTED SALARY 
-            if(ageFrom18 >= 0 && person.isEmployed) {
+            if(ageFrom18 >= 0 && person.isEmployed && !widowcheck) {
                 person.projectedSal[ageFrom18] = sal; //Current salary
                 var count = 0;
 
+                //GO INTO THE PAST
                 if(!person.showWages) {
                     for(var i = ageFrom18 - 1; i >= 0; i--) { //Loop through each wage percentage backwards so we go from current salary
                         person.projectedSal[i] = person.projectedSal[i+1] - (person.projectedSal[i+1] * wagePerc[wagePerc.length-count-2]); //Calculate projected salary
                         count++;
                     }
-                }
+                } //IF INPUTTED OWN WAGES
                 else {
                     for(var i = ageFrom18 - 1; i >= 0; i--) { //Loop through each wage percentage backwards so we go from current salary
                         person.projectedSal[i] = parseFloat(person.wages[i]);
                     }
                 }
 
-                if(!widowcheck) {
-                    if(!person.futureWages) {
-                        for(var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) { //Loop through each wage percentage backwards so we go from current salary
-                            person.projectedSal[i] = parseFloat(person.projectedSal[i-1]) + (parseFloat(person.projectedSal[i-1]) * wagePerc[wagePerc.length-1]); //Calculate projected salary
-                        }
+                //GO INTO THE FUTURE
+                if(!person.futureWages) {
+                    for(var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) { //Loop through each wage percentage backwards so we go from current salary
+                        person.projectedSal[i] = parseFloat(person.projectedSal[i-1]) + (parseFloat(person.projectedSal[i-1]) * wagePerc[wagePerc.length-1]); //Calculate projected salary
                     }
-                    else {
-                        for(var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) { //Loop through each wage percentage backwards so we go from current salary
-                            person.projectedSal[i] = parseFloat(person.wages[i]); //Calculate projected salary
-                        }
-                    }
-                }
+                } //IF INPUTTED OWN WAGES
                 else {
-                    for(var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) { //Loop through each wage percentage backwards so we go from current salary
-                        person.projectedSal[i] = 0;
+                    for(var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) { //Loop through each wage percentage backwards so we go from current salary
+                        person.projectedSal[i] = parseFloat(person.wages[i]); //Calculate projected salary
                     }
                 }
 
@@ -122,24 +117,17 @@ export class exceptions {
                     count++;
                 }
 
-                if(!widowcheck) {
-                    var lastYearAllowed = allowedSalary[allowedSalary.length-1];
-                    for(var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
-                        if(person.projectedSal[i] > lastYearAllowed) { //Check allowed salary and calculate adjusted inflation accordingly
-                            person.inflationAdjusted[i] = lastYearAllowed * inflationIndex[inflationIndex.length-1];
-                        }
-                        else {
-                            person.inflationAdjusted[i] = person.projectedSal[i] * inflationIndex[inflationIndex.length-1];
-                        }
-                        lastYearAllowed = lastYearAllowed * 1.021;
+                var lastYearAllowed = allowedSalary[allowedSalary.length-1];
+                for(var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+                    if(person.projectedSal[i] > lastYearAllowed) { //Check allowed salary and calculate adjusted inflation accordingly
+                        person.inflationAdjusted[i] = lastYearAllowed * inflationIndex[inflationIndex.length-1];
                     }
-                }
-                else {
-                    for(var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {    
-                        person.inflationAdjusted[i] = 0;
+                    else {
+                        person.inflationAdjusted[i] = person.projectedSal[i] * inflationIndex[inflationIndex.length-1];
                     }
+                    lastYearAllowed = lastYearAllowed * 1.021;
                 }
-                
+
                 if(person.workedOnARailroad) railroadSalary(person);
 
                 //SORT AND GET TOP 35 ADJUSTED INFLATION SALARIES
@@ -230,13 +218,60 @@ export class exceptions {
 
                 return pia;
             }
+            else if(widowcheck) {
+                person.projectedSal[ageFrom18] = sal; //Current salary
+
+                var count = 0;
+                if(!person.showWages) {
+                    for(var i = ageFrom18 - 1; i >= 0; i--) { //Loop through each wage percentage backwards so we go from current salary
+                        person.projectedSal[i] = person.projectedSal[i+1] - (person.projectedSal[i+1] * wagePerc[wagePerc.length-count-2]); //Calculate projected salary
+                        count++;
+                    }
+                }
+                else {
+                    for(var i = ageFrom18 - 1; i >= 0; i--) { //Loop through each wage percentage backwards so we go from current salary
+                        person.projectedSal[i] = parseFloat(person.wages[i]);
+                    }
+                }
+
+                for(var i = ageFrom18+1; i <= ageFrom18 + yrsUntilRetire; i++) { //Loop through each wage percentage backwards so we go from current salary
+                    person.projectedSal[i] = 0;
+                }
+
+                count = 0;
+                //COMPUTES SALARY ADJUSTED FOR INFLATION
+                for(var i = ageFrom18; i >= 0; i--) {
+                    if(person.projectedSal[i] > allowedSalary[allowedSalary.length-count-1]) { //Check allowed salary and calculate adjusted inflation accordingly
+                        person.inflationAdjusted[i] = allowedSalary[allowedSalary.length-count-1] * inflationIndex[inflationIndex.length-count-1];
+                    }
+                    else {
+                        person.inflationAdjusted[i] = person.projectedSal[i] * inflationIndex[inflationIndex.length-count-1];
+                    }
+                    count++;
+                }
+
+                for(var i = ageFrom18+1; i <= ageFrom18 + yrsUntilRetire; i++) {    
+                    person.inflationAdjusted[i] = 0;
+                }
+
+                //SORT AND GET TOP 35 ADJUSTED INFLATION SALARIES
+                person.inflationAdjusted = person.inflationAdjusted.sort((a, b) => a - b); 
+                person.topThirtyFive = person.inflationAdjusted.slice(person.inflationAdjusted.length - 35, person.inflationAdjusted.length); 
+
+                //PRIMARY INSURANCE AMOUNT
+                pia = person.topThirtyFive.reduce((a, b) => a + b, 0) / 420;
+                person.pia.push(parseFloat(pia)); 
+
+                return pia;
+
+            }
             else if(ageFrom18 < 0) {
                 alert("Client must be older than 18.");
                 return null;
             }
         }
 
-        function adjustSurvivorPIA(client, deceased, j) {
+        function adjustSurvivorPIA(client, deceased, i) {
             switch(client.yearOfBirth) {
                 case 1957: 
                     switch(client.yearFRA) {
@@ -367,6 +402,8 @@ export class exceptions {
             var j = 0;
             for(var i = 62; i <= 70; i++) {
                 calculatePIA(this.userData.deceased, widowcheck, i);
+            }
+            for(var i = 62; i <= 70; i++) {
                 adjustSurvivorPIA(this.userData.client, this.userData.deceased, j);
                 j++;
             }
