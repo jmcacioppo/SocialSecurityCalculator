@@ -139,7 +139,7 @@
             <div show.bind="userData.client.divorceCheck">
                 <br>
                 <label for="exSpouseDOB">Date of Birth of Ex-Spouse</label>
-                <input type="text" value.bind="userData.spouse.dateOfBirth" change.delegate="dob(userData.spouse.dateOfBirth)" class="form-control" id="dob" placeholder="01/01/1970">
+                <input type="text" value.bind="userData.spouse.dateOfBirth" change.delegate="spousedob(userData.spouse.dateOfBirth)" class="form-control" placeholder="01/01/1970">
                 <br>
                 <label for="exSpouseSalary">Salary of Ex-Spouse</label>
                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
@@ -194,9 +194,8 @@
 
             <!--SLIDER FOR RETIREMENT AGE AND LIFE EXPECTANCY-->
             <label for="retirementAge">Retirement Age and Life Expectancy </label>
-                <span id="retirementAge" title="" class="glyphicon glyphicon-question-sign"></span>
-                <input type="text" id="slider" value="" style="position: relative; height: 80px">
-            </div>
+            <span id="retirementAge" title="" class="glyphicon glyphicon-question-sign"></span>
+            <input type="text" id="slider" value="" style="position: relative; height: 80px">
 
             <hr />
 

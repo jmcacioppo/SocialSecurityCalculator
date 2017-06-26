@@ -71,11 +71,11 @@ export class exceptions {
             yrsUntilRetire = retirementAge - person.age;
             sal = parseInt(person.salary);
 
-            person.projectedSal = new Array(55).join('0').split('').map(parseFloat);
-            person.inflationAdjusted = new Array(55).join('0').split('').map(parseFloat);
+            person.projectedSal = [];
+            person.inflationAdjusted = [];
 
             //COMPUTES PROJECTED SALARY 
-            if(ageFrom18 >= 0) {
+            if(ageFrom18 >= 0 && person.isEmployed) {
                 person.projectedSal[ageFrom18] = sal; //Current salary
                 var count = 0;
 
@@ -153,7 +153,85 @@ export class exceptions {
 
                 return pia;
             }
-            else {
+            else if(person.isRetired) {
+                person.projectedSal[ageFrom18] = sal; //Current salary
+                for(var i = ageFrom18 - 1; i >= 0; i--) { //Get inputted wages
+                    person.projectedSal[i] = parseFloat(person.wages[i]);
+                }
+
+                if(person.militaryService) militarySalary(person);
+
+                var count = 0;
+                //COMPUTES SALARY ADJUSTED FOR INFLATION
+                for(var i = ageFrom18; i >= 0; i--) {
+                    if(person.projectedSal[i] > allowedSalary[allowedSalary.length-count-1]) { //Check allowed salary and calculate adjusted inflation accordingly
+                        person.inflationAdjusted[i] = allowedSalary[allowedSalary.length-count-1] * inflationIndex[inflationIndex.length-count-1];
+                    }
+                    else {
+                        person.inflationAdjusted[i] = person.projectedSal[i] * inflationIndex[inflationIndex.length-count-1];
+                    }
+                    count++;
+                }
+
+                if(person.workedOnARailroad) railroadSalary(person);
+
+                //SORT AND GET TOP 35 ADJUSTED INFLATION SALARIES
+                person.inflationAdjusted = person.inflationAdjusted.sort((a, b) => a - b); 
+                person.topThirtyFive = person.inflationAdjusted.slice(person.inflationAdjusted.length - 35, person.inflationAdjusted.length); 
+
+                //PRIMARY INSURANCE AMOUNT
+                pia = person.topThirtyFive.reduce((a, b) => a + b, 0) / 420;
+                person.pia.push(parseFloat(pia)); 
+
+                return pia;
+            }
+            else if(person.notCurrentlyEmployed) {
+                person.projectedSal[ageFrom18] = sal; //Current salary
+                for(var i = ageFrom18-1; i >= 0; i--) { //Get inputted wages
+                    person.projectedSal[i] = parseFloat(person.wages[i]);
+                }
+                for(var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) { //Get inputted wages
+                    person.projectedSal[i] = parseFloat(person.wages[i]);
+                }
+
+                if(person.militaryService) militarySalary(person);
+
+                var count = 0;
+                //COMPUTES SALARY ADJUSTED FOR INFLATION
+                for(var i = ageFrom18-1; i >= 0; i--) {
+                    if(person.projectedSal[i] > allowedSalary[allowedSalary.length-count-2]) { //Check allowed salary and calculate adjusted inflation accordingly
+                        person.inflationAdjusted[i] = allowedSalary[allowedSalary.length-count-2] * inflationIndex[inflationIndex.length-count-2];
+                    }
+                    else {
+                        person.inflationAdjusted[i] = person.projectedSal[i] * inflationIndex[inflationIndex.length-count-2];
+                    }
+                    count++;
+                }
+
+                var lastYearAllowed = allowedSalary[allowedSalary.length-1];
+                for(var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+                    if(person.projectedSal[i] > lastYearAllowed) { //Check allowed salary and calculate adjusted inflation accordingly
+                        person.inflationAdjusted[i] = lastYearAllowed * inflationIndex[inflationIndex.length-1];
+                    }
+                    else {
+                        person.inflationAdjusted[i] = person.projectedSal[i] * inflationIndex[inflationIndex.length-1];
+                    }
+                    lastYearAllowed = lastYearAllowed * 1.021;
+                }
+
+                if(person.workedOnARailroad) railroadSalary(person);
+
+                //SORT AND GET TOP 35 ADJUSTED INFLATION SALARIES
+                person.inflationAdjusted = person.inflationAdjusted.sort((a, b) => a - b); 
+                person.topThirtyFive = person.inflationAdjusted.slice(person.inflationAdjusted.length - 35, person.inflationAdjusted.length); 
+
+                //PRIMARY INSURANCE AMOUNT
+                pia = person.topThirtyFive.reduce((a, b) => a + b, 0) / 420;
+                person.pia.push(parseFloat(pia)); 
+
+                return pia;
+            }
+            else if(ageFrom18 < 0) {
                 alert("Client must be older than 18.");
                 return null;
             }
@@ -280,7 +358,7 @@ export class exceptions {
         calculatePIA(this.userData.client, widowcheck, 70);
             
         //GET PIA COCLIENT CALCULATIONS IF NECESSARY
-        if(maritalStatus == "Married" && !this.userData.client.isRecieving) {
+        if((maritalStatus == "Married" && !this.userData.client.isRecieving) || this.userData.client.divorceCheck) {
             this.userData.spouse.pia = [];
             calculatePIA(this.userData.spouse, widowcheck, 62);
             calculatePIA(this.userData.spouse, widowcheck, this.userData.spouse.retirementAge);
@@ -300,19 +378,17 @@ export class exceptions {
             adjustSurvivorPIA(this.userData.client, this.userData.deceased, i);
         }
 
-        if(this.userData.client.pia[0] < this.userData.client.survivorpia[0]) {
-            this.userData.client.pia[0] = this.userData.client.survivorpia[0];
+        for(var i = 0; i < 4; i ++) {
+            if(this.userData.client.pia[i] < this.userData.client.survivorpia[i]) {
+                //ADJUST FOR GPO
+                if(client.recievePension) {
+                    var pension = parseFloat(this.userData.client.pensionAmount) * 2/3; //per month
+                    pension = pension * 12; //per year
+                    this.userData.client.survivorpia[i] = this.userData.client.survivorpia[i] - pension; //adjusted for GPO
+                }
+                this.userData.client.pia[i] = this.userData.client.survivorpia[i];
+            }
         }
-        else if(this.userData.client.pia[1] < this.userData.client.survivorpia[1]) {
-            this.userData.client.pia[1] = this.userData.client.survivorpia[1];
-        }
-        else if(this.userData.client.pia[2] < this.userData.client.survivorpia[2]) {
-            this.userData.client.pia[2] = this.userData.client.survivorpia[2];
-        }
-        else if(this.userData.client.pia[3] < this.userData.client.survivorpia[3]) {
-            this.userData.client.pia[3] = this.userData.client.survivorpia[3];
-        }
-
 
         console.log(this.userData);
         //GO TO BENEFITS
@@ -469,7 +545,8 @@ export class exceptions {
 
     canadaItalySpouse() {
         this.userData.spouse.dualCanadaItaly = !this.userData.spouse.dualCanadaItaly;
-        if(!this.userData.spouse.dualCanadaItaly) alert("You are not eligible for Social Security");
+        if(!this.userData.spouse.dualCanadaItaly && this.userData.client.divorceCheck) alert("Your ex-spouse is not eligible for Social Security");
+        else if(!this.userData.spouse.dualCanadaItaly) alert("You are not eligible for Social Security");
     }
 
     instrumentalitySpouse() {
@@ -478,7 +555,8 @@ export class exceptions {
 
     conditionsSpouse() {
         this.userData.spouse.checkConditions = !this.userData.spouse.checkConditions;
-        if(this.userData.spouse.checkConditions) alert("You are not eligible for Social Security");
+        if(this.userData.spouse.checkConditions && this.userData.client.divorceCheck) alert("Your ex-spouse is not eligible for Social Security");
+        else if(this.userData.spouse.checkConditions) alert("You are not eligible for Social Security");        
     }
 
 

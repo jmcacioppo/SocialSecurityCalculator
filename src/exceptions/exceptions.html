@@ -64,7 +64,7 @@
             <hr>
             <!--GOVERNMENT PENSION-->
             <div class="form-group">
-                <label for="clientRecievePension">Do you receive a government pension that is based on income?</label>
+                <label for="clientRecievePension">Do you recieve a government pension that is based on income?</label>
                 <br>
                 <div click.delegate="gpo()" class="btn-group" data-toggle="buttons">
                     <label class="btn ${userData.client.recievePension ? 'active btn-primary' : 'btn-secondary'}">
@@ -78,7 +78,7 @@
 
             <!--AMOUNT OF GPO-->
             <div show.bind="userData.client.recievePension" class="form-group" id="clientPensionBox">
-                <label for="clientPensionAmount">How much government pension do you receive per month?</label>
+                <label for="clientPensionAmount">How much government pension do you recieve per month?</label>
                 <input type="text" value.bind="userData.client.pensionAmount" class="form-control" placeholder="2000">
             </div>
 
@@ -160,16 +160,19 @@
             </div>    
         </div>
 
-        <div show.bind="userData.client.isMarried && !userData.client.isRecieving" id="spouse">
+        <div show.bind="(userData.client.isMarried && !userData.client.isRecieving) || userData.client.divorceCheck" id="spouse">
             <br>
             <hr />
             <br>
 
-            <h1>Co-Client</h1>
+            <h1 show.bind="(userData.client.isMarried && !userData.client.isRecieving)">Co-Client</h1>
+            <h1 show.bind="(userData.client.divorceCheck)">Ex-Spouse</h1>
 
             <!--MILITARY SERVICE-->
             <div class="form-group">
-                <label for="spouseMilitaryService">Have you served in the military?</label>
+                <label show.bind="(userData.client.isMarried && !userData.client.isRecieving)" for="spouseMilitaryService">Have you served in the military?</label>
+                <label show.bind="userData.client.divorceCheck" for="spouseMilitaryService">Did your ex-spouse serve in the military?</label>
+
                 <br>
                 <div click.delegate="militaryServiceSpouse()" class="btn-group" data-toggle="buttons">
                     <label class="btn ${userData.spouse.militaryService ? 'active btn-primary' : 'btn-secondary'}">
@@ -197,7 +200,8 @@
 
             <!--RAILROAD-->
             <div class="form-group">
-                <label for="spouseWorkedOnARailroad">Have you worked on a railroad?</label>
+                <label show.bind="(userData.client.isMarried && !userData.client.isRecieving)" for="spouseMilitaryService">Have you worked on a railroad?</label>
+                <label show.bind="userData.client.divorceCheck" for="spouseMilitaryService">Did your ex-spouse work on a railroad?</label>
                 <br>
                 <div click.delegate="railroadSpouse()" class="btn-group" data-toggle="buttons">
                     <label class="btn ${userData.spouse.workedOnARailroad ? 'active btn-primary' : 'btn-secondary'}">
@@ -210,12 +214,14 @@
             </div>
 
             <div show.bind="userData.spouse.workedOnARailroad" class="form-group">
-                <label for="yearsOnRailroad">What year did you start working on the railroad?</label>
+                <label show.bind="(userData.client.isMarried && !userData.client.isRecieving)" for="spouseMilitaryService">What year did you start working on the railroad?</label>
+                <label show.bind="userData.client.divorceCheck" for="spouseMilitaryService">What year did your ex-spouse start working on the railroad?</label>
                 <input type="text" value.bind="userData.spouse.yearsStartedOnRailroad" class="form-control" placeholder="0">
             </div>
 
             <div show.bind="userData.spouse.workedOnARailroad" class="form-group">
-                <label for="yearsOnRailroad">What year did you stop working on the railroad?</label>
+                <label show.bind="(userData.client.isMarried && !userData.client.isRecieving)" for="spouseMilitaryService">What year did you stop working on the railroad?</label>
+                <label show.bind="userData.client.divorceCheck" for="spouseMilitaryService">What year did your ex-spouse stop working on the railroad?</label>
                 <input type="text" value.bind="userData.spouse.yearsEndedOnRailroad" class="form-control" placeholder="0">
             </div>
 
@@ -223,7 +229,8 @@
 
             <!--GOVERNMENT PENSION-->
             <div class="form-group">
-                <label for="spouseRecievePension">Do you receive a government pension that is based on income?</label>
+                <label show.bind="(userData.client.isMarried && !userData.client.isRecieving)" for="spouseMilitaryService">Do you recieve a government pension that is based on income?</label>
+                <label show.bind="userData.client.divorceCheck" for="spouseMilitaryService">Does your ex-spouse recieve a government pension that is based on income?</label>
                 <br>
                 <div click.delegate="gpoSpouse()" class="btn-group" data-toggle="buttons">
                     <label class="btn ${userData.spouse.recievePension ? 'active btn-primary' : 'btn-secondary'}">
@@ -236,7 +243,8 @@
             </div>
 
             <div show.bind="userData.spouse.recievePension" class="form-group" id="spousePensionBox">
-                <label for="spousePensionAmount">How much government pension do you receive per month?</label>
+                <label show.bind="(userData.client.isMarried && !userData.client.isRecieving)" for="spouseMilitaryService">How much government pension do you recieve per month?</label>
+                <label show.bind="userData.client.divorceCheck" for="spouseMilitaryService">How much government pension does your ex-spouse recieve per month?</label>
                 <input type="text" value.bind="userData.spouse.pensionAmount" class="form-control" placeholder="2000">
             </div>
 
@@ -256,7 +264,8 @@
             <!--DUAL CITIZENSHIP-->
             <div show.bind="userData.spouse.dual26Countries">
                 <div show.bind="userData.spouse.dual26Countries" class="form-group">
-                    <label for="spouse26Countries">Is your dual citizenship with one of these 26 countries?</label>
+                    <label show.bind="(userData.client.isMarried && !userData.client.isRecieving)" for="spouseMilitaryService">Is your dual citizenship with one of these 26 countries?</label>
+                    <label show.bind="userData.client.divorceCheck" for="spouseMilitaryService">Is your ex-spouse's citizenship with one of these 26 countries?</label>
                     <div>
                         Italy, Germany, Switzerland, Belgium, Norway, Canada, United Kingdom, Sweden, Spain, France, Portugal,
                         Netherlands, Austria, Finland, Ireland, Luxembourg, Greece, South Korea, Chile, Australia, Japan, Denmark, Czech Republic, Poland, Slovak Republic, Hungary
@@ -273,7 +282,10 @@
                 </div>
 
                 <div show.bind="userData.spouse.isDual26Countries" class="form-group" id="spouseCanadaItalyBox">
-                    <label for="spouseCanadaItaly">Is your dual citizenship with Italy or Canada (provided you were hired in the US by the Canadian government)?</label>
+                    <label show.bind="(userData.client.isMarried && !userData.client.isRecieving)" for="spouseMilitaryService">Is your dual citizenship with Italy or Canada
+                        (provided you were hired in the U.S. by the Canadian government)?</label>
+                    <label show.bind="userData.client.divorceCheck" for="spouseMilitaryService">Is your ex-spouse's dual citizenship with Italy or Canada
+                        (provided your ex-spouse was hired in the U.S. by the Canadian government)?</label>
                     <br>
                     <div click.delegate="canadaItalySpouse()" class="btn-group" data-toggle="buttons">
                         <label class="btn ${userData.spouse.dualCanadaItaly ? 'active btn-primary' : 'btn-secondary'}">
@@ -289,7 +301,8 @@
             <!--NOT A CITZEN-->
             <div show.bind="userData.spouse.notCitizen">
                 <div class="form-group" id="spouseInstrumentalityBox">
-                    <label for="spouseInstrumentality">Do you work for an Instrumentality?</label>
+                    <label show.bind="(userData.client.isMarried && !userData.client.isRecieving)" for="spouseMilitaryService">Do you work for an Instrumentality?</label>
+                    <label show.bind="userData.client.divorceCheck" for="spouseMilitaryService">Does your ex-spouse work for an Instrumentality?</label>
                     <br>
                     <div click.delegate="instrumentalitySpouse()" class="btn-group" data-toggle="buttons">
                         <label class="btn ${userData.spouse.checkInstrumentality ? 'active btn-primary' : 'btn-secondary'}">
@@ -303,9 +316,14 @@
                 
                 <div show.bind="userData.spouse.checkInstrumentality" class="form-group" id="spouseOneOrTwoBox">
                     <label for="spouseOneOrTwo">Do all 3 of these conditions apply?</label>
-                    <p>Condition 1: The organization for which you work is completely owned by a foreign government.</p>
-                    <p>Condition 2: Your work is like work performed in foreign countries by employees of the U.S. government of an instrumentality</p>
-                    <p>Condition 3: The Secretary of State certifies to the Secretary of the Treasury that the foreign government grants an equivalent exemption for similar work in the foreign country by employees of the U.S. government or its instrumentalities.</p>
+                    <p show.bind="(userData.client.isMarried && !userData.client.isRecieving)">Condition 1: The organization for which you work is completely owned by a foreign government.</p>
+                    <p show.bind="(userData.client.isMarried && !userData.client.isRecieving)">Condition 2: Your work is like work performed in foreign countries by employees of the U.S. government of an instrumentality</p>
+
+                    <p show.bind="userData.client.divorceCheck">Condition 1: The organization for which your ex-spouse works is completely owned by a foreign government.</p>
+                    <p show.bind="userData.client.divorceCheck">Condition 2: Your ex-spouse's work is like work performed in foreign countries by employees of the U.S. government of an instrumentality</p>
+
+                    <p>Condition 3: The Secretary of State certifies to the Secretary of the Treasury that the foreign government grants an equivalent 
+                        exemption for similar work in the foreign country by employees of the U.S. government or its instrumentalities.</p>
                     <br>
                     <div click.delegate="conditionsSpouse()" class="btn-group" data-toggle="buttons">
                         <label class="btn ${userData.spouse.checkConditions ? 'active btn-primary' : 'btn-secondary'}">

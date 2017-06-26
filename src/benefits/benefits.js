@@ -87,12 +87,11 @@ export class benefits {
             }
             else tier3 = 0;
 
-            //console.log("Before sumOfTiers " + sumOfTiers);
 
             //ADD TIERS AND GET YEARLY BASE VALUE FOR SOCIAL SECURITY
             var sumOfTiers = tier1 + tier2 + tier3; 
             
-            //console.log("Tier 1 " + tier1 + " tier 2 " + tier2 + " tier3 " + tier3 + " sumOfTiers" + sumOfTiers);
+            // console.log("Tier 1 " + tier1 + " tier 2 " + tier2 + " tier3 " + tier3 + " sumOfTiers" + sumOfTiers);
 
             //FIX SUMOFTIERS BASED ON EARLY/LATE ANALYSIS
             switch(yearOfBirth) {
@@ -190,14 +189,10 @@ export class benefits {
                     }     
             }
 
+            // console.log("=================");
+            // console.log("After sumOfTiers " + sumOfTiers);
             ssBase = sumOfTiers * 12; 
-
-            //ADJUST FOR GPO
-            if(person.recievePension) {
-                var pension = parseFloat(person.pensionAmount) * 2/3; //per month
-                pension = pension * 12; //per year
-                ssBase = ssBase - pension; //adjusted for GPO
-            }
+            //console.log("SSBase " + ssBase);
 
             //person.pia = pia;
             person.ssBase.push(parseFloat(ssBase));
@@ -316,6 +311,12 @@ export class benefits {
             }
 
             if(spousalBenefit > ssBaseSpouse) {
+                //ADJUST FOR GPO
+                if(client.recievePension) {
+                    var pension = parseFloat(client.pensionAmount) * 2/3; //per month
+                    pension = pension * 12; //per year
+                    spousalBenefit = spousalBenefit - pension; //adjusted for GPO
+                }
                 spouse.ssBase[i] = spousalBenefit;
             }
         } // end of spousalBenefit(client, spouse)
@@ -351,7 +352,7 @@ export class benefits {
             person.ssBaseAdj.forEach(function(ssBase, i) {
                 var age = retirementAges[i];
                 var lifeExpectancy = person.lifeExpectancy;
-                var numOfYears = lifeExpectancy - age; //RNumber of years from retirement age until death
+                var numOfYears = lifeExpectancy - age; //Number of years from retirement age until death
 
                 for(var j = 0; j <= numOfYears; j++) {
                     if(i == 0) { //At age 62
@@ -396,8 +397,8 @@ export class benefits {
 
         i = 0;
         //GET PIA COCLIENT CALCULATIONS IF NECESSARY
-        if(maritalStatus == "Married") {
-           if(!this.userData.client.isRecieving) {
+        if(maritalStatus == "Married" || this.userData.client.divorceCheck) {
+           if(!this.userData.client.isRecieving || this.userData.client.divorceCheck) {
                 this.userData.spouse.ssBase = [];
                 calculateSSBase(this.userData.spouse, 62, i);
                 i++;
@@ -414,22 +415,26 @@ export class benefits {
                    this.userData.spouse.ssBase.push(parseFloat(ssBase));
                }
            }
+        }
 
-           if(!this.userData.client.isRecieving) { //If spouse not already recieving, compare and change both client's ssBase and spouse's if applicable
+        if(maritalStatus == "Married" || this.userData.client.divorceCheck) {
+           if(!this.userData.client.isRecieving && !this.userData.client.divorceCheck) { //If spouse not already recieving, compare and change both client's ssBase and spouse's if applicable
                 var i = 0;
                 spousalBenefit(this.userData.client, this.userData.spouse, 62, i);
                 spousalBenefit(this.userData.spouse, this.userData.client, 62, i);
                 i++;
                 spousalBenefit(this.userData.client, this.userData.spouse, this.userData.spouse.retirementAge, i);
-                spousalBenefit(this.userData.spouse, this.userData.client, this.userData.spouse.retirementAge, i);            
+                spousalBenefit(this.userData.spouse, this.userData.client, this.userData.client.retirementAge, i);            
                 i++;
                 spousalBenefit(this.userData.client, this.userData.spouse, this.userData.spouse.yearFRA, i);
-                spousalBenefit(this.userData.spouse, this.userData.client, this.userData.spouse.yearFRA, i);
+                spousalBenefit(this.userData.spouse, this.userData.client, this.userData.client.yearFRA, i);
                 i++;
                 spousalBenefit(this.userData.client, this.userData.spouse, 70, i);
                 spousalBenefit(this.userData.spouse, this.userData.client, 70, i);
             }
-            else if (this.userData.client.isRecieving) { //If spouse already recieving, only change client's ssBase to spouse's if applicable
+            else if(this.userData.client.isRecieving || this.userData.client.divorceCheck) { 
+                //If spouse already recieving or the client was married to ex-spouse for more than 10 years,
+                //only change client's ssBase to spouse's if applicable
                  var i = 0;
                 spousalBenefit(this.userData.spouse, this.userData.client, 62, i);
                 i++;
@@ -440,16 +445,15 @@ export class benefits {
                 spousalBenefit(this.userData.spouse, this.userData.client, 70, i);
             }
         }
-
+        
         results(this.userData.client);
-        if(maritalStatus == "Married" && !this.userData.client.isRecieving) {
+        if((maritalStatus == "Married" && !this.userData.client.isRecieving) || this.userData.client.divorceCheck) {
             results(this.userData.spouse);
         }
-        
+
         console.log(this.userData);
         this.router.navigate('#/results');
     }
-
 
     wep() {
         this.userData.client.wep = !this.userData.client.wep;

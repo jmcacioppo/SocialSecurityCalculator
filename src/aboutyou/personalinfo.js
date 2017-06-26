@@ -252,6 +252,7 @@ export class personalinfo {
             this.userData.client.isMarried = false;
             this.userData.client.isSurvivor = false;
             this.userData.client.spouseRecieving = false;
+            this.userData.client.isRecieving = false;
         }
         else if(value == "Widowed") {
             this.userData.client.isSurvivor = true;
@@ -259,6 +260,7 @@ export class personalinfo {
             this.userData.client.isDivorced = false;
             this.userData.client.divorceCheck = false;
             this.userData.client.spouseRecieving = false;
+            this.userData.client.isRecieving = false;
 
             if(this.userData.client.dateOfBirth) { //NEW FRA FOR SURVIVOR CLIENT
                 if(this.userData.client.yearOfBirth >= 1945 && this.userData.client.yearOfBirth <= 1956) {
@@ -297,6 +299,7 @@ export class personalinfo {
             this.userData.client.isSurvivor = false;
             this.userData.client.divorceCheck = false;
             this.userData.client.spouseRecieving = false;
+            this.userData.client.isRecieving = false;
         }
     }
 
@@ -359,6 +362,7 @@ export class personalinfo {
 
     removeDep() {
         this.userData.client.numOfDeps--;
+        this.userData.client.ageOfDeps.pop(); //remove last dependent from array
         if(this.userData.client.numOfDeps == 0) {
             this.userData.client.hasDeps = false;
         }
@@ -501,7 +505,8 @@ export class personalinfo {
         }
 
         function checkDeceasedFields(person) {
-            if(!person.age || person.age < 18) alert("Input a valid date of birth");
+            if(person.yearOfPassing == 0 || !person.isPassed) alert("Input a valid year of passing");
+            else if(!person.age || person.age < 18 || person.yearOfPassing < person.yearOfBirth) alert("Input a valid date of birth");
             else return true;
         }
         
