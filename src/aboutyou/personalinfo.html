@@ -203,10 +203,10 @@
             <h3>Dependent Information</h3>
             <button class="btn btn-primary" type="button" click.delegate="addDep()"><span class="glyphicon glyphicon-plus-sign"></span> Add Dependent</button>
             <div show.bind="userData.client.hasDeps" class="form-group">
-                <div class="input-group mb-2 mr-sm-2 mb-sm-0" id="ageOfDeps">
+                <div style="margin: 0 auto;" class="input-group mb-2 mr-sm-2 mb-sm-0" id="ageOfDeps">
                     <div repeat.for="num of userData.client.numOfDeps">
                         <br>
-                        <label for="year">Age of Dependent ${num}:</label>
+                        <label for="year">Age of Dependent ${num+1}:</label>
                         <input type="text" value.bind="userData.client.ageOfDeps[num]" class="form-control" id="inlineFormInputGroup" placeholder="8">
                     </div>
                 </div>

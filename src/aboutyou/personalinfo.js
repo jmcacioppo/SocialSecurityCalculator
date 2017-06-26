@@ -386,6 +386,7 @@ export class personalinfo {
 
     divorce() {
         this.userData.client.divorceCheck = !this.userData.client.divorceCheck;
+        this.userData.spouse.isEmployed = !this.userData.spouse.isEmployed;
     }
 
     isRecieving() {
@@ -399,8 +400,8 @@ export class personalinfo {
             type: "double",
             min: 0,
             max: 100,
-            from: 65,
-            to: 91,
+            from: this.userData.client.retirementAge,
+            to: this.userData.client.lifeExpectancy,
             step: 1,
             onFinish: (data) => {
                 this.userData.client.retirementAge = data.from;
@@ -414,8 +415,8 @@ export class personalinfo {
             type: "double",
             min: 0,
             max: 100,
-            from: 65,
-            to: 91,
+            from: this.userData.spouse.retirementAge,
+            to: this.userData.spouse.lifeExpectancy,
             step: 1,
             onFinish: (data) => {
                 this.userData.spouse.retirementAge = data.from;
