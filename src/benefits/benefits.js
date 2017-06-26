@@ -323,95 +323,100 @@ export class benefits {
 
         function results(person) {
             var early = 62;
-            var FRA = person.yearFRA; //age at FRA
             var userSelected = person.retirementAge;
+            var FRA = person.yearFRA; //age at FRA
             var late = 70;
             var retirementAges = [early, userSelected, FRA, late];            
             var yearOfBirth = person.yearOfBirth;
             var currentYear = person.currentYear;
             var retirementIncome = person.retirementIncome;
             
-            retirementAges.forEach(function(age, i) {
-                var retirementYear = age + yearOfBirth;
+            for(var i = 0; i < 9; i++) {
+                var retirementYear = 62 + yearOfBirth + i;
                 var limitYear = retirementYear - currentYear; //Amount of years until retire
                 var overLimit = retirementIncome - projEarningsLimit[limitYear];
 
-                if(overLimit > 0 && age < FRA) { //Over Limit and Before FRA
+                if(overLimit > 0 && 62+i < FRA) { //Over Limit and Before FRA
                     var reduction = overLimit / 2;
                     person.ssBaseAdj[i] = person.ssBase[i] - reduction;
                     if(person.ssBaseAdj[i] < 0) person.ssBaseAdj[i] = 0;
                 }
-                else if(overLimit > 0 && age == FRA) { //Over Limit and At FRA
+                else if(overLimit > 0 && 62+i == FRA) { //Over Limit and At FRA
                     var reduction = overLimit / 3;
                     person.ssBaseAdj[i] = person.ssBase[i] - reduction;
                     if(person.ssBaseAdj[i] < 0) person.ssBaseAdj[i] = 0;
                 }
                 else person.ssBaseAdj[i] = person.ssBase[i]; //Below Limit or After FRA
-            }); 
+            }
 
-            person.ssBaseAdj.forEach(function(ssBase, i) {
+            for(var i = 0; i < 4; i++) {
                 var age = retirementAges[i];
                 var lifeExpectancy = person.lifeExpectancy;
                 var numOfYears = lifeExpectancy - age; //Number of years from retirement age until death
-
-                for(var j = 0; j <= numOfYears; j++) {
-                    if(i == 0) { //At age 62
-                        if(j==0) person.earlyBenefits[j] = ssBase; 
-                        else {
-                            person.earlyBenefits[j] = person.earlyBenefits[j-1] + (person.earlyBenefits[j-1] * person.cola / 100);
+                
+                for(var j = 0; j < 9; j++) {
+                    if(j == age-62) { 
+                        if(i==0) { //EARLY
+                            for(var k = 0; k < numOfYears; k++) {
+                                if(k==0) person.earlyBenefits[k] = person.ssBaseAdj[j]; 
+                                else {
+                                    person.earlyBenefits[k] = person.earlyBenefits[k-1] + (person.earlyBenefits[k-1] * person.cola / 100);
+                                }
+                            }
                         }
-                    }
-                    else if(i == 1) { //At selected age
-                        if(j==0) person.userSelectedBenefits[j] = ssBase; 
-                        else {
-                            person.userSelectedBenefits[j] = person.userSelectedBenefits[j-1] + (person.userSelectedBenefits[j-1] * person.cola / 100);
+                        else if(i==1) { //USER SELECTED
+                            for(var k = 0; k < numOfYears; k++) {
+                                if(k==0) person.userSelectedBenefits[k] = person.ssBaseAdj[j]; 
+                                else {
+                                    person.userSelectedBenefits[k] = person.userSelectedBenefits[k-1] + (person.userSelectedBenefits[k-1] * person.cola / 100);
+                                }
+                            }
                         }
-                    }
-                    else if(i == 2) {  //At FRA
-                        if(j==0) person.FRABenefits[j] = ssBase; 
-                        else {
-                            person.FRABenefits[j] = person.FRABenefits[j-1] + (person.FRABenefits[j-1] * person.cola / 100);
+                        else if(i==2) { //FRA
+                            for(var k = 0; k < numOfYears; k++) {
+                                if(k==0) person.FRABenefits[k] = person.ssBaseAdj[j]; 
+                                else {
+                                    person.FRABenefits[k] = person.FRABenefits[k-1] + (person.FRABenefits[k-1] * person.cola / 100);
+                                }
+                            }
                         }
-                    }
-                    else if(i == 3) { //At age 70
-                        if(j==0) person.lateBenefits[j] = ssBase; 
-                        else {
-                            person.lateBenefits[j] = person.lateBenefits[j-1] + (person.lateBenefits[j-1] * person.cola / 100);
+                        else if(i==3) { //LATE
+                            for(var k = 0; k < numOfYears; k++) {
+                                if(k==0) person.lateBenefits[k] = person.ssBaseAdj[j]; 
+                                else {
+                                    person.lateBenefits[k] = person.lateBenefits[k-1] + (person.lateBenefits[k-1] * person.cola / 100);
+                                }
+                            }
                         }
                     }
                 }
-            }); 
+            }
         } //end results(person)
 
         var maritalStatus = this.userData.client.maritalStatus;
-        
         this.userData.client.ssBase = [];
-        var i = 0;
-        calculateSSBase(this.userData.client, 62, i);
-        i++;
-        calculateSSBase(this.userData.client, this.userData.client.retirementAge, i);
-        i++;
-        calculateSSBase(this.userData.client, this.userData.client.yearFRA, i);
-        i++;
-        calculateSSBase(this.userData.client, 70, i);
+
+        var j = 0;
+        for(var i = 62; i <= 70; i++) {
+            calculateSSBase(this.userData.client, i, j);
+            j++;
+        }
 
         i = 0;
         //GET PIA COCLIENT CALCULATIONS IF NECESSARY
         if(maritalStatus == "Married" || this.userData.client.divorceCheck) {
            if(!this.userData.client.isRecieving || this.userData.client.divorceCheck) {
                 this.userData.spouse.ssBase = [];
-                calculateSSBase(this.userData.spouse, 62, i);
-                i++;
-                calculateSSBase(this.userData.spouse, this.userData.spouse.retirementAge, i);
-                i++;
-                calculateSSBase(this.userData.spouse, this.userData.spouse.yearFRA, i);
-                i++;
-                calculateSSBase(this.userData.spouse, 70, i);
+                var j = 0;
+                for(var i = 62; i <= 70; i++) {
+                    calculateSSBase(this.userData.spouse, i, j);
+                    j++;
+                }
            }
            else {
                var ssBase = this.userData.spouse.spouseRecievingBenfit * 12;
                this.userData.spouse.ssBase = [];
-               for(var i = 0; i < 4; i++) {
+               for(var i = 0; i < 9; i++) {
                    this.userData.spouse.ssBase.push(parseFloat(ssBase));
                }
            }
@@ -419,30 +424,21 @@ export class benefits {
 
         if(maritalStatus == "Married" || this.userData.client.divorceCheck) {
            if(!this.userData.client.isRecieving && !this.userData.client.divorceCheck) { //If spouse not already recieving, compare and change both client's ssBase and spouse's if applicable
-                var i = 0;
-                spousalBenefit(this.userData.client, this.userData.spouse, 62, i);
-                spousalBenefit(this.userData.spouse, this.userData.client, 62, i);
-                i++;
-                spousalBenefit(this.userData.client, this.userData.spouse, this.userData.spouse.retirementAge, i);
-                spousalBenefit(this.userData.spouse, this.userData.client, this.userData.client.retirementAge, i);            
-                i++;
-                spousalBenefit(this.userData.client, this.userData.spouse, this.userData.spouse.yearFRA, i);
-                spousalBenefit(this.userData.spouse, this.userData.client, this.userData.client.yearFRA, i);
-                i++;
-                spousalBenefit(this.userData.client, this.userData.spouse, 70, i);
-                spousalBenefit(this.userData.spouse, this.userData.client, 70, i);
+                var j = 0;
+                for(var i = 62; i <= 70; i++) {
+                    spousalBenefit(this.userData.client, this.userData.spouse, i, j);
+                    spousalBenefit(this.userData.spouse, this.userData.client, i, j);
+                    j++;
+                }
             }
             else if(this.userData.client.isRecieving || this.userData.client.divorceCheck) { 
                 //If spouse already recieving or the client was married to ex-spouse for more than 10 years,
                 //only change client's ssBase to spouse's if applicable
-                 var i = 0;
-                spousalBenefit(this.userData.spouse, this.userData.client, 62, i);
-                i++;
-                spousalBenefit(this.userData.spouse, this.userData.client, this.userData.spouse.retirementAge, i);            
-                i++;
-                spousalBenefit(this.userData.spouse, this.userData.client, this.userData.spouse.yearFRA, i);
-                i++;
-                spousalBenefit(this.userData.spouse, this.userData.client, 70, i);
+                var j = 0;
+                for(var i = 62; i <= 70; i++) {
+                    spousalBenefit(this.userData.spouse, this.userData.client, i, j);
+                    j++;
+                }
             }
         }
         
