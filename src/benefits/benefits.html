@@ -47,12 +47,16 @@
         </div>
 
         <!--SPOUSE-->
-        <div show.bind="userData.client.isMarried && !userData.client.isRecieving">
-            <h1>Co-Client</h1>
-            <div>
+        <div show.bind="(userData.client.isMarried && !userData.client.isRecieving) || userData.client.divorceCheck">
+            <h1 show.bind="(userData.client.isMarried && !userData.client.isRecieving)">Co-Client</h1>
+            <h1 show.bind="userData.client.divorceCheck">Ex-Spouse</h1>
+
+            <div id="spouse">
+                <!--CHECK IF WEP APPLIES-->
                 <div class="form-group">
-                    <!--CHECK IF WEP APPLIES-->
-                    <label for="wep">Does WEP apply to you?</label>
+                    <label show.bind="(userData.client.isMarried && !userData.client.isRecieving)" for="wep">Does WEP apply to you?</label>
+                    <label show.bind="userData.client.divorceCheck" for="wep">Does WEP apply to your ex-spouse?</label>
+                    
                     <span id="spousewep" title="" class="glyphicon glyphicon-question-sign" ></span>
                     <br>
                     <div click.delegate="wepSpouse()" class="btn-group" data-toggle="buttons">
@@ -65,8 +69,8 @@
                     </div>
                 </div>
 
+                <!--IF IT DOES, CHECK HOW MANY YEARS OF SUBSTANTIAL EARNINGS-->
                 <div show.bind="userData.spouse.wep" class="form-group">
-                    <!--IF IT DOES, CHECK HOW MANY YEARS OF SUBSTANTIAL EARNINGS-->
                     <label for="dob">Years of Substantial Earnings</label>
                     <span id="spousewepYears" title="" class="glyphicon glyphicon-question-sign" ></span>
                     <input type="text" value.bind="userData.spouse.yrsOfSubEarnings" class="form-control" id="yrsOfSubEarningsCheck">
@@ -82,6 +86,7 @@
         </div>
 
         <br> <br> <br>
+
         <button class="btn btn-secondary" click.delegate="back()" id="back">Back</button>
         <button class="btn btn-primary" type="submit" id="next">Next</button>
     </form>
