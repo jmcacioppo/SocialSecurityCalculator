@@ -1502,7 +1502,7 @@ define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
                 person.projectedSal = [];
                 person.inflationAdjusted = [];
 
-                if (ageFrom18 >= 0 && person.isEmployed) {
+                if (ageFrom18 >= 0 && person.isEmployed && !widowcheck) {
                     person.projectedSal[ageFrom18] = sal;
                     var count = 0;
 
@@ -1512,26 +1512,20 @@ define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
                             count++;
                         }
                     } else {
-                        for (var i = ageFrom18 - 1; i >= 0; i--) {
-                            person.projectedSal[i] = parseFloat(person.wages[i]);
-                        }
-                    }
-
-                    if (!widowcheck) {
-                        if (!person.futureWages) {
-                            for (var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) {
-                                person.projectedSal[i] = parseFloat(person.projectedSal[i - 1]) + parseFloat(person.projectedSal[i - 1]) * _constants.wagePerc[_constants.wagePerc.length - 1];
+                            for (var i = ageFrom18 - 1; i >= 0; i--) {
+                                person.projectedSal[i] = parseFloat(person.wages[i]);
                             }
-                        } else {
+                        }
+
+                    if (!person.futureWages) {
+                        for (var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) {
+                            person.projectedSal[i] = parseFloat(person.projectedSal[i - 1]) + parseFloat(person.projectedSal[i - 1]) * _constants.wagePerc[_constants.wagePerc.length - 1];
+                        }
+                    } else {
                             for (var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) {
                                 person.projectedSal[i] = parseFloat(person.wages[i]);
                             }
                         }
-                    } else {
-                        for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
-                            person.projectedSal[i] = 0;
-                        }
-                    }
 
                     if (person.militaryService) militarySalary(person);
 
@@ -1546,20 +1540,14 @@ define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
                         count++;
                     }
 
-                    if (!widowcheck) {
-                        var lastYearAllowed = _constants.allowedSalary[_constants.allowedSalary.length - 1];
-                        for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
-                            if (person.projectedSal[i] > lastYearAllowed) {
-                                person.inflationAdjusted[i] = lastYearAllowed * _constants.inflationIndex[_constants.inflationIndex.length - 1];
-                            } else {
-                                person.inflationAdjusted[i] = person.projectedSal[i] * _constants.inflationIndex[_constants.inflationIndex.length - 1];
-                            }
-                            lastYearAllowed = lastYearAllowed * 1.021;
+                    var lastYearAllowed = _constants.allowedSalary[_constants.allowedSalary.length - 1];
+                    for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
+                        if (person.projectedSal[i] > lastYearAllowed) {
+                            person.inflationAdjusted[i] = lastYearAllowed * _constants.inflationIndex[_constants.inflationIndex.length - 1];
+                        } else {
+                            person.inflationAdjusted[i] = person.projectedSal[i] * _constants.inflationIndex[_constants.inflationIndex.length - 1];
                         }
-                    } else {
-                        for (var i = ageFrom18; i <= ageFrom18 + yrsUntilRetire; i++) {
-                            person.inflationAdjusted[i] = 0;
-                        }
+                        lastYearAllowed = lastYearAllowed * 1.021;
                     }
 
                     if (person.workedOnARailroad) railroadSalary(person);
@@ -1652,13 +1640,58 @@ define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
                     person.pia.push(parseFloat(pia));
 
                     return pia;
+                } else if (widowcheck) {
+                    person.projectedSal[ageFrom18] = sal;
+
+                    var count = 0;
+                    if (!person.showWages) {
+                        for (var i = ageFrom18 - 1; i >= 0; i--) {
+                            person.projectedSal[i] = person.projectedSal[i + 1] - person.projectedSal[i + 1] * _constants.wagePerc[_constants.wagePerc.length - count - 2];
+                            count++;
+                        }
+                    } else {
+                        for (var i = ageFrom18 - 1; i >= 0; i--) {
+                            person.projectedSal[i] = parseFloat(person.wages[i]);
+                        }
+                    }
+
+                    for (var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) {
+                        person.projectedSal[i] = 0;
+                    }
+
+                    count = 0;
+
+                    for (var i = ageFrom18; i >= 0; i--) {
+                        if (person.projectedSal[i] > _constants.allowedSalary[_constants.allowedSalary.length - count - 1]) {
+                            person.inflationAdjusted[i] = _constants.allowedSalary[_constants.allowedSalary.length - count - 1] * _constants.inflationIndex[_constants.inflationIndex.length - count - 1];
+                        } else {
+                            person.inflationAdjusted[i] = person.projectedSal[i] * _constants.inflationIndex[_constants.inflationIndex.length - count - 1];
+                        }
+                        count++;
+                    }
+
+                    for (var i = ageFrom18 + 1; i <= ageFrom18 + yrsUntilRetire; i++) {
+                        person.inflationAdjusted[i] = 0;
+                    }
+
+                    person.inflationAdjusted = person.inflationAdjusted.sort(function (a, b) {
+                        return a - b;
+                    });
+                    person.topThirtyFive = person.inflationAdjusted.slice(person.inflationAdjusted.length - 35, person.inflationAdjusted.length);
+
+                    pia = person.topThirtyFive.reduce(function (a, b) {
+                        return a + b;
+                    }, 0) / 420;
+                    person.pia.push(parseFloat(pia));
+
+                    return pia;
                 } else if (ageFrom18 < 0) {
                     alert("Client must be older than 18.");
                     return null;
                 }
             }
 
-            function adjustSurvivorPIA(client, deceased, j) {
+            function adjustSurvivorPIA(client, deceased, i) {
                 switch (client.yearOfBirth) {
                     case 1957:
                         switch (client.yearFRA) {
@@ -1863,6 +1896,8 @@ define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
                 var j = 0;
                 for (var i = 62; i <= 70; i++) {
                     calculatePIA(this.userData.deceased, widowcheck, i);
+                }
+                for (var i = 62; i <= 70; i++) {
                     adjustSurvivorPIA(this.userData.client, this.userData.deceased, j);
                     j++;
                 }
