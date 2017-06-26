@@ -357,7 +357,7 @@ export class benefits {
                 for(var j = 0; j < 9; j++) {
                     if(j == age-62) { 
                         if(i==0) { //EARLY
-                            for(var k = 0; k < numOfYears; k++) {
+                            for(var k = 0; k <= numOfYears; k++) {
                                 if(k==0) person.earlyBenefits[k] = person.ssBaseAdj[j]; 
                                 else {
                                     person.earlyBenefits[k] = person.earlyBenefits[k-1] + (person.earlyBenefits[k-1] * person.cola / 100);
@@ -365,7 +365,7 @@ export class benefits {
                             }
                         }
                         else if(i==1) { //USER SELECTED
-                            for(var k = 0; k < numOfYears; k++) {
+                            for(var k = 0; k <= numOfYears; k++) {
                                 if(k==0) person.userSelectedBenefits[k] = person.ssBaseAdj[j]; 
                                 else {
                                     person.userSelectedBenefits[k] = person.userSelectedBenefits[k-1] + (person.userSelectedBenefits[k-1] * person.cola / 100);
@@ -373,7 +373,7 @@ export class benefits {
                             }
                         }
                         else if(i==2) { //FRA
-                            for(var k = 0; k < numOfYears; k++) {
+                            for(var k = 0; k <= numOfYears; k++) {
                                 if(k==0) person.FRABenefits[k] = person.ssBaseAdj[j]; 
                                 else {
                                     person.FRABenefits[k] = person.FRABenefits[k-1] + (person.FRABenefits[k-1] * person.cola / 100);
@@ -381,7 +381,7 @@ export class benefits {
                             }
                         }
                         else if(i==3) { //LATE
-                            for(var k = 0; k < numOfYears; k++) {
+                            for(var k = 0; k <= numOfYears; k++) {
                                 if(k==0) person.lateBenefits[k] = person.ssBaseAdj[j]; 
                                 else {
                                     person.lateBenefits[k] = person.lateBenefits[k-1] + (person.lateBenefits[k-1] * person.cola / 100);
