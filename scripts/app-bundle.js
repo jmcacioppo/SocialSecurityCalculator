@@ -1250,25 +1250,25 @@ define('benefits/benefits',['exports', 'jquery', 'bootstrap-toggle', 'ion-ranges
                     for (var j = 0; j < 9; j++) {
                         if (j == age - 62) {
                             if (i == 0) {
-                                for (var k = 0; k < numOfYears; k++) {
+                                for (var k = 0; k <= numOfYears; k++) {
                                     if (k == 0) person.earlyBenefits[k] = person.ssBaseAdj[j];else {
                                         person.earlyBenefits[k] = person.earlyBenefits[k - 1] + person.earlyBenefits[k - 1] * person.cola / 100;
                                     }
                                 }
                             } else if (i == 1) {
-                                for (var k = 0; k < numOfYears; k++) {
+                                for (var k = 0; k <= numOfYears; k++) {
                                     if (k == 0) person.userSelectedBenefits[k] = person.ssBaseAdj[j];else {
                                         person.userSelectedBenefits[k] = person.userSelectedBenefits[k - 1] + person.userSelectedBenefits[k - 1] * person.cola / 100;
                                     }
                                 }
                             } else if (i == 2) {
-                                for (var k = 0; k < numOfYears; k++) {
+                                for (var k = 0; k <= numOfYears; k++) {
                                     if (k == 0) person.FRABenefits[k] = person.ssBaseAdj[j];else {
                                         person.FRABenefits[k] = person.FRABenefits[k - 1] + person.FRABenefits[k - 1] * person.cola / 100;
                                     }
                                 }
                             } else if (i == 3) {
-                                for (var k = 0; k < numOfYears; k++) {
+                                for (var k = 0; k <= numOfYears; k++) {
                                     if (k == 0) person.lateBenefits[k] = person.ssBaseAdj[j];else {
                                         person.lateBenefits[k] = person.lateBenefits[k - 1] + person.lateBenefits[k - 1] * person.cola / 100;
                                     }
@@ -2035,6 +2035,15 @@ define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
         return exceptions;
     }()) || _class);
 });
+define('resources/index',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+  function configure(config) {}
+});
 define('results/results',['exports', 'jquery', 'ion-rangeslider', 'aurelia-framework', '../services/userdata', 'aurelia-router', 'src/services/constants.js', 'highcharts', 'jquery-ui-dist'], function (exports, _jquery, _ionRangeslider, _aureliaFramework, _userdata, _aureliaRouter, _constants, _highcharts) {
     'use strict';
 
@@ -2499,15 +2508,6 @@ define('services/userdata',['exports', 'aurelia-framework', '../services/user'],
         this.spouse = new _user.User();
         this.deceased = new _user.User();
     }) || _class);
-});
-define('resources/index',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.configure = configure;
-  function configure(config) {}
 });
 define('text!styles.css', ['module'], function(module) { module.exports = "#logo {\r\n    width: 170px;\r\n    height: 72px;\r\n    margin-top: -15px;\r\n}\r\n\r\n.navbar {\r\n    height: 75px;\r\n}\r\n\r\n.navbar-nav>li {\r\n    margin-top: 3px;\r\n    border-right: 1px solid #A9A9A9;\r\n}\r\n\r\n.navbar-nav>li:last-child {\r\n    border-right: none;\r\n}\r\n\r\n#navtitles {\r\n    font-size: 25px;\r\n    margin-top: 5px;\r\n    padding: 20px;\r\n    margin-right: 5px;\r\n    margin-left: 5px;\r\n}\r\n\r\nhtml, body {\r\n\tmargin:0;\r\n\tpadding:0;\r\n\theight:100%;\r\n}\r\n\r\n#app {\r\n\tmin-height:100%;\r\n\tposition:relative;\r\n}\r\n\r\n#content {\r\n\tpadding-bottom:100px; /* Height of the footer element */\r\n}\r\n\r\n#footer {\r\n\tbackground:#ededed;\r\n\twidth:100%;\r\n\theight:60px;\r\n\tposition:absolute;\r\n\tbottom:0;\r\n\tleft:0;\r\n    text-align: center;\r\n}\r\n\r\n#persinfointro {\r\n    text-align: center;\r\n    width: 500px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#persinfo, #benefits, #wagehistory, #exceptions, #spousewagehistory {\r\n    text-align: center;\r\n    width: 500px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#results {\r\n    text-align: center;\r\n    width: 750px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#divorceCheck {\r\n    width: 5000px;\r\n}\r\n\r\n#wages {\r\n    display: inline-block;\r\n}\r\n\r\n#custom-handle {\r\n    width: 3em;\r\n    height: 1.6em;\r\n    top: 50%;\r\n    margin-top: -.8em;\r\n    text-align: center;\r\n    line-height: 1.6em;\r\n  }\r\n\r\n.range-slider {\r\n    position: relative;\r\n    height: 80px;\r\n}\r\n\r\n.glyphicon-question-sign {\r\n    color: #006dcc;\r\n}\r\n\r\n\r\n.table-outter {\r\n    overflow-x: scroll;\r\n}\r\n\r\n.search-table {\r\n    margin:40px auto 0px auto; \r\n}\r\n\r\n.search-table, td, th {\r\n    border-collapse: collapse; \r\n    text-align: center;\r\n}\r\n\r\nth {\r\n    padding: 50 100px; \r\n    font-size: 15px; \r\n}\r\n\r\ntd {\r\n    padding: 50px 100px; \r\n    height: 35px;\r\n}\r\n\r\n.highcharts-title {\r\n    font-weight: bold;\r\n}\r\n\r\n.disabled {\r\n    pointer-events: none;\r\n    cursor: default;\r\n}\r\n"; });
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><div id=\"app\"><div id=\"content\"><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><a class=\"navbar-brand\" href=\"#\"><img id=\"logo\" src=\"./src/mysocialsecurity.png\"></a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav disabled\"><li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : 'disabled'}\"><a id=\"navtitles\" href.bind=\"row.href\">${row.title}</a></li></ul></div></div></nav><router-view></router-view><br><br><br><br><br></div><footer id=\"footer\"><div class=\"footer-copyright\"><div class=\"container-fluid\"><br>©2017, PIEtech, Inc. All rights reserved.</div></div></footer></div></template>"; });
