@@ -69,7 +69,6 @@ export class exceptions {
             //GET AGE OF PERSON
             ageFrom18 = person.ageFrom18;
             yrsUntilRetire = retirementAge - person.age;
-            sal = parseInt(person.salary);
 
             person.projectedSal = [];
             person.inflationAdjusted = [];
@@ -356,7 +355,7 @@ export class exceptions {
             calculatePIA(this.userData.client, widowcheck, i);
         }
             
-        //GET PIA COCLIENT CALCULATIONS IF NECESSARY
+        //GET PIA CO-CLIENT CALCULATIONS IF NECESSARY
         if((maritalStatus == "Married" && !this.userData.client.isRecieving) || this.userData.client.divorceCheck) {
             this.userData.spouse.pia = [];
             for(var i = 62; i <= 70; i++) {
