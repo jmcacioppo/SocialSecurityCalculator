@@ -237,7 +237,7 @@ export class exceptions {
             }
         }
 
-        function adjustSurvivorPIA(client, deceased, i) {
+        function adjustSurvivorPIA(client, deceased, j) {
             switch(client.yearOfBirth) {
                 case 1957: 
                     switch(client.yearFRA) {
@@ -352,33 +352,28 @@ export class exceptions {
         var widowcheck = false;
         //GET PIA CLIENT CALCULATIONS
         this.userData.client.pia = [];
-        calculatePIA(this.userData.client, widowcheck, 62);
-        calculatePIA(this.userData.client, widowcheck, this.userData.client.retirementAge);
-        calculatePIA(this.userData.client, widowcheck, this.userData.client.yearFRA);
-        calculatePIA(this.userData.client, widowcheck, 70);
+        for(var i = 62; i <= 70; i++) {
+            calculatePIA(this.userData.client, widowcheck, i);
+        }
             
         //GET PIA COCLIENT CALCULATIONS IF NECESSARY
         if((maritalStatus == "Married" && !this.userData.client.isRecieving) || this.userData.client.divorceCheck) {
             this.userData.spouse.pia = [];
-            calculatePIA(this.userData.spouse, widowcheck, 62);
-            calculatePIA(this.userData.spouse, widowcheck, this.userData.spouse.retirementAge);
-            calculatePIA(this.userData.spouse, widowcheck, this.userData.spouse.yearFRA);
-            calculatePIA(this.userData.spouse, widowcheck, 70);
+            for(var i = 62; i <= 70; i++) {
+                calculatePIA(this.userData.spouse, widowcheck, i);
+            }
         }
         else if(maritalStatus = "Widowed") {
             widowcheck = true;
-            calculatePIA(this.userData.deceased, widowcheck);
-            var i = 0;
-            adjustSurvivorPIA(this.userData.client, this.userData.deceased, i);
-            i++;
-            adjustSurvivorPIA(this.userData.client, this.userData.deceased, i);
-            i++;
-            adjustSurvivorPIA(this.userData.client, this.userData.deceased, i);
-            i++;
-            adjustSurvivorPIA(this.userData.client, this.userData.deceased, i);
+            var j = 0;
+            for(var i = 62; i <= 70; i++) {
+                calculatePIA(this.userData.deceased, widowcheck, i);
+                adjustSurvivorPIA(this.userData.client, this.userData.deceased, j);
+                j++;
+            }
         }
 
-        for(var i = 0; i < 4; i ++) {
+        for(var i = 0; i < 9; i ++) {
             if(this.userData.client.pia[i] < this.userData.client.survivorpia[i]) {
                 //ADJUST FOR GPO
                 if(client.recievePension) {
