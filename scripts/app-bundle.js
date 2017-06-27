@@ -1499,8 +1499,8 @@ define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
                 ageFrom18 = person.ageFrom18;
                 yrsUntilRetire = retirementAge - person.age;
 
-                person.projectedSal = [];
-                person.inflationAdjusted = [];
+                person.projectedSal = new Array(36).join('0').split('').map(parseFloat);
+                person.inflationAdjusted = new Array(36).join('0').split('').map(parseFloat);
 
                 if (ageFrom18 >= 0 && person.isEmployed && !widowcheck) {
                     person.projectedSal[ageFrom18] = sal;
@@ -2070,6 +2070,15 @@ define('exceptions/exceptions',['exports', 'jquery', 'bootstrap-toggle', 'ion-ra
         return exceptions;
     }()) || _class);
 });
+define('resources/index',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+  function configure(config) {}
+});
 define('results/results',['exports', 'jquery', 'ion-rangeslider', 'aurelia-framework', '../services/userdata', 'aurelia-router', 'src/services/constants.js', 'highcharts', 'jquery-ui-dist'], function (exports, _jquery, _ionRangeslider, _aureliaFramework, _userdata, _aureliaRouter, _constants, _highcharts) {
     'use strict';
 
@@ -2321,15 +2330,6 @@ define('results/results',['exports', 'jquery', 'ion-rangeslider', 'aurelia-frame
         return results;
     }()) || _class);
 });
-define('resources/index',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.configure = configure;
-  function configure(config) {}
-});
 define('src/services/constants.js',["exports"], function (exports) {
     "use strict";
 
@@ -2490,7 +2490,7 @@ define('services/user',["exports"], function (exports) {
                 this.dualCanadaItaly = true;
 
                 this.notCitizen = false;
-                this.checkIntrumentality = false;
+                this.checkInstrumentality = false;
                 this.checkConditions = false;
 
                 this.showWages = false;
@@ -2498,7 +2498,7 @@ define('services/user',["exports"], function (exports) {
                 this.futureWages = false;
 
                 this.eligibleSS = false;
-                this.cola = 2.5;
+                this.cola = 2.6;
                 this.wep = false;
                 this.yrsOfSubEarnings = 0;
 

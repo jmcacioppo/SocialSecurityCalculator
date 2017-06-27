@@ -70,8 +70,8 @@ export class exceptions {
             ageFrom18 = person.ageFrom18;
             yrsUntilRetire = retirementAge - person.age;
 
-            person.projectedSal = [];
-            person.inflationAdjusted = [];
+            person.projectedSal = new Array(36).join('0').split('').map(parseFloat);
+            person.inflationAdjusted = new Array(36).join('0').split('').map(parseFloat);
 
             //COMPUTES PROJECTED SALARY 
             if(ageFrom18 >= 0 && person.isEmployed && !widowcheck) {
