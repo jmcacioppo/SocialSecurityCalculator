@@ -88,7 +88,7 @@ export class User {
         this.dualCanadaItaly = true;
 
         this.notCitizen = false;
-        this.checkIntrumentality = false;
+        this.checkInstrumentality = false;
         this.checkConditions = false;
         
         //Wage History
@@ -98,7 +98,7 @@ export class User {
 
         //Benefits
         this.eligibleSS = false;
-        this.cola = 2.5;
+        this.cola = 2.6;
         this.wep = false;
         this.yrsOfSubEarnings = 0;
 
