@@ -2397,128 +2397,128 @@ define('src/services/constants.js',["exports"], function (exports) {
     var spousalBenefits1960to2000 = exports.spousalBenefits1960to2000 = [0.3271, 0.35, 0.371, 0.4167, 0.4584, 0.5, 0.5, 0.5, 0.5];
 });
 define('services/user',["exports"], function (exports) {
-        "use strict";
+   "use strict";
 
-        Object.defineProperty(exports, "__esModule", {
-                value: true
-        });
+   Object.defineProperty(exports, "__esModule", {
+      value: true
+   });
 
-        function _classCallCheck(instance, Constructor) {
-                if (!(instance instanceof Constructor)) {
-                        throw new TypeError("Cannot call a class as a function");
-                }
-        }
+   function _classCallCheck(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+         throw new TypeError("Cannot call a class as a function");
+      }
+   }
 
-        var User = exports.User = function User() {
-                _classCallCheck(this, User);
+   var User = exports.User = function User() {
+      _classCallCheck(this, User);
 
-                this.ssBase = [];
-                this.ssBaseAdj = [];
-                this.pia = [];
-                this.survivorpia = [];
+      this.ssBase = [];
+      this.ssBaseAdj = [];
+      this.pia = [];
+      this.survivorpia = [];
 
-                this.earlyBenefits = [];
-                this.FRABenefits = [];
-                this.userSelectedBenefits = [];
-                this.lateBenefits = [];
+      this.earlyBenefits = [];
+      this.FRABenefits = [];
+      this.userSelectedBenefits = [];
+      this.lateBenefits = [];
 
-                this.name = "";
-                this.gender = "";
-                this.dateOfBirth = "";
+      this.name = "";
+      this.gender = "";
+      this.dateOfBirth = "";
 
-                this.age = 0;
-                this.ageFrom18 = 0;
-                this.yearOfBirth = 0;
-                this.monthOfBirth = 0;
-                this.currentYear = 0;
-                this.isPassed = false;
-                this.yearOfPassing = 0;
-                this.yearFrom18toPassing = 0;
-                this.yearFRA = 0;
-                this.monthFRA = 0;
+      this.age = 0;
+      this.ageFrom18 = 0;
+      this.yearOfBirth = 0;
+      this.monthOfBirth = 0;
+      this.currentYear = 0;
+      this.isPassed = false;
+      this.yearOfPassing = 0;
+      this.yearFrom18toPassing = 0;
+      this.yearFRA = 0;
+      this.monthFRA = 0;
 
-                this.employmentStatus = "";
-                this.isEmployed = false;
-                this.salary = 0;
-                this.projectedSal = [];
-                this.inflationAdjusted = [];
-                this.topThirtyFive = [];
+      this.employmentStatus = "";
+      this.isEmployed = false;
+      this.salary = 0;
+      this.projectedSal = [];
+      this.inflationAdjusted = [];
+      this.topThirtyFive = [];
 
-                this.isRetired = false;
-                this.notCurrentlyEmployed = false;
+      this.isRetired = false;
+      this.notCurrentlyEmployed = false;
 
-                this.maritalStatus = "";
-                this.isMarried = false;
-                this.isDivorced = false;
-                this.divorceCheck = false;
-                this.isSurvivor = false;
-                this.spouseRecieving = false;
-                this.isRecieving = false;
-                this.spouseRecievingBenfit = 0;
+      this.maritalStatus = "";
+      this.isMarried = false;
+      this.isDivorced = false;
+      this.divorceCheck = false;
+      this.isSurvivor = false;
+      this.spouseRecieving = false;
+      this.isRecieving = false;
+      this.spouseRecievingBenfit = 0;
 
-                this.numOfDeps = 0;
-                this.ageOfDeps = [];
-                this.showAgeOfDeps = false;
-                this.hasDeps = false;
+      this.numOfDeps = 0;
+      this.ageOfDeps = [];
+      this.showAgeOfDeps = false;
+      this.hasDeps = false;
 
-                this.retirementIncome = 0;
-                this.retirementAge = 65;
-                this.lifeExpectancy = 91;
-                this.retirementYear = 0;
+      this.retirementIncome = 0;
+      this.retirementAge = 65;
+      this.lifeExpectancy = 91;
+      this.retirementYear = 0;
 
-                this.militaryService = false;
-                this.beganService = "";
-                this.endService = "";
+      this.militaryService = false;
+      this.beganService = "";
+      this.endService = "";
 
-                this.beginMonth = 0;
-                this.beginYear = 0;
-                this.endMonth = 0;
-                this.endYear = 0;
+      this.beginMonth = 0;
+      this.beginYear = 0;
+      this.endMonth = 0;
+      this.endYear = 0;
 
-                this.workedOnARailroad = false;
-                this.yearsStartedOnRailroad = 0;
-                this.yearsEndedOnRailroad = 0;
-                this.yearsOnRailroad = [];
+      this.workedOnARailroad = false;
+      this.yearsStartedOnRailroad = 0;
+      this.yearsEndedOnRailroad = 0;
+      this.yearsOnRailroad = [];
 
-                this.recievePension = false;
-                this.pensionAmount = 0;
+      this.recievePension = false;
+      this.pensionAmount = 0;
 
-                this.citizenship = "";
+      this.citizenship = "";
 
-                this.dual26Countries = false;
-                this.isDual26Countries = false;
-                this.dualCanadaItaly = true;
+      this.dual26Countries = false;
+      this.isDual26Countries = false;
+      this.dualCanadaItaly = true;
 
-                this.notCitizen = false;
-                this.checkInstrumentality = false;
-                this.checkConditions = false;
+      this.notCitizen = false;
+      this.checkInstrumentality = false;
+      this.checkConditions = false;
 
-                this.showWages = false;
-                this.wages = new Array(55).join('0').split('').map(parseFloat);
-                this.futureWages = false;
+      this.showWages = false;
+      this.wages = new Array(55).join('0').split('').map(parseFloat);
+      this.futureWages = false;
 
-                this.eligibleSS = false;
-                this.cola = 2.6;
-                this.wep = false;
-                this.yrsOfSubEarnings = 0;
+      this.eligibleSS = false;
+      this.cola = 2.6;
+      this.wep = false;
+      this.yrsOfSubEarnings = 0;
 
-                this.showChart = false;
-                this.netEarly = 0;
-                this.netUserSelected = 0;
-                this.netFRA = 0;
-                this.netLate = 0;
+      this.showChart = false;
+      this.netEarly = 0;
+      this.netUserSelected = 0;
+      this.netFRA = 0;
+      this.netLate = 0;
 
-                this.earlyTuples = [];
-                this.userSelectedTuples = [];
-                this.FRATuples = [];
-                this.lateTuples = [];
+      this.earlyTuples = [];
+      this.userSelectedTuples = [];
+      this.FRATuples = [];
+      this.lateTuples = [];
 
-                this.benefitAge = 0;
-                this.checkEarly = false;
-                this.checkUserSelected = false;
-                this.checkFRA = false;
-                this.checkLate = false;
-        };
+      this.benefitAge = 0;
+      this.checkEarly = false;
+      this.checkUserSelected = false;
+      this.checkFRA = false;
+      this.checkLate = false;
+   };
 });
 define('services/userdata',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
     'use strict';
@@ -2544,8 +2544,8 @@ define('services/userdata',['exports', 'aurelia-framework', '../services/user'],
         this.deceased = new _user.User();
     }) || _class);
 });
-define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><div id=\"app\"><div id=\"content\"><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><a class=\"navbar-brand\" href=\"#\"><img id=\"logo\" src=\"./src/mysocialsecurity.png\"></a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav disabled\"><li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : 'disabled'}\"><a id=\"navtitles\" href.bind=\"row.href\">${row.title}</a></li></ul></div></div></nav><router-view></router-view><br><br><br><br><br></div><footer id=\"footer\"><div class=\"footer-copyright\"><div class=\"container-fluid\"><br>©2017, PIEtech, Inc. All rights reserved.</div></div></footer></div></template>"; });
-define('text!styles.css', ['module'], function(module) { module.exports = "#logo {\r\n    width: 170px;\r\n    height: 72px;\r\n    margin-top: -15px;\r\n}\r\n\r\n.navbar {\r\n    height: 75px;\r\n}\r\n\r\n.navbar-nav>li {\r\n    margin-top: 3px;\r\n    border-right: 1px solid #A9A9A9;\r\n}\r\n\r\n.navbar-nav>li:last-child {\r\n    border-right: none;\r\n}\r\n\r\n#navtitles {\r\n    font-size: 25px;\r\n    margin-top: 5px;\r\n    padding: 20px;\r\n    margin-right: 5px;\r\n    margin-left: 5px;\r\n}\r\n\r\nhtml, body {\r\n\tmargin:0;\r\n\tpadding:0;\r\n\theight:100%;\r\n}\r\n\r\n#app {\r\n\tmin-height:100%;\r\n\tposition:relative;\r\n}\r\n\r\n#content {\r\n\tpadding-bottom:100px; /* Height of the footer element */\r\n}\r\n\r\n#footer {\r\n\tbackground:#ededed;\r\n\twidth:100%;\r\n\theight:60px;\r\n\tposition:absolute;\r\n\tbottom:0;\r\n\tleft:0;\r\n    text-align: center;\r\n}\r\n\r\n#persinfointro {\r\n    text-align: center;\r\n    width: 500px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#persinfo, #benefits, #wagehistory, #exceptions, #spousewagehistory {\r\n    text-align: center;\r\n    width: 500px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#results {\r\n    text-align: center;\r\n    width: 750px;\r\n    margin: 0 auto;\r\n}\r\n\r\n#divorceCheck {\r\n    width: 5000px;\r\n}\r\n\r\n#wages {\r\n    display: inline-block;\r\n}\r\n\r\n#custom-handle {\r\n    width: 3em;\r\n    height: 1.6em;\r\n    top: 50%;\r\n    margin-top: -.8em;\r\n    text-align: center;\r\n    line-height: 1.6em;\r\n  }\r\n\r\n.range-slider {\r\n    position: relative;\r\n    height: 80px;\r\n}\r\n\r\n.glyphicon-question-sign {\r\n    color: #006dcc;\r\n}\r\n\r\n\r\n.table-outter {\r\n    overflow-x: scroll;\r\n}\r\n\r\n.search-table {\r\n    margin:40px auto 0px auto; \r\n}\r\n\r\n.search-table, td, th {\r\n    border-collapse: collapse; \r\n    text-align: center;\r\n}\r\n\r\nth {\r\n    padding: 50 100px; \r\n    font-size: 15px; \r\n}\r\n\r\ntd {\r\n    padding: 50px 100px; \r\n    height: 35px;\r\n}\r\n\r\n.highcharts-title {\r\n    font-weight: bold;\r\n}\r\n\r\n.disabled {\r\n    pointer-events: none;\r\n    cursor: default;\r\n}\r\n"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><div id=\"app\"><div id=\"content\"><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><a class=\"navbar-brand\" href=\"#\">MySocialSecurity</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav disabled\"><li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : 'disabled'}\"><a href.bind=\"row.href\">${row.title}</a></li></ul></div></div></nav><router-view></router-view><br><br><br><br><br></div><footer id=\"footer\"><div class=\"footer-copyright\"><div class=\"container-fluid\"><br>Social Security Calculator</div></div></footer></div></template>"; });
+define('text!styles.css', ['module'], function(module) { module.exports = "/*#logo {\n    width: 170px;\n    height: 72px;\n    margin-top: -15px;\n}\n\n.navbar {\n    height: 75px;\n}\n\n.navbar-nav>li {\n/*    margin-top: 3px;\n*//*    border-right: 1px solid #A9A9A9;\n}*/\n\n.navbar-nav>li:last-child {\n    border-right: none;\n}\n\n#navtitles {\n    font-size: 25px;\n    margin-top: 5px;\n    padding: 20px;\n    margin-right: 5px;\n    margin-left: 5px;\n}\n\nhtml, body {\n\tmargin:0;\n\tpadding:0;\n\theight:100%;\n}\n\n#app {\n\tmin-height:100%;\n\tposition:relative;\n}\n\n#content {\n\tpadding-bottom:100px; /* Height of the footer element */\n}\n\n#footer {\n\tbackground:#ededed;\n\twidth:100%;\n\theight:60px;\n\tposition:absolute;\n\tbottom:0;\n\tleft:0;\n    text-align: center;\n}\n\n#persinfointro {\n    text-align: center;\n    width: 500px;\n    margin: 0 auto;\n}\n\n#persinfo, #benefits, #wagehistory, #exceptions, #spousewagehistory {\n    text-align: center;\n    width: 500px;\n    margin: 0 auto;\n}\n\n#results {\n    text-align: center;\n    width: 750px;\n    margin: 0 auto;\n}\n\n#divorceCheck {\n    width: 5000px;\n}\n\n#wages {\n    display: inline-block;\n}\n\n#custom-handle {\n    width: 3em;\n    height: 1.6em;\n    top: 50%;\n    margin-top: -.8em;\n    text-align: center;\n    line-height: 1.6em;\n  }\n\n.range-slider {\n    position: relative;\n    height: 80px;\n}\n\n.glyphicon-question-sign {\n    color: #006dcc;\n}\n\n\n.table-outter {\n    overflow-x: scroll;\n}\n\n.search-table {\n    margin:40px auto 0px auto; \n}\n\n.search-table, td, th {\n    border-collapse: collapse; \n    text-align: center;\n}\n\nth {\n    padding: 50 100px; \n    font-size: 15px; \n}\n\ntd {\n    padding: 50px 100px; \n    height: 35px;\n}\n\n.highcharts-title {\n    font-weight: bold;\n}\n\n.disabled {\n    pointer-events: none;\n    cursor: default;\n}\n"; });
 define('text!aboutyou/deceasedwagehistory.html', ['module'], function(module) { module.exports = "<template><form id=\"wagehistory\" submit.delegate=\"completeWages()\"><h1>Deceased's Wage History</h1><p>If you would like to submit your own wages to ensure accuracy, input them here and select \"Submit Wages.\"</p><div class=\"form-group\"><label for=\"wagehistory\">Wages:</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div repeat.for=\"age of userData.deceased.yearFrom18toPassing\" id=\"wages\"><label for=\"year\">${userData.deceased.yearOfBirth + 18 + age}</label><input id=\"wagesInput\" type=\"text\" value.bind=\"userData.deceased.wages[age]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"><br></div><br></div></div><button class=\"btn btn-secondary\" type=\"button\" click.delegate=\"back()\">Back</button> <button class=\"btn btn-primary\" type=\"submit\">Submit Wages</button></form></template>"; });
 define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\".././styles.css\"></require><require from=\"jquery-ui-dist/jquery-ui.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinHTML5.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><require from=\"bootstrap-toggle/css/bootstrap-toggle.css\"></require><require from=\"bootstrap-toggle/css/bootstrap2-toggle.css\"></require><div id=\"persinfointro\"><h1>Personal Information</h1><p>Please enter the specified personal information, so we can make the best estimates of your lifetime Social Security benefits.</p></div><form id=\"persinfo\" submit.delegate=\"next()\"><div id=\"client\"><h1>Client</h1><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.client.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.client.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><span id=\"dob\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" value.bind=\"userData.client.dateOfBirth\" change.delegate=\"dob(userData.client.dateOfBirth)\" class=\"form-control\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.client.employmentStatus\" change.delegate=\"checkEmployment(userData.client.employmentStatus)\" id=\"empStatus\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div show.bind=\"userData.client.isEmployed\" class=\"form-group\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><br><button style=\"width:200px\" class=\"btn btn-primary\" type=\"button\" id=\"wagehistory\" click.delegate=\"wagehistory()\">Input Your Own Wages</button> <span id=\"salary\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span></div><div show.bind=\"userData.client.isRetired\"><button style=\"width:200px\" class=\"btn btn-primary\" type=\"button\" id=\"wagehistory\" click.delegate=\"wagehistory()\">Input Your Own Wages</button> <span id=\"retiredSalary\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span></div><div show.bind=\"userData.client.notCurrentlyEmployed\"><button style=\"width:200px\" class=\"btn btn-primary\" type=\"button\" id=\"wagehistory\" click.delegate=\"wagehistory()\">Input Your Own Wages</button> <span id=\"notCurrentlyEmployedSalary\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span></div><br><div class=\"form-group\"><label for=\"maritalStatus\">Marital Status</label><select class=\"form-control\" value.bind=\"userData.client.maritalStatus\" change.delegate=\"checkMarried(userData.client.maritalStatus)\" id=\"maritalStatus\"><option data-hidden=\"true\">Please Select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select></div><div show.bind=\"userData.client.spouseRecieving\"><hr><label for=\"isRecieving\">Is your spouse already recieving benefits?</label><br><div click.delegate=\"isRecieving()\" class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn ${userData.client.isRecieving ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!userData.client.isRecieving ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div></div><div show.bind=\"userData.client.isRecieving\"><br><label for=\"exSpouseSalary\">Monthly Benefit of Spouse</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.spouseRecievingBenfit\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><div show.bind=\"userData.client.isDivorced\"><hr><label for=\"divorceCheck\">Were you married for more than 10 years?</label><br><div click.delegate=\"divorce()\" class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn ${userData.client.divorceCheck ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!userData.client.divorceCheck ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div></div><div show.bind=\"userData.client.divorceCheck\"><br><label for=\"exSpouseDOB\">Date of Birth of Ex-Spouse</label><input type=\"text\" value.bind=\"userData.spouse.dateOfBirth\" change.delegate=\"spousedob(userData.spouse.dateOfBirth)\" class=\"form-control\" placeholder=\"01/01/1970\"><br><label for=\"exSpouseSalary\">Salary of Ex-Spouse</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div></div><div show.bind=\"userData.client.isSurvivor\"><hr><div class=\"form-group\"><label for=\"dob\">Year of Passing of Deceased</label><input type=\"text\" value.bind=\"userData.deceased.yearOfPassing\" change.delegate=\"checkPassingYear(userData.deceased.yearOfPassing)\" class=\"form-control\" id=\"deceasedPassing\" placeholder=\"60\"></div><div show.bind=\"userData.deceased.isPassed\" class=\"form-group\"><label for=\"deceaseddob\">Date of Birth of Deceased</label><span id=\"deceaseddob\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" value.bind=\"userData.deceased.dateOfBirth\" change.delegate=\"deceaseddob(userData.deceased.dateOfBirth)\" class=\"form-control\" id=\"deceaseddob\" placeholder=\"01/01/1970\"></div><div show.bind=\"userData.deceased.isPassed\" class=\"form-group\"><label for=\"salary\">Most Recent Salary of Deceased</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.deceased.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><br><button style=\"width:200px\" class=\"btn btn-primary\" type=\"button\" click.delegate=\"deceasedwagehistory()\">Input Your Own Wages</button> <span id=\"deceasedsalary\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span></div></div><hr><h3>Retirement Information</h3><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><span id=\"retirementIncome\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.client.retirementIncome\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><label for=\"retirementAge\">Retirement Age and Life Expectancy</label><span id=\"retirementAge\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" id=\"slider\" value=\"\" style=\"position:relative;height:80px\"><hr><h3>Dependent Information</h3><button class=\"btn btn-primary\" type=\"button\" click.delegate=\"addDep()\"><span class=\"glyphicon glyphicon-plus-sign\"></span> Add Dependent</button><div show.bind=\"userData.client.hasDeps\" class=\"form-group\"><div style=\"margin:0 auto\" class=\"input-group mb-2 mr-sm-2 mb-sm-0\" id=\"ageOfDeps\"><div repeat.for=\"num of userData.client.numOfDeps\"><br><label for=\"year\">Age of Dependent ${num+1}:</label><input type=\"text\" value.bind=\"userData.client.ageOfDeps[num]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"8\"></div></div><br><button class=\"btn btn-danger\" type=\"button\" click.delegate=\"removeDep()\"><span class=\"glyphicon glyphicon-minus\"></span> Remove Dependent</button></div><div show.bind=\"userData.client.isMarried && !userData.client.isRecieving\"><hr><br><br><br><h1>Co-Client</h1><div class=\"form-group\"><label for=\"firstName\">First Name</label><input type=\"text\" value.bind=\"userData.spouse.name\" class=\"form-control\" id=\"name\" placeholder=\"John\"></div><div class=\"form-group\"><label for=\"gender\">Gender</label><select class=\"form-control\" value.bind=\"userData.spouse.gender\" id=\"gender\"><option data-hidden=\"true\">Please Select</option><option>Male</option><option>Female</option></select></div><div class=\"form-group\"><label for=\"dob\">Date of Birth</label><span id=\"spousedob\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" value.bind=\"userData.spouse.dateOfBirth\" change.delegate=\"spousedob(userData.spouse.dateOfBirth)\" class=\"form-control\" id=\"dob\" placeholder=\"01/01/1970\"></div><div class=\"form-group\"><label for=\"empStatus\">Employment Status</label><select class=\"form-control\" value.bind=\"userData.spouse.employmentStatus\" change.delegate=\"checkEmploymentSpouse(userData.spouse.employmentStatus)\" id=\"empStatusSpouse\"><option data-hidden=\"true\">Please Select</option><option>Employed</option><option>Business Owner</option><option>Retired</option><option>Not Currently Employed</option></select></div><div show.bind=\"userData.spouse.isEmployed\" class=\"form-group\"><label for=\"salary\">Salary</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.salary\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"></div><br><button style=\"width:200px\" class=\"btn btn-primary\" type=\"button\" id=\"spousewagehistory\" click.delegate=\"spousewagehistory()\">Input Your Own Wages</button> <span id=\"spousesalary\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span></div><div show.bind=\"userData.spouse.isRetired\"><button style=\"width:200px\" class=\"btn btn-primary\" type=\"button\" id=\"wagehistory\" click.delegate=\"spousewagehistory()\">Input Your Own Wages</button> <span id=\"spouseretiredSalary\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span></div><div show.bind=\"userData.spouse.notCurrentlyEmployed\"><button style=\"width:200px\" class=\"btn btn-primary\" type=\"button\" id=\"wagehistory\" click.delegate=\"spousewagehistory()\">Input Your Own Wages</button> <span id=\"spousenotCurrentlyEmployedSalary\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span></div><hr><h3>Retirement Information</h3><div class=\"form-group\"><label for=\"retirementIncome\">Retirement Income</label><span id=\"spouseretirementIncome\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"userData.spouse.retirementIncome\" class=\"form-control\" id=\"retirementIncome\" placeholder=\"0\"></div></div><label for=\"retirementAge\">Retirement Age and Life Expectancy</label><span id=\"spouseretirementAge\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" id=\"sliderSpouse\" value=\"\" style=\"position:relative;height:80px\"></div><br><br><button class=\"btn btn-primary\" type=\"submit\" id=\"next\">Next</button></div></form></template>"; });
 define('text!aboutyou/spousewagehistory.html', ['module'], function(module) { module.exports = "<template><form id=\"wagehistory\" submit.delegate=\"completeWages()\"><h1>Co-Client's Wage History</h1><p>If you would like to submit your own wages to ensure accuracy, input them here and select \"Submit Wages.\"</p><div class=\"form-group\"><label for=\"wagehistory\">Wages:</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div repeat.for=\"age of userData.spouse.ageFrom18 + 1\" id=\"wages\"><label for=\"year\">${userData.spouse.yearOfBirth + 18 + age}</label><input id=\"wagesInput\" type=\"text\" value.bind=\"userData.spouse.wages[age]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"><br></div><br><br><button show.bind=\"!userData.spouse.futureWages\" class=\"btn btn-primary\" click.delegate=\"futureWages()\">Input future wages</button></div><button show.bind=\"userData.spouse.futureWages\" click.delegate=\"noFutureWages()\" class=\"btn btn-danger\">Do not input future wages</button><br><br><div show.bind=\"userData.spouse.futureWages\" class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div repeat.for=\"age of userData.spouse.yearFRA - (userData.spouse.age)\" id=\"wages\"><label for=\"year\">${userData.spouse.currentYear + age + 1}</label><input id=\"wagesInput\" type=\"text\" value.bind=\"userData.spouse.wages[age + userData.spouse.ageFrom18 + 1]\" class=\"form-control\" id=\"inlineFormInputGroup\" placeholder=\"0\"><br></div></div></div><button class=\"btn btn-secondary\" type=\"button\" click.delegate=\"back()\">Back</button> <button class=\"btn btn-primary\" type=\"submit\">Submit Wages</button></form></template>"; });

@@ -1,4 +1,4 @@
-#logo {
+/*#logo {
     width: 170px;
     height: 72px;
     margin-top: -15px;
@@ -9,9 +9,9 @@
 }
 
 .navbar-nav>li {
-    margin-top: 3px;
-    border-right: 1px solid #A9A9A9;
-}
+/*    margin-top: 3px;
+*//*    border-right: 1px solid #A9A9A9;
+}*/
 
 .navbar-nav>li:last-child {
     border-right: none;

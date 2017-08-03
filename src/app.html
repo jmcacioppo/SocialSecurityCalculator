@@ -7,13 +7,13 @@
       <nav class="navbar navbar-default">
         <div class="container-fluid">
           <div class="navbar-header">
-            <a class="navbar-brand" href="#"><img id="logo" src="./src/mysocialsecurity.png" /></a>
+            <a class="navbar-brand" href="#">MySocialSecurity</a>
           </div>
 
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav disabled">
               <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : 'disabled'}">
-                  <a id="navtitles" href.bind="row.href">${row.title}</a>
+                  <a href.bind="row.href">${row.title}</a>
               </li>
             </ul>
           </div>  
